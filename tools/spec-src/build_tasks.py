@@ -260,6 +260,12 @@ INF("INF-APICLIENT", "Typed API client + query hooks + error toast", "M1", "S", 
     ["`api(key, {params, query, body})` ใช้ endpoints.json (method/path) + schema จาก @app/contracts/endpoints/<key> (validate response ใน dev)",
      "TanStack Query hooks: `useApiQuery(key, …)`, `useApiMutation(key)` + invalidate", "error → toast ข้อความไทยจาก error.message"],
     ["pnpm --filter @app/web test"], deps=["INF-WEB", "INF-CONTRACTS"], read=["docs/spec/05-api.md §0"])
+task("UI-THEME", "ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006", "M0", "ui", "S", "US-13-01",
+     allowed=["apps/web/app/globals.css"],
+     steps=["แทนค่าใน `:root` ของ `apps/web/app/globals.css` ด้วยตาราง ADR-006 §1 (รวม `--radius` และ `--sidebar-*` ตาม mapping)",
+            "เพิ่ม token ADR-006 §2 ใน `:root` และ map ใน `@theme inline` เป็น `--color-success`, `--color-success-soft`, `--color-warning`, `--color-warning-soft`, `--color-price`, `--color-price-soft`, `--color-destructive-soft`",
+            "ไม่แก้ `.dark`, `src/components/ui/**` หรือ layout ใด ๆ"],
+     done=["pnpm --filter @app/web build", VERIFY], deps=["INF-WEB"], read=["docs/decisions/ADR-006-visual-theme.md"])
 for app, title, routes in (("console", "Console shell: layout + sidebar (ครบทุกเมนูใน 06) + auth guard", "C-"), ("staff", "Staff PWA shell: bottom nav + auth guard (role ใดก็ได้)", "S-"),
                            ("liff", "LIFF shell: liff.init + session + header ร้าน", "L-"), ("admin", "Admin shell: layout + guard", "AD-")):
     task(f"UI-SHELL-{app}", title, {"console": "M1", "staff": "M2", "liff": "M3", "admin": "M0"}[app], "ui", "M", "US-13-01",
@@ -292,7 +298,7 @@ INF("INF-MON", "Monitoring: health (db ping), structured logs, error reporting, 
 # ================================================================= shared UI components
 COMP = {
  "UI-C-FORM": ("ฟอร์มพื้นฐาน: MoneyInput (บาท→สตางค์), PhoneInput (R-22), WeightInput (กก.→กรัม), ThaiDatePicker (พ.ศ.), TimeSelect, EnumSelect, zod form helper", "M1", ["DOM-R-22", "DOM-R-31"]),
- "UI-C-TABLE": ("DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี + ป้ายไทย)", "M1", []),
+ "UI-C-TABLE": ("DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี tone ตาม ADR-006 §3 + ป้ายไทย)", "M1", ["UI-THEME"]),
  "UI-C-UPLOAD": ("PhotoUploader: กล้อง/อัลบั้ม, ย่อรูป 1600px + ลบ EXIF (R-25), presigned PUT, progress, หลายไฟล์", "M1", ["INF-STORAGE"]),
  "UI-C-SIGN": ("SignaturePad → PNG → อัปโหลด kind signature", "M2", ["UI-C-UPLOAD"]),
  "UI-C-SLOTS": ("SlotPicker: แถบวัน + grid เวลา จาก SlotList (R-04) + แสดงชื่อช่าง + สถานะว่าง/เต็ม", "M2", []),
@@ -303,7 +309,7 @@ for key, (title, ms, deps) in COMP.items():
     slug = key.replace("UI-C-", "").lower()
     task(key, f"Shared component: {title}", ms, "ui", "M", "US-13-03", allowed=[f"apps/web/src/components/shared/{slug}/**", f"apps/web/test/components/{slug}/**", "apps/web/package.json", "pnpm-lock.yaml"],
          steps=[title, "เขียน component test (Vitest + Testing Library) ครอบคลุมการแปลงหน่วย/validation", "export จาก `components/shared/<slug>/index.ts` เท่านั้น"],
-         done=["pnpm --filter @app/web test -- components/" + slug, VERIFY], deps=["INF-I18N"] + deps, read=["docs/spec/06-screens.md (กติการ่วม)"])
+         done=["pnpm --filter @app/web test -- components/" + slug, VERIFY], deps=["INF-I18N"] + deps, read=["docs/spec/06-screens.md (กติการ่วม)"] + (["docs/decisions/ADR-006-visual-theme.md"] if "UI-THEME" in deps else []))
 
 # ================================================================= DOMAIN
 RULE_USE = collections.defaultdict(list)

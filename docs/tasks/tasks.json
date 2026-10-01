@@ -27,6 +27,7 @@
   "T-0022",
   "T-0023",
   "T-0024",
+  "T-0318",
   "T-0025",
   "T-0026",
   "T-0027",
@@ -698,6 +699,19 @@
    "title": "Notification templates (staff, M0): password_reset",
    "human_review": false
   },
+  "T-0318": {
+   "key": "UI-THEME",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0001"
+   ],
+   "title": "ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006",
+   "human_review": false
+  },
   "T-0025": {
    "key": "UI-SHELL-admin",
    "ms": "M0",
@@ -735,9 +749,10 @@
    "owner": "agent",
    "wave": 5,
    "deps": [
-    "T-0015"
+    "T-0015",
+    "T-0318"
    ],
-   "title": "Shared component: DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี + ป้ายไทย)",
+   "title": "Shared component: DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี tone ตาม ADR-006 §3 + ป้ายไทย)",
    "human_review": false
   },
   "T-0028": {
@@ -841,6 +856,7 @@
     "T-0004",
     "T-0006",
     "T-0007",
+    "T-0318",
     "T-0025",
     "T-0017",
     "T-0018",
