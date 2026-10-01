@@ -415,6 +415,23 @@ L = ["# 07 — Notifications & Scheduled Jobs\n",
      "## 1. Templates\n", "| key | ผู้รับ | ช่องทาง | class (R-18) | economy mode | trigger | dedupe key | ตัวแปร | ข้อความ | Stories |", "|---|---|---|---|---|---|---|---|---|---|"]
 for n in NT:
     L.append(f"| `{n['key']}` | {md(n['to'])} | {n['channels']} | {n['cls']} | {n['economy']} | {md(n['trigger'])} | `{md(n['dedupe'])}` | {md(n['variables'])} | {md(n['text'])} | {n['stories']} |")
+L.append("""
+### 1.1 ผู้รับ ช่องทาง และ dedupe (Q-0009)
+
+- **1 แถวต่อผู้รับ 1 คน** — template ที่ผู้รับเป็นกลุ่ม (เช่น `owner (ทุกคน)`, `staff (ทุกคนที่ active ในสาขา)`, `platform admin`) สร้างแถวแยกต่อคน; `dedupe_key` = `<dedupe key ในตาราง>:<recipientId>`
+- ช่องทาง: ลูกค้า/พนักงานเลือกด้วย R-19 แล้ว **ช่องทางที่ได้ต้องอยู่ในคอลัมน์ 'ช่องทาง' ของ template** ไม่งั้นข้ามด้วย `no_recipient`
+- template ที่ช่องทางเป็น `email` อย่างเดียว (`staff.invite`, `staff.password_reset`, `admin.*`) ส่งอีเมลเสมอ ไม่ผ่าน R-19; ผู้รับไม่มีอีเมล → ข้าม `no_recipient`
+- ผู้รับ `platform admin`: `recipient_type = platform_admin`, `recipient_id = platform_admin.id` (ทุกคนที่ active), `organization_id` = ร้านต้นเรื่อง (ร้านที่ส่ง feedback / ร้านของลูกค้าที่ขอข้อมูล), `branch_id` = สาขาต้นเรื่องหรือ null; ไม่นับโควตา R-18
+
+### 1.2 บรรทัดที่ template ประกอบเอง (Q-0010)
+
+`{…Line}` ไม่ใช่ตัวแปร payload — ผู้เรียกส่งเฉพาะตัวแปรในคอลัมน์ 'ตัวแปร' แล้ว `render()` ของ template ประกอบบรรทัดเองตามนี้ · `depositAmount` = integer satang, `holdExpiresTime` = ISO instant (UTC) — render แปลงเป็นเวลาท้องถิ่นของสาขาด้วย R-20 และ format เงินตามหลักแสดงผลใน 06:
+
+| template | บรรทัด | เงื่อนไข → ข้อความ |
+|---|---|---|
+| `customer.booking_received` | `{depositLine}` | `depositAmount` > 0 → `กรุณาชำระมัดจำ ฿{depositAmount} ภายใน {holdExpiresTime} น. เพื่อยืนยันคิว` (เงินแบบ auto ซ่อน .00, เวลา `HH:mm` เวลาท้องถิ่นสาขา) · ไม่งั้น → `ร้านจะยืนยันคิวให้เร็ว ๆ นี้ค่ะ` |
+| `customer.ready_for_pickup` | `{reportCardLine}` | มี `reportCardUrl` → `ดูสมุดพกวันนี้: {reportCardUrl}` · ไม่มี (null/ว่าง) → ตัดบรรทัดนี้ทิ้งทั้งบรรทัด (ไม่เหลือบรรทัดว่าง) |
+""")
 L.append("\n## 2. Scheduled jobs (`scheduled_job.job_type`)\n\n| job_type | ตั้งเมื่อ | payload | handler | dedupe key | Stories |\n|---|---|---|---|---|---|")
 for j in JOBS: L.append(f"| `{j[0]}` | {md(j[1])} | `{md(j[2])}` | {md(j[3])} | `{md(j[4])}` | {j[5]} |")
 L.append("\n## 3. Cron\n\n- `POST /api/cron/tick` ทุก 1–5 นาที (cron ภายนอกฟรี) → (1) seed งานรายวัน/ราย 15 นาที ด้วย dedupe key (2) ประมวลผล scheduled_job ที่ถึงเวลา (3) ส่ง notification queued ที่ค้าง\n"
