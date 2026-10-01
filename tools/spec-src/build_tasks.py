@@ -249,7 +249,7 @@ INF("INF-LINE", "LINE integration: messaging client, ID token verify, webhook si
      "ต่อ LineSender เข้ากับ dispatcher (reply token store ตาม R-19 / SP-03)"],
     ["pnpm --filter @app/server test -- line"], deps=["INF-NOTIFY", "H-SP01"], read=["docs/decisions/ADR-001-line-provider.md", "docs/spec/04-business-rules.md#R-19", "docs/spec/01-architecture.md §7"], hr=True)
 INF("INF-I18N", "i18n: next-intl (th), message namespaces per screen + enum labels + format helpers", "M1", "M", "US-13-03",
-    ["apps/web/src/i18n/**", "apps/web/scripts/merge-messages.mjs", "apps/web/package.json", "apps/web/src/lib/format.ts", "apps/web/src/lib/enum-label.ts", "apps/web/next.config.ts"],
+    ["apps/web/src/i18n/**", "apps/web/scripts/merge-messages.mjs", "apps/web/package.json", "apps/web/src/lib/format.ts", "apps/web/src/lib/enum-label.ts", "apps/web/next.config.ts","pnpm-lock.yaml"],
     ["messages/th/common.json (ปุ่ม/คำทั่วไป), messages/th/enum.json คัดลอกจาก docs/spec/enum-labels.th.json",
      "scripts/merge-messages.mjs: รวม th/*.json → th.generated.json (gitignore) รันใน predev/prebuild/pretest",
      "lib/format.ts: re-export formatTHB/formatThaiDate/formatTime/formatWeight/formatPhone จาก @app/domain (R-31, R-22)",
