@@ -3,14 +3,20 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "messages": "node scripts/merge-messages.mjs",
+    "predev": "pnpm messages",
     "dev": "next dev",
+    "prebuild": "pnpm messages",
     "build": "next build",
     "start": "next start",
+    "pretypecheck": "pnpm messages",
     "typecheck": "next typegen && tsc -p tsconfig.json",
+    "pretest": "pnpm messages",
     "test": "vitest run"
   },
   "dependencies": {
     "@app/contracts": "workspace:*",
+    "@app/domain": "workspace:*",
     "@tailwindcss/postcss": "4.3.3",
     "@tanstack/react-query": "5.104.0",
     "class-variance-authority": "0.7.1",
