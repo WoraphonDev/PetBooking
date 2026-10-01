@@ -15,6 +15,13 @@
       "when": 1790844614654,
       "tag": "0001_constraints",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790868905821,
+      "tag": "0002_seed_vaccine_types",
+      "breakpoints": true
     }
   ]
 }
