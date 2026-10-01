@@ -119,6 +119,61 @@ describe("withStaff", () => {
     await expectError(await ownerOnlyPost(req("/api/v1/staff/branch", { method: "PATCH", cookie, body })), "SUPPORT_READ_ONLY");
   });
 
+  describe("support mode via platform_admin session on sid (Q-0007)", () => {
+    const supportLogin = async (org: SeedOrg, opts: { status?: "active" | "disabled"; supportAccessLogId?: string | null } = {}) => {
+      const [a] = await env.db
+        .insert(platformAdmin)
+        .values({ email: `${randomUUID()}@pj8.test`, passwordHash: "x", displayName: "Support", status: opts.status ?? "active" })
+        .returning();
+      const supportAccessLogId = opts.supportAccessLogId === undefined ? randomUUID() : (opts.supportAccessLogId ?? undefined);
+      const cookie = await login("platform_admin", a?.id ?? "", { organizationId: org.orgId, branchId: org.branchId, supportAccessLogId });
+      return { adminId: a?.id, cookie: cookie.replace("aid=", "sid=") };
+    };
+    const reports = withStaff("reports.sales", {}, echo); // owner-only GET
+
+    it("reads like an owner: actor {admin, role owner} + supportAccessLogId", async () => {
+      const { adminId, cookie } = await supportLogin(env.base);
+      const res = await reports(req("/api/v1/staff/reports/sales", { cookie }));
+      expect(res.status).toBe(200);
+      const { ctx } = (await res.json()) as EchoBody & { ctx: { supportAccessLogId: string | null } };
+      expect(ctx.actor).toEqual({ type: "admin", id: adminId, role: "owner" });
+      expect([ctx.orgId, ctx.branchId]).toEqual([env.base.orgId, env.base.branchId]);
+      expect(ctx.supportAccessLogId).toEqual(expect.any(String));
+    });
+
+    it("any write → SUPPORT_READ_ONLY (checked before the role)", async () => {
+      const { cookie } = await supportLogin(env.base);
+      const body = JSON.stringify({ code: "X", message: "m", data: null });
+      await expectError(await ownerOnlyPost(req("/api/v1/staff/branch", { method: "PATCH", cookie, body })), "SUPPORT_READ_ONLY");
+      const fdSupport = await login("staff", env.base.staff.front_desk, {
+        organizationId: env.base.orgId,
+        supportAccessLogId: randomUUID(),
+      });
+      await expectError(
+        await ownerOnlyPost(req("/api/v1/staff/branch", { method: "PATCH", cookie: fdSupport, body })),
+        "SUPPORT_READ_ONLY",
+      );
+    });
+
+    it("admin is exempt from the suspended-org check", async () => {
+      const s = await seedOrg(env.db, "susp3");
+      await env.db.update(organization).set({ status: "suspended" }).where(eq(organization.id, s.orgId));
+      const { cookie } = await supportLogin(s);
+      expect((await reports(req("/api/v1/staff/reports/sales", { cookie }))).status).toBe(200);
+    });
+
+    it("platform_admin on sid without support_access_log_id, or a disabled admin → UNAUTHENTICATED", async () => {
+      await expectError(
+        await reports(req("/api/v1/staff/reports/sales", { cookie: (await supportLogin(env.base, { supportAccessLogId: null })).cookie })),
+        "UNAUTHENTICATED",
+      );
+      await expectError(
+        await reports(req("/api/v1/staff/reports/sales", { cookie: (await supportLogin(env.base, { status: "disabled" })).cookie })),
+        "UNAUTHENTICATED",
+      );
+    });
+  });
+
   it("CSRF: write without Origin or with a foreign Origin → FORBIDDEN", async () => {
     const cookie = await login("staff", env.base.staff.owner, { organizationId: env.base.orgId });
     const body = JSON.stringify({ code: "X", message: "m", data: null });

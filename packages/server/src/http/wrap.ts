@@ -1,7 +1,7 @@
 // with{Staff|Customer|Admin|Public}(key, schemas, fn) → Next.js route handler running the 01 §4 pipeline.
 import { randomUUID } from "node:crypto";
 import type { CookieSpec } from "../auth/cookies.ts";
-import { type PermissionKey, requireRole } from "../auth/permissions.ts";
+import { PERMISSIONS, type PermissionKey, requireRole } from "../auth/permissions.ts";
 import type { SessionRow } from "../auth/session.ts";
 import type { RequestContext } from "../context.ts";
 import { AppError } from "../errors.ts";
@@ -29,6 +29,16 @@ async function readParams(context?: RouteContext): Promise<Record<string, string
   return out;
 }
 
+/** requireRole only knows staff; a support actor (admin with role owner, Q-0007) is checked against the same matrix row. */
+function requireRoleOrSupport(ctx: RequestContext, key: PermissionKey): void {
+  if (ctx.actor.type !== "admin" || !ctx.supportAccessLogId) {
+    requireRole(ctx, key);
+    return;
+  }
+  const roles: readonly string[] = PERMISSIONS[key];
+  if (!ctx.actor.role || !roles.includes(ctx.actor.role)) throw new AppError("FORBIDDEN");
+}
+
 function handler<S extends RouteSchemas>(
   key: string,
   schemas: S,
@@ -43,8 +53,8 @@ function handler<S extends RouteSchemas>(
       const params = await readParams(context);
       const { ctx, session } = await resolve(req, now, params); // 1–2
       requestId = ctx.requestId;
-      if (roleKey) requireRole(ctx, roleKey); // 3
-      if (ctx.supportAccessLogId && isWrite(req)) throw new AppError("SUPPORT_READ_ONLY"); // 4
+      if (ctx.supportAccessLogId && isWrite(req)) throw new AppError("SUPPORT_READ_ONLY"); // 4 — checked before the role (Q-0007)
+      if (roleKey) requireRoleOrSupport(ctx, roleKey); // 3
       assertSameOrigin(req); // 5
       const { rule, subject } = ruleFor(key, new URL(req.url).pathname, {
         ip: ctx.ip,

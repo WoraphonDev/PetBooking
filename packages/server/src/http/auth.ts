@@ -28,10 +28,10 @@ export function baseCtx(req: Request, now: Date): RequestContext {
   };
 }
 
-async function sessionFrom(req: Request, cookie: string, subject: SessionRow["subjectType"], now: Date): Promise<SessionRow> {
+async function sessionFrom(req: Request, cookie: string, subjects: SessionRow["subjectType"][], now: Date): Promise<SessionRow> {
   const token = readCookie(req, cookie);
   const s = token ? await lookupSession(getDb(), token, now) : null;
-  if (!s || s.subjectType !== subject) throw new AppError("UNAUTHENTICATED");
+  if (!s || !subjects.includes(s.subjectType)) throw new AppError("UNAUTHENTICATED");
   return s;
 }
 
@@ -42,18 +42,39 @@ async function assertOrgActive(orgId: string): Promise<void> {
   if (org.status === "suspended") throw new AppError("FORBIDDEN");
 }
 
+async function activeAdmin(id: string) {
+  const [admin] = await getDb()
+    .select({ id: platformAdmin.id, status: platformAdmin.status })
+    .from(platformAdmin)
+    .where(eq(platformAdmin.id, id));
+  if (admin?.status !== "active") throw new AppError("UNAUTHENTICATED");
+  return admin;
+}
+
+/**
+ * `sid` session: a staff member, or a support session (01 §4 Support mode, Q-0007) = platform_admin subject with
+ * support_access_log_id + organization_id → actor `{type:"admin", role:"owner"}` (reads like an owner, writes → SUPPORT_READ_ONLY).
+ */
 export async function resolveStaff(req: Request, now: Date): Promise<Resolved> {
-  const s = await sessionFrom(req, SESSION_COOKIE.staff, "staff", now);
+  const s = await sessionFrom(req, SESSION_COOKIE.staff, ["staff", "platform_admin"], now);
   if (!s.organizationId) throw new AppError("UNAUTHENTICATED");
-  await assertOrgActive(s.organizationId);
+  const support = s.subjectType === "platform_admin";
+  if (support && !s.supportAccessLogId) throw new AppError("UNAUTHENTICATED");
+  // admin is exempt from the suspended-org check (01 §4 step 2)
+  if (!support) await assertOrgActive(s.organizationId);
   const ctx: RequestContext = { ...baseCtx(req, now), orgId: s.organizationId, supportAccessLogId: s.supportAccessLogId };
   const db = tenantDb(ctx, getDb());
-  const [staff] = (await db.select(staffUser, eq(staffUser.id, s.subjectId))) as (typeof staffUser.$inferSelect)[];
-  // a disabled/removed staff member keeps no access even if a session row survived
-  if (staff?.status !== "active") throw new AppError("UNAUTHENTICATED");
+  if (support) {
+    const admin = await activeAdmin(s.subjectId);
+    ctx.actor = { type: "admin", id: admin.id, role: "owner" };
+  } else {
+    const [staff] = (await db.select(staffUser, eq(staffUser.id, s.subjectId))) as (typeof staffUser.$inferSelect)[];
+    // a disabled/removed staff member keeps no access even if a session row survived
+    if (staff?.status !== "active") throw new AppError("UNAUTHENTICATED");
+    ctx.actor = { type: "staff", id: staff.id, role: staff.role };
+  }
   // staff_user has no branch: MVP = 1 branch per org → the org's first branch gives branchId/timezone
   const [br] = (await db.select(branch).orderBy(asc(branch.createdAt)).limit(1)) as (typeof branch.$inferSelect)[];
-  ctx.actor = { type: "staff", id: staff.id, role: staff.role };
   ctx.branchId = s.branchId ?? br?.id ?? null;
   ctx.timezone = br?.timezone ?? ctx.timezone;
   return { ctx, session: s };
@@ -71,7 +92,7 @@ export async function resolveCustomer(
 ): Promise<Resolved> {
   const [br] = branchSlug ? await getDb().select().from(branch).where(eq(branch.bookingSlug, branchSlug)) : [];
   if (!br) throw new AppError("NOT_FOUND");
-  const s = await sessionFrom(req, SESSION_COOKIE.customer, "customer", now);
+  const s = await sessionFrom(req, SESSION_COOKIE.customer, ["customer"], now);
   if (s.branchId !== br.id || s.organizationId !== br.organizationId) throw new AppError("UNAUTHENTICATED");
   await assertOrgActive(br.organizationId);
   const ctx: RequestContext = { ...baseCtx(req, now), orgId: br.organizationId, branchId: br.id, timezone: br.timezone };
@@ -85,12 +106,8 @@ export async function resolveCustomer(
 }
 
 export async function resolveAdmin(req: Request, now: Date): Promise<Resolved> {
-  const s = await sessionFrom(req, SESSION_COOKIE.platform_admin, "platform_admin", now);
-  const [admin] = await getDb()
-    .select({ id: platformAdmin.id, status: platformAdmin.status })
-    .from(platformAdmin)
-    .where(eq(platformAdmin.id, s.subjectId));
-  if (admin?.status !== "active") throw new AppError("UNAUTHENTICATED");
-  const ctx: RequestContext = { ...baseCtx(req, now), actor: { type: "admin", id: admin.id }, supportAccessLogId: s.supportAccessLogId };
+  const s = await sessionFrom(req, SESSION_COOKIE.platform_admin, ["platform_admin"], now);
+  const admin = await activeAdmin(s.subjectId);
+  const ctx: RequestContext = { ...baseCtx(req, now), actor: { type: "admin", id: admin.id } };
   return { ctx, session: s };
 }
