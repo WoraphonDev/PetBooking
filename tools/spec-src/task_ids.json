@@ -27,6 +27,7 @@
   "API-admin-0": "T-0022",
   "API-admin.createOrg": "T-0023",
   "NTF-staff-M0-0": "T-0024",
+  "UI-THEME": "T-0318",
   "UI-SHELL-admin": "T-0025",
   "UI-C-FORM": "T-0026",
   "UI-C-TABLE": "T-0027",

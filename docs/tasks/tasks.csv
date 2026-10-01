@@ -26,16 +26,17 @@ T-0021,API-auth-1,M0,6,api,agent,S,,API auth.resetConfirm,US-01-02,T-0007 T-0005
 T-0022,API-admin-0,M0,6,api,agent,M,,"API admin.login, admin.orgs, admin.updateOrg",US-13-10,T-0007 T-0005,13
 T-0023,API-admin.createOrg,M0,7,api,agent,L,yes,API admin.createOrg,US-13-10 US-13-14,T-0007 T-0022,4
 T-0024,NTF-staff-M0-0,M0,6,notify,agent,M,,"Notification templates (staff, M0): password_reset",US-01-02,T-0010 T-0011,2
+T-0318,UI-THEME,M0,3,ui,agent,S,,ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006,US-13-01,T-0001,1
 T-0025,UI-SHELL-admin,M0,5,ui,agent,M,,Admin shell: layout + guard,US-13-01,T-0015 T-0016,4
 T-0026,UI-C-FORM,M0,5,ui,agent,M,,"Shared component: ฟอร์มพื้นฐาน: MoneyInput (บาท→สตางค์), PhoneInput (R-22), WeightInput (กก.→กรัม), ThaiDatePicker (พ.ศ.), TimeSelect, EnumSelect, zod form helper",US-13-03,T-0015 T-0014 T-0013,4
-T-0027,UI-C-TABLE,M0,5,ui,agent,M,,"Shared component: DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี + ป้ายไทย)",US-13-03,T-0015,4
+T-0027,UI-C-TABLE,M0,5,ui,agent,M,,"Shared component: DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี tone ตาม ADR-006 §3 + ป้ายไทย)",US-13-03,T-0015 T-0318,4
 T-0028,SCR-A-01,M0,7,ui,agent,S,,Screen A-01 เข้าสู่ระบบ (ร้าน),US-01-02,T-0015 T-0019,4
 T-0029,SCR-A-02,M0,8,ui,agent,S,,Screen A-02 ลืมรหัสผ่าน,US-01-02,T-0015 T-0020,4
 T-0030,SCR-A-03,M0,7,ui,agent,S,,Screen A-03 ตั้งรหัสผ่านใหม่,US-01-02,T-0015 T-0021,4
 T-0031,SCR-AD-01,M0,7,ui,agent,S,,Screen AD-01 Admin login,US-13-10,T-0025 T-0022,4
 T-0032,SCR-AD-02,M0,8,ui,agent,M,,Screen AD-02 ร้านทั้งหมด,US-13-10 US-13-14,T-0025 T-0026 T-0027 T-0022 T-0023,4
 T-0033,SCR-AD-07,M0,6,ui,agent,S,,Screen AD-07 วันหยุดราชการ,US-13-03,T-0025 T-0026,4
-H-04,H-GATE-M0,M0,9,human,human,-,,Milestone review M0: demo + ตรวจคุณภาพ,,T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0025 T-0017 T-0018 T-0012 T-0005 T-0013 T-0019 T-0020 T-0021 T-0022 T-0023 T-0024 T-0028 T-0029 T-0030 T-0031 T-0032 T-0033,0
+H-04,H-GATE-M0,M0,9,human,human,-,,Milestone review M0: demo + ตรวจคุณภาพ,,T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 T-0017 T-0018 T-0012 T-0005 T-0013 T-0019 T-0020 T-0021 T-0022 T-0023 T-0024 T-0028 T-0029 T-0030 T-0031 T-0032 T-0033,0
 H-05,H-LEGAL,M1,1,human,human,-,,ร่าง Privacy Notice / Terms / DPA / ข้อความยินยอมรูป + ตรวจแม่แบบใบยินยอม,US-03-12 US-05-06 US-06-08 US-13-08,,0
 T-0034,DOM-STATE,M1,1,domain,agent,M,,State tables ทุก entity (03) + canTransition,US-13-02,H-01,2
 T-0035,INF-AUDIT,M1,2,infra,agent,M,yes,Audit log writer (R-27) + booking_event writer + state transition helper,US-13-07,T-0004 T-0034,5
