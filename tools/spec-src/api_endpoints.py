@@ -712,7 +712,8 @@ ep("cron.tick", "POST", "/api/cron/tick", "cron", "", "US-05-02, US-07-06, US-10
    [F("x-cron-secret", "header", True, "", "= env CRON_SECRET")], res="object {processed: number, failed: number}", errors="CRON_FORBIDDEN",
    effects=["SELECT … WHERE status='pending' AND run_at <= now ORDER BY run_at LIMIT 50 FOR UPDATE SKIP LOCKED", "แต่ละงานใน transaction ของตัวเอง; error → attempts+1, run_at + 2^attempts นาที, ครบ 5 → failed",
             "ถูกเรียกโดย cron ภายนอกฟรี (เช่น GitHub Actions schedule / cron-job.org) ทุก 1–5 นาที"])
-ep("health", "GET", "/api/health", "public", "", "US-13-09", "health check", res="object {ok: true, db: 'ok', version: string}")
+ep("health", "GET", "/api/health", "public", "", "US-13-09", "health check", res="object {ok: boolean, db: 'ok' | 'error' | 'unknown', version: string}",
+   effects=["version = NEXT_PUBLIC_APP_VERSION หรือ 'dev' ถ้าไม่ได้ตั้ง (ต้องมี key เสมอ)", "db = 'unknown' จนกว่า INF-MON จะเพิ่ม db ping; หลังจากนั้น 'ok' | 'error' (error → HTTP 503, ok: false)"])
 
 # =========================================================== ADMIN
 ep("admin.login", "POST", "/api/v1/auth/admin/login", "public", "", "US-13-10", "ทีมแพลตฟอร์มเข้าสู่ระบบ",

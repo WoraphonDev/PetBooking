@@ -5856,7 +5856,12 @@ Errors: `CRON_FORBIDDEN`
 **GET `/api/health`** — health check  
 สิทธิ์: ไม่ต้องล็อกอิน · Stories: US-13-09
 
-Response: `object {ok: true, db: 'ok', version: string}`
+Response: `object {ok: boolean, db: 'ok' \| 'error' \| 'unknown', version: string}`
+
+
+ผลที่ต้องเกิด:
+- version = NEXT_PUBLIC_APP_VERSION หรือ 'dev' ถ้าไม่ได้ตั้ง (ต้องมี key เสมอ)
+- db = 'unknown' จนกว่า INF-MON จะเพิ่ม db ping; หลังจากนั้น 'ok' | 'error' (error → HTTP 503, ok: false)
 
 
 ### กลุ่ม `admin`

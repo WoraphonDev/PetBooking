@@ -47,7 +47,7 @@ TASK_ID=T-0123 node scripts/check-task-scope.mjs   # changed files ⇄ card allo
 - Behaviour matches the spec sections cited by the card, field by field (names, types, nullability, error codes, Thai labels).
 - Card *Done when* commands pass; `pnpm verify` passes; `check-spec-conformance` reports no extras.
 - Every state change writes `booking_event` (when applicable) and every money/permission-sensitive action writes `audit_log` (R-27) in the **same transaction**.
-- UI: every field in the 06 screen spec is present with the specified source/format; Thai strings come from `apps/web/src/i18n/messages/th.json`.
+- UI: every field in the 06 screen spec is present with the specified source/format; Thai strings come from `apps/web/src/i18n/messages/th/<SCREEN-ID>.json` (merged at build; see 01 §2).
 - No TODO/FIXME left without a matching `docs/questions.md` entry.
 
 ## Stop and ask (write `docs/questions.md`, don't guess) when

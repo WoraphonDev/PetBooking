@@ -3016,7 +3016,7 @@
    "roles": "",
    "request": [],
    "query": [],
-   "response": "object {ok: true, db: 'ok', version: string}",
+   "response": "object {ok: boolean, db: 'ok' | 'error' | 'unknown', version: string}",
    "errors": []
   },
   {
