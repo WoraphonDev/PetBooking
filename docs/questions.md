@@ -99,3 +99,12 @@
 - สิ่งที่พบใน spec: `docs/tasks/T-0015.md` allowed_paths · `01-architecture.md` §2 (ทิศทาง dependency web → domain ผ่าน server แต่ Q-0002 ให้ web import formatter จาก domain ตรง)
 - ทางเลือกที่เป็นไปได้: A เพิ่ม `pnpm-lock.yaml` ใน allowed_paths ของ T-0015 (และการ์ด UI ที่จะเพิ่ม dependency) / B import ด้วย relative path ข้าม package (ไม่แนะนำ)
 - คำตอบ: มนุษย์เลือก A ในแชท session T-0015 (2026-10-02) — PR T-0015 commit การเปลี่ยน lockfile ไปแล้ว; การ์ดแก้แล้วใน spec-change PR #23 (INF-I18N allowed_paths += `pnpm-lock.yaml`)
+
+## Q-0012 · T-0018 monitoring scope and error-reporting configuration
+- Status: open
+- Task: T-0018 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: T-0018 needs `apps/web/package.json` and `pnpm-lock.yaml` to link `@app/server`, `packages/server/package.json` to export entry points, and `apps/web/test/api/health.test.ts` to replace the old synchronous `db: unknown` assertions. Integration tests need `packages/server/test/services/health/**`, which the server's existing Vitest config discovers. These paths are missing from allowed_paths.
+- Evidence: T-0018 allowed_paths; apps/web health tests; server Vitest include `test/**/*.test.ts`; 05#ep-health requires HTTP 503 on database failure.
+- Configuration conflict: the card names `SENTRY_DSN`, while 01 §6 names optional `ERROR_REPORT_DSN`; the card lists no approved reporting SDK dependency.
+- Options: expand task scope through spec-change and use `ERROR_REPORT_DSN`, or leave the affected work blocked until that change is merged. Optional external reporting requires an approved implementation/dependency decision.
+- Answer: user chose “ทำเฉพาะส่วนที่อยู่ในขอบเขตเดิม” in this chat (2026-10-02). Do not expand the card. Implement only the log helper, health service and monitoring documentation. Route integration, existing route test updates, package dependencies and external error reporting remain blocked; this task is incomplete. Service tests are colocated in the allowed health directory and run with a colocated Vitest config; the existing server test discovery does not include them.
