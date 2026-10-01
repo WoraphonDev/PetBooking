@@ -1,0 +1,467 @@
+{
+ "note": "Error catalog (05 §1). packages/contracts/src/errors.ts must match exactly. DO NOT EDIT.",
+ "errors": [
+  {
+   "code": "UNAUTHENTICATED",
+   "http": 401,
+   "messageTh": "กรุณาเข้าสู่ระบบ",
+   "when": "ไม่มี session หรือหมดอายุ"
+  },
+  {
+   "code": "FORBIDDEN",
+   "http": 403,
+   "messageTh": "คุณไม่มีสิทธิ์ทำรายการนี้",
+   "when": "role ไม่อยู่ใน permission matrix"
+  },
+  {
+   "code": "SUPPORT_READ_ONLY",
+   "http": 403,
+   "messageTh": "โหมดช่วยเหลือดูข้อมูลได้อย่างเดียว",
+   "when": "support session พยายามเขียน"
+  },
+  {
+   "code": "NOT_FOUND",
+   "http": 404,
+   "messageTh": "ไม่พบข้อมูล",
+   "when": "ไม่พบ หรืออยู่คนละ organization (ห้ามตอบ 403 เพื่อไม่เปิดเผยว่ามีอยู่)"
+  },
+  {
+   "code": "VALIDATION_FAILED",
+   "http": 422,
+   "messageTh": "ข้อมูลไม่ถูกต้อง",
+   "when": "zod ไม่ผ่าน — details.fields = {path: message}"
+  },
+  {
+   "code": "INVALID_TRANSITION",
+   "http": 409,
+   "messageTh": "สถานะรายการเปลี่ยนไปแล้ว กรุณารีเฟรช",
+   "when": "UPDATE … WHERE status = from ได้ 0 แถว"
+  },
+  {
+   "code": "STALE_BILL",
+   "http": 409,
+   "messageTh": "บิลถูกแก้ไขจากอีกเครื่อง กรุณารีเฟรช",
+   "when": "expectedPaidSatang ไม่ตรง (R-15)"
+  },
+  {
+   "code": "RATE_LIMITED",
+   "http": 429,
+   "messageTh": "ทำรายการถี่เกินไป กรุณารอสักครู่",
+   "when": "เกิน rate limit"
+  },
+  {
+   "code": "INTERNAL",
+   "http": 500,
+   "messageTh": "ระบบขัดข้อง กรุณาลองใหม่",
+   "when": "exception ที่ไม่คาดไว้ (log + Sentry)"
+  },
+  {
+   "code": "INVALID_CREDENTIALS",
+   "http": 401,
+   "messageTh": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+   "when": "R-24"
+  },
+  {
+   "code": "ACCOUNT_LOCKED",
+   "http": 423,
+   "messageTh": "บัญชีถูกล็อกชั่วคราว ลองใหม่ใน 15 นาที",
+   "when": "R-24"
+  },
+  {
+   "code": "PASSWORD_POLICY",
+   "http": 422,
+   "messageTh": "รหัสผ่านต้องยาว 8 ตัวขึ้นไป และไม่ใช่ตัวเลขล้วน",
+   "when": "R-24 — details.reason"
+  },
+  {
+   "code": "TOKEN_INVALID",
+   "http": 400,
+   "messageTh": "ลิงก์ไม่ถูกต้องหรือหมดอายุ",
+   "when": "invite/reset token ไม่พบ/หมดอายุ/ใช้แล้ว"
+  },
+  {
+   "code": "LINE_TOKEN_INVALID",
+   "http": 401,
+   "messageTh": "ยืนยันตัวตน LINE ไม่สำเร็จ กรุณาเปิดใหม่จาก LINE",
+   "when": "verify ID token ไม่ผ่าน"
+  },
+  {
+   "code": "NOT_REGISTERED",
+   "http": 403,
+   "messageTh": "กรุณาลงทะเบียนก่อนใช้งาน",
+   "when": "LIFF session ที่ยังไม่มี customer"
+  },
+  {
+   "code": "LAST_OWNER",
+   "http": 409,
+   "messageTh": "ต้องมีเจ้าของร้านอย่างน้อย 1 คน",
+   "when": "ลด role/ปิด owner คนสุดท้าย"
+  },
+  {
+   "code": "EMAIL_TAKEN",
+   "http": 409,
+   "messageTh": "อีเมลนี้ถูกใช้แล้ว",
+   "when": "unique staff_user.email"
+  },
+  {
+   "code": "SLUG_TAKEN",
+   "http": 409,
+   "messageTh": "ชื่อลิงก์นี้ถูกใช้แล้ว",
+   "when": "unique slug/booking_slug"
+  },
+  {
+   "code": "CODE_TAKEN",
+   "http": 409,
+   "messageTh": "รหัสนี้ถูกใช้แล้ว",
+   "when": "unique code (room_unit, size_tier)"
+  },
+  {
+   "code": "IN_USE",
+   "http": 409,
+   "messageTh": "ใช้งานอยู่ ลบไม่ได้ — ให้ปิดใช้งานแทน",
+   "when": "FK violation 23503 ตอนลบ"
+  },
+  {
+   "code": "SIZE_TIER_OVERLAP",
+   "http": 422,
+   "messageTh": "ช่วงน้ำหนักทับกัน",
+   "when": "R-01"
+  },
+  {
+   "code": "INVALID_PHONE",
+   "http": 422,
+   "messageTh": "เบอร์โทรไม่ถูกต้อง",
+   "when": "R-22"
+  },
+  {
+   "code": "LINK_REQUEST_PENDING",
+   "http": 409,
+   "messageTh": "มีคำขอจับคู่บัญชีรอร้านยืนยันอยู่",
+   "when": "customer_link_request pending"
+  },
+  {
+   "code": "MODULE_DISABLED",
+   "http": 422,
+   "messageTh": "ร้านยังไม่เปิดบริการนี้",
+   "when": "branch.module_* = false"
+  },
+  {
+   "code": "BRANCH_CLOSED",
+   "http": 422,
+   "messageTh": "ร้านปิดในวันที่เลือก",
+   "when": "branch_hours / branch_closure"
+  },
+  {
+   "code": "OUTSIDE_BOOKING_WINDOW",
+   "http": 422,
+   "messageTh": "วันที่เลือกอยู่นอกช่วงที่จองได้",
+   "when": "R-04 lead/horizon"
+  },
+  {
+   "code": "SLOT_TAKEN",
+   "http": 409,
+   "messageTh": "คิวนี้เพิ่งถูกจองไป กรุณาเลือกเวลาใหม่",
+   "when": "23P01 groom_appt_*_no_overlap หรือ slot ไม่อยู่ในผล R-04"
+  },
+  {
+   "code": "ROOM_TAKEN",
+   "http": 409,
+   "messageTh": "ห้องเต็มในช่วงวันที่เลือก",
+   "when": "23P01 stay_room_no_overlap / R-10 none_free"
+  },
+  {
+   "code": "PET_ALREADY_BOOKED",
+   "http": 409,
+   "messageTh": "น้องมีการจองที่ทับช่วงเวลานี้แล้ว",
+   "when": "23P01 stay_pet_no_overlap / นัดกรูมทับกัน"
+  },
+  {
+   "code": "DAYCARE_FULL",
+   "http": 409,
+   "messageTh": "รอบ Daycare นี้เต็มแล้ว",
+   "when": "R-29"
+  },
+  {
+   "code": "PRICE_NOT_FOUND",
+   "http": 422,
+   "messageTh": "บริการนี้ไม่มีราคาสำหรับขนาด/ขนของน้อง",
+   "when": "R-02"
+  },
+  {
+   "code": "WEIGHT_REQUIRED",
+   "http": 422,
+   "messageTh": "กรุณาระบุน้ำหนักหรือขนาดของน้อง",
+   "when": "R-01 no_weight และไม่ได้เลือกขนาด"
+  },
+  {
+   "code": "DURATION_ZERO",
+   "http": 422,
+   "messageTh": "กรุณาเลือกบริการหลักอย่างน้อย 1 รายการ",
+   "when": "R-03"
+  },
+  {
+   "code": "INVALID_DATE_RANGE",
+   "http": 422,
+   "messageTh": "ช่วงวันที่ไม่ถูกต้อง",
+   "when": "R-03"
+  },
+  {
+   "code": "CUSTOMER_BLACKLISTED",
+   "http": 403,
+   "messageTh": "ไม่สามารถจองออนไลน์ได้ กรุณาติดต่อร้าน",
+   "when": "R-12"
+  },
+  {
+   "code": "PET_INACTIVE",
+   "http": 422,
+   "messageTh": "โปรไฟล์น้องไม่พร้อมใช้งาน",
+   "when": "R-12"
+  },
+  {
+   "code": "SPECIES_NOT_ALLOWED",
+   "http": 422,
+   "messageTh": "บริการนี้ไม่รองรับชนิดสัตว์ของน้อง",
+   "when": "R-12"
+  },
+  {
+   "code": "BREED_REJECTED",
+   "http": 422,
+   "messageTh": "ขออภัย ร้านยังไม่รับสายพันธุ์นี้",
+   "when": "R-12"
+  },
+  {
+   "code": "PET_TOO_HEAVY",
+   "http": 422,
+   "messageTh": "น้ำหนักน้องเกินที่ร้านรับได้",
+   "when": "R-12"
+  },
+  {
+   "code": "PET_TOO_YOUNG",
+   "http": 422,
+   "messageTh": "น้องอายุยังไม่ถึงเกณฑ์ของห้องนี้",
+   "when": "R-12"
+  },
+  {
+   "code": "IN_HEAT_NOT_ALLOWED",
+   "http": 422,
+   "messageTh": "ห้องนี้ไม่รับน้องที่อยู่ในช่วงติดสัด",
+   "when": "R-12"
+  },
+  {
+   "code": "REACTIVE_NOT_ALLOWED",
+   "http": 422,
+   "messageTh": "ห้องนี้ไม่รับน้องที่มีนิสัยก้าวร้าว",
+   "when": "R-12"
+  },
+  {
+   "code": "VACCINE_REQUIRED",
+   "http": 422,
+   "messageTh": "วัคซีนของน้องไม่ครบหรือหมดอายุ",
+   "when": "R-11 — details {missing, expired, pendingReview}"
+  },
+  {
+   "code": "STATUS_NOT_ALLOWED",
+   "http": 409,
+   "messageTh": "ทำรายการนี้ในสถานะปัจจุบันไม่ได้",
+   "when": "R-21 / guard ของ state machine"
+  },
+  {
+   "code": "TOO_LATE_TO_RESCHEDULE",
+   "http": 422,
+   "messageTh": "เลยเวลาที่เลื่อนนัดเองได้ กรุณาติดต่อร้าน",
+   "when": "R-21"
+  },
+  {
+   "code": "RESCHEDULE_LIMIT",
+   "http": 422,
+   "messageTh": "เลื่อนนัดครบจำนวนครั้งแล้ว กรุณาติดต่อร้าน",
+   "when": "R-21"
+  },
+  {
+   "code": "HOLD_EXPIRED",
+   "http": 410,
+   "messageTh": "หมดเวลาชำระมัดจำ คิวถูกปล่อยแล้ว",
+   "when": "R-08"
+  },
+  {
+   "code": "CONSENT_REQUIRED",
+   "http": 422,
+   "messageTh": "ต้องเซ็นใบยินยอมก่อน",
+   "when": "เช็คอินกรูมที่เลือกเหตุผลเสี่ยง / เช็คอิน Hotel"
+  },
+  {
+   "code": "INTAKE_INCOMPLETE",
+   "http": 422,
+   "messageTh": "กรอกฟอร์มรับฝากให้ครบก่อนเช็คอิน",
+   "when": "stay_intake.completed_at = null"
+  },
+  {
+   "code": "PROMPTPAY_NOT_CONFIGURED",
+   "http": 422,
+   "messageTh": "ร้านยังไม่ได้ตั้งค่าบัญชี PromptPay",
+   "when": "branch.promptpay_id = null"
+  },
+  {
+   "code": "INVALID_PROMPTPAY_ID",
+   "http": 422,
+   "messageTh": "หมายเลข PromptPay ไม่ถูกต้อง",
+   "when": "R-30"
+  },
+  {
+   "code": "DUPLICATE_SLIP_CONFIRM_REQUIRED",
+   "http": 409,
+   "messageTh": "สลิปนี้เคยถูกใช้แล้ว ต้องยืนยันซ้ำอีกครั้ง",
+   "when": "R-05 duplicate และไม่ได้ส่ง confirmDuplicate=true"
+  },
+  {
+   "code": "INVALID_AMOUNT",
+   "http": 422,
+   "messageTh": "จำนวนเงินไม่ถูกต้อง",
+   "when": "R-15"
+  },
+  {
+   "code": "AMOUNT_EXCEEDS_DUE",
+   "http": 422,
+   "messageTh": "ยอดเกินยอดค้างชำระ",
+   "when": "R-15"
+  },
+  {
+   "code": "INSUFFICIENT_CREDIT",
+   "http": 422,
+   "messageTh": "เครดิตคงเหลือไม่พอ",
+   "when": "R-15"
+  },
+  {
+   "code": "BILL_ALREADY_PAID",
+   "http": 409,
+   "messageTh": "บิลนี้ชำระครบแล้ว",
+   "when": "R-15"
+  },
+  {
+   "code": "BILL_HAS_DUE",
+   "http": 409,
+   "messageTh": "ยังมียอดค้างชำระ",
+   "when": "ปิดบิลขณะ due > 0"
+  },
+  {
+   "code": "BILL_NOT_OPEN",
+   "http": 409,
+   "messageTh": "บิลนี้ปิดหรือยกเลิกแล้ว",
+   "when": "แก้ไขบิลที่ไม่ใช่ open"
+  },
+  {
+   "code": "LINE_DISCOUNT_TOO_LARGE",
+   "http": 422,
+   "messageTh": "ส่วนลดเกินราคาสินค้า",
+   "when": "R-15"
+  },
+  {
+   "code": "BILL_DISCOUNT_TOO_LARGE",
+   "http": 422,
+   "messageTh": "ส่วนลดเกินยอดบิล",
+   "when": "R-15"
+  },
+  {
+   "code": "DISCOUNT_LIMIT_EXCEEDED",
+   "http": 403,
+   "messageTh": "ส่วนลดเกิน 20% ต้องให้เจ้าของร้านอนุมัติ",
+   "when": "R-15"
+  },
+  {
+   "code": "REASON_REQUIRED",
+   "http": 422,
+   "messageTh": "กรุณาระบุเหตุผล",
+   "when": "R-27"
+  },
+  {
+   "code": "PACKAGE_NOT_ACTIVE",
+   "http": 422,
+   "messageTh": "แพ็กเกจนี้ใช้ไม่ได้แล้ว",
+   "when": "R-14"
+  },
+  {
+   "code": "PACKAGE_EXHAUSTED",
+   "http": 422,
+   "messageTh": "แพ็กเกจนี้ใช้ครบแล้ว",
+   "when": "R-14"
+  },
+  {
+   "code": "PACKAGE_EXPIRED",
+   "http": 422,
+   "messageTh": "แพ็กเกจหมดอายุแล้ว",
+   "when": "R-14"
+  },
+  {
+   "code": "PACKAGE_SERVICE_MISMATCH",
+   "http": 422,
+   "messageTh": "แพ็กเกจนี้ใช้กับบริการนี้ไม่ได้",
+   "when": "R-14"
+  },
+  {
+   "code": "PACKAGE_SIZE_MISMATCH",
+   "http": 422,
+   "messageTh": "แพ็กเกจนี้ใช้กับขนาดนี้ไม่ได้",
+   "when": "R-14"
+  },
+  {
+   "code": "PACKAGE_PET_MISMATCH",
+   "http": 422,
+   "messageTh": "แพ็กเกจนี้เป็นของน้องตัวอื่น",
+   "when": "R-14"
+  },
+  {
+   "code": "UPLOAD_KIND_NOT_ALLOWED",
+   "http": 422,
+   "messageTh": "ไม่รองรับไฟล์ประเภทนี้",
+   "when": "R-25"
+  },
+  {
+   "code": "UPLOAD_TYPE_NOT_ALLOWED",
+   "http": 422,
+   "messageTh": "ไม่รองรับชนิดไฟล์นี้",
+   "when": "R-25"
+  },
+  {
+   "code": "UPLOAD_TOO_LARGE",
+   "http": 422,
+   "messageTh": "ไฟล์ใหญ่เกินกำหนด",
+   "when": "R-25"
+  },
+  {
+   "code": "FILE_NOT_UPLOADED",
+   "http": 422,
+   "messageTh": "อัปโหลดไฟล์ไม่สำเร็จ กรุณาลองใหม่",
+   "when": "commit ไฟล์ที่ไม่มีใน storage"
+  },
+  {
+   "code": "LINE_NOT_CONNECTED",
+   "http": 422,
+   "messageTh": "ร้านยังไม่ได้เชื่อม LINE OA",
+   "when": "line_channel.status ≠ active"
+  },
+  {
+   "code": "LINE_API_ERROR",
+   "http": 502,
+   "messageTh": "เชื่อมต่อ LINE ไม่สำเร็จ",
+   "when": "LINE API ตอบ error"
+  },
+  {
+   "code": "WEBHOOK_SIGNATURE_INVALID",
+   "http": 401,
+   "messageTh": "invalid signature",
+   "when": "x-line-signature ไม่ตรง"
+  },
+  {
+   "code": "IMPORT_HAS_ERRORS",
+   "http": 422,
+   "messageTh": "ไฟล์มีแถวที่ผิด กรุณาแก้แล้วอัปโหลดใหม่",
+   "when": "commit import ที่ error_rows > 0"
+  },
+  {
+   "code": "CRON_FORBIDDEN",
+   "http": 401,
+   "messageTh": "forbidden",
+   "when": "header x-cron-secret ไม่ตรง"
+  }
+ ]
+}

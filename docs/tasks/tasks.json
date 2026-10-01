@@ -1,0 +1,5908 @@
+{
+ "order": [
+  "H-01",
+  "H-02",
+  "H-03",
+  "T-0001",
+  "T-0002",
+  "T-0003",
+  "T-0004",
+  "T-0005",
+  "T-0006",
+  "T-0007",
+  "T-0008",
+  "T-0009",
+  "T-0010",
+  "T-0011",
+  "T-0012",
+  "T-0013",
+  "T-0014",
+  "T-0015",
+  "T-0016",
+  "T-0017",
+  "T-0018",
+  "T-0019",
+  "T-0020",
+  "T-0021",
+  "T-0022",
+  "T-0023",
+  "T-0024",
+  "T-0025",
+  "T-0026",
+  "T-0027",
+  "T-0028",
+  "T-0029",
+  "T-0030",
+  "T-0031",
+  "T-0032",
+  "T-0033",
+  "H-04",
+  "H-05",
+  "T-0034",
+  "T-0035",
+  "T-0036",
+  "T-0037",
+  "T-0038",
+  "T-0039",
+  "T-0040",
+  "T-0041",
+  "T-0042",
+  "T-0043",
+  "T-0044",
+  "T-0045",
+  "T-0046",
+  "T-0047",
+  "T-0048",
+  "T-0049",
+  "T-0050",
+  "T-0051",
+  "T-0052",
+  "T-0053",
+  "T-0054",
+  "T-0055",
+  "T-0056",
+  "T-0057",
+  "T-0058",
+  "T-0059",
+  "T-0060",
+  "T-0061",
+  "T-0062",
+  "T-0063",
+  "T-0064",
+  "T-0065",
+  "T-0066",
+  "T-0067",
+  "T-0068",
+  "T-0069",
+  "T-0070",
+  "T-0071",
+  "T-0072",
+  "T-0073",
+  "T-0074",
+  "T-0317",
+  "T-0075",
+  "T-0076",
+  "T-0077",
+  "T-0078",
+  "T-0079",
+  "T-0080",
+  "T-0081",
+  "T-0082",
+  "T-0083",
+  "T-0084",
+  "T-0085",
+  "T-0086",
+  "T-0087",
+  "T-0088",
+  "T-0089",
+  "T-0090",
+  "H-06",
+  "H-07",
+  "H-08",
+  "H-09",
+  "H-10",
+  "T-0091",
+  "T-0092",
+  "T-0093",
+  "T-0094",
+  "T-0095",
+  "T-0096",
+  "T-0097",
+  "T-0098",
+  "T-0099",
+  "T-0100",
+  "T-0101",
+  "T-0102",
+  "T-0103",
+  "T-0104",
+  "T-0105",
+  "T-0106",
+  "T-0107",
+  "T-0108",
+  "T-0109",
+  "T-0110",
+  "T-0111",
+  "T-0112",
+  "T-0113",
+  "T-0114",
+  "T-0115",
+  "T-0116",
+  "T-0117",
+  "T-0118",
+  "T-0119",
+  "T-0120",
+  "T-0121",
+  "T-0122",
+  "T-0123",
+  "T-0124",
+  "T-0125",
+  "T-0126",
+  "T-0127",
+  "T-0128",
+  "T-0129",
+  "T-0130",
+  "T-0131",
+  "T-0132",
+  "T-0133",
+  "T-0134",
+  "T-0135",
+  "T-0136",
+  "T-0137",
+  "T-0138",
+  "T-0139",
+  "T-0140",
+  "T-0141",
+  "T-0142",
+  "T-0143",
+  "T-0144",
+  "T-0145",
+  "T-0146",
+  "T-0147",
+  "T-0148",
+  "H-11",
+  "T-0149",
+  "T-0150",
+  "T-0151",
+  "T-0152",
+  "T-0153",
+  "T-0154",
+  "T-0155",
+  "T-0156",
+  "T-0157",
+  "T-0158",
+  "T-0159",
+  "T-0160",
+  "T-0161",
+  "T-0162",
+  "T-0163",
+  "T-0164",
+  "T-0165",
+  "T-0166",
+  "T-0167",
+  "T-0168",
+  "T-0169",
+  "T-0170",
+  "T-0171",
+  "T-0172",
+  "T-0173",
+  "T-0174",
+  "T-0175",
+  "T-0176",
+  "T-0177",
+  "T-0178",
+  "T-0179",
+  "T-0180",
+  "T-0181",
+  "T-0182",
+  "T-0183",
+  "T-0184",
+  "T-0185",
+  "T-0186",
+  "T-0187",
+  "T-0188",
+  "T-0189",
+  "T-0190",
+  "T-0191",
+  "T-0192",
+  "T-0193",
+  "T-0194",
+  "T-0195",
+  "T-0196",
+  "T-0197",
+  "T-0198",
+  "T-0199",
+  "T-0200",
+  "T-0201",
+  "T-0202",
+  "T-0203",
+  "T-0204",
+  "T-0205",
+  "T-0206",
+  "T-0207",
+  "T-0208",
+  "T-0209",
+  "T-0210",
+  "T-0211",
+  "T-0212",
+  "T-0213",
+  "T-0214",
+  "T-0215",
+  "T-0216",
+  "T-0217",
+  "T-0218",
+  "H-12",
+  "H-13",
+  "T-0219",
+  "T-0220",
+  "T-0221",
+  "T-0222",
+  "T-0223",
+  "T-0224",
+  "T-0225",
+  "T-0226",
+  "T-0227",
+  "T-0228",
+  "T-0229",
+  "T-0230",
+  "T-0231",
+  "T-0232",
+  "T-0233",
+  "T-0234",
+  "T-0235",
+  "T-0236",
+  "T-0237",
+  "T-0238",
+  "T-0239",
+  "T-0240",
+  "T-0241",
+  "T-0242",
+  "T-0243",
+  "T-0244",
+  "T-0245",
+  "T-0246",
+  "T-0247",
+  "T-0248",
+  "T-0249",
+  "T-0250",
+  "T-0251",
+  "T-0252",
+  "T-0253",
+  "T-0254",
+  "T-0255",
+  "T-0256",
+  "T-0257",
+  "T-0258",
+  "T-0259",
+  "T-0260",
+  "T-0261",
+  "T-0262",
+  "T-0263",
+  "H-14",
+  "T-0264",
+  "T-0265",
+  "T-0266",
+  "T-0267",
+  "T-0268",
+  "T-0269",
+  "T-0270",
+  "T-0271",
+  "T-0272",
+  "T-0273",
+  "T-0274",
+  "T-0275",
+  "T-0276",
+  "T-0277",
+  "T-0278",
+  "T-0279",
+  "T-0280",
+  "T-0281",
+  "T-0282",
+  "T-0283",
+  "T-0284",
+  "T-0285",
+  "T-0286",
+  "T-0287",
+  "T-0288",
+  "T-0289",
+  "T-0290",
+  "T-0291",
+  "T-0292",
+  "T-0293",
+  "T-0294",
+  "T-0295",
+  "T-0296",
+  "T-0297",
+  "T-0298",
+  "T-0299",
+  "T-0300",
+  "T-0301",
+  "T-0302",
+  "T-0303",
+  "H-15",
+  "T-0304",
+  "T-0305",
+  "T-0306",
+  "T-0307",
+  "T-0308",
+  "T-0309",
+  "T-0310",
+  "T-0311",
+  "T-0312",
+  "T-0313",
+  "T-0314",
+  "T-0315",
+  "T-0316",
+  "H-16"
+ ],
+ "tasks": {
+  "H-01": {
+   "key": "H-REPO",
+   "ms": "M0",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [],
+   "title": "ตั้ง GitHub repo จาก starter kit + กฎ branch",
+   "human_review": false
+  },
+  "H-02": {
+   "key": "H-ADR-INFRA",
+   "ms": "M0",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [],
+   "title": "ตัดสินใจ ADR-002 hosting · ADR-003 email · ADR-004 storage + สร้างบัญชี/secret",
+   "human_review": false
+  },
+  "H-03": {
+   "key": "H-SP01",
+   "ms": "M0",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [],
+   "title": "SP-01 กลยุทธ์ LINE Provider → ADR-001",
+   "human_review": false
+  },
+  "T-0001": {
+   "key": "INF-WEB",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Scaffold apps/web (Next.js 16 + Tailwind + shadcn) + /api/health",
+   "human_review": false
+  },
+  "T-0002": {
+   "key": "INF-CONTRACTS",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Scaffold packages/contracts: common types, enums, errors",
+   "human_review": false
+  },
+  "T-0003": {
+   "key": "INF-DB-CLIENT",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "DB client (postgres-js) + migrate script + vaccine_type seed migration",
+   "human_review": true
+  },
+  "T-0004": {
+   "key": "INF-SERVER",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0002",
+    "T-0003"
+   ],
+   "title": "Scaffold packages/server: RequestContext, AppError, tenantDb, withTx, test helpers",
+   "human_review": true
+  },
+  "T-0005": {
+   "key": "DOM-R-24",
+   "ms": "M0",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-24 ล็อกบัญชีเมื่อใส่รหัสผิด + นโยบายรหัสผ่าน",
+   "human_review": false
+  },
+  "T-0006": {
+   "key": "INF-AUTH",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0004",
+    "T-0005"
+   ],
+   "title": "Auth core: sessions, argon2, cookies, permissions table",
+   "human_review": true
+  },
+  "T-0007": {
+   "key": "INF-HTTP",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "L",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0006"
+   ],
+   "title": "Route wrappers: withStaff/withCustomer/withAdmin/withPublic + error JSON + CSRF + rate limit",
+   "human_review": true
+  },
+  "T-0008": {
+   "key": "DOM-R-18",
+   "ms": "M0",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-18 โควตาข้อความ LINE (push) และโหมดประหยัด",
+   "human_review": false
+  },
+  "T-0009": {
+   "key": "DOM-R-19",
+   "ms": "M0",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-19 เลือกช่องทางส่งข้อความ",
+   "human_review": false
+  },
+  "T-0010": {
+   "key": "INF-NOTIFY",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0004",
+    "T-0008",
+    "T-0009"
+   ],
+   "title": "Notification outbox + dispatcher + stub templates ทุก key",
+   "human_review": false
+  },
+  "T-0011": {
+   "key": "INF-EMAIL",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "S",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0010",
+    "H-02"
+   ],
+   "title": "Email adapter (SMTP/nodemailer) + templates invite/reset",
+   "human_review": false
+  },
+  "T-0012": {
+   "key": "DOM-R-20",
+   "ms": "M0",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-20 เวลาและวันที่ท้องถิ่น",
+   "human_review": false
+  },
+  "T-0013": {
+   "key": "DOM-R-31",
+   "ms": "M0",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "H-01",
+    "T-0012"
+   ],
+   "title": "Rule R-31 รูปแบบการแสดงผลไทย (เงิน วันที่ เวลา น้ำหนัก)",
+   "human_review": false
+  },
+  "T-0014": {
+   "key": "DOM-R-22",
+   "ms": "M0",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-22 เบอร์โทร: normalize และแสดงผล",
+   "human_review": false
+  },
+  "T-0015": {
+   "key": "INF-I18N",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0001",
+    "T-0013",
+    "T-0014"
+   ],
+   "title": "i18n: next-intl (th), message namespaces per screen + enum labels + format helpers",
+   "human_review": false
+  },
+  "T-0016": {
+   "key": "INF-APICLIENT",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0001",
+    "T-0002"
+   ],
+   "title": "Typed API client + query hooks + error toast",
+   "human_review": false
+  },
+  "T-0017": {
+   "key": "INF-DEPLOY",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0001",
+    "T-0003",
+    "H-02"
+   ],
+   "title": "Deploy pipeline ตาม ADR-002 (staging + production) + migrate on deploy",
+   "human_review": true
+  },
+  "T-0018": {
+   "key": "INF-MON",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "S",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "Monitoring: health (db ping), structured logs, error reporting, uptime check",
+   "human_review": false
+  },
+  "T-0019": {
+   "key": "API-auth.staffLogin",
+   "ms": "M0",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0007",
+    "T-0005"
+   ],
+   "title": "API auth.staffLogin",
+   "human_review": true
+  },
+  "T-0020": {
+   "key": "API-auth-0",
+   "ms": "M0",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 7,
+   "deps": [
+    "T-0007",
+    "T-0019",
+    "T-0010"
+   ],
+   "title": "API auth.staffLogout, auth.me, auth.resetRequest",
+   "human_review": false
+  },
+  "T-0021": {
+   "key": "API-auth-1",
+   "ms": "M0",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0007",
+    "T-0005"
+   ],
+   "title": "API auth.resetConfirm",
+   "human_review": false
+  },
+  "T-0022": {
+   "key": "API-admin-0",
+   "ms": "M0",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0007",
+    "T-0005"
+   ],
+   "title": "API admin.login, admin.orgs, admin.updateOrg",
+   "human_review": false
+  },
+  "T-0023": {
+   "key": "API-admin.createOrg",
+   "ms": "M0",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 7,
+   "deps": [
+    "T-0007",
+    "T-0022"
+   ],
+   "title": "API admin.createOrg",
+   "human_review": true
+  },
+  "T-0024": {
+   "key": "NTF-staff-M0-0",
+   "ms": "M0",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0010",
+    "T-0011"
+   ],
+   "title": "Notification templates (staff, M0): password_reset",
+   "human_review": false
+  },
+  "T-0025": {
+   "key": "UI-SHELL-admin",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0015",
+    "T-0016"
+   ],
+   "title": "Admin shell: layout + guard",
+   "human_review": false
+  },
+  "T-0026": {
+   "key": "UI-C-FORM",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0015",
+    "T-0014",
+    "T-0013"
+   ],
+   "title": "Shared component: ฟอร์มพื้นฐาน: MoneyInput (บาท→สตางค์), PhoneInput (R-22), WeightInput (กก.→กรัม), ThaiDatePicker (พ.ศ.), TimeSelect, EnumSelect, zod form helper",
+   "human_review": false
+  },
+  "T-0027": {
+   "key": "UI-C-TABLE",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0015"
+   ],
+   "title": "Shared component: DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี + ป้ายไทย)",
+   "human_review": false
+  },
+  "T-0028": {
+   "key": "SCR-A-01",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 7,
+   "deps": [
+    "T-0015",
+    "T-0019"
+   ],
+   "title": "Screen A-01 เข้าสู่ระบบ (ร้าน)",
+   "human_review": false
+  },
+  "T-0029": {
+   "key": "SCR-A-02",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 8,
+   "deps": [
+    "T-0015",
+    "T-0020"
+   ],
+   "title": "Screen A-02 ลืมรหัสผ่าน",
+   "human_review": false
+  },
+  "T-0030": {
+   "key": "SCR-A-03",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 7,
+   "deps": [
+    "T-0015",
+    "T-0021"
+   ],
+   "title": "Screen A-03 ตั้งรหัสผ่านใหม่",
+   "human_review": false
+  },
+  "T-0031": {
+   "key": "SCR-AD-01",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 7,
+   "deps": [
+    "T-0025",
+    "T-0022"
+   ],
+   "title": "Screen AD-01 Admin login",
+   "human_review": false
+  },
+  "T-0032": {
+   "key": "SCR-AD-02",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 8,
+   "deps": [
+    "T-0025",
+    "T-0026",
+    "T-0027",
+    "T-0022",
+    "T-0023"
+   ],
+   "title": "Screen AD-02 ร้านทั้งหมด",
+   "human_review": false
+  },
+  "T-0033": {
+   "key": "SCR-AD-07",
+   "ms": "M0",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0025",
+    "T-0026"
+   ],
+   "title": "Screen AD-07 วันหยุดราชการ",
+   "human_review": false
+  },
+  "H-04": {
+   "key": "H-GATE-M0",
+   "ms": "M0",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 9,
+   "deps": [
+    "T-0001",
+    "T-0002",
+    "T-0003",
+    "T-0004",
+    "T-0006",
+    "T-0007",
+    "T-0025",
+    "T-0017",
+    "T-0018",
+    "T-0012",
+    "T-0005",
+    "T-0013",
+    "T-0019",
+    "T-0020",
+    "T-0021",
+    "T-0022",
+    "T-0023",
+    "T-0024",
+    "T-0028",
+    "T-0029",
+    "T-0030",
+    "T-0031",
+    "T-0032",
+    "T-0033"
+   ],
+   "title": "Milestone review M0: demo + ตรวจคุณภาพ",
+   "human_review": false
+  },
+  "H-05": {
+   "key": "H-LEGAL",
+   "ms": "M1",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [],
+   "title": "ร่าง Privacy Notice / Terms / DPA / ข้อความยินยอมรูป + ตรวจแม่แบบใบยินยอม",
+   "human_review": false
+  },
+  "T-0034": {
+   "key": "DOM-STATE",
+   "ms": "M1",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "State tables ทุก entity (03) + canTransition",
+   "human_review": false
+  },
+  "T-0035": {
+   "key": "INF-AUDIT",
+   "ms": "M1",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0004",
+    "T-0034"
+   ],
+   "title": "Audit log writer (R-27) + booking_event writer + state transition helper",
+   "human_review": true
+  },
+  "T-0036": {
+   "key": "INF-JOBS",
+   "ms": "M1",
+   "lane": "infra",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0010"
+   ],
+   "title": "Job runner + POST /api/cron/tick + stub handlers ทุก job_type",
+   "human_review": false
+  },
+  "T-0037": {
+   "key": "DOM-R-25",
+   "ms": "M1",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-25 ข้อจำกัดการอัปโหลดไฟล์",
+   "human_review": false
+  },
+  "T-0038": {
+   "key": "INF-STORAGE",
+   "ms": "M1",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0037",
+    "T-0036"
+   ],
+   "title": "Object storage (presign) + upload-url endpoints + file commit + cleanup job",
+   "human_review": true
+  },
+  "T-0039": {
+   "key": "INF-E2E",
+   "ms": "M1",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0001",
+    "T-0004"
+   ],
+   "title": "Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test",
+   "human_review": false
+  },
+  "T-0040": {
+   "key": "DOM-R-01",
+   "ms": "M1",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-01 หาขนาด (size tier) จากน้ำหนัก",
+   "human_review": false
+  },
+  "T-0041": {
+   "key": "DOM-R-02",
+   "ms": "M1",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-02 กลุ่มขนและการหาราคา/เวลาของบริการ",
+   "human_review": false
+  },
+  "T-0042": {
+   "key": "API-auth-2",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0005",
+    "T-0019"
+   ],
+   "title": "API auth.inviteAccept",
+   "human_review": false
+  },
+  "T-0043": {
+   "key": "API-staffMe-1",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API staffMe.sessions, staffMe.revokeSession",
+   "human_review": false
+  },
+  "T-0044": {
+   "key": "API-branch-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0038"
+   ],
+   "title": "API branch.get, branch.update, branch.setHours",
+   "human_review": false
+  },
+  "T-0045": {
+   "key": "API-branch-1",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0007",
+    "T-0044",
+    "T-0035"
+   ],
+   "title": "API branch.setModules, branch.updatePolicy",
+   "human_review": false
+  },
+  "T-0046": {
+   "key": "API-closures-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API closures.list, closures.create, closures.delete",
+   "human_review": false
+  },
+  "T-0047": {
+   "key": "API-closures-1",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API closures.importHolidays",
+   "human_review": false
+  },
+  "T-0048": {
+   "key": "API-staffUsers-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0038"
+   ],
+   "title": "API staffUsers.list, staffUsers.invite, staffUsers.update",
+   "human_review": false
+  },
+  "T-0049": {
+   "key": "API-staffUsers-1",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API staffUsers.resendInvite",
+   "human_review": false
+  },
+  "T-0050": {
+   "key": "API-search-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0014"
+   ],
+   "title": "API search.quick",
+   "human_review": false
+  },
+  "T-0051": {
+   "key": "API-customers-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0050",
+    "T-0014"
+   ],
+   "title": "API customers.list, customers.create, customers.get",
+   "human_review": false
+  },
+  "T-0052": {
+   "key": "API-customers-1",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0014",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API customers.update",
+   "human_review": false
+  },
+  "T-0053": {
+   "key": "API-pets-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0038"
+   ],
+   "title": "API pets.create, pets.get, pets.update",
+   "human_review": false
+  },
+  "T-0054": {
+   "key": "API-pets-2",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0007",
+    "T-0053"
+   ],
+   "title": "API pets.updateShopProfile, pets.addWeight, pets.setFlags",
+   "human_review": false
+  },
+  "T-0055": {
+   "key": "API-vaccinations-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0007",
+    "T-0038",
+    "T-0053",
+    "T-0035",
+    "T-0010"
+   ],
+   "title": "API vaccinations.create, vaccinations.verify, vaccinations.reject",
+   "human_review": false
+  },
+  "T-0056": {
+   "key": "API-photos-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0038"
+   ],
+   "title": "API photos.list, photos.add",
+   "human_review": false
+  },
+  "T-0057": {
+   "key": "API-sizeTiers-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API sizeTiers.list",
+   "human_review": false
+  },
+  "T-0058": {
+   "key": "API-sizeTiers.set",
+   "ms": "M1",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0040",
+    "T-0057"
+   ],
+   "title": "API sizeTiers.set",
+   "human_review": false
+  },
+  "T-0059": {
+   "key": "API-services-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0038"
+   ],
+   "title": "API services.list, services.create, services.update",
+   "human_review": false
+  },
+  "T-0060": {
+   "key": "API-services.setPrices",
+   "ms": "M1",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0007",
+    "T-0041",
+    "T-0059"
+   ],
+   "title": "API services.setPrices",
+   "human_review": false
+  },
+  "T-0061": {
+   "key": "API-services-1",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0007",
+    "T-0059"
+   ],
+   "title": "API services.setAddonLinks",
+   "human_review": false
+  },
+  "T-0062": {
+   "key": "API-imports.create",
+   "ms": "M1",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0014",
+    "T-0038"
+   ],
+   "title": "API imports.create",
+   "human_review": false
+  },
+  "T-0063": {
+   "key": "API-imports-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0007",
+    "T-0062"
+   ],
+   "title": "API imports.get",
+   "human_review": false
+  },
+  "T-0064": {
+   "key": "API-imports.commit",
+   "ms": "M1",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0062"
+   ],
+   "title": "API imports.commit",
+   "human_review": false
+  },
+  "T-0065": {
+   "key": "API-audit-0",
+   "ms": "M1",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API audit.list",
+   "human_review": false
+  },
+  "T-0066": {
+   "key": "API-admin-4",
+   "ms": "M1",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API admin.dataRequests, admin.holidays",
+   "human_review": false
+  },
+  "T-0067": {
+   "key": "API-admin.resolveDataRequest",
+   "ms": "M1",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0066"
+   ],
+   "title": "API admin.resolveDataRequest",
+   "human_review": true
+  },
+  "T-0068": {
+   "key": "NTF-staff-M1-0",
+   "ms": "M1",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0011"
+   ],
+   "title": "Notification templates (staff, M1): invite",
+   "human_review": false
+  },
+  "T-0069": {
+   "key": "NTF-admin-M1-0",
+   "ms": "M1",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0011"
+   ],
+   "title": "Notification templates (admin, M1): data_request",
+   "human_review": false
+  },
+  "T-0070": {
+   "key": "UI-SHELL-console",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0015",
+    "T-0016"
+   ],
+   "title": "Console shell: layout + sidebar (ครบทุกเมนูใน 06) + auth guard",
+   "human_review": false
+  },
+  "T-0071": {
+   "key": "UI-C-UPLOAD",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0015",
+    "T-0038"
+   ],
+   "title": "Shared component: PhotoUploader: กล้อง/อัลบั้ม, ย่อรูป 1600px + ลบ EXIF (R-25), presigned PUT, progress, หลายไฟล์",
+   "human_review": false
+  },
+  "T-0072": {
+   "key": "UI-C-SLOTS",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0015"
+   ],
+   "title": "Shared component: SlotPicker: แถบวัน + grid เวลา จาก SlotList (R-04) + แสดงชื่อช่าง + สถานะว่าง/เต็ม",
+   "human_review": false
+  },
+  "T-0073": {
+   "key": "UI-C-CHART",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0015"
+   ],
+   "title": "Shared component: BarChart/LineChart เบา ๆ (recharts) สำหรับรายงาน",
+   "human_review": false
+  },
+  "T-0074": {
+   "key": "SCR-A-04",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0015",
+    "T-0042"
+   ],
+   "title": "Screen A-04 รับคำเชิญเข้าร้าน",
+   "human_review": false
+  },
+  "T-0317": {
+   "key": "SCR-P-02",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0015"
+   ],
+   "title": "Screen P-02 เอกสารกฎหมาย",
+   "human_review": false
+  },
+  "T-0075": {
+   "key": "SCR-C-08",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0051"
+   ],
+   "title": "Screen C-08 ลูกค้า",
+   "human_review": false
+  },
+  "T-0076": {
+   "key": "SCR-C-09",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0051",
+    "T-0053"
+   ],
+   "title": "Screen C-09 ลูกค้า",
+   "human_review": false
+  },
+  "T-0077": {
+   "key": "SCR-C-10",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0051",
+    "T-0052"
+   ],
+   "title": "Screen C-10 ฟอร์มลูกค้า",
+   "human_review": false
+  },
+  "T-0078": {
+   "key": "SCR-C-11",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0070",
+    "T-0073",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0053",
+    "T-0056",
+    "T-0054",
+    "T-0055",
+    "T-0038"
+   ],
+   "title": "Screen C-11 น้อง",
+   "human_review": false
+  },
+  "T-0079": {
+   "key": "SCR-C-26",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0065"
+   ],
+   "title": "Screen C-26 Audit log",
+   "human_review": false
+  },
+  "T-0080": {
+   "key": "SCR-C-30",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0044"
+   ],
+   "title": "Screen C-30 ข้อมูลร้าน",
+   "human_review": false
+  },
+  "T-0081": {
+   "key": "SCR-C-31",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0044",
+    "T-0046",
+    "T-0047"
+   ],
+   "title": "Screen C-31 เวลาเปิด-ปิดและวันหยุด",
+   "human_review": false
+  },
+  "T-0082": {
+   "key": "SCR-C-32",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0044",
+    "T-0045"
+   ],
+   "title": "Screen C-32 บริการที่เปิด",
+   "human_review": false
+  },
+  "T-0083": {
+   "key": "SCR-C-33",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0072",
+    "T-0044",
+    "T-0045"
+   ],
+   "title": "Screen C-33 นโยบายร้าน",
+   "human_review": false
+  },
+  "T-0084": {
+   "key": "SCR-C-36",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0048",
+    "T-0049"
+   ],
+   "title": "Screen C-36 พนักงานและตารางงาน",
+   "human_review": false
+  },
+  "T-0085": {
+   "key": "SCR-C-37",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0059",
+    "T-0057",
+    "T-0060",
+    "T-0061"
+   ],
+   "title": "Screen C-37 บริการและราคา",
+   "human_review": false
+  },
+  "T-0086": {
+   "key": "SCR-C-38",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0057",
+    "T-0058"
+   ],
+   "title": "Screen C-38 ขนาดตามน้ำหนัก",
+   "human_review": false
+  },
+  "T-0087": {
+   "key": "SCR-C-44",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0070",
+    "T-0027",
+    "T-0071",
+    "T-0063",
+    "T-0062",
+    "T-0064"
+   ],
+   "title": "Screen C-44 นำเข้าข้อมูล CSV",
+   "human_review": false
+  },
+  "T-0088": {
+   "key": "SCR-C-45",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0020",
+    "T-0043"
+   ],
+   "title": "Screen C-45 บัญชีของฉัน",
+   "human_review": false
+  },
+  "T-0089": {
+   "key": "SCR-AD-05",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0025",
+    "T-0026",
+    "T-0027",
+    "T-0066",
+    "T-0067"
+   ],
+   "title": "Screen AD-05 คำขอ PDPA",
+   "human_review": false
+  },
+  "T-0090": {
+   "key": "SCR-AD-07-ext-M1",
+   "ms": "M1",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0025",
+    "T-0026",
+    "T-0066",
+    "T-0033"
+   ],
+   "title": "Screen AD-07 วันหยุดราชการ (ext-M1)",
+   "human_review": false
+  },
+  "H-06": {
+   "key": "H-GATE-M1",
+   "ms": "M1",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 6,
+   "deps": [
+    "T-0035",
+    "T-0010",
+    "T-0036",
+    "T-0038",
+    "T-0011",
+    "T-0015",
+    "T-0016",
+    "T-0070",
+    "T-0039",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0040",
+    "T-0041",
+    "T-0014",
+    "T-0037",
+    "T-0034",
+    "T-0042",
+    "T-0043",
+    "T-0044",
+    "T-0045",
+    "T-0046",
+    "T-0047",
+    "T-0048",
+    "T-0049",
+    "T-0050",
+    "T-0051",
+    "T-0052",
+    "T-0053",
+    "T-0054",
+    "T-0055",
+    "T-0056",
+    "T-0057",
+    "T-0058",
+    "T-0059",
+    "T-0060",
+    "T-0061",
+    "T-0062",
+    "T-0063",
+    "T-0064",
+    "T-0065",
+    "T-0066",
+    "T-0067",
+    "T-0068",
+    "T-0069",
+    "T-0074",
+    "T-0317",
+    "T-0075",
+    "T-0076",
+    "T-0077",
+    "T-0078",
+    "T-0079",
+    "T-0080",
+    "T-0081",
+    "T-0082",
+    "T-0083",
+    "T-0084",
+    "T-0085",
+    "T-0086",
+    "T-0087",
+    "T-0088",
+    "T-0089",
+    "T-0090",
+    "H-04"
+   ],
+   "title": "Milestone review M1: demo + ตรวจคุณภาพ",
+   "human_review": false
+  },
+  "H-07": {
+   "key": "H-LINE-PLATFORM",
+   "ms": "M2",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [
+    "H-03"
+   ],
+   "title": "สร้าง LINE Login channel ของแพลตฟอร์ม (สำหรับพนักงาน) + OA/LIFF ทดสอบ",
+   "human_review": false
+  },
+  "H-08": {
+   "key": "H-SP02",
+   "ms": "M2",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "SP-02 เก็บสลิปจริง ≥ 6 ธนาคาร → เพิ่ม vectors R-05",
+   "human_review": false
+  },
+  "H-09": {
+   "key": "H-SP04",
+   "ms": "M2",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [],
+   "title": "SP-04 ทดสอบ Web Push บนอุปกรณ์ร้านนำร่อง",
+   "human_review": false
+  },
+  "H-10": {
+   "key": "H-ONBOARD",
+   "ms": "M2",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [],
+   "title": "ชุด onboarding ร้านนำร่อง (US-13-14)",
+   "human_review": false
+  },
+  "T-0091": {
+   "key": "INF-WEBPUSH",
+   "ms": "M2",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0001"
+   ],
+   "title": "Web Push adapter + service worker + staff PWA manifest",
+   "human_review": false
+  },
+  "T-0092": {
+   "key": "DOM-R-03",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-03 ราคาประเมินและเวลาของใบจอง",
+   "human_review": false
+  },
+  "T-0093": {
+   "key": "DOM-R-04",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01",
+    "T-0012"
+   ],
+   "title": "Rule R-04 Slot engine กรูม (เวลาว่าง + เลือกช่าง/โต๊ะอัตโนมัติ)",
+   "human_review": false
+  },
+  "T-0094": {
+   "key": "DOM-R-06",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-06 คำนวณมัดจำ",
+   "human_review": true
+  },
+  "T-0095": {
+   "key": "DOM-R-07",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-07 ผลของการยกเลิก / no-show (ริบ-คืน-เครดิต)",
+   "human_review": true
+  },
+  "T-0096": {
+   "key": "DOM-R-08",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-08 เวลาหมดอายุของการล็อกคิวและการรออนุมัติ",
+   "human_review": false
+  },
+  "T-0097": {
+   "key": "DOM-R-09",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-09 ระดับความน่าเชื่อถือลูกค้า (1–4)",
+   "human_review": false
+  },
+  "T-0098": {
+   "key": "DOM-R-10",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-10 จัดห้องอัตโนมัติ (room unit allocation)",
+   "human_review": false
+  },
+  "T-0099": {
+   "key": "DOM-R-11",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-11 ตรวจวัคซีนก่อนรับฝาก (vaccine gate)",
+   "human_review": false
+  },
+  "T-0100": {
+   "key": "DOM-R-12",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-12 เงื่อนไขรับจอง (ลูกค้า/น้อง/ประเภทห้อง)",
+   "human_review": false
+  },
+  "T-0101": {
+   "key": "DOM-R-23",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01",
+    "T-0012"
+   ],
+   "title": "Rule R-23 เลขที่ใบจอง",
+   "human_review": false
+  },
+  "T-0102": {
+   "key": "DOM-R-28",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-28 ห้องว่างของประเภทห้อง (hotel availability)",
+   "human_review": false
+  },
+  "T-0103": {
+   "key": "DOM-R-29",
+   "ms": "M2",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-29 ที่ว่าง Daycare",
+   "human_review": false
+  },
+  "T-0104": {
+   "key": "API-auth-3",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0019"
+   ],
+   "title": "API auth.staffLine",
+   "human_review": false
+  },
+  "T-0105": {
+   "key": "API-staffMe-0",
+   "ms": "M2",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0019"
+   ],
+   "title": "API staffMe.linkLine, staffMe.pushSubscribe, staffMe.pushUnsubscribe",
+   "human_review": false
+  },
+  "T-0106": {
+   "key": "API-stations-0",
+   "ms": "M2",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API stations.list, stations.upsert",
+   "human_review": false
+  },
+  "T-0107": {
+   "key": "API-workingHours-0",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0048"
+   ],
+   "title": "API workingHours.set",
+   "human_review": false
+  },
+  "T-0108": {
+   "key": "API-timeOff-0",
+   "ms": "M2",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API timeOff.list, timeOff.create, timeOff.delete",
+   "human_review": false
+  },
+  "T-0109": {
+   "key": "API-surchargeTypes-0",
+   "ms": "M2",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API surchargeTypes.list, surchargeTypes.upsert",
+   "human_review": false
+  },
+  "T-0110": {
+   "key": "API-availability.groomSlots",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0040",
+    "T-0041",
+    "T-0092",
+    "T-0093"
+   ],
+   "title": "API availability.groomSlots",
+   "human_review": false
+  },
+  "T-0111": {
+   "key": "API-quotes.create-grooming",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0092",
+    "T-0094",
+    "T-0096",
+    "T-0097"
+   ],
+   "title": "API quotes.create (grooming)",
+   "human_review": false
+  },
+  "T-0112": {
+   "key": "API-bookings.create-grooming",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0040",
+    "T-0041",
+    "T-0092",
+    "T-0093",
+    "T-0094",
+    "T-0098",
+    "T-0099",
+    "T-0100",
+    "T-0101",
+    "T-0102",
+    "T-0103",
+    "T-0036",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bookings.create (grooming)",
+   "human_review": true
+  },
+  "T-0113": {
+   "key": "API-bookings-1",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bookings.get",
+   "human_review": false
+  },
+  "T-0114": {
+   "key": "API-bookings.cancel",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0095",
+    "T-0097",
+    "T-0036",
+    "T-0112",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bookings.cancel",
+   "human_review": true
+  },
+  "T-0115": {
+   "key": "API-calendar.day-grooming",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051",
+    "T-0048"
+   ],
+   "title": "API calendar.day (grooming)",
+   "human_review": false
+  },
+  "T-0116": {
+   "key": "API-groom.reschedule",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0092",
+    "T-0093",
+    "T-0036",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API groom.reschedule",
+   "human_review": false
+  },
+  "T-0117": {
+   "key": "API-groom.setItems",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0041",
+    "T-0092",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API groom.setItems",
+   "human_review": false
+  },
+  "T-0118": {
+   "key": "API-groom.checkIn",
+   "ms": "M2",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0038",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API groom.checkIn",
+   "human_review": false
+  },
+  "T-0119": {
+   "key": "API-groom-0",
+   "ms": "M2",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0112",
+    "T-0051",
+    "T-0010",
+    "T-0050"
+   ],
+   "title": "API groom.start, groom.finish, groom.cancel",
+   "human_review": false
+  },
+  "T-0120": {
+   "key": "API-groom-3",
+   "ms": "M2",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051",
+    "T-0056",
+    "T-0053"
+   ],
+   "title": "API groom.addSurcharge, groom.removeSurcharge, groom.jobCard",
+   "human_review": false
+  },
+  "T-0121": {
+   "key": "API-groom-4",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API groom.myQueue",
+   "human_review": false
+  },
+  "T-0122": {
+   "key": "API-stays-4",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0112",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API stays.cancel",
+   "human_review": false
+  },
+  "T-0123": {
+   "key": "API-daycare-2",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API daycare.cancel",
+   "human_review": false
+  },
+  "T-0124": {
+   "key": "API-feedback-0",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0038"
+   ],
+   "title": "API feedback.create",
+   "human_review": false
+  },
+  "T-0125": {
+   "key": "API-admin-2",
+   "ms": "M2",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010"
+   ],
+   "title": "API admin.supportStart, admin.supportEnd, admin.feedback",
+   "human_review": true
+  },
+  "T-0126": {
+   "key": "API-admin-3",
+   "ms": "M2",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0125"
+   ],
+   "title": "API admin.updateFeedback",
+   "human_review": false
+  },
+  "T-0127": {
+   "key": "NTF-staff-M2-0",
+   "ms": "M2",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0010",
+    "T-0091"
+   ],
+   "title": "Notification templates (staff, M2): new_booking, groom_done, care_task_overdue",
+   "human_review": false
+  },
+  "T-0128": {
+   "key": "NTF-owner-M2-0",
+   "ms": "M2",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0010",
+    "T-0091",
+    "T-0011"
+   ],
+   "title": "Notification templates (owner, M2): support_access",
+   "human_review": false
+  },
+  "T-0129": {
+   "key": "NTF-admin-M2-0",
+   "ms": "M2",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0011"
+   ],
+   "title": "Notification templates (admin, M2): feedback",
+   "human_review": false
+  },
+  "T-0130": {
+   "key": "UI-SHELL-staff",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0015",
+    "T-0016",
+    "H-07"
+   ],
+   "title": "Staff PWA shell: bottom nav + auth guard (role ใดก็ได้)",
+   "human_review": false
+  },
+  "T-0131": {
+   "key": "UI-C-SIGN",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0015",
+    "T-0071"
+   ],
+   "title": "Shared component: SignaturePad → PNG → อัปโหลด kind signature",
+   "human_review": false
+  },
+  "T-0132": {
+   "key": "SCR-A-01-ext-M2",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0015",
+    "T-0104",
+    "T-0028"
+   ],
+   "title": "Screen A-01 เข้าสู่ระบบ (ร้าน) (ext-M2)",
+   "human_review": false
+  },
+  "T-0133": {
+   "key": "SCR-A-04-ext-M2",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0015",
+    "T-0105",
+    "T-0074"
+   ],
+   "title": "Screen A-04 รับคำเชิญเข้าร้าน (ext-M2)",
+   "human_review": false
+  },
+  "T-0134": {
+   "key": "SCR-C-02",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0072",
+    "T-0027",
+    "T-0115",
+    "T-0116"
+   ],
+   "title": "Screen C-02 ปฏิทินคิว",
+   "human_review": false
+  },
+  "T-0135": {
+   "key": "SCR-C-02D",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0120",
+    "T-0118",
+    "T-0119"
+   ],
+   "title": "Screen C-02D รายละเอียดนัดกรูม (drawer)",
+   "human_review": false
+  },
+  "T-0136": {
+   "key": "SCR-C-03-grooming",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0072",
+    "T-0027",
+    "T-0050",
+    "T-0110",
+    "T-0111",
+    "T-0112"
+   ],
+   "title": "Screen C-03 สร้างใบจอง (หน้าร้าน) (grooming)",
+   "human_review": false
+  },
+  "T-0137": {
+   "key": "SCR-C-05",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0113",
+    "T-0114",
+    "T-0122",
+    "T-0123"
+   ],
+   "title": "Screen C-05 รายละเอียดใบจอง",
+   "human_review": false
+  },
+  "T-0138": {
+   "key": "SCR-C-06",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0131",
+    "T-0120",
+    "T-0118",
+    "T-0117"
+   ],
+   "title": "Screen C-06 เช็คอินกรูม",
+   "human_review": false
+  },
+  "T-0139": {
+   "key": "SCR-C-36-ext-M2",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0108",
+    "T-0107",
+    "T-0084"
+   ],
+   "title": "Screen C-36 พนักงานและตารางงาน (ext-M2)",
+   "human_review": false
+  },
+  "T-0140": {
+   "key": "SCR-C-37-ext-M2",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0109",
+    "T-0085"
+   ],
+   "title": "Screen C-37 บริการและราคา (ext-M2)",
+   "human_review": false
+  },
+  "T-0141": {
+   "key": "SCR-C-43",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0106"
+   ],
+   "title": "Screen C-43 โต๊ะกรูม",
+   "human_review": false
+  },
+  "T-0142": {
+   "key": "SCR-C-45-ext-M2",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0105",
+    "T-0088"
+   ],
+   "title": "Screen C-45 บัญชีของฉัน (ext-M2)",
+   "human_review": false
+  },
+  "T-0143": {
+   "key": "SCR-C-46",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0124"
+   ],
+   "title": "Screen C-46 แจ้งปัญหา / ขอ feature",
+   "human_review": false
+  },
+  "T-0144": {
+   "key": "SCR-S-01",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0130",
+    "T-0071",
+    "T-0121"
+   ],
+   "title": "Screen S-01 คิวของฉันวันนี้",
+   "human_review": false
+  },
+  "T-0145": {
+   "key": "SCR-S-02",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0130",
+    "T-0071",
+    "T-0120",
+    "T-0119",
+    "T-0038",
+    "T-0056"
+   ],
+   "title": "Screen S-02 Job card",
+   "human_review": false
+  },
+  "T-0146": {
+   "key": "SCR-S-07",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0130",
+    "T-0020",
+    "T-0105"
+   ],
+   "title": "Screen S-07 ฉัน",
+   "human_review": false
+  },
+  "T-0147": {
+   "key": "SCR-AD-04",
+   "ms": "M2",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0025",
+    "T-0026",
+    "T-0027",
+    "T-0125",
+    "T-0126"
+   ],
+   "title": "Screen AD-04 Feedback",
+   "human_review": false
+  },
+  "T-0148": {
+   "key": "E2E-M2",
+   "ms": "M2",
+   "lane": "e2e",
+   "size": "L",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0039",
+    "T-0136",
+    "T-0134",
+    "T-0135",
+    "T-0138",
+    "T-0145",
+    "T-0144"
+   ],
+   "title": "E2E M2: หน้าร้านลงนัด …",
+   "human_review": false
+  },
+  "H-11": {
+   "key": "H-GATE-M2",
+   "ms": "M2",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 6,
+   "deps": [
+    "T-0091",
+    "T-0130",
+    "T-0131",
+    "T-0072",
+    "T-0092",
+    "T-0093",
+    "T-0094",
+    "T-0095",
+    "T-0096",
+    "T-0097",
+    "T-0098",
+    "T-0099",
+    "T-0100",
+    "T-0009",
+    "T-0101",
+    "T-0102",
+    "T-0103",
+    "T-0104",
+    "T-0105",
+    "T-0106",
+    "T-0107",
+    "T-0108",
+    "T-0109",
+    "T-0110",
+    "T-0111",
+    "T-0112",
+    "T-0113",
+    "T-0114",
+    "T-0115",
+    "T-0116",
+    "T-0117",
+    "T-0118",
+    "T-0119",
+    "T-0120",
+    "T-0121",
+    "T-0122",
+    "T-0123",
+    "T-0124",
+    "T-0125",
+    "T-0126",
+    "T-0127",
+    "T-0128",
+    "T-0129",
+    "T-0132",
+    "T-0133",
+    "T-0134",
+    "T-0135",
+    "T-0136",
+    "T-0137",
+    "T-0138",
+    "T-0139",
+    "T-0140",
+    "T-0141",
+    "T-0142",
+    "T-0143",
+    "T-0144",
+    "T-0145",
+    "T-0146",
+    "T-0147",
+    "T-0148",
+    "H-06"
+   ],
+   "title": "Release A: UAT + ตัดสินใจปล่อยร้านนำร่อง (M2)",
+   "human_review": false
+  },
+  "T-0149": {
+   "key": "INF-LINE",
+   "ms": "M3",
+   "lane": "infra",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "H-03"
+   ],
+   "title": "LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode",
+   "human_review": true
+  },
+  "T-0150": {
+   "key": "DOM-R-05",
+   "ms": "M3",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-05 อ่าน QR บนสลิป + จับสลิปซ้ำ",
+   "human_review": false
+  },
+  "T-0151": {
+   "key": "DOM-R-15",
+   "ms": "M3",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-15 ยอดบิล ส่วนลด และการรับชำระ",
+   "human_review": true
+  },
+  "T-0152": {
+   "key": "DOM-R-21",
+   "ms": "M3",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-21 สิทธิ์ลูกค้าเลื่อน/ยกเลิกเอง",
+   "human_review": false
+  },
+  "T-0153": {
+   "key": "DOM-R-30",
+   "ms": "M3",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-30 PromptPay QR (EMVCo payload)",
+   "human_review": false
+  },
+  "T-0154": {
+   "key": "API-branch-2",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0153",
+    "T-0044"
+   ],
+   "title": "API branch.setPromptpay",
+   "human_review": false
+  },
+  "T-0155": {
+   "key": "API-line-0",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0008"
+   ],
+   "title": "API line.status, line.skipped",
+   "human_review": false
+  },
+  "T-0156": {
+   "key": "API-customers-2",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0051",
+    "T-0050",
+    "T-0097"
+   ],
+   "title": "API customers.blacklist, customers.reliabilityOverride, customers.credit",
+   "human_review": true
+  },
+  "T-0157": {
+   "key": "API-pets-1",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0036",
+    "T-0053"
+   ],
+   "title": "API pets.setStatus",
+   "human_review": false
+  },
+  "T-0158": {
+   "key": "API-linkRequests-0",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0050",
+    "T-0035"
+   ],
+   "title": "API linkRequests.list, linkRequests.reject",
+   "human_review": false
+  },
+  "T-0159": {
+   "key": "API-linkRequests.approve",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0149",
+    "T-0158",
+    "T-0050"
+   ],
+   "title": "API linkRequests.approve",
+   "human_review": false
+  },
+  "T-0160": {
+   "key": "API-bookings-0",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0050",
+    "T-0010",
+    "T-0035",
+    "T-0036",
+    "T-0051",
+    "T-0095"
+   ],
+   "title": "API bookings.list, bookings.approve, bookings.decline",
+   "human_review": false
+  },
+  "T-0161": {
+   "key": "API-bookings-2",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0095",
+    "T-0035",
+    "T-0038",
+    "T-0112",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bookings.cancelPreview, bookings.recordDeposit, bookings.waiveDeposit",
+   "human_review": false
+  },
+  "T-0162": {
+   "key": "API-bookings-3",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0010"
+   ],
+   "title": "API bookings.balanceLink",
+   "human_review": false
+  },
+  "T-0163": {
+   "key": "API-groom-2",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0095",
+    "T-0097",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API groom.noShow",
+   "human_review": false
+  },
+  "T-0164": {
+   "key": "API-stays-3",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0095",
+    "T-0097",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API stays.noShow",
+   "human_review": false
+  },
+  "T-0165": {
+   "key": "API-daycare-1",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0095",
+    "T-0097",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API daycare.no_show",
+   "human_review": false
+  },
+  "T-0166": {
+   "key": "API-slips-0",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0035",
+    "T-0010",
+    "T-0096"
+   ],
+   "title": "API slips.list, slips.reject",
+   "human_review": true
+  },
+  "T-0167": {
+   "key": "API-slips.verify",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0150",
+    "T-0151",
+    "T-0112"
+   ],
+   "title": "API slips.verify",
+   "human_review": true
+  },
+  "T-0168": {
+   "key": "API-refunds-0",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0095",
+    "T-0038"
+   ],
+   "title": "API refunds.create",
+   "human_review": true
+  },
+  "T-0169": {
+   "key": "API-bills-2",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0153",
+    "T-0112"
+   ],
+   "title": "API bills.promptpayQr",
+   "human_review": false
+  },
+  "T-0170": {
+   "key": "API-liff.session",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0149"
+   ],
+   "title": "API liff.session",
+   "human_review": true
+  },
+  "T-0171": {
+   "key": "API-liff.register",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0014",
+    "T-0149",
+    "T-0170"
+   ],
+   "title": "API liff.register",
+   "human_review": true
+  },
+  "T-0172": {
+   "key": "API-liff-0",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0149",
+    "T-0059"
+   ],
+   "title": "API liff.me, liff.updateMe, liff.shop",
+   "human_review": false
+  },
+  "T-0173": {
+   "key": "API-liff-1",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0149",
+    "T-0056",
+    "T-0053",
+    "T-0038"
+   ],
+   "title": "API liff.pets, liff.createPet, liff.updatePet",
+   "human_review": false
+  },
+  "T-0174": {
+   "key": "API-liff-2",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0038",
+    "T-0149",
+    "T-0053",
+    "T-0152",
+    "T-0095",
+    "T-0112"
+   ],
+   "title": "API liff.addVaccination, liff.bookings, liff.booking",
+   "human_review": false
+  },
+  "T-0175": {
+   "key": "API-liff.groomSlots",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0040",
+    "T-0041",
+    "T-0092",
+    "T-0093",
+    "T-0100",
+    "T-0149",
+    "T-0110"
+   ],
+   "title": "API liff.groomSlots",
+   "human_review": true
+  },
+  "T-0176": {
+   "key": "API-liff.quote-grooming",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0092",
+    "T-0094",
+    "T-0096",
+    "T-0099",
+    "T-0149",
+    "T-0111"
+   ],
+   "title": "API liff.quote (grooming)",
+   "human_review": true
+  },
+  "T-0177": {
+   "key": "API-liff.createBooking-grooming",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0035",
+    "T-0092",
+    "T-0093",
+    "T-0094",
+    "T-0096",
+    "T-0097",
+    "T-0098",
+    "T-0099",
+    "T-0100",
+    "T-0101",
+    "T-0102",
+    "T-0103",
+    "T-0153",
+    "T-0149",
+    "T-0174",
+    "T-0112"
+   ],
+   "title": "API liff.createBooking (grooming)",
+   "human_review": true
+  },
+  "T-0178": {
+   "key": "API-liff-4",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0035",
+    "T-0150",
+    "T-0096",
+    "T-0038",
+    "T-0149",
+    "T-0174",
+    "T-0112",
+    "T-0153"
+   ],
+   "title": "API liff.uploadSlip, liff.ics, liff.payPage",
+   "human_review": false
+  },
+  "T-0179": {
+   "key": "API-liff.cancel",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0035",
+    "T-0095",
+    "T-0097",
+    "T-0152",
+    "T-0149",
+    "T-0174",
+    "T-0112"
+   ],
+   "title": "API liff.cancel",
+   "human_review": true
+  },
+  "T-0180": {
+   "key": "API-liff.reschedule",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0093",
+    "T-0152",
+    "T-0149",
+    "T-0174",
+    "T-0112"
+   ],
+   "title": "API liff.reschedule",
+   "human_review": true
+  },
+  "T-0181": {
+   "key": "API-liff-7",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0150",
+    "T-0038",
+    "T-0149",
+    "T-0112"
+   ],
+   "title": "API liff.payUploadSlip, liff.dataRequest",
+   "human_review": false
+  },
+  "T-0182": {
+   "key": "API-public-0",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0172",
+    "T-0059"
+   ],
+   "title": "API public.branch",
+   "human_review": false
+  },
+  "T-0183": {
+   "key": "API-webhook.line",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0009",
+    "T-0149",
+    "T-0036"
+   ],
+   "title": "API webhook.line",
+   "human_review": true
+  },
+  "T-0184": {
+   "key": "API-admin-1",
+   "ms": "M3",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0149",
+    "T-0155"
+   ],
+   "title": "API admin.setLineChannel",
+   "human_review": true
+  },
+  "T-0185": {
+   "key": "API-admin.verifyLine",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0149",
+    "T-0155"
+   ],
+   "title": "API admin.verifyLine",
+   "human_review": true
+  },
+  "T-0186": {
+   "key": "JOB-expire_hold",
+   "ms": "M3",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0036",
+    "T-0010"
+   ],
+   "title": "Job handler expire_hold",
+   "human_review": false
+  },
+  "T-0187": {
+   "key": "JOB-reminder_24h",
+   "ms": "M3",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0036",
+    "T-0010"
+   ],
+   "title": "Job handler reminder_24h",
+   "human_review": false
+  },
+  "T-0188": {
+   "key": "JOB-approval_overdue",
+   "ms": "M3",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0036",
+    "T-0010",
+    "T-0095"
+   ],
+   "title": "Job handler approval_overdue",
+   "human_review": false
+  },
+  "T-0189": {
+   "key": "JOB-recompute_reliability",
+   "ms": "M3",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0036",
+    "T-0010"
+   ],
+   "title": "Job handler recompute_reliability",
+   "human_review": false
+  },
+  "T-0190": {
+   "key": "NTF-customer-M3-0",
+   "ms": "M3",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0010",
+    "T-0149"
+   ],
+   "title": "Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed",
+   "human_review": false
+  },
+  "T-0191": {
+   "key": "NTF-customer-M3-1",
+   "ms": "M3",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0010",
+    "T-0149"
+   ],
+   "title": "Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected",
+   "human_review": false
+  },
+  "T-0192": {
+   "key": "NTF-customer-M3-2",
+   "ms": "M3",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0010",
+    "T-0149"
+   ],
+   "title": "Notification templates (customer, M3): link_approved",
+   "human_review": false
+  },
+  "T-0193": {
+   "key": "NTF-staff-M3-0",
+   "ms": "M3",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0091"
+   ],
+   "title": "Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request",
+   "human_review": false
+  },
+  "T-0194": {
+   "key": "NTF-owner-M3-0",
+   "ms": "M3",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0091",
+    "T-0011"
+   ],
+   "title": "Notification templates (owner, M3): quota_warning, promptpay_changed",
+   "human_review": false
+  },
+  "T-0195": {
+   "key": "UI-SHELL-liff",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0015",
+    "T-0016",
+    "T-0149"
+   ],
+   "title": "LIFF shell: liff.init + session + header ร้าน",
+   "human_review": false
+  },
+  "T-0196": {
+   "key": "UI-C-PAY",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0015",
+    "T-0071",
+    "T-0153"
+   ],
+   "title": "Shared component: PromptPayQR (R-30) + Countdown + SlipUploader (jsQR อ่าน QR บนสลิป → qrPayload)",
+   "human_review": false
+  },
+  "T-0197": {
+   "key": "SCR-P-01",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0015",
+    "T-0026",
+    "T-0196",
+    "T-0027",
+    "T-0182"
+   ],
+   "title": "Screen P-01 หน้าลิงก์จองของร้าน",
+   "human_review": false
+  },
+  "T-0198": {
+   "key": "SCR-C-02D-ext-M3",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0163",
+    "T-0135"
+   ],
+   "title": "Screen C-02D รายละเอียดนัดกรูม (drawer) (ext-M3)",
+   "human_review": false
+  },
+  "T-0199": {
+   "key": "SCR-C-04",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0160"
+   ],
+   "title": "Screen C-04 ใบจอง",
+   "human_review": false
+  },
+  "T-0200": {
+   "key": "SCR-C-05-ext-M3",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0160",
+    "T-0161",
+    "T-0162",
+    "T-0137"
+   ],
+   "title": "Screen C-05 รายละเอียดใบจอง (ext-M3)",
+   "human_review": false
+  },
+  "T-0201": {
+   "key": "SCR-C-07",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0196",
+    "T-0071",
+    "T-0166",
+    "T-0167"
+   ],
+   "title": "Screen C-07 สลิปรอตรวจ",
+   "human_review": false
+  },
+  "T-0202": {
+   "key": "SCR-C-09-ext-M3",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0156",
+    "T-0168",
+    "T-0076"
+   ],
+   "title": "Screen C-09 ลูกค้า (ext-M3)",
+   "human_review": false
+  },
+  "T-0203": {
+   "key": "SCR-C-11-ext-M3",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0073",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0157",
+    "T-0078"
+   ],
+   "title": "Screen C-11 น้อง (ext-M3)",
+   "human_review": false
+  },
+  "T-0204": {
+   "key": "SCR-C-12",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0158",
+    "T-0159"
+   ],
+   "title": "Screen C-12 คำขอจับคู่บัญชี LINE",
+   "human_review": false
+  },
+  "T-0205": {
+   "key": "SCR-C-22",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0155"
+   ],
+   "title": "Screen C-22 ข้อความที่ไม่ได้ส่ง",
+   "human_review": false
+  },
+  "T-0206": {
+   "key": "SCR-C-34",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0196",
+    "T-0044",
+    "T-0154"
+   ],
+   "title": "Screen C-34 บัญชีรับเงิน PromptPay",
+   "human_review": false
+  },
+  "T-0207": {
+   "key": "SCR-C-35",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0196",
+    "T-0155"
+   ],
+   "title": "Screen C-35 LINE OA และลิงก์จอง",
+   "human_review": false
+  },
+  "T-0208": {
+   "key": "SCR-L-01",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0071",
+    "T-0170",
+    "T-0172",
+    "T-0171"
+   ],
+   "title": "Screen L-01 ลงทะเบียน",
+   "human_review": false
+  },
+  "T-0209": {
+   "key": "SCR-L-02",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0172",
+    "T-0174"
+   ],
+   "title": "Screen L-02 หน้าแรก",
+   "human_review": false
+  },
+  "T-0210": {
+   "key": "SCR-L-03",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0071",
+    "T-0173",
+    "T-0038",
+    "T-0174"
+   ],
+   "title": "Screen L-03 น้องของฉัน",
+   "human_review": false
+  },
+  "T-0211": {
+   "key": "SCR-L-04",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0072",
+    "T-0071",
+    "T-0172",
+    "T-0173",
+    "T-0175",
+    "T-0176",
+    "T-0177"
+   ],
+   "title": "Screen L-04 จองกรูม",
+   "human_review": false
+  },
+  "T-0212": {
+   "key": "SCR-L-07",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0196",
+    "T-0071",
+    "T-0174",
+    "T-0038",
+    "T-0178"
+   ],
+   "title": "Screen L-07 จ่ายมัดจำ",
+   "human_review": false
+  },
+  "T-0213": {
+   "key": "SCR-L-08",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0174"
+   ],
+   "title": "Screen L-08 นัดของฉัน",
+   "human_review": false
+  },
+  "T-0214": {
+   "key": "SCR-L-09",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0174",
+    "T-0178",
+    "T-0175",
+    "T-0180",
+    "T-0179"
+   ],
+   "title": "Screen L-09 รายละเอียดนัด",
+   "human_review": false
+  },
+  "T-0215": {
+   "key": "SCR-L-14",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0196",
+    "T-0071",
+    "T-0178",
+    "T-0181"
+   ],
+   "title": "Screen L-14 จ่ายยอดคงเหลือ",
+   "human_review": false
+  },
+  "T-0216": {
+   "key": "SCR-L-15",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0071",
+    "T-0172",
+    "T-0181"
+   ],
+   "title": "Screen L-15 โปรไฟล์ของฉัน",
+   "human_review": false
+  },
+  "T-0217": {
+   "key": "SCR-AD-03",
+   "ms": "M3",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0025",
+    "T-0026",
+    "T-0022",
+    "T-0184",
+    "T-0185",
+    "T-0125"
+   ],
+   "title": "Screen AD-03 ร้าน (admin)",
+   "human_review": false
+  },
+  "T-0218": {
+   "key": "E2E-M3",
+   "ms": "M3",
+   "lane": "e2e",
+   "size": "L",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0039",
+    "T-0208",
+    "T-0211",
+    "T-0212",
+    "T-0214",
+    "T-0201",
+    "T-0187",
+    "T-0186"
+   ],
+   "title": "E2E M3: ลูกค้าเปิด LIFF (fake LINE) …",
+   "human_review": false
+  },
+  "H-12": {
+   "key": "H-GATE-M3",
+   "ms": "M3",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 6,
+   "deps": [
+    "T-0149",
+    "T-0195",
+    "T-0196",
+    "T-0150",
+    "T-0151",
+    "T-0008",
+    "T-0152",
+    "T-0153",
+    "T-0154",
+    "T-0155",
+    "T-0156",
+    "T-0157",
+    "T-0158",
+    "T-0159",
+    "T-0160",
+    "T-0161",
+    "T-0162",
+    "T-0163",
+    "T-0164",
+    "T-0165",
+    "T-0166",
+    "T-0167",
+    "T-0168",
+    "T-0169",
+    "T-0170",
+    "T-0171",
+    "T-0172",
+    "T-0173",
+    "T-0174",
+    "T-0175",
+    "T-0176",
+    "T-0177",
+    "T-0178",
+    "T-0179",
+    "T-0180",
+    "T-0181",
+    "T-0182",
+    "T-0183",
+    "T-0184",
+    "T-0185",
+    "T-0186",
+    "T-0187",
+    "T-0188",
+    "T-0189",
+    "T-0190",
+    "T-0191",
+    "T-0192",
+    "T-0193",
+    "T-0194",
+    "T-0197",
+    "T-0198",
+    "T-0199",
+    "T-0200",
+    "T-0201",
+    "T-0202",
+    "T-0203",
+    "T-0204",
+    "T-0205",
+    "T-0206",
+    "T-0207",
+    "T-0208",
+    "T-0209",
+    "T-0210",
+    "T-0211",
+    "T-0212",
+    "T-0213",
+    "T-0214",
+    "T-0215",
+    "T-0216",
+    "T-0217",
+    "T-0218",
+    "H-11"
+   ],
+   "title": "Milestone review M3: demo + ตรวจคุณภาพ",
+   "human_review": false
+  },
+  "H-13": {
+   "key": "H-SP05",
+   "ms": "M4",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 1,
+   "deps": [],
+   "title": "SP-05 ทดสอบพิมพ์ใบเสร็จ 58/80 มม. จาก browser",
+   "human_review": false
+  },
+  "T-0219": {
+   "key": "DOM-R-13",
+   "ms": "M4",
+   "lane": "domain",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-13 ค่ามือ (commission)",
+   "human_review": true
+  },
+  "T-0220": {
+   "key": "DOM-R-14",
+   "ms": "M4",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01",
+    "T-0012"
+   ],
+   "title": "Rule R-14 แพ็กเกจ: มูลค่าต่อครั้ง วันหมดอายุ และสิทธิ์ใช้",
+   "human_review": false
+  },
+  "T-0221": {
+   "key": "DOM-R-16",
+   "ms": "M4",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01",
+    "T-0012"
+   ],
+   "title": "Rule R-16 เลขที่ใบเสร็จ",
+   "human_review": true
+  },
+  "T-0222": {
+   "key": "DOM-R-17",
+   "ms": "M4",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-17 วันครบรอบกรูมถัดไป",
+   "human_review": false
+  },
+  "T-0223": {
+   "key": "API-staffMe-2",
+   "ms": "M4",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0219"
+   ],
+   "title": "API staffMe.commissions",
+   "human_review": false
+  },
+  "T-0224": {
+   "key": "API-customers.timeline",
+   "ms": "M4",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API customers.timeline",
+   "human_review": true
+  },
+  "T-0225": {
+   "key": "API-customers-3",
+   "ms": "M4",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0051"
+   ],
+   "title": "API customers.packages",
+   "human_review": false
+  },
+  "T-0226": {
+   "key": "API-packageTemplates-0",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0220"
+   ],
+   "title": "API packageTemplates.list, packageTemplates.upsert",
+   "human_review": false
+  },
+  "T-0227": {
+   "key": "API-commissionRules-0",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0219"
+   ],
+   "title": "API commissionRules.list, commissionRules.set",
+   "human_review": false
+  },
+  "T-0228": {
+   "key": "API-groom-1",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0008",
+    "T-0112",
+    "T-0051",
+    "T-0035",
+    "T-0222",
+    "T-0036"
+   ],
+   "title": "API groom.notifyPickup, groom.pickUp",
+   "human_review": false
+  },
+  "T-0229": {
+   "key": "API-bills.open-grooming",
+   "ms": "M4",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0151",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bills.open (grooming)",
+   "human_review": true
+  },
+  "T-0230": {
+   "key": "API-bills-0",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0229",
+    "T-0051",
+    "T-0050",
+    "T-0035",
+    "T-0151"
+   ],
+   "title": "API bills.list, bills.get, bills.updateLine",
+   "human_review": true
+  },
+  "T-0231": {
+   "key": "API-bills.addLine",
+   "ms": "M4",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0220",
+    "T-0151",
+    "T-0229",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bills.addLine",
+   "human_review": true
+  },
+  "T-0232": {
+   "key": "API-bills-1",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0230",
+    "T-0229",
+    "T-0051",
+    "T-0050",
+    "T-0035",
+    "T-0151"
+   ],
+   "title": "API bills.removeLine, bills.setDiscount, bills.voidPayment",
+   "human_review": true
+  },
+  "T-0233": {
+   "key": "API-bills.addPayment",
+   "ms": "M4",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0151",
+    "T-0153",
+    "T-0038",
+    "T-0229",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bills.addPayment",
+   "human_review": true
+  },
+  "T-0234": {
+   "key": "API-bills.close",
+   "ms": "M4",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0097",
+    "T-0219",
+    "T-0220",
+    "T-0151",
+    "T-0221",
+    "T-0229",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bills.close",
+   "human_review": true
+  },
+  "T-0235": {
+   "key": "API-bills.void",
+   "ms": "M4",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0219",
+    "T-0220",
+    "T-0229",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bills.void",
+   "human_review": true
+  },
+  "T-0236": {
+   "key": "API-bills-3",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0013",
+    "T-0051",
+    "T-0010",
+    "T-0008",
+    "T-0009"
+   ],
+   "title": "API bills.receipt, bills.sendReceipt",
+   "human_review": false
+  },
+  "T-0237": {
+   "key": "API-reportCards-0",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0056",
+    "T-0051"
+   ],
+   "title": "API reportCards.list, reportCards.get, reportCards.update",
+   "human_review": false
+  },
+  "T-0238": {
+   "key": "API-reportCards.submit",
+   "ms": "M4",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0035",
+    "T-0008",
+    "T-0009",
+    "T-0237",
+    "T-0056",
+    "T-0051"
+   ],
+   "title": "API reportCards.submit",
+   "human_review": false
+  },
+  "T-0239": {
+   "key": "API-reportCards-1",
+   "ms": "M4",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0035",
+    "T-0237",
+    "T-0056",
+    "T-0051"
+   ],
+   "title": "API reportCards.approve",
+   "human_review": false
+  },
+  "T-0240": {
+   "key": "API-reports-0",
+   "ms": "M4",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0219",
+    "T-0223"
+   ],
+   "title": "API reports.commissions",
+   "human_review": false
+  },
+  "T-0241": {
+   "key": "API-liff-5",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0149",
+    "T-0237",
+    "T-0056",
+    "T-0051",
+    "T-0010"
+   ],
+   "title": "API liff.reportCard, liff.rate, liff.reviewClick",
+   "human_review": false
+  },
+  "T-0242": {
+   "key": "API-liff-6",
+   "ms": "M4",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0149",
+    "T-0051",
+    "T-0236"
+   ],
+   "title": "API liff.packages, liff.receipt",
+   "human_review": false
+  },
+  "T-0243": {
+   "key": "JOB-next_groom_reminder",
+   "ms": "M4",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0036",
+    "T-0010",
+    "T-0222",
+    "T-0222"
+   ],
+   "title": "Job handler next_groom_reminder",
+   "human_review": false
+  },
+  "T-0244": {
+   "key": "JOB-package_expiry",
+   "ms": "M4",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0036",
+    "T-0010"
+   ],
+   "title": "Job handler package_expiry",
+   "human_review": false
+  },
+  "T-0245": {
+   "key": "NTF-customer-M4-0",
+   "ms": "M4",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0149"
+   ],
+   "title": "Notification templates (customer, M4): ready_for_pickup, report_card, receipt, next_groom_reminder",
+   "human_review": false
+  },
+  "T-0246": {
+   "key": "NTF-staff-M4-0",
+   "ms": "M4",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0091"
+   ],
+   "title": "Notification templates (staff, M4): report_card_review, low_rating",
+   "human_review": false
+  },
+  "T-0247": {
+   "key": "SCR-C-02D-ext-M4",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0228",
+    "T-0198"
+   ],
+   "title": "Screen C-02D รายละเอียดนัดกรูม (drawer) (ext-M4)",
+   "human_review": false
+  },
+  "T-0248": {
+   "key": "SCR-C-05-ext-M4",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0229",
+    "T-0200"
+   ],
+   "title": "Screen C-05 รายละเอียดใบจอง (ext-M4)",
+   "human_review": false
+  },
+  "T-0249": {
+   "key": "SCR-C-09-ext-M4",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0071",
+    "T-0224",
+    "T-0225",
+    "T-0202"
+   ],
+   "title": "Screen C-09 ลูกค้า (ext-M4)",
+   "human_review": false
+  },
+  "T-0250": {
+   "key": "SCR-C-18",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0196",
+    "T-0230",
+    "T-0231",
+    "T-0232",
+    "T-0169",
+    "T-0233",
+    "T-0234",
+    "T-0235"
+   ],
+   "title": "Screen C-18 บิล (คิดเงิน)",
+   "human_review": false
+  },
+  "T-0251": {
+   "key": "SCR-C-19",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0230",
+    "T-0229"
+   ],
+   "title": "Screen C-19 รายการบิล",
+   "human_review": false
+  },
+  "T-0252": {
+   "key": "SCR-C-20",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0236"
+   ],
+   "title": "Screen C-20 ใบเสร็จ (พิมพ์)",
+   "human_review": false
+  },
+  "T-0253": {
+   "key": "SCR-C-21",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0237",
+    "T-0239"
+   ],
+   "title": "Screen C-21 Report card รอตรวจ",
+   "human_review": false
+  },
+  "T-0254": {
+   "key": "SCR-C-24",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0240"
+   ],
+   "title": "Screen C-24 รายงานค่ามือ",
+   "human_review": false
+  },
+  "T-0255": {
+   "key": "SCR-C-41",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0226",
+    "T-0059"
+   ],
+   "title": "Screen C-41 แพ็กเกจ",
+   "human_review": false
+  },
+  "T-0256": {
+   "key": "SCR-C-42",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0227",
+    "T-0059",
+    "T-0048"
+   ],
+   "title": "Screen C-42 ค่ามือ",
+   "human_review": false
+  },
+  "T-0257": {
+   "key": "SCR-S-02-ext-M4",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0130",
+    "T-0071",
+    "T-0228",
+    "T-0145"
+   ],
+   "title": "Screen S-02 Job card (ext-M4)",
+   "human_review": false
+  },
+  "T-0258": {
+   "key": "SCR-S-03",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0130",
+    "T-0026",
+    "T-0071",
+    "T-0237",
+    "T-0238"
+   ],
+   "title": "Screen S-03 Report card",
+   "human_review": false
+  },
+  "T-0259": {
+   "key": "SCR-S-06",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0130",
+    "T-0026",
+    "T-0223"
+   ],
+   "title": "Screen S-06 ค่ามือของฉัน",
+   "human_review": false
+  },
+  "T-0260": {
+   "key": "SCR-L-11",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0071",
+    "T-0241"
+   ],
+   "title": "Screen L-11 Report card",
+   "human_review": false
+  },
+  "T-0261": {
+   "key": "SCR-L-12",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0242"
+   ],
+   "title": "Screen L-12 แพ็กเกจของฉัน",
+   "human_review": false
+  },
+  "T-0262": {
+   "key": "SCR-L-13",
+   "ms": "M4",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0071",
+    "T-0242"
+   ],
+   "title": "Screen L-13 ใบเสร็จ",
+   "human_review": false
+  },
+  "T-0263": {
+   "key": "E2E-M4",
+   "ms": "M4",
+   "lane": "e2e",
+   "size": "L",
+   "owner": "agent",
+   "wave": 5,
+   "deps": [
+    "T-0039",
+    "T-0250",
+    "T-0252",
+    "T-0258",
+    "T-0260"
+   ],
+   "title": "E2E M4: เปิดบิลจากนัด …",
+   "human_review": false
+  },
+  "H-14": {
+   "key": "H-GATE-M4",
+   "ms": "M4",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 6,
+   "deps": [
+    "T-0219",
+    "T-0220",
+    "T-0221",
+    "T-0222",
+    "T-0223",
+    "T-0224",
+    "T-0225",
+    "T-0226",
+    "T-0227",
+    "T-0228",
+    "T-0229",
+    "T-0230",
+    "T-0231",
+    "T-0232",
+    "T-0233",
+    "T-0234",
+    "T-0235",
+    "T-0236",
+    "T-0237",
+    "T-0238",
+    "T-0239",
+    "T-0240",
+    "T-0241",
+    "T-0242",
+    "T-0243",
+    "T-0244",
+    "T-0245",
+    "T-0246",
+    "T-0247",
+    "T-0248",
+    "T-0249",
+    "T-0250",
+    "T-0251",
+    "T-0252",
+    "T-0253",
+    "T-0254",
+    "T-0255",
+    "T-0256",
+    "T-0257",
+    "T-0258",
+    "T-0259",
+    "T-0260",
+    "T-0261",
+    "T-0262",
+    "T-0263",
+    "H-12"
+   ],
+   "title": "Release B: UAT + ตัดสินใจปล่อยร้านนำร่อง (M4)",
+   "human_review": false
+  },
+  "T-0264": {
+   "key": "DOM-R-26",
+   "ms": "M5",
+   "lane": "domain",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01",
+    "T-0012"
+   ],
+   "title": "Rule R-26 สร้างงานดูแลรายวัน (care tasks)",
+   "human_review": false
+  },
+  "T-0265": {
+   "key": "API-roomTypes-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0172",
+    "T-0038"
+   ],
+   "title": "API roomTypes.list, roomTypes.create, roomTypes.update",
+   "human_review": false
+  },
+  "T-0266": {
+   "key": "API-roomTypes-1",
+   "ms": "M5",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0172"
+   ],
+   "title": "API roomTypes.setRates",
+   "human_review": false
+  },
+  "T-0267": {
+   "key": "API-roomUnits-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API roomUnits.list, roomUnits.upsert, roomUnits.housekeeping",
+   "human_review": false
+  },
+  "T-0268": {
+   "key": "API-daycareTypes-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API daycareTypes.list, daycareTypes.upsert",
+   "human_review": false
+  },
+  "T-0269": {
+   "key": "API-availability-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0040",
+    "T-0100",
+    "T-0102",
+    "T-0103"
+   ],
+   "title": "API availability.hotel, availability.daycare",
+   "human_review": false
+  },
+  "T-0270": {
+   "key": "API-quotes.create-hotel+daycare",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0092",
+    "T-0094",
+    "T-0096",
+    "T-0097",
+    "T-0111"
+   ],
+   "title": "API quotes.create (hotel+daycare)",
+   "human_review": false
+  },
+  "T-0271": {
+   "key": "API-bookings.create-hotel+daycare",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0040",
+    "T-0041",
+    "T-0092",
+    "T-0093",
+    "T-0094",
+    "T-0098",
+    "T-0099",
+    "T-0100",
+    "T-0101",
+    "T-0102",
+    "T-0103",
+    "T-0036",
+    "T-0112",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bookings.create (hotel+daycare)",
+   "human_review": true
+  },
+  "T-0272": {
+   "key": "API-calendar.day-hotel+daycare",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0115",
+    "T-0112",
+    "T-0051",
+    "T-0048"
+   ],
+   "title": "API calendar.day (hotel+daycare)",
+   "human_review": false
+  },
+  "T-0273": {
+   "key": "API-stays-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051",
+    "T-0056",
+    "T-0038"
+   ],
+   "title": "API stays.today, stays.get, stays.signAgreement",
+   "human_review": false
+  },
+  "T-0274": {
+   "key": "API-stays.saveIntake",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0014",
+    "T-0264",
+    "T-0038",
+    "T-0273",
+    "T-0056",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API stays.saveIntake",
+   "human_review": false
+  },
+  "T-0275": {
+   "key": "API-stays.checkIn",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0010",
+    "T-0099",
+    "T-0264",
+    "T-0273",
+    "T-0056",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API stays.checkIn",
+   "human_review": false
+  },
+  "T-0276": {
+   "key": "API-stays-1",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051",
+    "T-0273",
+    "T-0056"
+   ],
+   "title": "API stays.changeRoom, stays.addAddon, stays.removeAddon",
+   "human_review": false
+  },
+  "T-0277": {
+   "key": "API-stays.changeDates",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0092",
+    "T-0102",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API stays.changeDates",
+   "human_review": false
+  },
+  "T-0278": {
+   "key": "API-stays-2",
+   "ms": "M5",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0008",
+    "T-0038",
+    "T-0273",
+    "T-0056",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API stays.postUpdate",
+   "human_review": false
+  },
+  "T-0279": {
+   "key": "API-stays.checkOut",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0273",
+    "T-0056",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API stays.checkOut",
+   "human_review": false
+  },
+  "T-0280": {
+   "key": "API-roomMap-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0102",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API roomMap.get",
+   "human_review": false
+  },
+  "T-0281": {
+   "key": "API-careTasks-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0273",
+    "T-0035",
+    "T-0038"
+   ],
+   "title": "API careTasks.list, careTasks.done, careTasks.skip",
+   "human_review": false
+  },
+  "T-0282": {
+   "key": "API-daycare-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051",
+    "T-0035",
+    "T-0099"
+   ],
+   "title": "API daycare.list, daycare.check_in, daycare.check_out",
+   "human_review": false
+  },
+  "T-0283": {
+   "key": "API-bills.open-hotel+daycare",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0151",
+    "T-0229",
+    "T-0051",
+    "T-0050"
+   ],
+   "title": "API bills.open (hotel+daycare)",
+   "human_review": true
+  },
+  "T-0284": {
+   "key": "API-liff-3",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0100",
+    "T-0102",
+    "T-0149",
+    "T-0269",
+    "T-0103",
+    "T-0056"
+   ],
+   "title": "API liff.hotelAvailability, liff.daycareAvailability, liff.stayUpdates",
+   "human_review": false
+  },
+  "T-0285": {
+   "key": "API-liff.quote-hotel+daycare",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0092",
+    "T-0094",
+    "T-0096",
+    "T-0099",
+    "T-0149",
+    "T-0176",
+    "T-0111"
+   ],
+   "title": "API liff.quote (hotel+daycare)",
+   "human_review": true
+  },
+  "T-0286": {
+   "key": "API-liff.createBooking-hotel+daycare",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0035",
+    "T-0092",
+    "T-0093",
+    "T-0094",
+    "T-0096",
+    "T-0097",
+    "T-0098",
+    "T-0099",
+    "T-0100",
+    "T-0101",
+    "T-0102",
+    "T-0103",
+    "T-0153",
+    "T-0149",
+    "T-0112",
+    "T-0177"
+   ],
+   "title": "API liff.createBooking (hotel+daycare)",
+   "human_review": true
+  },
+  "T-0287": {
+   "key": "JOB-care_task_overdue_scan",
+   "ms": "M5",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0036",
+    "T-0010"
+   ],
+   "title": "Job handler care_task_overdue_scan",
+   "human_review": false
+  },
+  "T-0288": {
+   "key": "NTF-customer-M5-0",
+   "ms": "M5",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0149"
+   ],
+   "title": "Notification templates (customer, M5): stay_checked_in, stay_update",
+   "human_review": false
+  },
+  "T-0289": {
+   "key": "NTF-staff-M5-0",
+   "ms": "M5",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0091"
+   ],
+   "title": "Notification templates (staff, M5): vaccine_review",
+   "human_review": false
+  },
+  "T-0290": {
+   "key": "SCR-C-03-hotel+daycare",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0072",
+    "T-0027",
+    "T-0050",
+    "T-0110",
+    "T-0269",
+    "T-0270",
+    "T-0271",
+    "T-0136"
+   ],
+   "title": "Screen C-03 สร้างใบจอง (หน้าร้าน) (hotel+daycare)",
+   "human_review": false
+  },
+  "T-0291": {
+   "key": "SCR-C-13",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0280",
+    "T-0276",
+    "T-0267"
+   ],
+   "title": "Screen C-13 Room map",
+   "human_review": false
+  },
+  "T-0292": {
+   "key": "SCR-C-14",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0273"
+   ],
+   "title": "Screen C-14 เข้า-ออกวันนี้",
+   "human_review": false
+  },
+  "T-0293": {
+   "key": "SCR-C-15",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0131",
+    "T-0071",
+    "T-0273",
+    "T-0274",
+    "T-0275",
+    "T-0276",
+    "T-0277",
+    "T-0278",
+    "T-0279",
+    "T-0164",
+    "T-0122"
+   ],
+   "title": "Screen C-15 การพัก",
+   "human_review": false
+  },
+  "T-0294": {
+   "key": "SCR-C-16",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0281"
+   ],
+   "title": "Screen C-16 งานดูแลรายวัน (มุมมองร้าน)",
+   "human_review": false
+  },
+  "T-0295": {
+   "key": "SCR-C-17",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0282",
+    "T-0165",
+    "T-0123"
+   ],
+   "title": "Screen C-17 Daycare วันนี้",
+   "human_review": false
+  },
+  "T-0296": {
+   "key": "SCR-C-39",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0071",
+    "T-0265",
+    "T-0267",
+    "T-0057",
+    "T-0266"
+   ],
+   "title": "Screen C-39 ห้องพัก",
+   "human_review": false
+  },
+  "T-0297": {
+   "key": "SCR-C-40",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0268",
+    "T-0057"
+   ],
+   "title": "Screen C-40 Daycare",
+   "human_review": false
+  },
+  "T-0298": {
+   "key": "SCR-S-04",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0130",
+    "T-0071",
+    "T-0281"
+   ],
+   "title": "Screen S-04 งานดูแลวันนี้",
+   "human_review": false
+  },
+  "T-0299": {
+   "key": "SCR-S-05",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0130",
+    "T-0026",
+    "T-0071",
+    "T-0273",
+    "T-0278"
+   ],
+   "title": "Screen S-05 ส่งอัปเดตน้อง",
+   "human_review": false
+  },
+  "T-0300": {
+   "key": "SCR-L-05",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0071",
+    "T-0173",
+    "T-0284",
+    "T-0285",
+    "T-0286"
+   ],
+   "title": "Screen L-05 จองโรงแรม",
+   "human_review": false
+  },
+  "T-0301": {
+   "key": "SCR-L-06",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0173",
+    "T-0284",
+    "T-0285",
+    "T-0286"
+   ],
+   "title": "Screen L-06 จอง Daycare",
+   "human_review": false
+  },
+  "T-0302": {
+   "key": "SCR-L-10",
+   "ms": "M5",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0195",
+    "T-0026",
+    "T-0071",
+    "T-0284"
+   ],
+   "title": "Screen L-10 อัปเดตน้องระหว่างพัก",
+   "human_review": false
+  },
+  "T-0303": {
+   "key": "E2E-M5",
+   "ms": "M5",
+   "lane": "e2e",
+   "size": "L",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0039",
+    "T-0300",
+    "T-0293",
+    "T-0298",
+    "T-0299",
+    "T-0302",
+    "T-0291"
+   ],
+   "title": "E2E M5: จอง Hotel ใน LIFF …",
+   "human_review": false
+  },
+  "H-15": {
+   "key": "H-GATE-M5",
+   "ms": "M5",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 5,
+   "deps": [
+    "T-0264",
+    "T-0265",
+    "T-0266",
+    "T-0267",
+    "T-0268",
+    "T-0269",
+    "T-0270",
+    "T-0271",
+    "T-0272",
+    "T-0273",
+    "T-0274",
+    "T-0275",
+    "T-0276",
+    "T-0277",
+    "T-0278",
+    "T-0279",
+    "T-0280",
+    "T-0281",
+    "T-0282",
+    "T-0283",
+    "T-0284",
+    "T-0285",
+    "T-0286",
+    "T-0287",
+    "T-0288",
+    "T-0289",
+    "T-0290",
+    "T-0291",
+    "T-0292",
+    "T-0293",
+    "T-0294",
+    "T-0295",
+    "T-0296",
+    "T-0297",
+    "T-0298",
+    "T-0299",
+    "T-0300",
+    "T-0301",
+    "T-0302",
+    "T-0303",
+    "H-14"
+   ],
+   "title": "Milestone review M5: demo + ตรวจคุณภาพ",
+   "human_review": false
+  },
+  "T-0304": {
+   "key": "API-dashboard.today",
+   "ms": "M6",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0012"
+   ],
+   "title": "API dashboard.today",
+   "human_review": false
+  },
+  "T-0305": {
+   "key": "API-reports.sales",
+   "ms": "M6",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0012"
+   ],
+   "title": "API reports.sales",
+   "human_review": false
+  },
+  "T-0306": {
+   "key": "API-reports-1",
+   "ms": "M6",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API reports.occupancy",
+   "human_review": false
+  },
+  "T-0307": {
+   "key": "API-exports-0",
+   "ms": "M6",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0035"
+   ],
+   "title": "API exports.csv",
+   "human_review": false
+  },
+  "T-0308": {
+   "key": "API-admin-5",
+   "ms": "M6",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API admin.analytics",
+   "human_review": false
+  },
+  "T-0309": {
+   "key": "JOB-owner_daily_summary",
+   "ms": "M6",
+   "lane": "job",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0036",
+    "T-0010"
+   ],
+   "title": "Job handler owner_daily_summary",
+   "human_review": false
+  },
+  "T-0310": {
+   "key": "NTF-owner-M6-0",
+   "ms": "M6",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0091",
+    "T-0011"
+   ],
+   "title": "Notification templates (owner, M6): daily_summary",
+   "human_review": false
+  },
+  "T-0311": {
+   "key": "SCR-C-01",
+   "ms": "M6",
+   "lane": "ui",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0304"
+   ],
+   "title": "Screen C-01 วันนี้ (Dashboard)",
+   "human_review": false
+  },
+  "T-0312": {
+   "key": "SCR-C-23",
+   "ms": "M6",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0073",
+    "T-0026",
+    "T-0027",
+    "T-0305",
+    "T-0307"
+   ],
+   "title": "Screen C-23 รายงานยอดขาย",
+   "human_review": false
+  },
+  "T-0313": {
+   "key": "SCR-C-24-ext-M6",
+   "ms": "M6",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0307",
+    "T-0254"
+   ],
+   "title": "Screen C-24 รายงานค่ามือ (ext-M6)",
+   "human_review": false
+  },
+  "T-0314": {
+   "key": "SCR-C-25",
+   "ms": "M6",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0073",
+    "T-0026",
+    "T-0027",
+    "T-0306"
+   ],
+   "title": "Screen C-25 Occupancy",
+   "human_review": false
+  },
+  "T-0315": {
+   "key": "SCR-AD-06",
+   "ms": "M6",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0025",
+    "T-0027",
+    "T-0308"
+   ],
+   "title": "Screen AD-06 Analytics นำร่อง",
+   "human_review": false
+  },
+  "T-0316": {
+   "key": "E2E-M6",
+   "ms": "M6",
+   "lane": "e2e",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0039",
+    "T-0311",
+    "T-0312",
+    "T-0254",
+    "T-0314"
+   ],
+   "title": "E2E M6: Dashboard + รายงานยอดขาย/ค่ามือ/occupancy ตรงกับข้อมูล seed + export CSV …",
+   "human_review": false
+  },
+  "H-16": {
+   "key": "H-GATE-M6",
+   "ms": "M6",
+   "lane": "human",
+   "size": "-",
+   "owner": "human",
+   "wave": 4,
+   "deps": [
+    "T-0073",
+    "T-0304",
+    "T-0305",
+    "T-0306",
+    "T-0307",
+    "T-0308",
+    "T-0309",
+    "T-0310",
+    "T-0311",
+    "T-0312",
+    "T-0313",
+    "T-0314",
+    "T-0315",
+    "T-0316",
+    "H-15"
+   ],
+   "title": "Release C: UAT + ตัดสินใจปล่อยร้านนำร่อง (M6)",
+   "human_review": false
+  }
+ }
+}

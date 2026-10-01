@@ -1,0 +1,36 @@
+{
+  "rule": "R-14",
+  "export": "packageTerms",
+  "module": "packages/domain/src/package/package.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "5 sessions 2,000 baht 1 year",
+      "input": {
+        "priceSatang": 200000,
+        "sessionsCount": 5,
+        "validityDays": 365,
+        "purchasedAt": "2026-10-05T03:00:00.000Z",
+        "timezone": "Asia/Bangkok"
+      },
+      "expected": {
+        "unitValueSatang": 40000,
+        "expiresAt": "2027-10-05T16:59:59.999Z"
+      }
+    },
+    {
+      "name": "odd split floors",
+      "input": {
+        "priceSatang": 100000,
+        "sessionsCount": 3,
+        "validityDays": 90,
+        "purchasedAt": "2026-10-05T18:30:00.000Z",
+        "timezone": "Asia/Bangkok"
+      },
+      "expected": {
+        "unitValueSatang": 33333,
+        "expiresAt": "2027-01-04T16:59:59.999Z"
+      }
+    }
+  ]
+}

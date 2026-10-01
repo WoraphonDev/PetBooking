@@ -1,0 +1,112 @@
+{
+  "rule": "R-09",
+  "export": "computeReliability",
+  "module": "packages/domain/src/customer/reliability.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "new customer",
+      "input": {
+        "noShowCount12m": 0,
+        "lateCancelCount12m": 0,
+        "completedVisits12m": 0,
+        "override": null
+      },
+      "expected": {
+        "level": 3,
+        "source": "computed"
+      }
+    },
+    {
+      "name": "1 no-show",
+      "input": {
+        "noShowCount12m": 1,
+        "lateCancelCount12m": 0,
+        "completedVisits12m": 0,
+        "override": null
+      },
+      "expected": {
+        "level": 2,
+        "source": "computed"
+      }
+    },
+    {
+      "name": "2 late cancels",
+      "input": {
+        "noShowCount12m": 0,
+        "lateCancelCount12m": 2,
+        "completedVisits12m": 0,
+        "override": null
+      },
+      "expected": {
+        "level": 2,
+        "source": "computed"
+      }
+    },
+    {
+      "name": "2 no-shows",
+      "input": {
+        "noShowCount12m": 2,
+        "lateCancelCount12m": 0,
+        "completedVisits12m": 0,
+        "override": null
+      },
+      "expected": {
+        "level": 1,
+        "source": "computed"
+      }
+    },
+    {
+      "name": "1 no-show + 2 late",
+      "input": {
+        "noShowCount12m": 1,
+        "lateCancelCount12m": 2,
+        "completedVisits12m": 0,
+        "override": null
+      },
+      "expected": {
+        "level": 1,
+        "source": "computed"
+      }
+    },
+    {
+      "name": "loyal",
+      "input": {
+        "noShowCount12m": 0,
+        "lateCancelCount12m": 0,
+        "completedVisits12m": 5,
+        "override": null
+      },
+      "expected": {
+        "level": 4,
+        "source": "computed"
+      }
+    },
+    {
+      "name": "loyal but 1 late",
+      "input": {
+        "noShowCount12m": 0,
+        "lateCancelCount12m": 1,
+        "completedVisits12m": 8,
+        "override": null
+      },
+      "expected": {
+        "level": 3,
+        "source": "computed"
+      }
+    },
+    {
+      "name": "override wins",
+      "input": {
+        "noShowCount12m": 3,
+        "lateCancelCount12m": 0,
+        "completedVisits12m": 0,
+        "override": 3
+      },
+      "expected": {
+        "level": 3,
+        "source": "override"
+      }
+    }
+  ]
+}

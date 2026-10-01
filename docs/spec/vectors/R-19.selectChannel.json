@@ -1,0 +1,127 @@
+{
+  "rule": "R-19",
+  "export": "selectChannel",
+  "module": "packages/domain/src/notify/channel.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "customer push",
+      "input": {
+        "recipientType": "customer",
+        "hasLineIdentity": true,
+        "isFriend": true,
+        "templateAllowsReply": true,
+        "replyTokenAgeSeconds": null,
+        "activePushSubscriptions": 0,
+        "isOwner": false,
+        "hasEmail": false
+      },
+      "expected": {
+        "channel": "line_push",
+        "skipReason": null
+      }
+    },
+    {
+      "name": "customer reply token fresh",
+      "input": {
+        "recipientType": "customer",
+        "hasLineIdentity": true,
+        "isFriend": true,
+        "templateAllowsReply": true,
+        "replyTokenAgeSeconds": 12,
+        "activePushSubscriptions": 0,
+        "isOwner": false,
+        "hasEmail": false
+      },
+      "expected": {
+        "channel": "line_reply",
+        "skipReason": null
+      }
+    },
+    {
+      "name": "reply token too old",
+      "input": {
+        "recipientType": "customer",
+        "hasLineIdentity": true,
+        "isFriend": true,
+        "templateAllowsReply": true,
+        "replyTokenAgeSeconds": 55,
+        "activePushSubscriptions": 0,
+        "isOwner": false,
+        "hasEmail": false
+      },
+      "expected": {
+        "channel": "line_push",
+        "skipReason": null
+      }
+    },
+    {
+      "name": "not a friend",
+      "input": {
+        "recipientType": "customer",
+        "hasLineIdentity": true,
+        "isFriend": false,
+        "templateAllowsReply": true,
+        "replyTokenAgeSeconds": null,
+        "activePushSubscriptions": 0,
+        "isOwner": false,
+        "hasEmail": false
+      },
+      "expected": {
+        "channel": null,
+        "skipReason": "no_recipient"
+      }
+    },
+    {
+      "name": "staff with device",
+      "input": {
+        "recipientType": "staff",
+        "hasLineIdentity": true,
+        "isFriend": true,
+        "templateAllowsReply": true,
+        "replyTokenAgeSeconds": null,
+        "activePushSubscriptions": 2,
+        "isOwner": false,
+        "hasEmail": false
+      },
+      "expected": {
+        "channel": "web_push",
+        "skipReason": null
+      }
+    },
+    {
+      "name": "owner fallback email",
+      "input": {
+        "recipientType": "staff",
+        "hasLineIdentity": true,
+        "isFriend": true,
+        "templateAllowsReply": true,
+        "replyTokenAgeSeconds": null,
+        "activePushSubscriptions": 0,
+        "isOwner": true,
+        "hasEmail": true
+      },
+      "expected": {
+        "channel": "email",
+        "skipReason": null
+      }
+    },
+    {
+      "name": "staff no device",
+      "input": {
+        "recipientType": "staff",
+        "hasLineIdentity": true,
+        "isFriend": true,
+        "templateAllowsReply": true,
+        "replyTokenAgeSeconds": null,
+        "activePushSubscriptions": 0,
+        "isOwner": false,
+        "hasEmail": false
+      },
+      "expected": {
+        "channel": null,
+        "skipReason": "no_recipient"
+      }
+    }
+  ]
+}

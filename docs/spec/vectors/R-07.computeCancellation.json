@@ -1,0 +1,253 @@
+{
+  "rule": "R-07",
+  "export": "computeCancellation",
+  "module": "packages/domain/src/payment/cancellation.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "30h before grooming → full credit",
+      "input": {
+        "now": "2026-10-08T21:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "customer_cancel",
+        "depositVerifiedSatang": 30000,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 100,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": false,
+        "minutesBefore": 1800,
+        "freeCancelHours": 24,
+        "forfeitSatang": 0,
+        "returnSatang": 30000,
+        "returnMode": "credit"
+      }
+    },
+    {
+      "name": "1 minute inside window → forfeit all",
+      "input": {
+        "now": "2026-10-09T03:01:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "customer_cancel",
+        "depositVerifiedSatang": 30000,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 100,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": true,
+        "minutesBefore": 1439,
+        "freeCancelHours": 24,
+        "forfeitSatang": 30000,
+        "returnSatang": 0,
+        "returnMode": "none"
+      }
+    },
+    {
+      "name": "exactly 24h before is not late",
+      "input": {
+        "now": "2026-10-09T03:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "customer_cancel",
+        "depositVerifiedSatang": 30000,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 100,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": false,
+        "minutesBefore": 1440,
+        "freeCancelHours": 24,
+        "forfeitSatang": 0,
+        "returnSatang": 30000,
+        "returnMode": "credit"
+      }
+    },
+    {
+      "name": "late with 50% forfeit, odd amount",
+      "input": {
+        "now": "2026-10-09T20:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "customer_cancel",
+        "depositVerifiedSatang": 33333,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 50,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": true,
+        "minutesBefore": 420,
+        "freeCancelHours": 24,
+        "forfeitSatang": 16666,
+        "returnSatang": 16667,
+        "returnMode": "credit"
+      }
+    },
+    {
+      "name": "hotel rule (72h) dominates mixed booking",
+      "input": {
+        "now": "2026-10-08T03:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming",
+          "hotel"
+        ],
+        "kind": "customer_cancel",
+        "depositVerifiedSatang": 30000,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 100,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": true,
+        "minutesBefore": 2880,
+        "freeCancelHours": 72,
+        "forfeitSatang": 30000,
+        "returnSatang": 0,
+        "returnMode": "none"
+      }
+    },
+    {
+      "name": "shop cancels 1h before",
+      "input": {
+        "now": "2026-10-10T02:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "shop_cancel",
+        "depositVerifiedSatang": 30000,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 100,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": false,
+        "minutesBefore": 60,
+        "freeCancelHours": 24,
+        "forfeitSatang": 0,
+        "returnSatang": 30000,
+        "returnMode": "refund"
+      }
+    },
+    {
+      "name": "no-show forfeits everything",
+      "input": {
+        "now": "2026-10-10T04:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "no_show",
+        "depositVerifiedSatang": 30000,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 50,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": true,
+        "minutesBefore": -60,
+        "freeCancelHours": 24,
+        "forfeitSatang": 30000,
+        "returnSatang": 0,
+        "returnMode": "none"
+      }
+    },
+    {
+      "name": "customer_choice → refund",
+      "input": {
+        "now": "2026-10-07T03:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "customer_cancel",
+        "depositVerifiedSatang": 30000,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 100,
+          "cancelRefundMode": "customer_choice"
+        },
+        "customerChoice": "refund"
+      },
+      "expected": {
+        "isLate": false,
+        "minutesBefore": 4320,
+        "freeCancelHours": 24,
+        "forfeitSatang": 0,
+        "returnSatang": 30000,
+        "returnMode": "refund"
+      }
+    },
+    {
+      "name": "no deposit",
+      "input": {
+        "now": "2026-10-09T20:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "modules": [
+          "grooming"
+        ],
+        "kind": "customer_cancel",
+        "depositVerifiedSatang": 0,
+        "policySnapshot": {
+          "groomingFreeCancelHours": 24,
+          "hotelFreeCancelHours": 72,
+          "daycareFreeCancelHours": 24,
+          "lateCancelForfeitPercent": 100,
+          "cancelRefundMode": "credit"
+        }
+      },
+      "expected": {
+        "isLate": true,
+        "minutesBefore": 420,
+        "freeCancelHours": 24,
+        "forfeitSatang": 0,
+        "returnSatang": 0,
+        "returnMode": "none"
+      }
+    }
+  ]
+}

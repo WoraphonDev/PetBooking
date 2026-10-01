@@ -1,0 +1,120 @@
+{
+  "rule": "R-18",
+  "export": "decideLinePush",
+  "module": "packages/domain/src/notify/line-quota.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "normal helpful",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 100,
+        "messageClass": "helpful",
+        "economyMode": false,
+        "economyBehavior": "send"
+      },
+      "expected": {
+        "send": true,
+        "skipReason": null
+      }
+    },
+    {
+      "name": "quota exhausted",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 300,
+        "messageClass": "essential",
+        "economyMode": false,
+        "economyBehavior": "send"
+      },
+      "expected": {
+        "send": false,
+        "skipReason": "quota_exhausted"
+      }
+    },
+    {
+      "name": "essential at 95%",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 285,
+        "messageClass": "essential",
+        "economyMode": false,
+        "economyBehavior": "send"
+      },
+      "expected": {
+        "send": true,
+        "skipReason": null
+      }
+    },
+    {
+      "name": "helpful at 90% reserved",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 270,
+        "messageClass": "helpful",
+        "economyMode": false,
+        "economyBehavior": "send"
+      },
+      "expected": {
+        "send": false,
+        "skipReason": "quota_exhausted"
+      }
+    },
+    {
+      "name": "marketing at 70%",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 210,
+        "messageClass": "marketing",
+        "economyMode": false,
+        "economyBehavior": "send"
+      },
+      "expected": {
+        "send": false,
+        "skipReason": "quota_exhausted"
+      }
+    },
+    {
+      "name": "marketing below 70%",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 209,
+        "messageClass": "marketing",
+        "economyMode": false,
+        "economyBehavior": "send"
+      },
+      "expected": {
+        "send": true,
+        "skipReason": null
+      }
+    },
+    {
+      "name": "economy skip",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 10,
+        "messageClass": "helpful",
+        "economyMode": true,
+        "economyBehavior": "skip"
+      },
+      "expected": {
+        "send": false,
+        "skipReason": "economy_mode"
+      }
+    },
+    {
+      "name": "economy send",
+      "input": {
+        "monthlyQuota": 300,
+        "usedThisMonth": 10,
+        "messageClass": "helpful",
+        "economyMode": true,
+        "economyBehavior": "send"
+      },
+      "expected": {
+        "send": true,
+        "skipReason": null
+      }
+    }
+  ]
+}

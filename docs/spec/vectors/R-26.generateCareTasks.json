@@ -1,0 +1,134 @@
+{
+  "rule": "R-26",
+  "export": "generateCareTasks",
+  "module": "packages/domain/src/care/care-tasks.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "2 nights with meds and 2 walks",
+      "input": {
+        "checkedInAt": "2026-10-10T07:00:00.000Z",
+        "checkOutDate": "2026-10-12",
+        "expectedCheckOutTime": "11:00",
+        "timezone": "Asia/Bangkok",
+        "feedingTimes": [
+          "08:00",
+          "18:00"
+        ],
+        "medications": [
+          {
+            "id": "m-1",
+            "name": "Apoquel",
+            "times": [
+              "09:00"
+            ]
+          }
+        ],
+        "walksPerDay": 2
+      },
+      "expected": [
+        {
+          "taskType": "walk",
+          "title": "พาเดินเล่น",
+          "dueAt": "2026-10-10T10:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "feed",
+          "title": "ให้อาหาร",
+          "dueAt": "2026-10-10T11:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "feed",
+          "title": "ให้อาหาร",
+          "dueAt": "2026-10-11T01:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "medication",
+          "title": "ให้ยา Apoquel",
+          "dueAt": "2026-10-11T02:00:00.000Z",
+          "medicationId": "m-1"
+        },
+        {
+          "taskType": "walk",
+          "title": "พาเดินเล่น",
+          "dueAt": "2026-10-11T02:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "clean",
+          "title": "ทำความสะอาดห้อง",
+          "dueAt": "2026-10-11T03:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "walk",
+          "title": "พาเดินเล่น",
+          "dueAt": "2026-10-11T10:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "feed",
+          "title": "ให้อาหาร",
+          "dueAt": "2026-10-11T11:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "feed",
+          "title": "ให้อาหาร",
+          "dueAt": "2026-10-12T01:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "medication",
+          "title": "ให้ยา Apoquel",
+          "dueAt": "2026-10-12T02:00:00.000Z",
+          "medicationId": "m-1"
+        },
+        {
+          "taskType": "walk",
+          "title": "พาเดินเล่น",
+          "dueAt": "2026-10-12T02:00:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "clean",
+          "title": "ทำความสะอาดห้อง",
+          "dueAt": "2026-10-12T03:00:00.000Z",
+          "medicationId": null
+        }
+      ]
+    },
+    {
+      "name": "1 night, default checkout 12:00, no walks",
+      "input": {
+        "checkedInAt": "2026-10-10T10:30:00.000Z",
+        "checkOutDate": "2026-10-11",
+        "expectedCheckOutTime": null,
+        "timezone": "Asia/Bangkok",
+        "feedingTimes": [
+          "07:30",
+          "17:30"
+        ],
+        "medications": [],
+        "walksPerDay": 0
+      },
+      "expected": [
+        {
+          "taskType": "feed",
+          "title": "ให้อาหาร",
+          "dueAt": "2026-10-11T00:30:00.000Z",
+          "medicationId": null
+        },
+        {
+          "taskType": "clean",
+          "title": "ทำความสะอาดห้อง",
+          "dueAt": "2026-10-11T03:00:00.000Z",
+          "medicationId": null
+        }
+      ]
+    }
+  ]
+}

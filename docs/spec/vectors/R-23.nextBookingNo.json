@@ -1,0 +1,62 @@
+{
+  "rule": "R-23",
+  "export": "nextBookingNo",
+  "module": "packages/domain/src/ids/booking-no.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "normal",
+      "input": {
+        "now": "2026-10-05T03:00:00.000Z",
+        "timezone": "Asia/Bangkok",
+        "counter": {
+          "month": "6910",
+          "nextSeq": 42
+        }
+      },
+      "expected": {
+        "bookingNo": "B6910-0042",
+        "counter": {
+          "month": "6910",
+          "nextSeq": 43
+        }
+      }
+    },
+    {
+      "name": "month rollover in local time",
+      "input": {
+        "now": "2026-10-31T17:05:00.000Z",
+        "timezone": "Asia/Bangkok",
+        "counter": {
+          "month": "6910",
+          "nextSeq": 980
+        }
+      },
+      "expected": {
+        "bookingNo": "B6911-0001",
+        "counter": {
+          "month": "6911",
+          "nextSeq": 2
+        }
+      }
+    },
+    {
+      "name": "beyond 9999",
+      "input": {
+        "now": "2026-10-05T03:00:00.000Z",
+        "timezone": "Asia/Bangkok",
+        "counter": {
+          "month": "6910",
+          "nextSeq": 10000
+        }
+      },
+      "expected": {
+        "bookingNo": "B6910-10000",
+        "counter": {
+          "month": "6910",
+          "nextSeq": 10001
+        }
+      }
+    }
+  ]
+}

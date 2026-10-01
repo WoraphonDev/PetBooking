@@ -1,0 +1,83 @@
+{
+  "rule": "R-24",
+  "export": "loginAttempt",
+  "module": "packages/domain/src/auth/lockout.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "success resets",
+      "input": {
+        "now": "2026-10-05T03:00:00.000Z",
+        "failedLoginCount": 3,
+        "lockedUntil": null,
+        "passwordCorrect": true
+      },
+      "expected": {
+        "allowed": true,
+        "failedLoginCount": 0,
+        "lockedUntil": null,
+        "error": null
+      }
+    },
+    {
+      "name": "4th failure",
+      "input": {
+        "now": "2026-10-05T03:00:00.000Z",
+        "failedLoginCount": 3,
+        "lockedUntil": null,
+        "passwordCorrect": false
+      },
+      "expected": {
+        "allowed": false,
+        "failedLoginCount": 4,
+        "lockedUntil": null,
+        "error": "INVALID_CREDENTIALS"
+      }
+    },
+    {
+      "name": "5th failure locks 15 min",
+      "input": {
+        "now": "2026-10-05T03:00:00.000Z",
+        "failedLoginCount": 4,
+        "lockedUntil": null,
+        "passwordCorrect": false
+      },
+      "expected": {
+        "allowed": false,
+        "failedLoginCount": 0,
+        "lockedUntil": "2026-10-05T03:15:00.000Z",
+        "error": "ACCOUNT_LOCKED"
+      }
+    },
+    {
+      "name": "locked even with right password",
+      "input": {
+        "now": "2026-10-05T03:10:00.000Z",
+        "failedLoginCount": 0,
+        "lockedUntil": "2026-10-05T03:15:00.000Z",
+        "passwordCorrect": true
+      },
+      "expected": {
+        "allowed": false,
+        "failedLoginCount": 0,
+        "lockedUntil": "2026-10-05T03:15:00.000Z",
+        "error": "ACCOUNT_LOCKED"
+      }
+    },
+    {
+      "name": "lock expired",
+      "input": {
+        "now": "2026-10-05T03:15:00.000Z",
+        "failedLoginCount": 0,
+        "lockedUntil": "2026-10-05T03:15:00.000Z",
+        "passwordCorrect": true
+      },
+      "expected": {
+        "allowed": true,
+        "failedLoginCount": 0,
+        "lockedUntil": null,
+        "error": null
+      }
+    }
+  ]
+}

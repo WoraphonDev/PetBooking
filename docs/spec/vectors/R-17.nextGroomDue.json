@@ -1,0 +1,138 @@
+{
+  "rule": "R-17",
+  "export": "nextGroomDue",
+  "module": "packages/domain/src/aftercare/next-groom.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "default interval",
+      "input": {
+        "visitDates": [
+          "2026-09-01"
+        ],
+        "shopIntervalDays": null,
+        "defaultDays": 28,
+        "hasFutureAppointment": false,
+        "petStatus": "active"
+      },
+      "expected": {
+        "dueDate": "2026-09-29",
+        "remindOn": "2026-09-26",
+        "intervalDays": 28,
+        "source": "default"
+      }
+    },
+    {
+      "name": "shop interval wins",
+      "input": {
+        "visitDates": [
+          "2026-08-01",
+          "2026-09-01"
+        ],
+        "shopIntervalDays": 21,
+        "defaultDays": 28,
+        "hasFutureAppointment": false,
+        "petStatus": "active"
+      },
+      "expected": {
+        "dueDate": "2026-09-22",
+        "remindOn": "2026-09-19",
+        "intervalDays": 21,
+        "source": "shop"
+      }
+    },
+    {
+      "name": "median of history",
+      "input": {
+        "visitDates": [
+          "2026-06-01",
+          "2026-07-01",
+          "2026-07-29",
+          "2026-08-30"
+        ],
+        "shopIntervalDays": null,
+        "defaultDays": 28,
+        "hasFutureAppointment": false,
+        "petStatus": "active"
+      },
+      "expected": {
+        "dueDate": "2026-09-29",
+        "remindOn": "2026-09-26",
+        "intervalDays": 30,
+        "source": "history"
+      }
+    },
+    {
+      "name": "even count median rounds up",
+      "input": {
+        "visitDates": [
+          "2026-07-01",
+          "2026-07-21",
+          "2026-08-25"
+        ],
+        "shopIntervalDays": null,
+        "defaultDays": 28,
+        "hasFutureAppointment": false,
+        "petStatus": "active"
+      },
+      "expected": {
+        "dueDate": "2026-09-22",
+        "remindOn": "2026-09-19",
+        "intervalDays": 28,
+        "source": "history"
+      }
+    },
+    {
+      "name": "future appointment suppresses reminder",
+      "input": {
+        "visitDates": [
+          "2026-09-01"
+        ],
+        "shopIntervalDays": null,
+        "defaultDays": 28,
+        "hasFutureAppointment": true,
+        "petStatus": "active"
+      },
+      "expected": {
+        "dueDate": "2026-09-29",
+        "remindOn": null,
+        "intervalDays": 28,
+        "source": "default:has_future_appointment"
+      }
+    },
+    {
+      "name": "pet rehomed",
+      "input": {
+        "visitDates": [
+          "2026-09-01"
+        ],
+        "shopIntervalDays": null,
+        "defaultDays": 28,
+        "hasFutureAppointment": false,
+        "petStatus": "rehomed"
+      },
+      "expected": {
+        "dueDate": null,
+        "remindOn": null,
+        "intervalDays": null,
+        "source": "pet_inactive"
+      }
+    },
+    {
+      "name": "no visits",
+      "input": {
+        "visitDates": [],
+        "shopIntervalDays": null,
+        "defaultDays": 28,
+        "hasFutureAppointment": false,
+        "petStatus": "active"
+      },
+      "expected": {
+        "dueDate": null,
+        "remindOn": null,
+        "intervalDays": null,
+        "source": "no_visit"
+      }
+    }
+  ]
+}

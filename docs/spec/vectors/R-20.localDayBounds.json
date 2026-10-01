@@ -1,0 +1,19 @@
+{
+  "rule": "R-20",
+  "export": "localDayBounds",
+  "module": "packages/domain/src/time/local-time.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "day bounds",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok"
+      },
+      "expected": {
+        "start": "2026-10-04T17:00:00.000Z",
+        "end": "2026-10-05T17:00:00.000Z"
+      }
+    }
+  ]
+}

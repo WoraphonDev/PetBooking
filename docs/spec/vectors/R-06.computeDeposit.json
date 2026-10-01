@@ -1,0 +1,188 @@
+{
+  "rule": "R-06",
+  "export": "computeDeposit",
+  "module": "packages/domain/src/payment/deposit.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "policy none",
+      "input": {
+        "estimatedTotalSatang": 85000,
+        "policy": {
+          "type": "none",
+          "value": 0
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 3
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 0,
+        "reason": "policy_none"
+      }
+    },
+    {
+      "name": "percent 30 exact",
+      "input": {
+        "estimatedTotalSatang": 85000,
+        "policy": {
+          "type": "percent",
+          "value": 30
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 3
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 25500,
+        "reason": "policy_percent"
+      }
+    },
+    {
+      "name": "percent 30 rounds up to whole baht",
+      "input": {
+        "estimatedTotalSatang": 123456,
+        "policy": {
+          "type": "percent",
+          "value": 30
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 3
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 37100,
+        "reason": "policy_percent"
+      }
+    },
+    {
+      "name": "fixed larger than total",
+      "input": {
+        "estimatedTotalSatang": 15000,
+        "policy": {
+          "type": "fixed",
+          "value": 20000
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 3
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 15000,
+        "reason": "policy_fixed"
+      }
+    },
+    {
+      "name": "fixed",
+      "input": {
+        "estimatedTotalSatang": 80000,
+        "policy": {
+          "type": "fixed",
+          "value": 20000
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 3
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 20000,
+        "reason": "policy_fixed"
+      }
+    },
+    {
+      "name": "exempt wins",
+      "input": {
+        "estimatedTotalSatang": 80000,
+        "policy": {
+          "type": "percent",
+          "value": 50
+        },
+        "customer": {
+          "depositExempt": true,
+          "reliabilityLevel": 1
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 0,
+        "reason": "exempt"
+      }
+    },
+    {
+      "name": "level 1 full prepay",
+      "input": {
+        "estimatedTotalSatang": 80000,
+        "policy": {
+          "type": "percent",
+          "value": 30
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 1
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 80000,
+        "reason": "reliability_full_prepay"
+      }
+    },
+    {
+      "name": "level 2 with policy none → 30%",
+      "input": {
+        "estimatedTotalSatang": 85000,
+        "policy": {
+          "type": "none",
+          "value": 0
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 2
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 25500,
+        "reason": "reliability_min_30"
+      }
+    },
+    {
+      "name": "level 2 keeps higher policy",
+      "input": {
+        "estimatedTotalSatang": 85000,
+        "policy": {
+          "type": "percent",
+          "value": 50
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 2
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 42500,
+        "reason": "policy_percent"
+      }
+    },
+    {
+      "name": "level 2 raises low fixed",
+      "input": {
+        "estimatedTotalSatang": 100000,
+        "policy": {
+          "type": "fixed",
+          "value": 10000
+        },
+        "customer": {
+          "depositExempt": false,
+          "reliabilityLevel": 2
+        }
+      },
+      "expected": {
+        "depositRequiredSatang": 30000,
+        "reason": "reliability_min_30"
+      }
+    }
+  ]
+}

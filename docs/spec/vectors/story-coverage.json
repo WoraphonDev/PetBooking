@@ -1,0 +1,1937 @@
+{
+ "US-13-01": {
+  "screens": [],
+  "api": [],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-13-02": {
+  "tables": [
+   "organization",
+   "owner_profile",
+   "rate_plan",
+   "booking_event"
+  ],
+  "screens": [],
+  "api": [],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-01-02": {
+  "screens": [
+   "A-01",
+   "A-02",
+   "A-03"
+  ],
+  "api": [
+   "auth.staffLogin",
+   "auth.staffLogout",
+   "auth.me",
+   "auth.resetRequest",
+   "auth.resetConfirm"
+  ],
+  "rules": [
+   "R-24"
+  ],
+  "notify": [
+   "staff.password_reset"
+  ],
+  "tables": [
+   "staff_user",
+   "password_reset",
+   "session"
+  ],
+  "jobs": []
+ },
+ "US-13-03": {
+  "screens": [
+   "AD-07"
+  ],
+  "api": [
+   "closures.importHolidays",
+   "admin.holidays"
+  ],
+  "rules": [
+   "R-20",
+   "R-31"
+  ],
+  "tables": [
+   "public_holiday"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-13-09": {
+  "api": [
+   "health"
+  ],
+  "screens": [],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-13-10": {
+  "screens": [
+   "AD-01",
+   "AD-02",
+   "AD-03"
+  ],
+  "api": [
+   "admin.login",
+   "admin.orgs",
+   "admin.createOrg",
+   "admin.updateOrg"
+  ],
+  "tables": [
+   "organization",
+   "platform_admin"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-01-04": {
+  "screens": [
+   "A-04",
+   "C-36"
+  ],
+  "api": [
+   "auth.inviteAccept",
+   "staffUsers.list",
+   "staffUsers.invite",
+   "staffUsers.update",
+   "staffUsers.resendInvite"
+  ],
+  "notify": [
+   "staff.invite"
+  ],
+  "tables": [
+   "staff_user",
+   "staff_invite"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-01-05": {
+  "screens": [
+   "C-45"
+  ],
+  "api": [
+   "staffMe.sessions",
+   "staffMe.revokeSession"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-02-01": {
+  "screens": [
+   "C-30",
+   "C-31"
+  ],
+  "api": [
+   "branch.get",
+   "branch.update",
+   "branch.setHours"
+  ],
+  "tables": [
+   "branch",
+   "branch_hours"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-02-02": {
+  "screens": [
+   "C-32"
+  ],
+  "api": [
+   "branch.setModules"
+  ],
+  "tables": [
+   "branch"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-02-04": {
+  "screens": [
+   "C-33"
+  ],
+  "api": [
+   "branch.updatePolicy"
+  ],
+  "tables": [
+   "branch_policy"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-02-05": {
+  "screens": [
+   "C-31"
+  ],
+  "api": [
+   "closures.list",
+   "closures.create",
+   "closures.delete",
+   "closures.importHolidays"
+  ],
+  "tables": [
+   "branch_closure"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-01": {
+  "screens": [
+   "C-08",
+   "C-09",
+   "C-10"
+  ],
+  "api": [
+   "customers.list",
+   "customers.create",
+   "customers.get",
+   "customers.update"
+  ],
+  "rules": [
+   "R-22"
+  ],
+  "tables": [
+   "owner_profile",
+   "customer"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-13-04": {
+  "screens": [
+   "S-02"
+  ],
+  "api": [
+   "staff.uploadUrl",
+   "customer.uploadUrl"
+  ],
+  "rules": [
+   "R-25"
+  ],
+  "jobs": [
+   "cleanup_uncommitted_files"
+  ],
+  "tables": [
+   "file_object"
+  ],
+  "notify": []
+ },
+ "US-03-02": {
+  "screens": [
+   "C-11"
+  ],
+  "api": [
+   "pets.create",
+   "pets.get",
+   "pets.update"
+  ],
+  "tables": [
+   "pet"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-04-01": {
+  "screens": [
+   "C-37"
+  ],
+  "api": [
+   "services.list",
+   "services.create",
+   "services.update"
+  ],
+  "tables": [
+   "service"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-02-08": {
+  "screens": [
+   "C-44"
+  ],
+  "api": [
+   "imports.create",
+   "imports.get",
+   "imports.commit"
+  ],
+  "tables": [
+   "import_job"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-03": {
+  "screens": [
+   "C-11"
+  ],
+  "api": [
+   "pets.get",
+   "pets.updateShopProfile",
+   "pets.addWeight"
+  ],
+  "tables": [
+   "pet_shop_profile",
+   "pet_weight"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-04": {
+  "screens": [
+   "C-11"
+  ],
+  "api": [
+   "pets.get",
+   "pets.updateShopProfile",
+   "pets.setFlags"
+  ],
+  "tables": [
+   "pet_shop_profile",
+   "pet_temperament_flag"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-05": {
+  "screens": [
+   "C-11"
+  ],
+  "api": [
+   "vaccinations.create",
+   "vaccinations.verify",
+   "vaccinations.reject"
+  ],
+  "notify": [
+   "customer.vaccine_rejected"
+  ],
+  "tables": [
+   "vaccine_type",
+   "pet_vaccination"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-03-06": {
+  "screens": [
+   "C-11"
+  ],
+  "api": [
+   "photos.list",
+   "photos.add"
+  ],
+  "rules": [
+   "R-25"
+  ],
+  "tables": [
+   "pet_photo"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-07": {
+  "screens": [
+   "C-11"
+  ],
+  "api": [
+   "pets.updateShopProfile"
+  ],
+  "tables": [
+   "pet_shop_profile"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-10": {
+  "screens": [
+   "C-08"
+  ],
+  "api": [
+   "search.quick"
+  ],
+  "rules": [
+   "R-22"
+  ],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-04-02": {
+  "screens": [
+   "C-37",
+   "C-38"
+  ],
+  "api": [
+   "sizeTiers.list",
+   "sizeTiers.set",
+   "services.setPrices"
+  ],
+  "rules": [
+   "R-01",
+   "R-02"
+  ],
+  "tables": [
+   "size_tier",
+   "service_price"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-04-03": {
+  "screens": [
+   "C-37"
+  ],
+  "api": [
+   "services.setPrices",
+   "groom.setItems"
+  ],
+  "rules": [
+   "R-02"
+  ],
+  "tables": [
+   "service_price"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-04-04": {
+  "screens": [
+   "C-37"
+  ],
+  "api": [
+   "services.create",
+   "services.setAddonLinks"
+  ],
+  "tables": [
+   "service",
+   "service_addon_link"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-13-07": {
+  "screens": [
+   "C-26"
+  ],
+  "api": [
+   "audit.list"
+  ],
+  "rules": [
+   "R-27"
+  ],
+  "tables": [
+   "audit_log"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-13-08": {
+  "screens": [
+   "P-02",
+   "L-01",
+   "L-15",
+   "AD-05"
+  ],
+  "api": [
+   "liff.register",
+   "liff.dataRequest",
+   "admin.dataRequests",
+   "admin.resolveDataRequest"
+  ],
+  "notify": [
+   "admin.data_request"
+  ],
+  "tables": [
+   "consent_record",
+   "data_request"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-09-01": {
+  "screens": [
+   "C-36"
+  ],
+  "api": [
+   "staffUsers.list",
+   "staffUsers.update",
+   "workingHours.set",
+   "timeOff.list",
+   "timeOff.create",
+   "timeOff.delete"
+  ],
+  "tables": [
+   "staff_working_hours",
+   "staff_time_off"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-05-01": {
+  "screens": [
+   "C-43"
+  ],
+  "api": [
+   "stations.list",
+   "stations.upsert",
+   "availability.groomSlots"
+  ],
+  "rules": [
+   "R-04"
+  ],
+  "tables": [
+   "branch_policy",
+   "groom_station",
+   "groom_appointment"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-13-05": {
+  "screens": [
+   "C-45"
+  ],
+  "api": [
+   "staffMe.pushSubscribe",
+   "staffMe.pushUnsubscribe"
+  ],
+  "rules": [
+   "R-19"
+  ],
+  "notify": [
+   "staff.new_booking"
+  ],
+  "tables": [
+   "web_push_subscription",
+   "notification"
+  ],
+  "jobs": []
+ },
+ "US-01-03": {
+  "screens": [
+   "C-45",
+   "S-07"
+  ],
+  "api": [
+   "auth.staffLine",
+   "staffMe.linkLine"
+  ],
+  "tables": [
+   "staff_user"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-05-04": {
+  "screens": [
+   "C-03",
+   "C-05"
+  ],
+  "api": [
+   "availability.groomSlots",
+   "quotes.create",
+   "bookings.create",
+   "bookings.get"
+  ],
+  "rules": [
+   "R-03",
+   "R-04",
+   "R-23"
+  ],
+  "notify": [
+   "customer.booking_confirmed"
+  ],
+  "tables": [
+   "booking",
+   "groom_appointment",
+   "groom_appointment_item"
+  ],
+  "jobs": []
+ },
+ "US-05-06": {
+  "screens": [
+   "C-06"
+  ],
+  "api": [
+   "groom.setItems",
+   "groom.checkIn"
+  ],
+  "tables": [
+   "pet_weight",
+   "groom_appointment",
+   "consent_document"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-04-05": {
+  "screens": [
+   "C-02D",
+   "C-37"
+  ],
+  "api": [
+   "surchargeTypes.list",
+   "surchargeTypes.upsert",
+   "groom.addSurcharge",
+   "groom.removeSurcharge"
+  ],
+  "tables": [
+   "surcharge_type",
+   "appointment_surcharge"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-05-03": {
+  "screens": [
+   "C-02",
+   "C-02D"
+  ],
+  "api": [
+   "calendar.day",
+   "groom.reschedule"
+  ],
+  "tables": [
+   "groom_appointment"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-05-07": {
+  "screens": [
+   "S-02"
+  ],
+  "api": [
+   "groom.jobCard"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-05-08": {
+  "screens": [
+   "C-02D",
+   "C-05"
+  ],
+  "api": [
+   "availability.groomSlots",
+   "bookings.cancelPreview",
+   "bookings.cancel",
+   "groom.reschedule",
+   "groom.cancel",
+   "stays.cancel",
+   "daycare.cancel"
+  ],
+  "rules": [
+   "R-04",
+   "R-07"
+  ],
+  "notify": [
+   "customer.booking_cancelled",
+   "customer.booking_rescheduled"
+  ],
+  "jobs": [],
+  "tables": []
+ },
+ "US-09-03": {
+  "screens": [
+   "S-01",
+   "S-02"
+  ],
+  "api": [
+   "photos.add",
+   "groom.start",
+   "groom.finish",
+   "groom.myQueue"
+  ],
+  "tables": [
+   "pet_photo"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-09-04": {
+  "screens": [
+   "S-07"
+  ],
+  "api": [
+   "staffMe.pushSubscribe"
+  ],
+  "rules": [
+   "R-19"
+  ],
+  "notify": [
+   "staff.groom_done",
+   "staff.care_task_overdue"
+  ],
+  "tables": [
+   "web_push_subscription"
+  ],
+  "jobs": []
+ },
+ "US-13-11": {
+  "screens": [
+   "AD-03"
+  ],
+  "api": [
+   "admin.supportStart",
+   "admin.supportEnd"
+  ],
+  "rules": [
+   "R-27"
+  ],
+  "notify": [
+   "owner.support_access"
+  ],
+  "tables": [
+   "platform_admin",
+   "support_access_log"
+  ],
+  "jobs": []
+ },
+ "US-13-13": {
+  "screens": [
+   "C-46",
+   "AD-04"
+  ],
+  "api": [
+   "feedback.create",
+   "admin.feedback",
+   "admin.updateFeedback"
+  ],
+  "notify": [
+   "admin.feedback"
+  ],
+  "tables": [
+   "feedback_report"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-13-14": {
+  "screens": [
+   "AD-02"
+  ],
+  "api": [
+   "admin.createOrg"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-05-02": {
+  "screens": [
+   "L-07"
+  ],
+  "api": [
+   "liff.createBooking",
+   "cron.tick"
+  ],
+  "rules": [
+   "R-08"
+  ],
+  "notify": [
+   "customer.hold_expired"
+  ],
+  "jobs": [
+   "expire_hold"
+  ],
+  "tables": [
+   "scheduled_job"
+  ]
+ },
+ "US-02-06": {
+  "screens": [
+   "C-35",
+   "AD-03"
+  ],
+  "api": [
+   "line.status",
+   "webhook.line",
+   "admin.setLineChannel",
+   "admin.verifyLine"
+  ],
+  "rules": [
+   "R-18"
+  ],
+  "tables": [
+   "line_channel"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-01-01": {
+  "screens": [
+   "L-01"
+  ],
+  "api": [
+   "linkRequests.list",
+   "liff.session"
+  ],
+  "tables": [
+   "session",
+   "line_identity",
+   "customer_link_request"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-02-03": {
+  "screens": [
+   "C-34"
+  ],
+  "api": [
+   "branch.setPromptpay"
+  ],
+  "notify": [
+   "owner.promptpay_changed"
+  ],
+  "tables": [
+   "branch"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-02-07": {
+  "screens": [
+   "P-01",
+   "C-35"
+  ],
+  "api": [
+   "public.branch"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-07-01": {
+  "screens": [
+   "C-18",
+   "C-34",
+   "L-07"
+  ],
+  "api": [
+   "bills.promptpayQr"
+  ],
+  "rules": [
+   "R-30"
+  ],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-07-02": {
+  "screens": [
+   "C-05",
+   "C-07"
+  ],
+  "api": [
+   "bookings.list",
+   "bookings.recordDeposit",
+   "slips.list",
+   "slips.verify",
+   "slips.reject",
+   "liff.uploadSlip"
+  ],
+  "rules": [
+   "R-05",
+   "R-25"
+  ],
+  "notify": [
+   "customer.deposit_confirmed",
+   "customer.slip_rejected",
+   "staff.slip_submitted"
+  ],
+  "tables": [
+   "payment_slip",
+   "payment"
+  ],
+  "jobs": []
+ },
+ "US-07-03": {
+  "screens": [
+   "C-04",
+   "C-05",
+   "C-33"
+  ],
+  "api": [
+   "branch.updatePolicy",
+   "bookings.recordDeposit",
+   "bookings.waiveDeposit"
+  ],
+  "rules": [
+   "R-06"
+  ],
+  "tables": [
+   "branch_policy",
+   "booking"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-07-04": {
+  "screens": [
+   "C-05",
+   "C-33"
+  ],
+  "api": [
+   "branch.updatePolicy",
+   "bookings.cancelPreview",
+   "bookings.cancel"
+  ],
+  "rules": [
+   "R-07"
+  ],
+  "notify": [
+   "customer.booking_cancelled"
+  ],
+  "tables": [
+   "branch_policy",
+   "booking"
+  ],
+  "jobs": []
+ },
+ "US-07-07": {
+  "screens": [
+   "C-02D"
+  ],
+  "api": [
+   "groom.noShow",
+   "stays.noShow",
+   "daycare.no_show"
+  ],
+  "rules": [
+   "R-07",
+   "R-09"
+  ],
+  "notify": [
+   "customer.no_show"
+  ],
+  "jobs": [],
+  "tables": []
+ },
+ "US-03-09": {
+  "screens": [
+   "C-09"
+  ],
+  "api": [
+   "customers.blacklist",
+   "customers.reliabilityOverride"
+  ],
+  "rules": [
+   "R-06",
+   "R-09"
+  ],
+  "jobs": [
+   "recompute_reliability"
+  ],
+  "tables": [
+   "customer"
+  ],
+  "notify": []
+ },
+ "US-03-11": {
+  "screens": [
+   "C-11"
+  ],
+  "api": [
+   "pets.setStatus"
+  ],
+  "rules": [
+   "R-12"
+  ],
+  "tables": [
+   "pet"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-12": {
+  "screens": [
+   "L-01",
+   "L-15"
+  ],
+  "api": [
+   "liff.register",
+   "liff.updateMe"
+  ],
+  "tables": [
+   "customer",
+   "consent_record"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-11-01": {
+  "screens": [
+   "C-12",
+   "L-01",
+   "L-15"
+  ],
+  "api": [
+   "linkRequests.list",
+   "linkRequests.approve",
+   "linkRequests.reject",
+   "liff.register",
+   "liff.me",
+   "liff.updateMe"
+  ],
+  "rules": [
+   "R-22"
+  ],
+  "notify": [
+   "customer.link_approved",
+   "staff.link_request"
+  ],
+  "tables": [
+   "customer",
+   "customer_link_request",
+   "consent_record",
+   "data_request"
+  ],
+  "jobs": []
+ },
+ "US-11-02": {
+  "screens": [
+   "L-03"
+  ],
+  "api": [
+   "liff.pets",
+   "liff.createPet",
+   "liff.updatePet",
+   "liff.addVaccination"
+  ],
+  "tables": [
+   "pet",
+   "pet_vaccination"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-11-03": {
+  "screens": [
+   "L-02",
+   "L-04"
+  ],
+  "api": [
+   "liff.shop",
+   "liff.groomSlots",
+   "liff.quote",
+   "liff.createBooking"
+  ],
+  "rules": [
+   "R-01",
+   "R-03",
+   "R-04",
+   "R-06",
+   "R-12",
+   "R-23"
+  ],
+  "notify": [
+   "customer.booking_received",
+   "customer.booking_confirmed"
+  ],
+  "tables": [
+   "booking",
+   "groom_appointment_item"
+  ],
+  "jobs": []
+ },
+ "US-05-05": {
+  "screens": [
+   "C-04",
+   "C-33"
+  ],
+  "api": [
+   "branch.updatePolicy",
+   "bookings.list",
+   "bookings.approve",
+   "bookings.decline"
+  ],
+  "rules": [
+   "R-08"
+  ],
+  "notify": [
+   "customer.booking_confirmed",
+   "customer.booking_declined",
+   "staff.approval_overdue"
+  ],
+  "jobs": [
+   "approval_overdue"
+  ],
+  "tables": []
+ },
+ "US-07-05": {
+  "screens": [
+   "C-05",
+   "C-09"
+  ],
+  "api": [
+   "customers.credit",
+   "refunds.create"
+  ],
+  "rules": [
+   "R-07"
+  ],
+  "tables": [
+   "refund",
+   "credit_ledger"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-13-06": {
+  "screens": [
+   "C-22",
+   "C-33",
+   "C-35"
+  ],
+  "api": [
+   "branch.updatePolicy",
+   "line.status",
+   "line.skipped",
+   "webhook.line"
+  ],
+  "rules": [
+   "R-18",
+   "R-19"
+  ],
+  "notify": [
+   "owner.quota_warning"
+  ],
+  "tables": [
+   "branch_policy",
+   "line_channel",
+   "notification"
+  ],
+  "jobs": []
+ },
+ "US-11-08": {
+  "screens": [
+   "L-02",
+   "L-08",
+   "L-09"
+  ],
+  "api": [
+   "liff.bookings",
+   "liff.booking",
+   "liff.cancel",
+   "liff.reschedule"
+  ],
+  "rules": [
+   "R-07",
+   "R-21"
+  ],
+  "notify": [
+   "staff.booking_cancelled",
+   "staff.booking_rescheduled"
+  ],
+  "jobs": [],
+  "tables": []
+ },
+ "US-07-06": {
+  "screens": [
+   "C-33"
+  ],
+  "api": [
+   "cron.tick"
+  ],
+  "notify": [
+   "customer.reminder_24h"
+  ],
+  "jobs": [
+   "reminder_24h"
+  ],
+  "tables": [
+   "scheduled_job"
+  ],
+  "rules": []
+ },
+ "US-07-08": {
+  "screens": [
+   "C-05",
+   "L-14"
+  ],
+  "api": [
+   "bookings.balanceLink",
+   "liff.payPage",
+   "liff.payUploadSlip"
+  ],
+  "rules": [
+   "R-30"
+  ],
+  "notify": [
+   "customer.balance_link"
+  ],
+  "jobs": [],
+  "tables": []
+ },
+ "US-11-07": {
+  "screens": [
+   "L-07"
+  ],
+  "api": [
+   "liff.uploadSlip"
+  ],
+  "rules": [
+   "R-05",
+   "R-08"
+  ],
+  "notify": [
+   "customer.booking_received",
+   "customer.deposit_confirmed"
+  ],
+  "tables": [
+   "payment_slip"
+  ],
+  "jobs": []
+ },
+ "US-11-10": {
+  "screens": [
+   "L-09"
+  ],
+  "api": [
+   "liff.ics"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-08-01": {
+  "screens": [
+   "C-18",
+   "C-19"
+  ],
+  "api": [
+   "groom.pickUp",
+   "bills.open",
+   "bills.list",
+   "bills.get",
+   "bills.addLine",
+   "bills.removeLine"
+  ],
+  "rules": [
+   "R-15"
+  ],
+  "tables": [
+   "bill",
+   "bill_line"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-03-08": {
+  "screens": [
+   "C-09"
+  ],
+  "api": [
+   "customers.timeline"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-10-01": {
+  "screens": [
+   "C-21",
+   "S-03",
+   "L-11"
+  ],
+  "api": [
+   "groom.finish",
+   "reportCards.list",
+   "reportCards.get",
+   "reportCards.update",
+   "reportCards.submit",
+   "reportCards.approve",
+   "liff.reportCard"
+  ],
+  "notify": [
+   "customer.report_card",
+   "staff.report_card_review"
+  ],
+  "tables": [
+   "report_card"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-05-09": {
+  "screens": [
+   "C-02D"
+  ],
+  "api": [
+   "groom.notifyPickup",
+   "groom.pickUp"
+  ],
+  "notify": [
+   "customer.ready_for_pickup",
+   "staff.groom_done"
+  ],
+  "rules": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-08-04": {
+  "screens": [
+   "C-18"
+  ],
+  "api": [
+   "bills.addPayment",
+   "bills.voidPayment",
+   "bills.promptpayQr",
+   "bills.close"
+  ],
+  "rules": [
+   "R-15",
+   "R-30"
+  ],
+  "tables": [
+   "payment",
+   "bill"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-09-02": {
+  "screens": [
+   "C-42"
+  ],
+  "api": [
+   "commissionRules.list",
+   "commissionRules.set",
+   "bills.close"
+  ],
+  "rules": [
+   "R-13"
+  ],
+  "tables": [
+   "commission_rule",
+   "commission_entry"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-09-05": {
+  "screens": [
+   "S-06"
+  ],
+  "api": [
+   "staffMe.commissions"
+  ],
+  "rules": [
+   "R-13"
+  ],
+  "tables": [
+   "commission_entry"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-08-02": {
+  "screens": [
+   "C-18"
+  ],
+  "api": [
+   "bills.updateLine",
+   "bills.setDiscount"
+  ],
+  "rules": [
+   "R-15"
+  ],
+  "tables": [
+   "bill"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-10-05": {
+  "screens": [
+   "C-09",
+   "C-18",
+   "C-41"
+  ],
+  "api": [
+   "customers.packages",
+   "packageTemplates.list",
+   "packageTemplates.upsert",
+   "bills.addLine"
+  ],
+  "rules": [
+   "R-14"
+  ],
+  "jobs": [
+   "package_expiry"
+  ],
+  "tables": [
+   "package_template",
+   "bill_line",
+   "customer_package",
+   "package_redemption"
+  ],
+  "notify": []
+ },
+ "US-08-03": {
+  "screens": [
+   "C-18"
+  ],
+  "api": [
+   "bills.addLine",
+   "bills.addPayment"
+  ],
+  "rules": [
+   "R-14",
+   "R-15"
+  ],
+  "tables": [
+   "credit_ledger",
+   "bill",
+   "bill_line"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-08-05": {
+  "screens": [
+   "C-20",
+   "L-13"
+  ],
+  "api": [
+   "bills.close",
+   "bills.receipt",
+   "bills.sendReceipt",
+   "liff.receipt"
+  ],
+  "rules": [
+   "R-16"
+  ],
+  "notify": [
+   "customer.receipt"
+  ],
+  "tables": [
+   "bill"
+  ],
+  "jobs": []
+ },
+ "US-08-06": {
+  "screens": [
+   "C-19"
+  ],
+  "api": [
+   "bills.void"
+  ],
+  "tables": [
+   "bill",
+   "package_redemption"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-10-03": {
+  "screens": [
+   "L-11"
+  ],
+  "api": [
+   "liff.rate",
+   "liff.reviewClick"
+  ],
+  "notify": [
+   "staff.low_rating"
+  ],
+  "tables": [
+   "report_card"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-10-04": {
+  "screens": [
+   "C-33"
+  ],
+  "api": [
+   "cron.tick"
+  ],
+  "rules": [
+   "R-17"
+  ],
+  "notify": [
+   "customer.next_groom_reminder"
+  ],
+  "jobs": [
+   "next_groom_reminder"
+  ],
+  "tables": [
+   "scheduled_job"
+  ]
+ },
+ "US-10-06": {
+  "screens": [
+   "L-12"
+  ],
+  "api": [
+   "liff.packages"
+  ],
+  "rules": [
+   "R-14"
+  ],
+  "tables": [
+   "customer_package"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-12-03": {
+  "screens": [
+   "C-24"
+  ],
+  "api": [
+   "reports.commissions"
+  ],
+  "rules": [
+   "R-13"
+  ],
+  "tables": [
+   "commission_entry"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-01": {
+  "screens": [
+   "C-39"
+  ],
+  "api": [
+   "roomTypes.list",
+   "roomTypes.create",
+   "roomTypes.update",
+   "roomUnits.list",
+   "roomUnits.upsert"
+  ],
+  "rules": [
+   "R-12"
+  ],
+  "tables": [
+   "room_type",
+   "room_unit"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-03": {
+  "screens": [
+   "C-03"
+  ],
+  "api": [
+   "availability.hotel",
+   "bookings.create",
+   "stays.changeDates"
+  ],
+  "rules": [
+   "R-10",
+   "R-28"
+  ],
+  "tables": [
+   "stay"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-05": {
+  "screens": [
+   "C-15",
+   "C-33",
+   "L-03"
+  ],
+  "api": [
+   "branch.updatePolicy",
+   "vaccinations.verify",
+   "stays.checkIn",
+   "liff.addVaccination"
+  ],
+  "rules": [
+   "R-11"
+  ],
+  "notify": [
+   "staff.vaccine_review"
+  ],
+  "tables": [
+   "pet_vaccination"
+  ],
+  "jobs": []
+ },
+ "US-11-04": {
+  "screens": [
+   "L-05"
+  ],
+  "api": [
+   "liff.hotelAvailability",
+   "liff.quote",
+   "liff.createBooking"
+  ],
+  "rules": [
+   "R-03",
+   "R-10",
+   "R-11",
+   "R-12",
+   "R-28"
+  ],
+  "tables": [
+   "stay"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-13": {
+  "screens": [
+   "C-03",
+   "C-17",
+   "C-40"
+  ],
+  "api": [
+   "daycareTypes.list",
+   "daycareTypes.upsert",
+   "availability.daycare",
+   "bookings.create",
+   "daycare.list",
+   "daycare.check_in",
+   "daycare.check_out"
+  ],
+  "rules": [
+   "R-29"
+  ],
+  "tables": [
+   "daycare_session_type",
+   "daycare_rate",
+   "daycare_visit"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-11-05": {
+  "screens": [
+   "L-06"
+  ],
+  "api": [
+   "liff.daycareAvailability",
+   "liff.quote",
+   "liff.createBooking"
+  ],
+  "rules": [
+   "R-03",
+   "R-11",
+   "R-29"
+  ],
+  "tables": [
+   "daycare_visit"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-07": {
+  "screens": [
+   "C-03"
+  ],
+  "api": [
+   "bookings.create"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-11-06": {
+  "screens": [
+   "L-05"
+  ],
+  "api": [
+   "liff.createBooking"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-06-02": {
+  "screens": [
+   "C-39"
+  ],
+  "api": [
+   "roomTypes.setRates"
+  ],
+  "tables": [
+   "room_rate"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-04": {
+  "screens": [
+   "C-13"
+  ],
+  "api": [
+   "roomUnits.housekeeping",
+   "availability.hotel",
+   "stays.changeRoom",
+   "roomMap.get"
+  ],
+  "rules": [
+   "R-28"
+  ],
+  "tables": [
+   "room_unit",
+   "stay"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-06": {
+  "screens": [
+   "C-15",
+   "C-37"
+  ],
+  "api": [
+   "services.create",
+   "stays.addAddon",
+   "stays.removeAddon"
+  ],
+  "rules": [
+   "R-03"
+  ],
+  "tables": [
+   "service",
+   "stay_addon"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-08": {
+  "screens": [
+   "C-15"
+  ],
+  "api": [
+   "stays.get",
+   "stays.saveIntake",
+   "stays.signAgreement",
+   "stays.checkIn"
+  ],
+  "rules": [
+   "R-26"
+  ],
+  "tables": [
+   "consent_document",
+   "stay_intake",
+   "stay_medication",
+   "stay_belonging"
+  ],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-09": {
+  "screens": [
+   "C-15",
+   "C-16",
+   "S-04"
+  ],
+  "api": [
+   "stays.checkIn",
+   "careTasks.list",
+   "careTasks.done",
+   "careTasks.skip"
+  ],
+  "rules": [
+   "R-26"
+  ],
+  "notify": [
+   "staff.care_task_overdue"
+  ],
+  "jobs": [
+   "care_task_overdue_scan"
+  ],
+  "tables": [
+   "stay_medication",
+   "care_task"
+  ]
+ },
+ "US-06-10": {
+  "screens": [
+   "S-05",
+   "L-10"
+  ],
+  "api": [
+   "stays.postUpdate",
+   "liff.stayUpdates"
+  ],
+  "notify": [
+   "customer.stay_checked_in",
+   "customer.stay_update"
+  ],
+  "tables": [
+   "pet_photo"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-06-11": {
+  "screens": [
+   "C-15"
+  ],
+  "api": [
+   "stays.checkOut"
+  ],
+  "tables": [
+   "stay",
+   "stay_belonging"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": []
+ },
+ "US-06-12": {
+  "screens": [
+   "C-14"
+  ],
+  "api": [
+   "stays.today"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-10-02": {
+  "screens": [
+   "S-03",
+   "L-11"
+  ],
+  "api": [
+   "reportCards.update",
+   "liff.reportCard"
+  ],
+  "notify": [
+   "customer.report_card"
+  ],
+  "tables": [
+   "report_card"
+  ],
+  "rules": [],
+  "jobs": []
+ },
+ "US-12-01": {
+  "screens": [
+   "C-01"
+  ],
+  "api": [
+   "dashboard.today"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-12-02": {
+  "screens": [
+   "C-23"
+  ],
+  "api": [
+   "reports.sales"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-12-04": {
+  "screens": [
+   "C-25"
+  ],
+  "api": [
+   "reports.occupancy"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-12-05": {
+  "screens": [
+   "C-33"
+  ],
+  "api": [
+   "cron.tick"
+  ],
+  "notify": [
+   "owner.daily_summary"
+  ],
+  "jobs": [
+   "owner_daily_summary"
+  ],
+  "tables": [
+   "scheduled_job"
+  ],
+  "rules": []
+ },
+ "US-12-06": {
+  "screens": [
+   "C-23"
+  ],
+  "api": [
+   "exports.csv"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ },
+ "US-13-12": {
+  "screens": [
+   "AD-06"
+  ],
+  "api": [
+   "admin.analytics"
+  ],
+  "rules": [],
+  "notify": [],
+  "jobs": [],
+  "tables": []
+ }
+}

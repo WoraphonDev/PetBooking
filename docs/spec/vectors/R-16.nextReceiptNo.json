@@ -1,0 +1,65 @@
+{
+  "rule": "R-16",
+  "export": "nextReceiptNo",
+  "module": "packages/domain/src/ids/receipt-no.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "normal",
+      "input": {
+        "prefix": "R",
+        "now": "2026-10-05T03:00:00.000Z",
+        "timezone": "Asia/Bangkok",
+        "counter": {
+          "yearBe": 2569,
+          "nextSeq": 42
+        }
+      },
+      "expected": {
+        "receiptNo": "R69-00042",
+        "counter": {
+          "yearBe": 2569,
+          "nextSeq": 43
+        }
+      }
+    },
+    {
+      "name": "new year local time (UTC still Dec 31)",
+      "input": {
+        "prefix": "R",
+        "now": "2026-12-31T17:30:00.000Z",
+        "timezone": "Asia/Bangkok",
+        "counter": {
+          "yearBe": 2569,
+          "nextSeq": 1234
+        }
+      },
+      "expected": {
+        "receiptNo": "R70-00001",
+        "counter": {
+          "yearBe": 2570,
+          "nextSeq": 2
+        }
+      }
+    },
+    {
+      "name": "first receipt ever",
+      "input": {
+        "prefix": "PC",
+        "now": "2026-10-05T03:00:00.000Z",
+        "timezone": "Asia/Bangkok",
+        "counter": {
+          "yearBe": 0,
+          "nextSeq": 1
+        }
+      },
+      "expected": {
+        "receiptNo": "PC69-00001",
+        "counter": {
+          "yearBe": 2569,
+          "nextSeq": 2
+        }
+      }
+    }
+  ]
+}

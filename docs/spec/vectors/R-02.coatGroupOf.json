@@ -1,0 +1,57 @@
+{
+  "rule": "R-02",
+  "export": "coatGroupOf",
+  "module": "packages/domain/src/pricing/price-lookup.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "short",
+      "input": {
+        "coatType": "short"
+      },
+      "expected": "short"
+    },
+    {
+      "name": "long",
+      "input": {
+        "coatType": "long"
+      },
+      "expected": "long"
+    },
+    {
+      "name": "double",
+      "input": {
+        "coatType": "double"
+      },
+      "expected": "long"
+    },
+    {
+      "name": "curly",
+      "input": {
+        "coatType": "curly"
+      },
+      "expected": "long"
+    },
+    {
+      "name": "wire",
+      "input": {
+        "coatType": "wire"
+      },
+      "expected": "short"
+    },
+    {
+      "name": "hairless",
+      "input": {
+        "coatType": "hairless"
+      },
+      "expected": "short"
+    },
+    {
+      "name": "unknown",
+      "input": {
+        "coatType": "unknown"
+      },
+      "expected": "any"
+    }
+  ]
+}

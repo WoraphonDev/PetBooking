@@ -1,0 +1,92 @@
+{
+  "rule": "R-05",
+  "export": "findDuplicateSlip",
+  "module": "packages/domain/src/payment/slip.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "first time",
+      "input": {
+        "transRef": "014242082547BPM04988",
+        "existing": []
+      },
+      "expected": {
+        "duplicateOfSlipId": null
+      }
+    },
+    {
+      "name": "duplicate of verified slip",
+      "input": {
+        "transRef": "014242082547BPM04988",
+        "existing": [
+          {
+            "id": "slip-1",
+            "transRef": "014242082547BPM04988",
+            "status": "verified",
+            "createdAt": "2026-10-01T03:00:00.000Z"
+          }
+        ]
+      },
+      "expected": {
+        "duplicateOfSlipId": "slip-1"
+      }
+    },
+    {
+      "name": "rejected slip does not count",
+      "input": {
+        "transRef": "014242082547BPM04988",
+        "existing": [
+          {
+            "id": "slip-1",
+            "transRef": "014242082547BPM04988",
+            "status": "rejected",
+            "createdAt": "2026-10-01T03:00:00.000Z"
+          }
+        ]
+      },
+      "expected": {
+        "duplicateOfSlipId": null
+      }
+    },
+    {
+      "name": "earliest match wins",
+      "input": {
+        "transRef": "X1",
+        "existing": [
+          {
+            "id": "slip-3",
+            "transRef": "X1",
+            "status": "submitted",
+            "createdAt": "2026-10-03T03:00:00.000Z"
+          },
+          {
+            "id": "slip-2",
+            "transRef": "X1",
+            "status": "verified",
+            "createdAt": "2026-10-02T03:00:00.000Z"
+          }
+        ]
+      },
+      "expected": {
+        "duplicateOfSlipId": "slip-2"
+      }
+    },
+    {
+      "name": "no QR read",
+      "input": {
+        "transRef": null,
+        "existing": [
+          {
+            "id": "slip-1",
+            "transRef": null,
+            "status": "submitted",
+            "createdAt": "2026-10-01T03:00:00.000Z"
+          }
+        ]
+      },
+      "expected": {
+        "duplicateOfSlipId": null
+      }
+    }
+  ]
+}

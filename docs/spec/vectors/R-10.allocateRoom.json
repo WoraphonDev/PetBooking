@@ -1,0 +1,283 @@
+{
+  "rule": "R-10",
+  "export": "allocateRoom",
+  "module": "packages/domain/src/availability/room-allocation.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "prefer room vacated the same day",
+      "input": {
+        "roomTypeId": "rt-std",
+        "checkInDate": "2026-10-10",
+        "checkOutDate": "2026-10-13",
+        "units": [
+          {
+            "id": "A1",
+            "code": "A1",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 1
+          },
+          {
+            "id": "A2",
+            "code": "A2",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 2
+          },
+          {
+            "id": "A3",
+            "code": "A3",
+            "roomTypeId": "rt-std",
+            "status": "maintenance",
+            "sortOrder": 3
+          },
+          {
+            "id": "B1",
+            "code": "B1",
+            "roomTypeId": "rt-vip",
+            "status": "active",
+            "sortOrder": 1
+          }
+        ],
+        "stays": [
+          {
+            "roomUnitId": "A1",
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-12"
+          },
+          {
+            "roomUnitId": "A2",
+            "checkInDate": "2026-10-08",
+            "checkOutDate": "2026-10-10"
+          }
+        ]
+      },
+      "expected": {
+        "roomUnitId": "A2",
+        "rule": "back_to_back_before"
+      }
+    },
+    {
+      "name": "prefer room whose next guest arrives on our checkout",
+      "input": {
+        "roomTypeId": "rt-std",
+        "checkInDate": "2026-10-05",
+        "checkOutDate": "2026-10-08",
+        "units": [
+          {
+            "id": "A1",
+            "code": "A1",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 1
+          },
+          {
+            "id": "A2",
+            "code": "A2",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 2
+          },
+          {
+            "id": "A3",
+            "code": "A3",
+            "roomTypeId": "rt-std",
+            "status": "maintenance",
+            "sortOrder": 3
+          },
+          {
+            "id": "B1",
+            "code": "B1",
+            "roomTypeId": "rt-vip",
+            "status": "active",
+            "sortOrder": 1
+          }
+        ],
+        "stays": [
+          {
+            "roomUnitId": "A1",
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-12"
+          },
+          {
+            "roomUnitId": "A2",
+            "checkInDate": "2026-10-08",
+            "checkOutDate": "2026-10-10"
+          }
+        ]
+      },
+      "expected": {
+        "roomUnitId": "A2",
+        "rule": "back_to_back_after"
+      }
+    },
+    {
+      "name": "first free by sort order",
+      "input": {
+        "roomTypeId": "rt-std",
+        "checkInDate": "2026-10-20",
+        "checkOutDate": "2026-10-22",
+        "units": [
+          {
+            "id": "A1",
+            "code": "A1",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 1
+          },
+          {
+            "id": "A2",
+            "code": "A2",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 2
+          },
+          {
+            "id": "A3",
+            "code": "A3",
+            "roomTypeId": "rt-std",
+            "status": "maintenance",
+            "sortOrder": 3
+          },
+          {
+            "id": "B1",
+            "code": "B1",
+            "roomTypeId": "rt-vip",
+            "status": "active",
+            "sortOrder": 1
+          }
+        ],
+        "stays": [
+          {
+            "roomUnitId": "A1",
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-12"
+          },
+          {
+            "roomUnitId": "A2",
+            "checkInDate": "2026-10-08",
+            "checkOutDate": "2026-10-10"
+          }
+        ]
+      },
+      "expected": {
+        "roomUnitId": "A1",
+        "rule": "first_free"
+      }
+    },
+    {
+      "name": "maintenance room never chosen → none",
+      "input": {
+        "roomTypeId": "rt-std",
+        "checkInDate": "2026-10-09",
+        "checkOutDate": "2026-10-11",
+        "units": [
+          {
+            "id": "A1",
+            "code": "A1",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 1
+          },
+          {
+            "id": "A2",
+            "code": "A2",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 2
+          },
+          {
+            "id": "A3",
+            "code": "A3",
+            "roomTypeId": "rt-std",
+            "status": "maintenance",
+            "sortOrder": 3
+          },
+          {
+            "id": "B1",
+            "code": "B1",
+            "roomTypeId": "rt-vip",
+            "status": "active",
+            "sortOrder": 1
+          }
+        ],
+        "stays": [
+          {
+            "roomUnitId": "A1",
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-12"
+          },
+          {
+            "roomUnitId": "A2",
+            "checkInDate": "2026-10-08",
+            "checkOutDate": "2026-10-10"
+          },
+          {
+            "roomUnitId": "A2",
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-11"
+          }
+        ]
+      },
+      "expected": {
+        "roomUnitId": null,
+        "rule": "none_free"
+      }
+    },
+    {
+      "name": "other room type",
+      "input": {
+        "roomTypeId": "rt-vip",
+        "checkInDate": "2026-10-10",
+        "checkOutDate": "2026-10-12",
+        "units": [
+          {
+            "id": "A1",
+            "code": "A1",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 1
+          },
+          {
+            "id": "A2",
+            "code": "A2",
+            "roomTypeId": "rt-std",
+            "status": "active",
+            "sortOrder": 2
+          },
+          {
+            "id": "A3",
+            "code": "A3",
+            "roomTypeId": "rt-std",
+            "status": "maintenance",
+            "sortOrder": 3
+          },
+          {
+            "id": "B1",
+            "code": "B1",
+            "roomTypeId": "rt-vip",
+            "status": "active",
+            "sortOrder": 1
+          }
+        ],
+        "stays": [
+          {
+            "roomUnitId": "A1",
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-12"
+          },
+          {
+            "roomUnitId": "A2",
+            "checkInDate": "2026-10-08",
+            "checkOutDate": "2026-10-10"
+          }
+        ]
+      },
+      "expected": {
+        "roomUnitId": "B1",
+        "rule": "first_free"
+      }
+    }
+  ]
+}

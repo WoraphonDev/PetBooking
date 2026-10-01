@@ -1,0 +1,257 @@
+{
+ "note": "Which module implements which rule export (packages/domain). DO NOT EDIT.",
+ "modules": [
+  {
+   "rule": "R-01",
+   "export": "resolveSizeTier",
+   "file": "packages/domain/src/pricing/size-tier.ts",
+   "vectors": "R-01.resolveSizeTier.json"
+  },
+  {
+   "rule": "R-02",
+   "export": "coatGroupOf",
+   "file": "packages/domain/src/pricing/price-lookup.ts",
+   "vectors": "R-02.coatGroupOf.json"
+  },
+  {
+   "rule": "R-02",
+   "export": "lookupServicePrice",
+   "file": "packages/domain/src/pricing/price-lookup.ts",
+   "vectors": "R-02.lookupServicePrice.json"
+  },
+  {
+   "rule": "R-03",
+   "export": "quoteBooking",
+   "file": "packages/domain/src/pricing/quote.ts",
+   "vectors": "R-03.quoteBooking.json"
+  },
+  {
+   "rule": "R-04",
+   "export": "computeGroomSlots",
+   "file": "packages/domain/src/availability/groom-slots.ts",
+   "vectors": "R-04.computeGroomSlots.json"
+  },
+  {
+   "rule": "R-05",
+   "export": "parseSlipQr",
+   "file": "packages/domain/src/payment/slip.ts",
+   "vectors": "R-05.parseSlipQr.json"
+  },
+  {
+   "rule": "R-05",
+   "export": "findDuplicateSlip",
+   "file": "packages/domain/src/payment/slip.ts",
+   "vectors": "R-05.findDuplicateSlip.json"
+  },
+  {
+   "rule": "R-06",
+   "export": "computeDeposit",
+   "file": "packages/domain/src/payment/deposit.ts",
+   "vectors": "R-06.computeDeposit.json"
+  },
+  {
+   "rule": "R-07",
+   "export": "computeCancellation",
+   "file": "packages/domain/src/payment/cancellation.ts",
+   "vectors": "R-07.computeCancellation.json"
+  },
+  {
+   "rule": "R-08",
+   "export": "computeBookingDeadlines",
+   "file": "packages/domain/src/booking/deadlines.ts",
+   "vectors": "R-08.computeBookingDeadlines.json"
+  },
+  {
+   "rule": "R-09",
+   "export": "computeReliability",
+   "file": "packages/domain/src/customer/reliability.ts",
+   "vectors": "R-09.computeReliability.json"
+  },
+  {
+   "rule": "R-10",
+   "export": "allocateRoom",
+   "file": "packages/domain/src/availability/room-allocation.ts",
+   "vectors": "R-10.allocateRoom.json"
+  },
+  {
+   "rule": "R-11",
+   "export": "checkVaccines",
+   "file": "packages/domain/src/pet/vaccine-gate.ts",
+   "vectors": "R-11.checkVaccines.json"
+  },
+  {
+   "rule": "R-12",
+   "export": "checkEligibility",
+   "file": "packages/domain/src/booking/eligibility.ts",
+   "vectors": "R-12.checkEligibility.json"
+  },
+  {
+   "rule": "R-12",
+   "export": "ageInMonths",
+   "file": "packages/domain/src/booking/eligibility.ts",
+   "vectors": "R-12.ageInMonths.json"
+  },
+  {
+   "rule": "R-13",
+   "export": "computeCommissions",
+   "file": "packages/domain/src/commission/commission.ts",
+   "vectors": "R-13.computeCommissions.json"
+  },
+  {
+   "rule": "R-14",
+   "export": "packageTerms",
+   "file": "packages/domain/src/package/package.ts",
+   "vectors": "R-14.packageTerms.json"
+  },
+  {
+   "rule": "R-14",
+   "export": "canRedeemPackage",
+   "file": "packages/domain/src/package/package.ts",
+   "vectors": "R-14.canRedeemPackage.json"
+  },
+  {
+   "rule": "R-15",
+   "export": "computeBillTotals",
+   "file": "packages/domain/src/billing/totals.ts",
+   "vectors": "R-15.computeBillTotals.json"
+  },
+  {
+   "rule": "R-15",
+   "export": "applyPayment",
+   "file": "packages/domain/src/billing/totals.ts",
+   "vectors": "R-15.applyPayment.json"
+  },
+  {
+   "rule": "R-16",
+   "export": "nextReceiptNo",
+   "file": "packages/domain/src/ids/receipt-no.ts",
+   "vectors": "R-16.nextReceiptNo.json"
+  },
+  {
+   "rule": "R-17",
+   "export": "nextGroomDue",
+   "file": "packages/domain/src/aftercare/next-groom.ts",
+   "vectors": "R-17.nextGroomDue.json"
+  },
+  {
+   "rule": "R-18",
+   "export": "decideLinePush",
+   "file": "packages/domain/src/notify/line-quota.ts",
+   "vectors": "R-18.decideLinePush.json"
+  },
+  {
+   "rule": "R-19",
+   "export": "selectChannel",
+   "file": "packages/domain/src/notify/channel.ts",
+   "vectors": "R-19.selectChannel.json"
+  },
+  {
+   "rule": "R-20",
+   "export": "toLocalDate",
+   "file": "packages/domain/src/time/local-time.ts",
+   "vectors": "R-20.toLocalDate.json"
+  },
+  {
+   "rule": "R-20",
+   "export": "localToUtc",
+   "file": "packages/domain/src/time/local-time.ts",
+   "vectors": "R-20.localToUtc.json"
+  },
+  {
+   "rule": "R-20",
+   "export": "localDayBounds",
+   "file": "packages/domain/src/time/local-time.ts",
+   "vectors": "R-20.localDayBounds.json"
+  },
+  {
+   "rule": "R-21",
+   "export": "customerSelfService",
+   "file": "packages/domain/src/booking/self-service.ts",
+   "vectors": "R-21.customerSelfService.json"
+  },
+  {
+   "rule": "R-22",
+   "export": "normalizePhone",
+   "file": "packages/domain/src/format/phone.ts",
+   "vectors": "R-22.normalizePhone.json"
+  },
+  {
+   "rule": "R-22",
+   "export": "formatPhone",
+   "file": "packages/domain/src/format/phone.ts",
+   "vectors": "R-22.formatPhone.json"
+  },
+  {
+   "rule": "R-23",
+   "export": "nextBookingNo",
+   "file": "packages/domain/src/ids/booking-no.ts",
+   "vectors": "R-23.nextBookingNo.json"
+  },
+  {
+   "rule": "R-24",
+   "export": "loginAttempt",
+   "file": "packages/domain/src/auth/lockout.ts",
+   "vectors": "R-24.loginAttempt.json"
+  },
+  {
+   "rule": "R-24",
+   "export": "checkPasswordPolicy",
+   "file": "packages/domain/src/auth/lockout.ts",
+   "vectors": "R-24.checkPasswordPolicy.json"
+  },
+  {
+   "rule": "R-25",
+   "export": "validateUpload",
+   "file": "packages/domain/src/files/upload-policy.ts",
+   "vectors": "R-25.validateUpload.json"
+  },
+  {
+   "rule": "R-26",
+   "export": "generateCareTasks",
+   "file": "packages/domain/src/care/care-tasks.ts",
+   "vectors": "R-26.generateCareTasks.json"
+  },
+  {
+   "rule": "R-28",
+   "export": "hotelAvailability",
+   "file": "packages/domain/src/availability/hotel-availability.ts",
+   "vectors": "R-28.hotelAvailability.json"
+  },
+  {
+   "rule": "R-29",
+   "export": "daycareAvailability",
+   "file": "packages/domain/src/availability/daycare-availability.ts",
+   "vectors": "R-29.daycareAvailability.json"
+  },
+  {
+   "rule": "R-30",
+   "export": "promptPayPayload",
+   "file": "packages/domain/src/payment/promptpay.ts",
+   "vectors": "R-30.promptPayPayload.json"
+  },
+  {
+   "rule": "R-31",
+   "export": "formatTHB",
+   "file": "packages/domain/src/format/thai.ts",
+   "vectors": "R-31.formatTHB.json"
+  },
+  {
+   "rule": "R-31",
+   "export": "formatThaiDate",
+   "file": "packages/domain/src/format/thai.ts",
+   "vectors": "R-31.formatThaiDate.json"
+  },
+  {
+   "rule": "R-31",
+   "export": "formatTime",
+   "file": "packages/domain/src/format/thai.ts",
+   "vectors": "R-31.formatTime.json"
+  },
+  {
+   "rule": "R-31",
+   "export": "formatWeight",
+   "file": "packages/domain/src/format/thai.ts",
+   "vectors": "R-31.formatWeight.json"
+  }
+ ]
+}

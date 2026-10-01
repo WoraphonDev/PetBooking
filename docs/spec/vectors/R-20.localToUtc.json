@@ -1,0 +1,26 @@
+{
+  "rule": "R-20",
+  "export": "localToUtc",
+  "module": "packages/domain/src/time/local-time.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "09:00 Bangkok",
+      "input": {
+        "date": "2026-10-05",
+        "time": "09:00",
+        "timezone": "Asia/Bangkok"
+      },
+      "expected": "2026-10-05T02:00:00.000Z"
+    },
+    {
+      "name": "00:30 Bangkok is previous UTC day",
+      "input": {
+        "date": "2026-10-05",
+        "time": "00:30",
+        "timezone": "Asia/Bangkok"
+      },
+      "expected": "2026-10-04T17:30:00.000Z"
+    }
+  ]
+}

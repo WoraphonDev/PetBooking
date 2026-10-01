@@ -1,0 +1,49 @@
+{
+  "rule": "R-05",
+  "export": "parseSlipQr",
+  "module": "packages/domain/src/payment/slip.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "KBank-style payload",
+      "input": {
+        "payload": "0041000600000101030040220014242082547BPM049885102TH910434DF"
+      },
+      "expected": {
+        "bankCode": "004",
+        "transRef": "014242082547BPM04988"
+      }
+    },
+    {
+      "name": "SCB-style payload",
+      "input": {
+        "payload": "00390006000001010301402182026100510304512345102TH91045201"
+      },
+      "expected": {
+        "bankCode": "014",
+        "transRef": "202610051030451234"
+      }
+    },
+    {
+      "name": "tampered CRC is flagged, still parsed",
+      "input": {
+        "payload": "0041000600000101030040220014242082547BPM049885102TH91040000"
+      },
+      "expected": null
+    },
+    {
+      "name": "not a slip QR (PromptPay payment QR)",
+      "input": {
+        "payload": "00020101021229370016A0000006770101110113006681234567853037645406150.005802TH6304C40C"
+      },
+      "expected": null
+    },
+    {
+      "name": "garbage",
+      "input": {
+        "payload": "hello world"
+      },
+      "expected": null
+    }
+  ]
+}

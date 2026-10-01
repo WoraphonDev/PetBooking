@@ -1,0 +1,213 @@
+{
+  "rule": "R-11",
+  "export": "checkVaccines",
+  "module": "packages/domain/src/pet/vaccine-gate.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "all valid",
+      "input": {
+        "requiredCodes": [
+          "DOG_RABIES"
+        ],
+        "vaccinations": [
+          {
+            "code": "DOG_RABIES",
+            "expiresOn": "2027-01-01",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_DHPPL",
+            "expiresOn": "2026-10-11",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_KENNEL_COUGH",
+            "expiresOn": "2027-05-01",
+            "status": "pending_review"
+          }
+        ],
+        "mustBeValidOn": "2026-10-12"
+      },
+      "expected": {
+        "ok": true,
+        "missing": [],
+        "expired": [],
+        "pendingReview": []
+      }
+    },
+    {
+      "name": "expires before checkout",
+      "input": {
+        "requiredCodes": [
+          "DOG_RABIES",
+          "DOG_DHPPL"
+        ],
+        "vaccinations": [
+          {
+            "code": "DOG_RABIES",
+            "expiresOn": "2027-01-01",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_DHPPL",
+            "expiresOn": "2026-10-11",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_KENNEL_COUGH",
+            "expiresOn": "2027-05-01",
+            "status": "pending_review"
+          }
+        ],
+        "mustBeValidOn": "2026-10-12"
+      },
+      "expected": {
+        "ok": false,
+        "missing": [],
+        "expired": [
+          "DOG_DHPPL"
+        ],
+        "pendingReview": []
+      }
+    },
+    {
+      "name": "expiry day itself is valid",
+      "input": {
+        "requiredCodes": [
+          "DOG_DHPPL"
+        ],
+        "vaccinations": [
+          {
+            "code": "DOG_RABIES",
+            "expiresOn": "2027-01-01",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_DHPPL",
+            "expiresOn": "2026-10-11",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_KENNEL_COUGH",
+            "expiresOn": "2027-05-01",
+            "status": "pending_review"
+          }
+        ],
+        "mustBeValidOn": "2026-10-11"
+      },
+      "expected": {
+        "ok": true,
+        "missing": [],
+        "expired": [],
+        "pendingReview": []
+      }
+    },
+    {
+      "name": "pending review",
+      "input": {
+        "requiredCodes": [
+          "DOG_KENNEL_COUGH"
+        ],
+        "vaccinations": [
+          {
+            "code": "DOG_RABIES",
+            "expiresOn": "2027-01-01",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_DHPPL",
+            "expiresOn": "2026-10-11",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_KENNEL_COUGH",
+            "expiresOn": "2027-05-01",
+            "status": "pending_review"
+          }
+        ],
+        "mustBeValidOn": "2026-10-12"
+      },
+      "expected": {
+        "ok": false,
+        "missing": [],
+        "expired": [],
+        "pendingReview": [
+          "DOG_KENNEL_COUGH"
+        ]
+      }
+    },
+    {
+      "name": "missing",
+      "input": {
+        "requiredCodes": [
+          "DOG_LEPTO"
+        ],
+        "vaccinations": [
+          {
+            "code": "DOG_RABIES",
+            "expiresOn": "2027-01-01",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_DHPPL",
+            "expiresOn": "2026-10-11",
+            "status": "verified"
+          },
+          {
+            "code": "DOG_KENNEL_COUGH",
+            "expiresOn": "2027-05-01",
+            "status": "pending_review"
+          }
+        ],
+        "mustBeValidOn": "2026-10-12"
+      },
+      "expected": {
+        "ok": false,
+        "missing": [
+          "DOG_LEPTO"
+        ],
+        "expired": [],
+        "pendingReview": []
+      }
+    },
+    {
+      "name": "rejected counts as missing",
+      "input": {
+        "requiredCodes": [
+          "DOG_RABIES"
+        ],
+        "vaccinations": [
+          {
+            "code": "DOG_RABIES",
+            "expiresOn": "2027-01-01",
+            "status": "rejected"
+          }
+        ],
+        "mustBeValidOn": "2026-10-12"
+      },
+      "expected": {
+        "ok": false,
+        "missing": [
+          "DOG_RABIES"
+        ],
+        "expired": [],
+        "pendingReview": []
+      }
+    },
+    {
+      "name": "nothing required",
+      "input": {
+        "requiredCodes": [],
+        "vaccinations": [],
+        "mustBeValidOn": "2026-10-12"
+      },
+      "expected": {
+        "ok": true,
+        "missing": [],
+        "expired": [],
+        "pendingReview": []
+      }
+    }
+  ]
+}

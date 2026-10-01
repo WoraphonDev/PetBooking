@@ -1,0 +1,1024 @@
+{
+  "note": "Allowed transitions. packages/domain state tables must match exactly. DO NOT EDIT without spec-change approval.",
+  "machines": {
+    "booking": {
+      "column": "booking.status",
+      "states": [
+        "awaiting_deposit",
+        "deposit_review",
+        "awaiting_approval",
+        "confirmed",
+        "cancelled",
+        "expired",
+        "closed"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "confirmed"
+          ],
+          "trigger": "bookings.create"
+        },
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "confirmed"
+          ],
+          "trigger": "liff.createBooking"
+        },
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "awaiting_deposit"
+          ],
+          "trigger": "liff.createBooking"
+        },
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "awaiting_approval"
+          ],
+          "trigger": "liff.createBooking"
+        },
+        {
+          "from": [
+            "awaiting_deposit"
+          ],
+          "to": [
+            "deposit_review"
+          ],
+          "trigger": "liff.uploadSlip"
+        },
+        {
+          "from": [
+            "awaiting_deposit"
+          ],
+          "to": [
+            "confirmed"
+          ],
+          "trigger": "bookings.recordDeposit | bookings.waiveDeposit"
+        },
+        {
+          "from": [
+            "awaiting_deposit"
+          ],
+          "to": [
+            "awaiting_approval"
+          ],
+          "trigger": "bookings.recordDeposit | bookings.waiveDeposit"
+        },
+        {
+          "from": [
+            "awaiting_deposit"
+          ],
+          "to": [
+            "expired"
+          ],
+          "trigger": "job:expire_hold"
+        },
+        {
+          "from": [
+            "deposit_review"
+          ],
+          "to": [
+            "confirmed"
+          ],
+          "trigger": "slips.verify"
+        },
+        {
+          "from": [
+            "deposit_review"
+          ],
+          "to": [
+            "awaiting_approval"
+          ],
+          "trigger": "slips.verify"
+        },
+        {
+          "from": [
+            "deposit_review"
+          ],
+          "to": [
+            "awaiting_deposit"
+          ],
+          "trigger": "slips.reject"
+        },
+        {
+          "from": [
+            "deposit_review"
+          ],
+          "to": [
+            "expired"
+          ],
+          "trigger": "slips.reject"
+        },
+        {
+          "from": [
+            "awaiting_approval"
+          ],
+          "to": [
+            "confirmed"
+          ],
+          "trigger": "bookings.approve"
+        },
+        {
+          "from": [
+            "awaiting_approval"
+          ],
+          "to": [
+            "cancelled"
+          ],
+          "trigger": "bookings.decline"
+        },
+        {
+          "from": [
+            "awaiting_approval"
+          ],
+          "to": [
+            "expired"
+          ],
+          "trigger": "job:approval_overdue"
+        },
+        {
+          "from": [
+            "awaiting_deposit",
+            "deposit_review",
+            "awaiting_approval",
+            "confirmed"
+          ],
+          "to": [
+            "cancelled"
+          ],
+          "trigger": "bookings.cancel | liff.cancel"
+        },
+        {
+          "from": [
+            "confirmed"
+          ],
+          "to": [
+            "closed"
+          ],
+          "trigger": "bills.close | groom.noShow | stays.noShow | daycare.no_show"
+        },
+        {
+          "from": [
+            "closed"
+          ],
+          "to": [
+            "confirmed"
+          ],
+          "trigger": "bills.void"
+        }
+      ]
+    },
+    "deposit": {
+      "column": "booking.deposit_status",
+      "states": [
+        "not_required",
+        "pending",
+        "submitted",
+        "verified",
+        "rejected",
+        "refunded",
+        "credited",
+        "forfeited",
+        "applied"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "not_required",
+            "pending"
+          ],
+          "trigger": "bookings.create | liff.createBooking"
+        },
+        {
+          "from": [
+            "pending",
+            "rejected"
+          ],
+          "to": [
+            "submitted"
+          ],
+          "trigger": "liff.uploadSlip"
+        },
+        {
+          "from": [
+            "submitted"
+          ],
+          "to": [
+            "verified"
+          ],
+          "trigger": "slips.verify"
+        },
+        {
+          "from": [
+            "submitted"
+          ],
+          "to": [
+            "rejected"
+          ],
+          "trigger": "slips.reject"
+        },
+        {
+          "from": [
+            "pending",
+            "rejected"
+          ],
+          "to": [
+            "verified"
+          ],
+          "trigger": "bookings.recordDeposit"
+        },
+        {
+          "from": [
+            "pending",
+            "submitted",
+            "rejected"
+          ],
+          "to": [
+            "not_required"
+          ],
+          "trigger": "bookings.waiveDeposit"
+        },
+        {
+          "from": [
+            "verified"
+          ],
+          "to": [
+            "applied"
+          ],
+          "trigger": "bills.close"
+        },
+        {
+          "from": [
+            "verified"
+          ],
+          "to": [
+            "refunded",
+            "credited",
+            "forfeited"
+          ],
+          "trigger": "bookings.cancel | liff.cancel | bookings.decline | groom.noShow"
+        },
+        {
+          "from": [
+            "applied"
+          ],
+          "to": [
+            "verified"
+          ],
+          "trigger": "bills.void"
+        }
+      ]
+    },
+    "groom_appointment": {
+      "column": "groom_appointment.status",
+      "states": [
+        "scheduled",
+        "checked_in",
+        "in_progress",
+        "done",
+        "picked_up",
+        "no_show",
+        "cancelled"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "scheduled"
+          ],
+          "trigger": "bookings.create | liff.createBooking"
+        },
+        {
+          "from": [
+            "scheduled"
+          ],
+          "to": [
+            "scheduled"
+          ],
+          "trigger": "groom.reschedule | liff.reschedule"
+        },
+        {
+          "from": [
+            "scheduled"
+          ],
+          "to": [
+            "checked_in"
+          ],
+          "trigger": "groom.checkIn"
+        },
+        {
+          "from": [
+            "checked_in"
+          ],
+          "to": [
+            "in_progress"
+          ],
+          "trigger": "groom.start"
+        },
+        {
+          "from": [
+            "in_progress"
+          ],
+          "to": [
+            "done"
+          ],
+          "trigger": "groom.finish"
+        },
+        {
+          "from": [
+            "done"
+          ],
+          "to": [
+            "picked_up"
+          ],
+          "trigger": "groom.pickUp"
+        },
+        {
+          "from": [
+            "scheduled"
+          ],
+          "to": [
+            "no_show"
+          ],
+          "trigger": "groom.noShow"
+        },
+        {
+          "from": [
+            "scheduled",
+            "checked_in"
+          ],
+          "to": [
+            "cancelled"
+          ],
+          "trigger": "groom.cancel | bookings.cancel | liff.cancel | job:expire_hold"
+        }
+      ]
+    },
+    "stay": {
+      "column": "stay.status",
+      "states": [
+        "reserved",
+        "checked_in",
+        "checked_out",
+        "no_show",
+        "cancelled"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "reserved"
+          ],
+          "trigger": "bookings.create | liff.createBooking"
+        },
+        {
+          "from": [
+            "reserved"
+          ],
+          "to": [
+            "checked_in"
+          ],
+          "trigger": "stays.checkIn"
+        },
+        {
+          "from": [
+            "checked_in"
+          ],
+          "to": [
+            "checked_out"
+          ],
+          "trigger": "stays.checkOut"
+        },
+        {
+          "from": [
+            "reserved"
+          ],
+          "to": [
+            "no_show"
+          ],
+          "trigger": "stays.noShow"
+        },
+        {
+          "from": [
+            "reserved"
+          ],
+          "to": [
+            "cancelled"
+          ],
+          "trigger": "stays.cancel | bookings.cancel | liff.cancel | job:expire_hold"
+        }
+      ]
+    },
+    "daycare_visit": {
+      "column": "daycare_visit.status",
+      "states": [
+        "reserved",
+        "checked_in",
+        "checked_out",
+        "no_show",
+        "cancelled"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "reserved"
+          ],
+          "trigger": "bookings.create | liff.createBooking"
+        },
+        {
+          "from": [
+            "reserved"
+          ],
+          "to": [
+            "checked_in"
+          ],
+          "trigger": "daycare.check_in"
+        },
+        {
+          "from": [
+            "checked_in"
+          ],
+          "to": [
+            "checked_out"
+          ],
+          "trigger": "daycare.check_out"
+        },
+        {
+          "from": [
+            "reserved"
+          ],
+          "to": [
+            "no_show"
+          ],
+          "trigger": "daycare.no_show"
+        },
+        {
+          "from": [
+            "reserved"
+          ],
+          "to": [
+            "cancelled"
+          ],
+          "trigger": "daycare.cancel | bookings.cancel | liff.cancel | job:expire_hold"
+        }
+      ]
+    },
+    "bill": {
+      "column": "bill.status",
+      "states": [
+        "open",
+        "paid",
+        "void"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "open"
+          ],
+          "trigger": "bills.open"
+        },
+        {
+          "from": [
+            "open"
+          ],
+          "to": [
+            "paid"
+          ],
+          "trigger": "bills.close"
+        },
+        {
+          "from": [
+            "open"
+          ],
+          "to": [
+            "void"
+          ],
+          "trigger": "bills.void"
+        },
+        {
+          "from": [
+            "paid"
+          ],
+          "to": [
+            "void"
+          ],
+          "trigger": "bills.void"
+        }
+      ]
+    },
+    "payment_slip": {
+      "column": "payment_slip.status",
+      "states": [
+        "submitted",
+        "verified",
+        "rejected"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "submitted"
+          ],
+          "trigger": "liff.uploadSlip | liff.payUploadSlip"
+        },
+        {
+          "from": [
+            "submitted"
+          ],
+          "to": [
+            "verified"
+          ],
+          "trigger": "slips.verify"
+        },
+        {
+          "from": [
+            "submitted"
+          ],
+          "to": [
+            "rejected"
+          ],
+          "trigger": "slips.reject"
+        }
+      ]
+    },
+    "report_card": {
+      "column": "report_card.status",
+      "states": [
+        "draft",
+        "pending_review",
+        "sent"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "draft"
+          ],
+          "trigger": "groom.finish | stays.checkOut"
+        },
+        {
+          "from": [
+            "draft"
+          ],
+          "to": [
+            "pending_review"
+          ],
+          "trigger": "reportCards.submit"
+        },
+        {
+          "from": [
+            "draft"
+          ],
+          "to": [
+            "sent"
+          ],
+          "trigger": "reportCards.submit"
+        },
+        {
+          "from": [
+            "pending_review"
+          ],
+          "to": [
+            "sent"
+          ],
+          "trigger": "reportCards.approve"
+        }
+      ]
+    },
+    "customer_link_request": {
+      "column": "customer_link_request.status",
+      "states": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "pending"
+          ],
+          "trigger": "liff.register"
+        },
+        {
+          "from": [
+            "pending"
+          ],
+          "to": [
+            "approved"
+          ],
+          "trigger": "linkRequests.approve"
+        },
+        {
+          "from": [
+            "pending"
+          ],
+          "to": [
+            "rejected"
+          ],
+          "trigger": "linkRequests.reject"
+        }
+      ]
+    },
+    "pet_vaccination": {
+      "column": "pet_vaccination.status",
+      "states": [
+        "pending_review",
+        "verified",
+        "rejected"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "verified"
+          ],
+          "trigger": "vaccinations.create"
+        },
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "pending_review"
+          ],
+          "trigger": "liff.addVaccination"
+        },
+        {
+          "from": [
+            "pending_review"
+          ],
+          "to": [
+            "verified"
+          ],
+          "trigger": "vaccinations.verify"
+        },
+        {
+          "from": [
+            "pending_review"
+          ],
+          "to": [
+            "rejected"
+          ],
+          "trigger": "vaccinations.reject"
+        }
+      ]
+    },
+    "care_task": {
+      "column": "care_task.status",
+      "states": [
+        "pending",
+        "done",
+        "skipped"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "pending"
+          ],
+          "trigger": "stays.checkIn | stays.saveIntake | stays.changeDates"
+        },
+        {
+          "from": [
+            "pending"
+          ],
+          "to": [
+            "done"
+          ],
+          "trigger": "careTasks.done"
+        },
+        {
+          "from": [
+            "pending"
+          ],
+          "to": [
+            "skipped"
+          ],
+          "trigger": "careTasks.skip | stays.checkOut"
+        }
+      ]
+    },
+    "customer_package": {
+      "column": "customer_package.status",
+      "states": [
+        "active",
+        "exhausted",
+        "expired",
+        "void"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "active"
+          ],
+          "trigger": "bills.close"
+        },
+        {
+          "from": [
+            "active"
+          ],
+          "to": [
+            "exhausted"
+          ],
+          "trigger": "bills.close"
+        },
+        {
+          "from": [
+            "active"
+          ],
+          "to": [
+            "expired"
+          ],
+          "trigger": "job:package_expiry"
+        },
+        {
+          "from": [
+            "exhausted"
+          ],
+          "to": [
+            "active"
+          ],
+          "trigger": "bills.void"
+        },
+        {
+          "from": [
+            "active",
+            "exhausted",
+            "expired"
+          ],
+          "to": [
+            "void"
+          ],
+          "trigger": "bills.void"
+        }
+      ]
+    },
+    "staff_user": {
+      "column": "staff_user.status",
+      "states": [
+        "invited",
+        "active",
+        "disabled"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "invited"
+          ],
+          "trigger": "staffUsers.invite | admin.createOrg"
+        },
+        {
+          "from": [
+            "invited"
+          ],
+          "to": [
+            "active"
+          ],
+          "trigger": "auth.inviteAccept"
+        },
+        {
+          "from": [
+            "active"
+          ],
+          "to": [
+            "disabled"
+          ],
+          "trigger": "staffUsers.update"
+        },
+        {
+          "from": [
+            "disabled"
+          ],
+          "to": [
+            "active"
+          ],
+          "trigger": "staffUsers.update"
+        }
+      ]
+    },
+    "scheduled_job": {
+      "column": "scheduled_job.status",
+      "states": [
+        "pending",
+        "running",
+        "done",
+        "failed",
+        "cancelled"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "pending"
+          ],
+          "trigger": "system:schedule"
+        },
+        {
+          "from": [
+            "pending"
+          ],
+          "to": [
+            "running"
+          ],
+          "trigger": "cron.tick"
+        },
+        {
+          "from": [
+            "running"
+          ],
+          "to": [
+            "done"
+          ],
+          "trigger": "cron.tick"
+        },
+        {
+          "from": [
+            "running"
+          ],
+          "to": [
+            "pending"
+          ],
+          "trigger": "cron.tick"
+        },
+        {
+          "from": [
+            "running"
+          ],
+          "to": [
+            "failed"
+          ],
+          "trigger": "cron.tick"
+        },
+        {
+          "from": [
+            "pending"
+          ],
+          "to": [
+            "cancelled"
+          ],
+          "trigger": "system:cancel"
+        },
+        {
+          "from": [
+            "running"
+          ],
+          "to": [
+            "pending"
+          ],
+          "trigger": "cron.tick"
+        }
+      ]
+    },
+    "notification": {
+      "column": "notification.status",
+      "states": [
+        "queued",
+        "sent",
+        "failed",
+        "skipped"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "queued"
+          ],
+          "trigger": "system:notify"
+        },
+        {
+          "from": [
+            "queued"
+          ],
+          "to": [
+            "sent"
+          ],
+          "trigger": "system:dispatch"
+        },
+        {
+          "from": [
+            "queued"
+          ],
+          "to": [
+            "failed"
+          ],
+          "trigger": "system:dispatch"
+        },
+        {
+          "from": [
+            "queued",
+            "∅"
+          ],
+          "to": [
+            "skipped"
+          ],
+          "trigger": "system:dispatch"
+        }
+      ]
+    },
+    "line_channel": {
+      "column": "line_channel.status",
+      "states": [
+        "pending",
+        "active",
+        "error"
+      ],
+      "transitions": [
+        {
+          "from": [
+            "∅"
+          ],
+          "to": [
+            "pending"
+          ],
+          "trigger": "admin.setLineChannel"
+        },
+        {
+          "from": [
+            "pending",
+            "active",
+            "error"
+          ],
+          "to": [
+            "pending"
+          ],
+          "trigger": "admin.setLineChannel"
+        },
+        {
+          "from": [
+            "pending",
+            "error"
+          ],
+          "to": [
+            "active"
+          ],
+          "trigger": "admin.verifyLine"
+        },
+        {
+          "from": [
+            "pending",
+            "error"
+          ],
+          "to": [
+            "error"
+          ],
+          "trigger": "admin.verifyLine"
+        },
+        {
+          "from": [
+            "active"
+          ],
+          "to": [
+            "error"
+          ],
+          "trigger": "system:dispatch"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "rule": "R-12",
+  "export": "checkEligibility",
+  "module": "packages/domain/src/booking/eligibility.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "ok grooming",
+      "input": {
+        "customer": {
+          "blacklisted": false
+        },
+        "pet": {
+          "status": "active",
+          "species": "dog",
+          "breed": "Shih Tzu",
+          "weightGrams": 6500,
+          "ageMonths": 30,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": null,
+        "inHeat": false,
+        "channel": "online",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": true,
+        "reasons": []
+      }
+    },
+    {
+      "name": "blacklisted online",
+      "input": {
+        "customer": {
+          "blacklisted": true
+        },
+        "pet": {
+          "status": "active",
+          "species": "dog",
+          "breed": "Shih Tzu",
+          "weightGrams": 6500,
+          "ageMonths": 30,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": null,
+        "inHeat": false,
+        "channel": "online",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": false,
+        "reasons": [
+          "CUSTOMER_BLACKLISTED"
+        ]
+      }
+    },
+    {
+      "name": "blacklisted but staff books",
+      "input": {
+        "customer": {
+          "blacklisted": true
+        },
+        "pet": {
+          "status": "active",
+          "species": "dog",
+          "breed": "Shih Tzu",
+          "weightGrams": 6500,
+          "ageMonths": 30,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": null,
+        "inHeat": false,
+        "channel": "staff",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": true,
+        "reasons": []
+      }
+    },
+    {
+      "name": "rejected breed case-insensitive",
+      "input": {
+        "customer": {
+          "blacklisted": false
+        },
+        "pet": {
+          "status": "active",
+          "species": "dog",
+          "breed": " pit bull terrier ",
+          "weightGrams": 6500,
+          "ageMonths": 30,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": null,
+        "inHeat": false,
+        "channel": "online",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": false,
+        "reasons": [
+          "BREED_REJECTED"
+        ]
+      }
+    },
+    {
+      "name": "too heavy for room",
+      "input": {
+        "customer": {
+          "blacklisted": false
+        },
+        "pet": {
+          "status": "active",
+          "species": "dog",
+          "breed": "Shih Tzu",
+          "weightGrams": 18000,
+          "ageMonths": 30,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": {
+          "maxWeightGrams": 15000,
+          "minAgeMonths": 4,
+          "allowInHeat": false,
+          "allowReactive": false
+        },
+        "inHeat": false,
+        "channel": "online",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": false,
+        "reasons": [
+          "PET_TOO_HEAVY"
+        ]
+      }
+    },
+    {
+      "name": "reactive dog + room disallows",
+      "input": {
+        "customer": {
+          "blacklisted": false
+        },
+        "pet": {
+          "status": "active",
+          "species": "dog",
+          "breed": "Shih Tzu",
+          "weightGrams": 6500,
+          "ageMonths": 30,
+          "flags": [
+            "dog_reactive",
+            "anxious"
+          ]
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": {
+          "maxWeightGrams": 15000,
+          "minAgeMonths": 4,
+          "allowInHeat": false,
+          "allowReactive": false
+        },
+        "inHeat": false,
+        "channel": "online",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": false,
+        "reasons": [
+          "REACTIVE_NOT_ALLOWED"
+        ]
+      }
+    },
+    {
+      "name": "in heat",
+      "input": {
+        "customer": {
+          "blacklisted": false
+        },
+        "pet": {
+          "status": "active",
+          "species": "dog",
+          "breed": "Shih Tzu",
+          "weightGrams": 6500,
+          "ageMonths": 30,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": {
+          "maxWeightGrams": 15000,
+          "minAgeMonths": 4,
+          "allowInHeat": false,
+          "allowReactive": false
+        },
+        "inHeat": true,
+        "channel": "online",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": false,
+        "reasons": [
+          "IN_HEAT_NOT_ALLOWED"
+        ]
+      }
+    },
+    {
+      "name": "too young + cat not allowed",
+      "input": {
+        "customer": {
+          "blacklisted": false
+        },
+        "pet": {
+          "status": "active",
+          "species": "cat",
+          "breed": "Shih Tzu",
+          "weightGrams": 6500,
+          "ageMonths": 3,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": {
+          "maxWeightGrams": 15000,
+          "minAgeMonths": 4,
+          "allowInHeat": false,
+          "allowReactive": false
+        },
+        "inHeat": false,
+        "channel": "online",
+        "speciesAllowed": [
+          "dog"
+        ]
+      },
+      "expected": {
+        "ok": false,
+        "reasons": [
+          "SPECIES_NOT_ALLOWED",
+          "PET_TOO_YOUNG"
+        ]
+      }
+    },
+    {
+      "name": "pet deceased",
+      "input": {
+        "customer": {
+          "blacklisted": false
+        },
+        "pet": {
+          "status": "deceased",
+          "species": "dog",
+          "breed": "Shih Tzu",
+          "weightGrams": 6500,
+          "ageMonths": 30,
+          "flags": []
+        },
+        "policy": {
+          "rejectedBreeds": [
+            "Pit Bull Terrier"
+          ],
+          "maxPetWeightGrams": 40000
+        },
+        "roomType": null,
+        "inHeat": false,
+        "channel": "online",
+        "speciesAllowed": []
+      },
+      "expected": {
+        "ok": false,
+        "reasons": [
+          "PET_INACTIVE"
+        ]
+      }
+    }
+  ]
+}

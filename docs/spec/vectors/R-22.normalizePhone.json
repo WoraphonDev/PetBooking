@@ -1,0 +1,128 @@
+{
+  "rule": "R-22",
+  "export": "normalizePhone",
+  "module": "packages/domain/src/format/phone.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "081-234-5678",
+      "input": {
+        "input": "081-234-5678"
+      },
+      "expected": {
+        "e164": "+66812345678",
+        "error": null
+      }
+    },
+    {
+      "name": "0812345678",
+      "input": {
+        "input": "0812345678"
+      },
+      "expected": {
+        "e164": "+66812345678",
+        "error": null
+      }
+    },
+    {
+      "name": "+66812345678",
+      "input": {
+        "input": "+66812345678"
+      },
+      "expected": {
+        "e164": "+66812345678",
+        "error": null
+      }
+    },
+    {
+      "name": "66812345678",
+      "input": {
+        "input": "66812345678"
+      },
+      "expected": {
+        "e164": "+66812345678",
+        "error": null
+      }
+    },
+    {
+      "name": "+66 081 234 5678",
+      "input": {
+        "input": "+66 081 234 5678"
+      },
+      "expected": {
+        "e164": "+66812345678",
+        "error": null
+      }
+    },
+    {
+      "name": "(02) 123-4567",
+      "input": {
+        "input": "(02) 123-4567"
+      },
+      "expected": {
+        "e164": "+6621234567",
+        "error": null
+      }
+    },
+    {
+      "name": "038 123 456",
+      "input": {
+        "input": "038 123 456"
+      },
+      "expected": {
+        "e164": "+6638123456",
+        "error": null
+      }
+    },
+    {
+      "name": "+14155552671",
+      "input": {
+        "input": "+14155552671"
+      },
+      "expected": {
+        "e164": "+14155552671",
+        "error": null
+      }
+    },
+    {
+      "name": "12345",
+      "input": {
+        "input": "12345"
+      },
+      "expected": {
+        "e164": null,
+        "error": "INVALID_PHONE"
+      }
+    },
+    {
+      "name": "081234567",
+      "input": {
+        "input": "081234567"
+      },
+      "expected": {
+        "e164": null,
+        "error": "INVALID_PHONE"
+      }
+    },
+    {
+      "name": "0712345678",
+      "input": {
+        "input": "0712345678"
+      },
+      "expected": {
+        "e164": null,
+        "error": "INVALID_PHONE"
+      }
+    },
+    {
+      "name": "+66-2-123-4567",
+      "input": {
+        "input": "+66-2-123-4567"
+      },
+      "expected": {
+        "e164": "+6621234567",
+        "error": null
+      }
+    }
+  ]
+}

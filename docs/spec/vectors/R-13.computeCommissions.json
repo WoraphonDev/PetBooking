@@ -1,0 +1,251 @@
+{
+  "rule": "R-13",
+  "export": "computeCommissions",
+  "module": "packages/domain/src/commission/commission.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "full example with bill discount",
+      "input": {
+        "lines": [
+          {
+            "billLineId": "L1",
+            "lineType": "groom_service",
+            "serviceId": "svc-bath",
+            "performerId": "g-a",
+            "lineTotalSatang": 50000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L2",
+            "lineType": "groom_addon",
+            "serviceId": "svc-nail",
+            "performerId": "g-a",
+            "lineTotalSatang": 10000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L3",
+            "lineType": "surcharge",
+            "serviceId": null,
+            "performerId": "g-a",
+            "lineTotalSatang": 20000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L4",
+            "lineType": "quick_item",
+            "serviceId": null,
+            "performerId": null,
+            "lineTotalSatang": 15000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L5",
+            "lineType": "package_redemption",
+            "serviceId": "svc-bath",
+            "performerId": "g-b",
+            "lineTotalSatang": 0,
+            "quantity": 1,
+            "packageUnitValueSatang": 45000
+          }
+        ],
+        "billDiscountSatang": 10000,
+        "rules": [
+          {
+            "id": "r1",
+            "serviceId": "svc-bath",
+            "staffUserId": "g-a",
+            "type": "percent",
+            "value": 2000
+          },
+          {
+            "id": "r2",
+            "serviceId": "svc-bath",
+            "staffUserId": null,
+            "type": "percent",
+            "value": 1500
+          },
+          {
+            "id": "r3",
+            "serviceId": null,
+            "staffUserId": "g-a",
+            "type": "fixed",
+            "value": 5000
+          },
+          {
+            "id": "r4",
+            "serviceId": null,
+            "staffUserId": null,
+            "type": "percent",
+            "value": 1000
+          }
+        ]
+      },
+      "expected": [
+        {
+          "billLineId": "L1",
+          "staffUserId": "g-a",
+          "baseSatang": 44735,
+          "ruleId": "r1",
+          "amountSatang": 8947
+        },
+        {
+          "billLineId": "L2",
+          "staffUserId": "g-a",
+          "baseSatang": 8948,
+          "ruleId": "r3",
+          "amountSatang": 5000
+        },
+        {
+          "billLineId": "L3",
+          "staffUserId": "g-a",
+          "baseSatang": 17895,
+          "ruleId": "r3",
+          "amountSatang": 5000
+        },
+        {
+          "billLineId": "L5",
+          "staffUserId": "g-b",
+          "baseSatang": 45000,
+          "ruleId": "r2",
+          "amountSatang": 6750
+        }
+      ]
+    },
+    {
+      "name": "no rules → nothing",
+      "input": {
+        "lines": [
+          {
+            "billLineId": "L1",
+            "lineType": "groom_service",
+            "serviceId": "svc-bath",
+            "performerId": "g-a",
+            "lineTotalSatang": 50000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L2",
+            "lineType": "groom_addon",
+            "serviceId": "svc-nail",
+            "performerId": "g-a",
+            "lineTotalSatang": 10000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L3",
+            "lineType": "surcharge",
+            "serviceId": null,
+            "performerId": "g-a",
+            "lineTotalSatang": 20000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L4",
+            "lineType": "quick_item",
+            "serviceId": null,
+            "performerId": null,
+            "lineTotalSatang": 15000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L5",
+            "lineType": "package_redemption",
+            "serviceId": "svc-bath",
+            "performerId": "g-b",
+            "lineTotalSatang": 0,
+            "quantity": 1,
+            "packageUnitValueSatang": 45000
+          }
+        ],
+        "billDiscountSatang": 0,
+        "rules": []
+      },
+      "expected": []
+    },
+    {
+      "name": "only catch-all rule",
+      "input": {
+        "lines": [
+          {
+            "billLineId": "L1",
+            "lineType": "groom_service",
+            "serviceId": "svc-bath",
+            "performerId": "g-a",
+            "lineTotalSatang": 50000,
+            "quantity": 1
+          },
+          {
+            "billLineId": "L2",
+            "lineType": "groom_addon",
+            "serviceId": "svc-nail",
+            "performerId": "g-a",
+            "lineTotalSatang": 10000,
+            "quantity": 1
+          }
+        ],
+        "billDiscountSatang": 0,
+        "rules": [
+          {
+            "id": "r4",
+            "serviceId": null,
+            "staffUserId": null,
+            "type": "percent",
+            "value": 1000
+          }
+        ]
+      },
+      "expected": [
+        {
+          "billLineId": "L1",
+          "staffUserId": "g-a",
+          "baseSatang": 50000,
+          "ruleId": "r4",
+          "amountSatang": 5000
+        },
+        {
+          "billLineId": "L2",
+          "staffUserId": "g-a",
+          "baseSatang": 10000,
+          "ruleId": "r4",
+          "amountSatang": 1000
+        }
+      ]
+    },
+    {
+      "name": "fixed × quantity",
+      "input": {
+        "lines": [
+          {
+            "billLineId": "L2",
+            "lineType": "groom_addon",
+            "serviceId": "svc-nail",
+            "performerId": "g-a",
+            "lineTotalSatang": 20000,
+            "quantity": 2
+          }
+        ],
+        "billDiscountSatang": 0,
+        "rules": [
+          {
+            "id": "r3",
+            "serviceId": null,
+            "staffUserId": "g-a",
+            "type": "fixed",
+            "value": 5000
+          }
+        ]
+      },
+      "expected": [
+        {
+          "billLineId": "L2",
+          "staffUserId": "g-a",
+          "baseSatang": 20000,
+          "ruleId": "r3",
+          "amountSatang": 10000
+        }
+      ]
+    }
+  ]
+}

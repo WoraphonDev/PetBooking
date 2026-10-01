@@ -1,0 +1,31 @@
+{
+  "rule": "R-31",
+  "export": "formatThaiDate",
+  "module": "packages/domain/src/format/thai.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "plain",
+      "input": {
+        "date": "2026-10-05"
+      },
+      "expected": "5 ต.ค. 2569"
+    },
+    {
+      "name": "weekday",
+      "input": {
+        "date": "2026-10-05",
+        "withWeekday": true
+      },
+      "expected": "จ. 5 ต.ค. 2569"
+    },
+    {
+      "name": "sunday",
+      "input": {
+        "date": "2026-10-11",
+        "withWeekday": true
+      },
+      "expected": "อา. 11 ต.ค. 2569"
+    }
+  ]
+}

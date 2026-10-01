@@ -1,0 +1,21 @@
+{
+  "name": "pj8-platform",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22.12 <25"
+  },
+  "scripts": {
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "conformance": "node scripts/check-spec-conformance.mjs",
+    "verify": "pnpm lint && pnpm typecheck && pnpm --filter @app/db check:doc && pnpm test && pnpm conformance"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "typescript": "5.9.3"
+  }
+}

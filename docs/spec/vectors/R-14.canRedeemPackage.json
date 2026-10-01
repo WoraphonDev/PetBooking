@@ -1,0 +1,208 @@
+{
+  "rule": "R-14",
+  "export": "canRedeemPackage",
+  "module": "packages/domain/src/package/package.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "ok",
+      "input": {
+        "now": "2026-12-01T03:00:00.000Z",
+        "package": {
+          "status": "active",
+          "sessionsUsed": 3,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "single_pet",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "petId": "p-1"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "exhausted",
+      "input": {
+        "now": "2026-12-01T03:00:00.000Z",
+        "package": {
+          "status": "active",
+          "sessionsUsed": 5,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "single_pet",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "petId": "p-1"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "reason": "PACKAGE_EXHAUSTED"
+      }
+    },
+    {
+      "name": "expired",
+      "input": {
+        "now": "2027-10-05T17:00:00.000Z",
+        "package": {
+          "status": "active",
+          "sessionsUsed": 3,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "single_pet",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "petId": "p-1"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "reason": "PACKAGE_EXPIRED"
+      }
+    },
+    {
+      "name": "service mismatch",
+      "input": {
+        "now": "2026-12-01T03:00:00.000Z",
+        "package": {
+          "status": "active",
+          "sessionsUsed": 3,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "single_pet",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-cut",
+          "sizeTierId": "t-s",
+          "petId": "p-1"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "reason": "PACKAGE_SERVICE_MISMATCH"
+      }
+    },
+    {
+      "name": "size mismatch",
+      "input": {
+        "now": "2026-12-01T03:00:00.000Z",
+        "package": {
+          "status": "active",
+          "sessionsUsed": 3,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "single_pet",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-m",
+          "petId": "p-1"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "reason": "PACKAGE_SIZE_MISMATCH"
+      }
+    },
+    {
+      "name": "other pet on single_pet",
+      "input": {
+        "now": "2026-12-01T03:00:00.000Z",
+        "package": {
+          "status": "active",
+          "sessionsUsed": 3,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "single_pet",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "petId": "p-2"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "reason": "PACKAGE_PET_MISMATCH"
+      }
+    },
+    {
+      "name": "household share ok",
+      "input": {
+        "now": "2026-12-01T03:00:00.000Z",
+        "package": {
+          "status": "active",
+          "sessionsUsed": 3,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "household",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "petId": "p-2"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "reason": null
+      }
+    },
+    {
+      "name": "void package",
+      "input": {
+        "now": "2026-12-01T03:00:00.000Z",
+        "package": {
+          "status": "void",
+          "sessionsUsed": 3,
+          "sessionsTotal": 5,
+          "expiresAt": "2027-10-05T16:59:59.999Z",
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "shareScope": "single_pet",
+          "petId": "p-1"
+        },
+        "appointment": {
+          "serviceId": "svc-bath",
+          "sizeTierId": "t-s",
+          "petId": "p-1"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "reason": "PACKAGE_NOT_ACTIVE"
+      }
+    }
+  ]
+}

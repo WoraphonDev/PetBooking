@@ -1,0 +1,83 @@
+{
+  "rule": "R-21",
+  "export": "customerSelfService",
+  "module": "packages/domain/src/booking/self-service.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "plenty of time",
+      "input": {
+        "now": "2026-10-07T03:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "status": "confirmed",
+        "rescheduleCutoffHours": 24,
+        "rescheduleCount": 0
+      },
+      "expected": {
+        "canCancel": true,
+        "canReschedule": true,
+        "rescheduleBlockedReason": null
+      }
+    },
+    {
+      "name": "inside cutoff",
+      "input": {
+        "now": "2026-10-09T05:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "status": "confirmed",
+        "rescheduleCutoffHours": 24,
+        "rescheduleCount": 0
+      },
+      "expected": {
+        "canCancel": true,
+        "canReschedule": false,
+        "rescheduleBlockedReason": "TOO_LATE_TO_RESCHEDULE"
+      }
+    },
+    {
+      "name": "limit reached",
+      "input": {
+        "now": "2026-10-07T03:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "status": "confirmed",
+        "rescheduleCutoffHours": 24,
+        "rescheduleCount": 2
+      },
+      "expected": {
+        "canCancel": true,
+        "canReschedule": false,
+        "rescheduleBlockedReason": "RESCHEDULE_LIMIT"
+      }
+    },
+    {
+      "name": "awaiting deposit can only cancel",
+      "input": {
+        "now": "2026-10-07T03:00:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "status": "awaiting_deposit",
+        "rescheduleCutoffHours": 24,
+        "rescheduleCount": 0
+      },
+      "expected": {
+        "canCancel": true,
+        "canReschedule": false,
+        "rescheduleBlockedReason": "STATUS_NOT_ALLOWED"
+      }
+    },
+    {
+      "name": "after start",
+      "input": {
+        "now": "2026-10-10T03:30:00.000Z",
+        "firstServiceAt": "2026-10-10T03:00:00.000Z",
+        "status": "confirmed",
+        "rescheduleCutoffHours": 24,
+        "rescheduleCount": 0
+      },
+      "expected": {
+        "canCancel": false,
+        "canReschedule": false,
+        "rescheduleBlockedReason": "TOO_LATE_TO_RESCHEDULE"
+      }
+    }
+  ]
+}

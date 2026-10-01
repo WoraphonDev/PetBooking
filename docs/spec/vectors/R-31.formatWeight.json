@@ -1,0 +1,43 @@
+{
+  "rule": "R-31",
+  "export": "formatWeight",
+  "module": "packages/domain/src/format/thai.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "5.2",
+      "input": {
+        "grams": 5200
+      },
+      "expected": "5.2 กก."
+    },
+    {
+      "name": "half up",
+      "input": {
+        "grams": 5250
+      },
+      "expected": "5.3 กก."
+    },
+    {
+      "name": "whole",
+      "input": {
+        "grams": 5000
+      },
+      "expected": "5 กก."
+    },
+    {
+      "name": "small",
+      "input": {
+        "grams": 840
+      },
+      "expected": "0.8 กก."
+    },
+    {
+      "name": "heavy",
+      "input": {
+        "grams": 32040
+      },
+      "expected": "32 กก."
+    }
+  ]
+}

@@ -1,0 +1,3290 @@
+{
+ "note": "Endpoint catalog (05 §3). scripts/check-spec-conformance.mjs uses this. DO NOT EDIT.",
+ "endpoints": [
+  {
+   "key": "auth.staffLogin",
+   "method": "POST",
+   "path": "/api/v1/auth/staff/login",
+   "auth": "public",
+   "roles": "",
+   "request": [
+    "email",
+    "password"
+   ],
+   "query": [],
+   "response": "StaffMe",
+   "errors": [
+    "INVALID_CREDENTIALS",
+    "ACCOUNT_LOCKED",
+    "RATE_LIMITED"
+   ]
+  },
+  {
+   "key": "auth.staffLogout",
+   "method": "POST",
+   "path": "/api/v1/auth/staff/logout",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "auth.me",
+   "method": "GET",
+   "path": "/api/v1/auth/staff/me",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "StaffMe",
+   "errors": []
+  },
+  {
+   "key": "auth.resetRequest",
+   "method": "POST",
+   "path": "/api/v1/auth/staff/password-reset/request",
+   "auth": "public",
+   "roles": "",
+   "request": [
+    "email"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": [
+    "RATE_LIMITED"
+   ]
+  },
+  {
+   "key": "auth.resetConfirm",
+   "method": "POST",
+   "path": "/api/v1/auth/staff/password-reset/confirm",
+   "auth": "public",
+   "roles": "",
+   "request": [
+    "token",
+    "newPassword"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": [
+    "TOKEN_INVALID",
+    "PASSWORD_POLICY"
+   ]
+  },
+  {
+   "key": "auth.inviteAccept",
+   "method": "POST",
+   "path": "/api/v1/auth/staff/invite/accept",
+   "auth": "public",
+   "roles": "",
+   "request": [
+    "token",
+    "displayName",
+    "email",
+    "password"
+   ],
+   "query": [],
+   "response": "StaffMe",
+   "errors": [
+    "TOKEN_INVALID",
+    "PASSWORD_POLICY",
+    "EMAIL_TAKEN"
+   ]
+  },
+  {
+   "key": "auth.staffLine",
+   "method": "POST",
+   "path": "/api/v1/auth/staff/line",
+   "auth": "public",
+   "roles": "",
+   "request": [
+    "idToken"
+   ],
+   "query": [],
+   "response": "StaffMe",
+   "errors": [
+    "LINE_TOKEN_INVALID",
+    "INVALID_CREDENTIALS"
+   ]
+  },
+  {
+   "key": "staffMe.linkLine",
+   "method": "POST",
+   "path": "/api/v1/staff/me/line-link",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "idToken"
+   ],
+   "query": [],
+   "response": "StaffMe",
+   "errors": [
+    "LINE_TOKEN_INVALID",
+    "EMAIL_TAKEN"
+   ]
+  },
+  {
+   "key": "staffMe.sessions",
+   "method": "GET",
+   "path": "/api/v1/staff/me/sessions",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "object[] {id: session.id, userAgent: session.user_agent, lastSeenAt: session.last_seen_at, current: bool}",
+   "errors": []
+  },
+  {
+   "key": "staffMe.revokeSession",
+   "method": "DELETE",
+   "path": "/api/v1/staff/me/sessions/{sessionId}",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "staffMe.pushSubscribe",
+   "method": "POST",
+   "path": "/api/v1/staff/me/push-subscriptions",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "endpoint",
+    "p256dh",
+    "auth"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "staffMe.pushUnsubscribe",
+   "method": "DELETE",
+   "path": "/api/v1/staff/me/push-subscriptions",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "endpoint"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "staffMe.commissions",
+   "method": "GET",
+   "path": "/api/v1/staff/me/commissions",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "from",
+    "to"
+   ],
+   "response": "CommissionReport",
+   "errors": []
+  },
+  {
+   "key": "staff.uploadUrl",
+   "method": "POST",
+   "path": "/api/v1/staff/files/upload-url",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "kind",
+    "mimeType",
+    "sizeBytes",
+    "width",
+    "height"
+   ],
+   "query": [],
+   "response": "UploadTicket",
+   "errors": [
+    "UPLOAD_KIND_NOT_ALLOWED",
+    "UPLOAD_TYPE_NOT_ALLOWED",
+    "UPLOAD_TOO_LARGE"
+   ]
+  },
+  {
+   "key": "customer.uploadUrl",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/files/upload-url",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "kind",
+    "mimeType",
+    "sizeBytes",
+    "width",
+    "height"
+   ],
+   "query": [],
+   "response": "UploadTicket",
+   "errors": [
+    "UPLOAD_KIND_NOT_ALLOWED",
+    "UPLOAD_TYPE_NOT_ALLOWED",
+    "UPLOAD_TOO_LARGE"
+   ]
+  },
+  {
+   "key": "branch.get",
+   "method": "GET",
+   "path": "/api/v1/staff/branch",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "BranchSettings",
+   "errors": []
+  },
+  {
+   "key": "branch.update",
+   "method": "PATCH",
+   "path": "/api/v1/staff/branch",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "name",
+    "phone",
+    "addressLine",
+    "subdistrict",
+    "district",
+    "province",
+    "postalCode",
+    "latitude",
+    "longitude",
+    "logoFileId",
+    "facebookUrl",
+    "instagramUrl",
+    "receiptPrefix"
+   ],
+   "query": [],
+   "response": "BranchSettings",
+   "errors": []
+  },
+  {
+   "key": "branch.setHours",
+   "method": "PUT",
+   "path": "/api/v1/staff/branch/hours",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "hours[]",
+    "hours[].isClosed",
+    "hours[].opensAt",
+    "hours[].closesAt"
+   ],
+   "query": [],
+   "response": "BranchSettings",
+   "errors": []
+  },
+  {
+   "key": "branch.setModules",
+   "method": "PATCH",
+   "path": "/api/v1/staff/branch/modules",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "grooming",
+    "hotel",
+    "daycare"
+   ],
+   "query": [],
+   "response": "BranchSettings",
+   "errors": []
+  },
+  {
+   "key": "branch.updatePolicy",
+   "method": "PATCH",
+   "path": "/api/v1/staff/branch/policy",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "<field>",
+    "requiredVaccinesDog[]",
+    "requiredVaccinesCat[]",
+    "googleReviewUrl"
+   ],
+   "query": [],
+   "response": "BranchPolicy",
+   "errors": []
+  },
+  {
+   "key": "branch.setPromptpay",
+   "method": "PUT",
+   "path": "/api/v1/staff/branch/promptpay",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "type",
+    "id",
+    "accountName",
+    "password"
+   ],
+   "query": [],
+   "response": "BranchSettings",
+   "errors": [
+    "INVALID_PROMPTPAY_ID",
+    "INVALID_CREDENTIALS"
+   ]
+  },
+  {
+   "key": "closures.list",
+   "method": "GET",
+   "path": "/api/v1/staff/branch/closures",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "from",
+    "to"
+   ],
+   "response": "object[] branch_closure.*",
+   "errors": []
+  },
+  {
+   "key": "closures.create",
+   "method": "POST",
+   "path": "/api/v1/staff/branch/closures",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "startsAt",
+    "endsAt",
+    "scope",
+    "reason"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "closures.delete",
+   "method": "DELETE",
+   "path": "/api/v1/staff/branch/closures/{closureId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "closures.importHolidays",
+   "method": "POST",
+   "path": "/api/v1/staff/branch/closures/public-holidays",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "year",
+    "dates[]",
+    "scope"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "stations.list",
+   "method": "GET",
+   "path": "/api/v1/staff/stations",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "object[] groom_station.*",
+   "errors": []
+  },
+  {
+   "key": "stations.upsert",
+   "method": "PUT",
+   "path": "/api/v1/staff/stations",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "stations[].id",
+    "stations[].name",
+    "stations[].sortOrder",
+    "stations[].status"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "line.status",
+   "method": "GET",
+   "path": "/api/v1/staff/branch/line",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "LineStatus",
+   "errors": []
+  },
+  {
+   "key": "line.skipped",
+   "method": "GET",
+   "path": "/api/v1/staff/notifications/skipped",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "days"
+   ],
+   "response": "SkippedMessageItem[]",
+   "errors": []
+  },
+  {
+   "key": "staffUsers.list",
+   "method": "GET",
+   "path": "/api/v1/staff/staff-users",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "StaffUserItem[]",
+   "errors": []
+  },
+  {
+   "key": "staffUsers.invite",
+   "method": "POST",
+   "path": "/api/v1/staff/staff-users/invite",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "displayName",
+    "email",
+    "role",
+    "isGroomer"
+   ],
+   "query": [],
+   "response": "object {staffUser: StaffUserItem, inviteUrl: string}",
+   "errors": [
+    "EMAIL_TAKEN"
+   ]
+  },
+  {
+   "key": "staffUsers.update",
+   "method": "PATCH",
+   "path": "/api/v1/staff/staff-users/{staffUserId}",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "displayName",
+    "phone",
+    "role",
+    "isGroomer",
+    "sortOrder",
+    "photoFileId",
+    "status"
+   ],
+   "query": [],
+   "response": "StaffUserItem",
+   "errors": [
+    "LAST_OWNER"
+   ]
+  },
+  {
+   "key": "staffUsers.resendInvite",
+   "method": "POST",
+   "path": "/api/v1/staff/staff-users/{staffUserId}/resend-invite",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [],
+   "response": "object {inviteUrl: string}",
+   "errors": []
+  },
+  {
+   "key": "workingHours.set",
+   "method": "PUT",
+   "path": "/api/v1/staff/staff-users/{staffUserId}/working-hours",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "days[].weekday",
+    "days[].startsAt",
+    "days[].endsAt",
+    "days[].breakStartsAt",
+    "days[].breakEndsAt"
+   ],
+   "query": [],
+   "response": "StaffUserItem",
+   "errors": []
+  },
+  {
+   "key": "timeOff.list",
+   "method": "GET",
+   "path": "/api/v1/staff/time-off",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "from",
+    "to"
+   ],
+   "response": "object[] staff_time_off.*",
+   "errors": []
+  },
+  {
+   "key": "timeOff.create",
+   "method": "POST",
+   "path": "/api/v1/staff/time-off",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "staffUserId",
+    "startsAt",
+    "endsAt",
+    "reason"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "timeOff.delete",
+   "method": "DELETE",
+   "path": "/api/v1/staff/time-off/{timeOffId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "search.quick",
+   "method": "GET",
+   "path": "/api/v1/staff/search",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "q"
+   ],
+   "response": "object {customers: CustomerListItem[], bookings: BookingListItem[]}",
+   "errors": []
+  },
+  {
+   "key": "customers.list",
+   "method": "GET",
+   "path": "/api/v1/staff/customers",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "q",
+    "sort",
+    "cursor",
+    "limit"
+   ],
+   "response": "Paged<CustomerListItem>",
+   "errors": []
+  },
+  {
+   "key": "customers.create",
+   "method": "POST",
+   "path": "/api/v1/staff/customers",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "firstName",
+    "lastName",
+    "nickname",
+    "phone",
+    "email",
+    "sourceChannel",
+    "referralNote",
+    "internalNote",
+    "photoConsent"
+   ],
+   "query": [],
+   "response": "CustomerDetail",
+   "errors": [
+    "INVALID_PHONE"
+   ]
+  },
+  {
+   "key": "customers.get",
+   "method": "GET",
+   "path": "/api/v1/staff/customers/{customerId}",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "CustomerDetail",
+   "errors": []
+  },
+  {
+   "key": "customers.update",
+   "method": "PATCH",
+   "path": "/api/v1/staff/customers/{customerId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "<owner_profile fields>",
+    "emergencyContactName",
+    "emergencyContactPhone",
+    "internalNote",
+    "depositExempt",
+    "photoConsent"
+   ],
+   "query": [],
+   "response": "CustomerDetail",
+   "errors": []
+  },
+  {
+   "key": "customers.blacklist",
+   "method": "POST",
+   "path": "/api/v1/staff/customers/{customerId}/blacklist",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "blacklisted",
+    "reason"
+   ],
+   "query": [],
+   "response": "CustomerDetail",
+   "errors": [
+    "REASON_REQUIRED"
+   ]
+  },
+  {
+   "key": "customers.reliabilityOverride",
+   "method": "PUT",
+   "path": "/api/v1/staff/customers/{customerId}/reliability-override",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "level",
+    "reason"
+   ],
+   "query": [],
+   "response": "CustomerDetail",
+   "errors": []
+  },
+  {
+   "key": "customers.timeline",
+   "method": "GET",
+   "path": "/api/v1/staff/customers/{customerId}/timeline",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "cursor"
+   ],
+   "response": "Paged<object {at, type: booking|groom|stay|daycare|bill|report_card|note, title, petName, amountSatang, refId}>",
+   "errors": []
+  },
+  {
+   "key": "customers.credit",
+   "method": "POST",
+   "path": "/api/v1/staff/customers/{customerId}/credit-adjustments",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "deltaSatang",
+    "reason"
+   ],
+   "query": [],
+   "response": "CustomerDetail",
+   "errors": [
+    "REASON_REQUIRED",
+    "INSUFFICIENT_CREDIT"
+   ]
+  },
+  {
+   "key": "customers.packages",
+   "method": "GET",
+   "path": "/api/v1/staff/customers/{customerId}/packages",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "CustomerPackageItem[]",
+   "errors": []
+  },
+  {
+   "key": "pets.create",
+   "method": "POST",
+   "path": "/api/v1/staff/customers/{customerId}/pets",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "name",
+    "species",
+    "speciesOther",
+    "breed",
+    "sex",
+    "birthDate",
+    "ageEstimateMonths",
+    "neutered",
+    "color",
+    "microchipNo",
+    "coatType",
+    "weightGrams",
+    "profileFileId"
+   ],
+   "query": [],
+   "response": "PetDetail",
+   "errors": []
+  },
+  {
+   "key": "pets.get",
+   "method": "GET",
+   "path": "/api/v1/staff/pets/{petId}",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "PetDetail",
+   "errors": []
+  },
+  {
+   "key": "pets.update",
+   "method": "PATCH",
+   "path": "/api/v1/staff/pets/{petId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "<pet fields>"
+   ],
+   "query": [],
+   "response": "PetDetail",
+   "errors": []
+  },
+  {
+   "key": "pets.setStatus",
+   "method": "POST",
+   "path": "/api/v1/staff/pets/{petId}/status",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "status",
+    "note"
+   ],
+   "query": [],
+   "response": "PetDetail",
+   "errors": []
+  },
+  {
+   "key": "pets.updateShopProfile",
+   "method": "PUT",
+   "path": "/api/v1/staff/pets/{petId}/shop-profile",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "preferredStyle",
+    "bladeNo",
+    "shampooOk",
+    "shampooAvoid",
+    "allergies",
+    "conditions",
+    "medications",
+    "vetClinicName",
+    "vetClinicPhone",
+    "internalNote",
+    "sharedNote",
+    "favoriteStylePhotoId",
+    "groomIntervalDays"
+   ],
+   "query": [],
+   "response": "PetDetail",
+   "errors": []
+  },
+  {
+   "key": "pets.addWeight",
+   "method": "POST",
+   "path": "/api/v1/staff/pets/{petId}/weights",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "weightGrams",
+    "measuredAt"
+   ],
+   "query": [],
+   "response": "PetDetail",
+   "errors": []
+  },
+  {
+   "key": "pets.setFlags",
+   "method": "PUT",
+   "path": "/api/v1/staff/pets/{petId}/temperament-flags",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "flags[].flag",
+    "flags[].note"
+   ],
+   "query": [],
+   "response": "PetDetail",
+   "errors": []
+  },
+  {
+   "key": "vaccinations.create",
+   "method": "POST",
+   "path": "/api/v1/staff/pets/{petId}/vaccinations",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "vaccineCode",
+    "administeredOn",
+    "expiresOn",
+    "proofFileId"
+   ],
+   "query": [],
+   "response": "VaccinationItem",
+   "errors": []
+  },
+  {
+   "key": "vaccinations.verify",
+   "method": "POST",
+   "path": "/api/v1/staff/vaccinations/{vaccinationId}/verify",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "expiresOn"
+   ],
+   "query": [],
+   "response": "VaccinationItem",
+   "errors": []
+  },
+  {
+   "key": "vaccinations.reject",
+   "method": "POST",
+   "path": "/api/v1/staff/vaccinations/{vaccinationId}/reject",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "VaccinationItem",
+   "errors": []
+  },
+  {
+   "key": "photos.list",
+   "method": "GET",
+   "path": "/api/v1/staff/pets/{petId}/photos",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "kind",
+    "cursor"
+   ],
+   "response": "Paged<PhotoItem>",
+   "errors": []
+  },
+  {
+   "key": "photos.add",
+   "method": "POST",
+   "path": "/api/v1/staff/pets/{petId}/photos",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "fileId",
+    "kind",
+    "appointmentId",
+    "stayId",
+    "caption"
+   ],
+   "query": [],
+   "response": "PhotoItem",
+   "errors": []
+  },
+  {
+   "key": "linkRequests.list",
+   "method": "GET",
+   "path": "/api/v1/staff/link-requests",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "LinkRequestItem[]",
+   "errors": []
+  },
+  {
+   "key": "linkRequests.approve",
+   "method": "POST",
+   "path": "/api/v1/staff/link-requests/{requestId}/approve",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "LinkRequestItem",
+   "errors": []
+  },
+  {
+   "key": "linkRequests.reject",
+   "method": "POST",
+   "path": "/api/v1/staff/link-requests/{requestId}/reject",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "LinkRequestItem",
+   "errors": []
+  },
+  {
+   "key": "sizeTiers.list",
+   "method": "GET",
+   "path": "/api/v1/staff/size-tiers",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "SizeTierItem[]",
+   "errors": []
+  },
+  {
+   "key": "sizeTiers.set",
+   "method": "PUT",
+   "path": "/api/v1/staff/size-tiers",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "species",
+    "tiers[].id",
+    "tiers[].code",
+    "tiers[].labelTh",
+    "tiers[].minWeightGrams",
+    "tiers[].maxWeightGrams"
+   ],
+   "query": [],
+   "response": "SizeTierItem[]",
+   "errors": [
+    "SIZE_TIER_OVERLAP",
+    "IN_USE"
+   ]
+  },
+  {
+   "key": "services.list",
+   "method": "GET",
+   "path": "/api/v1/staff/services",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "scope",
+    "includeArchived"
+   ],
+   "response": "ServiceItem[]",
+   "errors": []
+  },
+  {
+   "key": "services.create",
+   "method": "POST",
+   "path": "/api/v1/staff/services",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "scope",
+    "category",
+    "nameTh",
+    "description",
+    "photoFileId",
+    "speciesAllowed[]",
+    "isAddon",
+    "addonPerDay",
+    "onlineBookable",
+    "estCostSatang",
+    "sortOrder"
+   ],
+   "query": [],
+   "response": "ServiceItem",
+   "errors": []
+  },
+  {
+   "key": "services.update",
+   "method": "PATCH",
+   "path": "/api/v1/staff/services/{serviceId}",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "<service fields>",
+    "status"
+   ],
+   "query": [],
+   "response": "ServiceItem",
+   "errors": []
+  },
+  {
+   "key": "services.setPrices",
+   "method": "PUT",
+   "path": "/api/v1/staff/services/{serviceId}/prices",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "prices[].sizeTierId",
+    "prices[].coatGroup",
+    "prices[].priceSatang",
+    "prices[].durationMinutes"
+   ],
+   "query": [],
+   "response": "ServiceItem",
+   "errors": []
+  },
+  {
+   "key": "services.setAddonLinks",
+   "method": "PUT",
+   "path": "/api/v1/staff/services/{serviceId}/addon-links",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "baseServiceIds[]"
+   ],
+   "query": [],
+   "response": "ServiceItem",
+   "errors": []
+  },
+  {
+   "key": "surchargeTypes.list",
+   "method": "GET",
+   "path": "/api/v1/staff/surcharge-types",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "SurchargeTypeItem[]",
+   "errors": []
+  },
+  {
+   "key": "surchargeTypes.upsert",
+   "method": "PUT",
+   "path": "/api/v1/staff/surcharge-types",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "items[].id",
+    "items[].nameTh",
+    "items[].defaultAmountSatang",
+    "items[].status"
+   ],
+   "query": [],
+   "response": "SurchargeTypeItem[]",
+   "errors": []
+  },
+  {
+   "key": "roomTypes.list",
+   "method": "GET",
+   "path": "/api/v1/staff/room-types",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "RoomTypeItem[]",
+   "errors": []
+  },
+  {
+   "key": "roomTypes.create",
+   "method": "POST",
+   "path": "/api/v1/staff/room-types",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "nameTh",
+    "description",
+    "photoFileId",
+    "speciesAllowed[]",
+    "maxWeightGrams",
+    "minAgeMonths",
+    "allowInHeat",
+    "allowReactive",
+    "amenities[]",
+    "includedText",
+    "onlineBookable",
+    "sortOrder"
+   ],
+   "query": [],
+   "response": "RoomTypeItem",
+   "errors": []
+  },
+  {
+   "key": "roomTypes.update",
+   "method": "PATCH",
+   "path": "/api/v1/staff/room-types/{roomTypeId}",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "<room_type fields>",
+    "status"
+   ],
+   "query": [],
+   "response": "RoomTypeItem",
+   "errors": []
+  },
+  {
+   "key": "roomTypes.setRates",
+   "method": "PUT",
+   "path": "/api/v1/staff/room-types/{roomTypeId}/rates",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "rates[].sizeTierId",
+    "rates[].nightlyPriceSatang"
+   ],
+   "query": [],
+   "response": "RoomTypeItem",
+   "errors": []
+  },
+  {
+   "key": "roomUnits.list",
+   "method": "GET",
+   "path": "/api/v1/staff/room-units",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "RoomUnitItem[]",
+   "errors": []
+  },
+  {
+   "key": "roomUnits.upsert",
+   "method": "PUT",
+   "path": "/api/v1/staff/room-units",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "units[].id",
+    "units[].roomTypeId",
+    "units[].code",
+    "units[].zone",
+    "units[].status",
+    "units[].sortOrder"
+   ],
+   "query": [],
+   "response": "RoomUnitItem[]",
+   "errors": [
+    "CODE_TAKEN",
+    "IN_USE"
+   ]
+  },
+  {
+   "key": "roomUnits.housekeeping",
+   "method": "PATCH",
+   "path": "/api/v1/staff/room-units/{roomUnitId}/housekeeping",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "housekeeping"
+   ],
+   "query": [],
+   "response": "RoomUnitItem",
+   "errors": []
+  },
+  {
+   "key": "daycareTypes.list",
+   "method": "GET",
+   "path": "/api/v1/staff/daycare-session-types",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "DaycareSessionTypeItem[]",
+   "errors": []
+  },
+  {
+   "key": "daycareTypes.upsert",
+   "method": "PUT",
+   "path": "/api/v1/staff/daycare-session-types",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "items[].id",
+    "items[].session",
+    "items[].nameTh",
+    "items[].startsAt",
+    "items[].endsAt",
+    "items[].capacity",
+    "items[].status",
+    "items[].rates[].sizeTierId",
+    "items[].rates[].priceSatang"
+   ],
+   "query": [],
+   "response": "DaycareSessionTypeItem[]",
+   "errors": []
+  },
+  {
+   "key": "packageTemplates.list",
+   "method": "GET",
+   "path": "/api/v1/staff/package-templates",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "PackageTemplateItem[]",
+   "errors": []
+  },
+  {
+   "key": "packageTemplates.upsert",
+   "method": "PUT",
+   "path": "/api/v1/staff/package-templates",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "items[].id",
+    "items[].nameTh",
+    "items[].serviceId",
+    "items[].sizeTierId",
+    "items[].sessionsCount",
+    "items[].priceSatang",
+    "items[].validityDays",
+    "items[].shareScope",
+    "items[].status"
+   ],
+   "query": [],
+   "response": "PackageTemplateItem[]",
+   "errors": []
+  },
+  {
+   "key": "commissionRules.list",
+   "method": "GET",
+   "path": "/api/v1/staff/commission-rules",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [],
+   "response": "CommissionRuleItem[]",
+   "errors": []
+  },
+  {
+   "key": "commissionRules.set",
+   "method": "PUT",
+   "path": "/api/v1/staff/commission-rules",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "rules[].serviceId",
+    "rules[].staffUserId",
+    "rules[].type",
+    "rules[].value"
+   ],
+   "query": [],
+   "response": "CommissionRuleItem[]",
+   "errors": []
+  },
+  {
+   "key": "imports.create",
+   "method": "POST",
+   "path": "/api/v1/staff/imports",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "kind",
+    "fileId"
+   ],
+   "query": [],
+   "response": "ImportJobItem",
+   "errors": []
+  },
+  {
+   "key": "imports.get",
+   "method": "GET",
+   "path": "/api/v1/staff/imports/{importId}",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [],
+   "response": "ImportJobItem",
+   "errors": []
+  },
+  {
+   "key": "imports.commit",
+   "method": "POST",
+   "path": "/api/v1/staff/imports/{importId}/commit",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [],
+   "response": "ImportJobItem",
+   "errors": [
+    "IMPORT_HAS_ERRORS"
+   ]
+  },
+  {
+   "key": "availability.groomSlots",
+   "method": "POST",
+   "path": "/api/v1/staff/availability/groom-slots",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "date",
+    "petId",
+    "serviceIds[]",
+    "addonIds[]",
+    "groomerId",
+    "sizeTierId",
+    "excludeAppointmentId",
+    "pendingAppointments[]"
+   ],
+   "query": [],
+   "response": "SlotList",
+   "errors": [
+    "PRICE_NOT_FOUND",
+    "WEIGHT_REQUIRED",
+    "MODULE_DISABLED"
+   ]
+  },
+  {
+   "key": "availability.hotel",
+   "method": "GET",
+   "path": "/api/v1/staff/availability/hotel",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "checkInDate",
+    "checkOutDate",
+    "petId"
+   ],
+   "response": "HotelAvailability",
+   "errors": []
+  },
+  {
+   "key": "availability.daycare",
+   "method": "GET",
+   "path": "/api/v1/staff/availability/daycare",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "date",
+    "petId"
+   ],
+   "response": "DaycareAvailability",
+   "errors": []
+  },
+  {
+   "key": "quotes.create",
+   "method": "POST",
+   "path": "/api/v1/staff/quotes",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "customerId",
+    "groom[]",
+    "stays[]",
+    "daycare[]"
+   ],
+   "query": [],
+   "response": "Quote",
+   "errors": []
+  },
+  {
+   "key": "bookings.create",
+   "method": "POST",
+   "path": "/api/v1/staff/bookings",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "customerId",
+    "channel",
+    "customerNote",
+    "groom[].petId",
+    "groom[].serviceIds[]",
+    "groom[].addonIds[]",
+    "groom[].startsAt",
+    "groom[].groomerId",
+    "groom[].stationId",
+    "groom[].groomerPreference",
+    "groom[].sizeTierId",
+    "groom[].customerPackageId",
+    "stays[].petId",
+    "stays[].roomTypeId",
+    "stays[].roomUnitId",
+    "stays[].checkInDate",
+    "stays[].checkOutDate",
+    "stays[].expectedCheckInTime",
+    "stays[].expectedCheckOutTime",
+    "stays[].inHeat",
+    "stays[].addonServiceIds[]",
+    "stays[].bundleGroom",
+    "daycare[].petId",
+    "daycare[].sessionTypeId",
+    "daycare[].visitDate",
+    "depositOverride.amountSatang",
+    "depositOverride.reason"
+   ],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": [
+    "SLOT_TAKEN",
+    "ROOM_TAKEN",
+    "PET_ALREADY_BOOKED",
+    "DAYCARE_FULL",
+    "PRICE_NOT_FOUND",
+    "PET_INACTIVE",
+    "SPECIES_NOT_ALLOWED",
+    "BREED_REJECTED",
+    "PET_TOO_HEAVY",
+    "PET_TOO_YOUNG",
+    "IN_HEAT_NOT_ALLOWED",
+    "REACTIVE_NOT_ALLOWED",
+    "MODULE_DISABLED",
+    "BRANCH_CLOSED"
+   ]
+  },
+  {
+   "key": "bookings.list",
+   "method": "GET",
+   "path": "/api/v1/staff/bookings",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "status",
+    "from",
+    "to",
+    "customerId",
+    "cursor"
+   ],
+   "response": "Paged<BookingListItem>",
+   "errors": []
+  },
+  {
+   "key": "bookings.get",
+   "method": "GET",
+   "path": "/api/v1/staff/bookings/{bookingId}",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "bookings.approve",
+   "method": "POST",
+   "path": "/api/v1/staff/bookings/{bookingId}/approve",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "bookings.decline",
+   "method": "POST",
+   "path": "/api/v1/staff/bookings/{bookingId}/decline",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "bookings.cancelPreview",
+   "method": "GET",
+   "path": "/api/v1/staff/bookings/{bookingId}/cancel-preview",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "kind"
+   ],
+   "response": "object R-07 CancelResult",
+   "errors": []
+  },
+  {
+   "key": "bookings.cancel",
+   "method": "POST",
+   "path": "/api/v1/staff/bookings/{bookingId}/cancel",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "kind",
+    "reason",
+    "customerChoice"
+   ],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "bookings.recordDeposit",
+   "method": "POST",
+   "path": "/api/v1/staff/bookings/{bookingId}/deposit",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "method",
+    "amountSatang",
+    "reference",
+    "proofFileId"
+   ],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "bookings.waiveDeposit",
+   "method": "POST",
+   "path": "/api/v1/staff/bookings/{bookingId}/deposit/waive",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "bookings.balanceLink",
+   "method": "POST",
+   "path": "/api/v1/staff/bookings/{bookingId}/balance-link",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "object {url: string, amountSatang: number}",
+   "errors": []
+  },
+  {
+   "key": "calendar.day",
+   "method": "GET",
+   "path": "/api/v1/staff/calendar",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "date",
+    "view",
+    "groomerId"
+   ],
+   "response": "CalendarDay",
+   "errors": []
+  },
+  {
+   "key": "groom.reschedule",
+   "method": "PATCH",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/reschedule",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "startsAt",
+    "groomerId",
+    "stationId",
+    "reason",
+    "notifyCustomer"
+   ],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": [
+    "SLOT_TAKEN",
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "groom.setItems",
+   "method": "PUT",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/items",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "serviceIds[]",
+    "addonIds[]",
+    "sizeTierId",
+    "priceOverrides[]"
+   ],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": [
+    "SLOT_TAKEN",
+    "PRICE_NOT_FOUND"
+   ]
+  },
+  {
+   "key": "groom.checkIn",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/check-in",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "weightGrams",
+    "conditionFlags[]",
+    "conditionNote",
+    "consent.reasons[]",
+    "consent.signerName",
+    "consent.signatureFileId"
+   ],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": [
+    "CONSENT_REQUIRED",
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "groom.start",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/start",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": []
+  },
+  {
+   "key": "groom.finish",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/finish",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "staffNote"
+   ],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": []
+  },
+  {
+   "key": "groom.notifyPickup",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/notify-pickup",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": []
+  },
+  {
+   "key": "groom.pickUp",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/pick-up",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": []
+  },
+  {
+   "key": "groom.noShow",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/no-show",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": []
+  },
+  {
+   "key": "groom.cancel",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/cancel",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "groom.addSurcharge",
+   "method": "POST",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/surcharges",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "surchargeTypeId",
+    "name",
+    "amountSatang",
+    "reason"
+   ],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": []
+  },
+  {
+   "key": "groom.removeSurcharge",
+   "method": "DELETE",
+   "path": "/api/v1/staff/appointment-surcharges/{surchargeId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "AppointmentCard",
+   "errors": []
+  },
+  {
+   "key": "groom.jobCard",
+   "method": "GET",
+   "path": "/api/v1/staff/groom-appointments/{appointmentId}/job-card",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "JobCard",
+   "errors": []
+  },
+  {
+   "key": "groom.myQueue",
+   "method": "GET",
+   "path": "/api/v1/staff/me/queue",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "date"
+   ],
+   "response": "AppointmentCard[]",
+   "errors": []
+  },
+  {
+   "key": "stays.today",
+   "method": "GET",
+   "path": "/api/v1/staff/stays",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "date",
+    "type"
+   ],
+   "response": "StayCard[]",
+   "errors": []
+  },
+  {
+   "key": "stays.get",
+   "method": "GET",
+   "path": "/api/v1/staff/stays/{stayId}",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "StayDetail",
+   "errors": []
+  },
+  {
+   "key": "stays.saveIntake",
+   "method": "PUT",
+   "path": "/api/v1/staff/stays/{stayId}/intake",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "foodBrand",
+    "foodAmount",
+    "feedingTimes[]",
+    "foodProvidedByOwner",
+    "walksPerDay",
+    "conditionNote",
+    "conditionPhotoIds[]",
+    "emergencyContactName",
+    "emergencyContactPhone",
+    "vetClinicName",
+    "vetClinicPhone",
+    "medications[]",
+    "belongings[]",
+    "complete"
+   ],
+   "query": [],
+   "response": "StayDetail",
+   "errors": []
+  },
+  {
+   "key": "stays.signAgreement",
+   "method": "POST",
+   "path": "/api/v1/staff/stays/{stayId}/agreement",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "signerName",
+    "signatureFileId",
+    "emergencyVetLimitSatang"
+   ],
+   "query": [],
+   "response": "StayDetail",
+   "errors": []
+  },
+  {
+   "key": "stays.checkIn",
+   "method": "POST",
+   "path": "/api/v1/staff/stays/{stayId}/check-in",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "weightGrams",
+    "vaccineOverrideReason"
+   ],
+   "query": [],
+   "response": "StayDetail",
+   "errors": [
+    "INTAKE_INCOMPLETE",
+    "CONSENT_REQUIRED",
+    "VACCINE_REQUIRED",
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "stays.changeRoom",
+   "method": "PATCH",
+   "path": "/api/v1/staff/stays/{stayId}/room",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "roomUnitId"
+   ],
+   "query": [],
+   "response": "StayCard",
+   "errors": [
+    "ROOM_TAKEN"
+   ]
+  },
+  {
+   "key": "stays.changeDates",
+   "method": "PATCH",
+   "path": "/api/v1/staff/stays/{stayId}/dates",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "checkInDate",
+    "checkOutDate"
+   ],
+   "query": [],
+   "response": "StayCard",
+   "errors": [
+    "ROOM_TAKEN",
+    "PET_ALREADY_BOOKED"
+   ]
+  },
+  {
+   "key": "stays.addAddon",
+   "method": "POST",
+   "path": "/api/v1/staff/stays/{stayId}/addons",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "serviceId",
+    "quantity"
+   ],
+   "query": [],
+   "response": "StayDetail",
+   "errors": []
+  },
+  {
+   "key": "stays.removeAddon",
+   "method": "DELETE",
+   "path": "/api/v1/staff/stay-addons/{stayAddonId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "StayDetail",
+   "errors": []
+  },
+  {
+   "key": "stays.postUpdate",
+   "method": "POST",
+   "path": "/api/v1/staff/stays/{stayId}/updates",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "fileIds[]",
+    "caption",
+    "notifyCustomer"
+   ],
+   "query": [],
+   "response": "StayDetail",
+   "errors": []
+  },
+  {
+   "key": "stays.checkOut",
+   "method": "POST",
+   "path": "/api/v1/staff/stays/{stayId}/check-out",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "weightGramsOut",
+    "returnedBelongingIds[]",
+    "missingNote"
+   ],
+   "query": [],
+   "response": "StayDetail",
+   "errors": []
+  },
+  {
+   "key": "stays.noShow",
+   "method": "POST",
+   "path": "/api/v1/staff/stays/{stayId}/no-show",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "StayCard",
+   "errors": []
+  },
+  {
+   "key": "stays.cancel",
+   "method": "POST",
+   "path": "/api/v1/staff/stays/{stayId}/cancel",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "BookingDetail",
+   "errors": []
+  },
+  {
+   "key": "roomMap.get",
+   "method": "GET",
+   "path": "/api/v1/staff/room-map",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "date"
+   ],
+   "response": "RoomMap",
+   "errors": []
+  },
+  {
+   "key": "careTasks.list",
+   "method": "GET",
+   "path": "/api/v1/staff/care-tasks",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "date",
+    "status",
+    "stayId"
+   ],
+   "response": "CareTaskItem[]",
+   "errors": []
+  },
+  {
+   "key": "careTasks.done",
+   "method": "POST",
+   "path": "/api/v1/staff/care-tasks/{taskId}/done",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "note",
+    "photoFileId"
+   ],
+   "query": [],
+   "response": "CareTaskItem",
+   "errors": []
+  },
+  {
+   "key": "careTasks.skip",
+   "method": "POST",
+   "path": "/api/v1/staff/care-tasks/{taskId}/skip",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "note"
+   ],
+   "query": [],
+   "response": "CareTaskItem",
+   "errors": []
+  },
+  {
+   "key": "daycare.list",
+   "method": "GET",
+   "path": "/api/v1/staff/daycare-visits",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "date"
+   ],
+   "response": "DaycareVisitItem[]",
+   "errors": []
+  },
+  {
+   "key": "daycare.check_in",
+   "method": "POST",
+   "path": "/api/v1/staff/daycare-visits/{visitId}/check-in",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "DaycareVisitItem",
+   "errors": [
+    "VACCINE_REQUIRED",
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "daycare.check_out",
+   "method": "POST",
+   "path": "/api/v1/staff/daycare-visits/{visitId}/check-out",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "DaycareVisitItem",
+   "errors": [
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "daycare.no_show",
+   "method": "POST",
+   "path": "/api/v1/staff/daycare-visits/{visitId}/no-show",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "DaycareVisitItem",
+   "errors": [
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "daycare.cancel",
+   "method": "POST",
+   "path": "/api/v1/staff/daycare-visits/{visitId}/cancel",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "DaycareVisitItem",
+   "errors": [
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "slips.list",
+   "method": "GET",
+   "path": "/api/v1/staff/slips",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "status"
+   ],
+   "response": "SlipItem[]",
+   "errors": []
+  },
+  {
+   "key": "slips.verify",
+   "method": "POST",
+   "path": "/api/v1/staff/slips/{slipId}/verify",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "amountSatang",
+    "confirmDuplicate",
+    "approveBooking"
+   ],
+   "query": [],
+   "response": "SlipItem",
+   "errors": [
+    "DUPLICATE_SLIP_CONFIRM_REQUIRED",
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "slips.reject",
+   "method": "POST",
+   "path": "/api/v1/staff/slips/{slipId}/reject",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "SlipItem",
+   "errors": []
+  },
+  {
+   "key": "refunds.create",
+   "method": "POST",
+   "path": "/api/v1/staff/refunds",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "customerId",
+    "bookingId",
+    "billId",
+    "amountSatang",
+    "mode",
+    "reason",
+    "proofFileId"
+   ],
+   "query": [],
+   "response": "object refund.*",
+   "errors": []
+  },
+  {
+   "key": "bills.open",
+   "method": "POST",
+   "path": "/api/v1/staff/bills",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "bookingIds[]",
+    "customerId"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": []
+  },
+  {
+   "key": "bills.list",
+   "method": "GET",
+   "path": "/api/v1/staff/bills",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [
+    "status",
+    "date",
+    "cursor"
+   ],
+   "response": "Paged<BillListItem>",
+   "errors": []
+  },
+  {
+   "key": "bills.get",
+   "method": "GET",
+   "path": "/api/v1/staff/bills/{billId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "BillDetail",
+   "errors": []
+  },
+  {
+   "key": "bills.addLine",
+   "method": "POST",
+   "path": "/api/v1/staff/bills/{billId}/lines",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "lineType",
+    "description",
+    "quantity",
+    "unitPriceSatang",
+    "packageTemplateId",
+    "customerPackageId",
+    "petId",
+    "performerId"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": [
+    "BILL_NOT_OPEN",
+    "PACKAGE_EXHAUSTED",
+    "PACKAGE_EXPIRED",
+    "PACKAGE_PET_MISMATCH"
+   ]
+  },
+  {
+   "key": "bills.updateLine",
+   "method": "PATCH",
+   "path": "/api/v1/staff/bill-lines/{lineId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "lineDiscountSatang",
+    "lineDiscountReason",
+    "performerId",
+    "quantity"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": [
+    "BILL_NOT_OPEN",
+    "LINE_DISCOUNT_TOO_LARGE",
+    "DISCOUNT_LIMIT_EXCEEDED",
+    "REASON_REQUIRED"
+   ]
+  },
+  {
+   "key": "bills.removeLine",
+   "method": "DELETE",
+   "path": "/api/v1/staff/bill-lines/{lineId}",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "BillDetail",
+   "errors": [
+    "BILL_NOT_OPEN"
+   ]
+  },
+  {
+   "key": "bills.setDiscount",
+   "method": "PATCH",
+   "path": "/api/v1/staff/bills/{billId}/discount",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "billDiscountSatang",
+    "reason"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": [
+    "BILL_DISCOUNT_TOO_LARGE",
+    "DISCOUNT_LIMIT_EXCEEDED",
+    "REASON_REQUIRED"
+   ]
+  },
+  {
+   "key": "bills.addPayment",
+   "method": "POST",
+   "path": "/api/v1/staff/bills/{billId}/payments",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "method",
+    "tenderedSatang",
+    "amountSatang",
+    "reference",
+    "slipId",
+    "proofFileId",
+    "expectedPaidSatang"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": [
+    "STALE_BILL",
+    "BILL_NOT_OPEN",
+    "AMOUNT_EXCEEDS_DUE",
+    "INSUFFICIENT_CREDIT",
+    "INVALID_AMOUNT"
+   ]
+  },
+  {
+   "key": "bills.voidPayment",
+   "method": "POST",
+   "path": "/api/v1/staff/payments/{paymentId}/void",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": [
+    "BILL_NOT_OPEN",
+    "REASON_REQUIRED"
+   ]
+  },
+  {
+   "key": "bills.promptpayQr",
+   "method": "GET",
+   "path": "/api/v1/staff/bills/{billId}/promptpay-qr",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "PaymentInstruction",
+   "errors": [
+    "PROMPTPAY_NOT_CONFIGURED"
+   ]
+  },
+  {
+   "key": "bills.close",
+   "method": "POST",
+   "path": "/api/v1/staff/bills/{billId}/close",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [
+    "expectedPaidSatang"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": [
+    "BILL_HAS_DUE",
+    "STALE_BILL",
+    "BILL_NOT_OPEN"
+   ]
+  },
+  {
+   "key": "bills.void",
+   "method": "POST",
+   "path": "/api/v1/staff/bills/{billId}/void",
+   "auth": "staff",
+   "roles": "O",
+   "request": [
+    "reason"
+   ],
+   "query": [],
+   "response": "BillDetail",
+   "errors": []
+  },
+  {
+   "key": "bills.receipt",
+   "method": "GET",
+   "path": "/api/v1/staff/bills/{billId}/receipt",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "Receipt",
+   "errors": []
+  },
+  {
+   "key": "bills.sendReceipt",
+   "method": "POST",
+   "path": "/api/v1/staff/bills/{billId}/send-receipt",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "reportCards.list",
+   "method": "GET",
+   "path": "/api/v1/staff/report-cards",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [
+    "status"
+   ],
+   "response": "ReportCardDetail[]",
+   "errors": []
+  },
+  {
+   "key": "reportCards.get",
+   "method": "GET",
+   "path": "/api/v1/staff/report-cards/{reportCardId}",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "ReportCardDetail",
+   "errors": []
+  },
+  {
+   "key": "reportCards.update",
+   "method": "PUT",
+   "path": "/api/v1/staff/report-cards/{reportCardId}",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "skin",
+    "ears",
+    "nails",
+    "teeth",
+    "parasites",
+    "cooperation",
+    "staffNote",
+    "recommendation"
+   ],
+   "query": [],
+   "response": "ReportCardDetail",
+   "errors": [
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "reportCards.submit",
+   "method": "POST",
+   "path": "/api/v1/staff/report-cards/{reportCardId}/submit",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [],
+   "query": [],
+   "response": "ReportCardDetail",
+   "errors": []
+  },
+  {
+   "key": "reportCards.approve",
+   "method": "POST",
+   "path": "/api/v1/staff/report-cards/{reportCardId}/approve",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "ReportCardDetail",
+   "errors": []
+  },
+  {
+   "key": "dashboard.today",
+   "method": "GET",
+   "path": "/api/v1/staff/dashboard/today",
+   "auth": "staff",
+   "roles": "OF",
+   "request": [],
+   "query": [],
+   "response": "DashboardToday",
+   "errors": []
+  },
+  {
+   "key": "reports.sales",
+   "method": "GET",
+   "path": "/api/v1/staff/reports/sales",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [
+    "from",
+    "to",
+    "groupBy"
+   ],
+   "response": "SalesReport",
+   "errors": []
+  },
+  {
+   "key": "reports.commissions",
+   "method": "GET",
+   "path": "/api/v1/staff/reports/commissions",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [
+    "from",
+    "to"
+   ],
+   "response": "CommissionReport",
+   "errors": []
+  },
+  {
+   "key": "reports.occupancy",
+   "method": "GET",
+   "path": "/api/v1/staff/reports/occupancy",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [
+    "from",
+    "to"
+   ],
+   "response": "OccupancyReport",
+   "errors": []
+  },
+  {
+   "key": "exports.csv",
+   "method": "GET",
+   "path": "/api/v1/staff/exports/{type}.csv",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [
+    "from",
+    "to"
+   ],
+   "response": "text/csv (UTF-8 BOM, คอลัมน์ภาษาอังกฤษ snake_case, เงินเป็นบาท 2 ตำแหน่ง)",
+   "errors": []
+  },
+  {
+   "key": "audit.list",
+   "method": "GET",
+   "path": "/api/v1/staff/audit-logs",
+   "auth": "staff",
+   "roles": "O",
+   "request": [],
+   "query": [
+    "action",
+    "from",
+    "to",
+    "cursor"
+   ],
+   "response": "Paged<AuditLogItem>",
+   "errors": []
+  },
+  {
+   "key": "feedback.create",
+   "method": "POST",
+   "path": "/api/v1/staff/feedback",
+   "auth": "staff",
+   "roles": "OFS",
+   "request": [
+    "pageUrl",
+    "message",
+    "screenshotFileId",
+    "appVersion"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "liff.session",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/session",
+   "auth": "public",
+   "roles": "",
+   "request": [
+    "idToken"
+   ],
+   "query": [],
+   "response": "LiffSession",
+   "errors": [
+    "LINE_TOKEN_INVALID",
+    "LINE_NOT_CONNECTED"
+   ]
+  },
+  {
+   "key": "liff.register",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/register",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "firstName",
+    "lastName",
+    "nickname",
+    "phone",
+    "privacyVersion",
+    "termsVersion",
+    "photoConsent"
+   ],
+   "query": [],
+   "response": "LiffSession",
+   "errors": [
+    "INVALID_PHONE",
+    "LINK_REQUEST_PENDING"
+   ]
+  },
+  {
+   "key": "liff.me",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/me",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "MyProfile",
+   "errors": []
+  },
+  {
+   "key": "liff.updateMe",
+   "method": "PATCH",
+   "path": "/api/v1/liff/{branchSlug}/me",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "firstName",
+    "lastName",
+    "nickname",
+    "phone",
+    "photoConsent"
+   ],
+   "query": [],
+   "response": "MyProfile",
+   "errors": []
+  },
+  {
+   "key": "liff.shop",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/shop",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "ShopPublic",
+   "errors": []
+  },
+  {
+   "key": "liff.pets",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/pets",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "MyPet[]",
+   "errors": []
+  },
+  {
+   "key": "liff.createPet",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/pets",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "name",
+    "species",
+    "breed",
+    "sex",
+    "birthDate",
+    "ageEstimateMonths",
+    "neutered",
+    "coatType",
+    "weightGrams",
+    "profileFileId"
+   ],
+   "query": [],
+   "response": "MyPet",
+   "errors": []
+  },
+  {
+   "key": "liff.updatePet",
+   "method": "PATCH",
+   "path": "/api/v1/liff/{branchSlug}/pets/{petId}",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "<same as create>"
+   ],
+   "query": [],
+   "response": "MyPet",
+   "errors": []
+  },
+  {
+   "key": "liff.addVaccination",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/pets/{petId}/vaccinations",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "vaccineCode",
+    "administeredOn",
+    "expiresOn",
+    "proofFileId"
+   ],
+   "query": [],
+   "response": "VaccinationItem",
+   "errors": []
+  },
+  {
+   "key": "liff.groomSlots",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/availability/groom-slots",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "date",
+    "petId",
+    "serviceIds[]",
+    "addonIds[]",
+    "groomerId",
+    "sizeTierId"
+   ],
+   "query": [],
+   "response": "SlotList",
+   "errors": [
+    "PRICE_NOT_FOUND",
+    "WEIGHT_REQUIRED",
+    "CUSTOMER_BLACKLISTED",
+    "MODULE_DISABLED"
+   ]
+  },
+  {
+   "key": "liff.hotelAvailability",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/availability/hotel",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [
+    "checkInDate",
+    "checkOutDate",
+    "petId"
+   ],
+   "response": "HotelAvailability",
+   "errors": []
+  },
+  {
+   "key": "liff.daycareAvailability",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/availability/daycare",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [
+    "date",
+    "petId"
+   ],
+   "response": "DaycareAvailability",
+   "errors": []
+  },
+  {
+   "key": "liff.quote",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/quotes",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "groom[]",
+    "stays[]",
+    "daycare[]"
+   ],
+   "query": [],
+   "response": "Quote",
+   "errors": []
+  },
+  {
+   "key": "liff.createBooking",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/bookings",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "groom[].petId",
+    "groom[].serviceIds[]",
+    "groom[].addonIds[]",
+    "groom[].startsAt",
+    "groom[].groomerId",
+    "groom[].sizeTierId",
+    "stays[].petId",
+    "stays[].roomTypeId",
+    "stays[].checkInDate",
+    "stays[].checkOutDate",
+    "stays[].expectedCheckInTime",
+    "stays[].expectedCheckOutTime",
+    "stays[].inHeat",
+    "stays[].addonServiceIds[]",
+    "stays[].bathBeforeCheckout",
+    "daycare[].petId",
+    "daycare[].sessionTypeId",
+    "daycare[].visitDate",
+    "customerNote",
+    "acceptedPolicy"
+   ],
+   "query": [],
+   "response": "MyBookingDetail",
+   "errors": [
+    "SLOT_TAKEN",
+    "ROOM_TAKEN",
+    "PET_ALREADY_BOOKED",
+    "DAYCARE_FULL",
+    "CUSTOMER_BLACKLISTED",
+    "VACCINE_REQUIRED",
+    "OUTSIDE_BOOKING_WINDOW",
+    "PRICE_NOT_FOUND",
+    "MODULE_DISABLED"
+   ]
+  },
+  {
+   "key": "liff.bookings",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/bookings",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [
+    "scope"
+   ],
+   "response": "MyBookingItem[]",
+   "errors": []
+  },
+  {
+   "key": "liff.booking",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/bookings/{bookingId}",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "MyBookingDetail",
+   "errors": []
+  },
+  {
+   "key": "liff.uploadSlip",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/bookings/{bookingId}/slips",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "fileId",
+    "qrPayload"
+   ],
+   "query": [],
+   "response": "MyBookingDetail",
+   "errors": [
+    "HOLD_EXPIRED",
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "liff.cancel",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/bookings/{bookingId}/cancel",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "customerChoice",
+    "reason"
+   ],
+   "query": [],
+   "response": "MyBookingDetail",
+   "errors": [
+    "STATUS_NOT_ALLOWED"
+   ]
+  },
+  {
+   "key": "liff.reschedule",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/bookings/{bookingId}/reschedule",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "appointmentId",
+    "startsAt",
+    "groomerId"
+   ],
+   "query": [],
+   "response": "MyBookingDetail",
+   "errors": [
+    "TOO_LATE_TO_RESCHEDULE",
+    "RESCHEDULE_LIMIT",
+    "SLOT_TAKEN"
+   ]
+  },
+  {
+   "key": "liff.ics",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/bookings/{bookingId}/calendar.ics",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "text/calendar",
+   "errors": []
+  },
+  {
+   "key": "liff.stayUpdates",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/stays/{stayId}/updates",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "StayUpdates",
+   "errors": []
+  },
+  {
+   "key": "liff.reportCard",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/report-cards/{reportCardId}",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "ReportCardDetail",
+   "errors": []
+  },
+  {
+   "key": "liff.rate",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/report-cards/{reportCardId}/rating",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "rating",
+    "feedback"
+   ],
+   "query": [],
+   "response": "ReportCardDetail",
+   "errors": []
+  },
+  {
+   "key": "liff.reviewClick",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/report-cards/{reportCardId}/review-click",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "liff.packages",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/packages",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "CustomerPackageItem[]",
+   "errors": []
+  },
+  {
+   "key": "liff.receipt",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/receipts/{billId}",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "Receipt",
+   "errors": []
+  },
+  {
+   "key": "liff.payPage",
+   "method": "GET",
+   "path": "/api/v1/liff/{branchSlug}/pay/{billId}",
+   "auth": "customer",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "PaymentInstruction",
+   "errors": []
+  },
+  {
+   "key": "liff.payUploadSlip",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/pay/{billId}/slips",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "fileId",
+    "qrPayload"
+   ],
+   "query": [],
+   "response": "PaymentInstruction",
+   "errors": []
+  },
+  {
+   "key": "liff.dataRequest",
+   "method": "POST",
+   "path": "/api/v1/liff/{branchSlug}/data-requests",
+   "auth": "customer",
+   "roles": "",
+   "request": [
+    "type"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "public.branch",
+   "method": "GET",
+   "path": "/api/v1/public/branches/{bookingSlug}",
+   "auth": "public",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "ShopPublic",
+   "errors": []
+  },
+  {
+   "key": "webhook.line",
+   "method": "POST",
+   "path": "/api/webhooks/line/{messagingChannelId}",
+   "auth": "line",
+   "roles": "",
+   "request": [
+    "x-line-signature"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": [
+    "WEBHOOK_SIGNATURE_INVALID"
+   ]
+  },
+  {
+   "key": "cron.tick",
+   "method": "POST",
+   "path": "/api/cron/tick",
+   "auth": "cron",
+   "roles": "",
+   "request": [
+    "x-cron-secret"
+   ],
+   "query": [],
+   "response": "object {processed: number, failed: number}",
+   "errors": [
+    "CRON_FORBIDDEN"
+   ]
+  },
+  {
+   "key": "health",
+   "method": "GET",
+   "path": "/api/health",
+   "auth": "public",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "object {ok: true, db: 'ok', version: string}",
+   "errors": []
+  },
+  {
+   "key": "admin.login",
+   "method": "POST",
+   "path": "/api/v1/auth/admin/login",
+   "auth": "public",
+   "roles": "",
+   "request": [
+    "email",
+    "password"
+   ],
+   "query": [],
+   "response": "object {admin}",
+   "errors": [
+    "INVALID_CREDENTIALS",
+    "ACCOUNT_LOCKED"
+   ]
+  },
+  {
+   "key": "admin.orgs",
+   "method": "GET",
+   "path": "/api/v1/admin/organizations",
+   "auth": "admin",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "OrgListItem[]",
+   "errors": []
+  },
+  {
+   "key": "admin.createOrg",
+   "method": "POST",
+   "path": "/api/v1/admin/organizations",
+   "auth": "admin",
+   "roles": "",
+   "request": [
+    "name",
+    "slug",
+    "branchName",
+    "bookingSlug",
+    "ownerEmail",
+    "ownerName",
+    "modules.grooming",
+    "modules.hotel",
+    "modules.daycare"
+   ],
+   "query": [],
+   "response": "object {organization: OrgListItem, ownerInviteUrl: string}",
+   "errors": [
+    "SLUG_TAKEN",
+    "EMAIL_TAKEN"
+   ]
+  },
+  {
+   "key": "admin.updateOrg",
+   "method": "PATCH",
+   "path": "/api/v1/admin/organizations/{orgId}",
+   "auth": "admin",
+   "roles": "",
+   "request": [
+    "status"
+   ],
+   "query": [],
+   "response": "OrgListItem",
+   "errors": []
+  },
+  {
+   "key": "admin.setLineChannel",
+   "method": "PUT",
+   "path": "/api/v1/admin/branches/{branchId}/line-channel",
+   "auth": "admin",
+   "roles": "",
+   "request": [
+    "providerId",
+    "messagingChannelId",
+    "channelSecret",
+    "channelAccessToken",
+    "loginChannelId",
+    "liffId",
+    "botBasicId",
+    "monthlyPushQuota"
+   ],
+   "query": [],
+   "response": "LineStatus",
+   "errors": []
+  },
+  {
+   "key": "admin.verifyLine",
+   "method": "POST",
+   "path": "/api/v1/admin/branches/{branchId}/line-channel/verify",
+   "auth": "admin",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "LineStatus",
+   "errors": [
+    "LINE_API_ERROR"
+   ]
+  },
+  {
+   "key": "admin.supportStart",
+   "method": "POST",
+   "path": "/api/v1/admin/support-sessions",
+   "auth": "admin",
+   "roles": "",
+   "request": [
+    "organizationId",
+    "reason",
+    "ticketRef"
+   ],
+   "query": [],
+   "response": "object {redirectUrl}",
+   "errors": []
+  },
+  {
+   "key": "admin.supportEnd",
+   "method": "POST",
+   "path": "/api/v1/admin/support-sessions/{supportId}/end",
+   "auth": "admin",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "204",
+   "errors": []
+  },
+  {
+   "key": "admin.feedback",
+   "method": "GET",
+   "path": "/api/v1/admin/feedback",
+   "auth": "admin",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "FeedbackItem[]",
+   "errors": []
+  },
+  {
+   "key": "admin.updateFeedback",
+   "method": "PATCH",
+   "path": "/api/v1/admin/feedback/{feedbackId}",
+   "auth": "admin",
+   "roles": "",
+   "request": [
+    "status"
+   ],
+   "query": [],
+   "response": "FeedbackItem",
+   "errors": []
+  },
+  {
+   "key": "admin.dataRequests",
+   "method": "GET",
+   "path": "/api/v1/admin/data-requests",
+   "auth": "admin",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "DataRequestItem[]",
+   "errors": []
+  },
+  {
+   "key": "admin.resolveDataRequest",
+   "method": "POST",
+   "path": "/api/v1/admin/data-requests/{requestId}/resolve",
+   "auth": "admin",
+   "roles": "",
+   "request": [
+    "status",
+    "note"
+   ],
+   "query": [],
+   "response": "DataRequestItem",
+   "errors": []
+  },
+  {
+   "key": "admin.analytics",
+   "method": "GET",
+   "path": "/api/v1/admin/analytics/pilot",
+   "auth": "admin",
+   "roles": "",
+   "request": [],
+   "query": [
+    "from",
+    "to"
+   ],
+   "response": "PilotAnalytics",
+   "errors": []
+  },
+  {
+   "key": "admin.holidays",
+   "method": "PUT",
+   "path": "/api/v1/admin/public-holidays/{year}",
+   "auth": "admin",
+   "roles": "",
+   "request": [
+    "days[].date",
+    "days[].nameTh"
+   ],
+   "query": [],
+   "response": "204",
+   "errors": []
+  }
+ ],
+ "dtos": [
+  "AppointmentCard",
+  "AuditLogItem",
+  "BillDetail",
+  "BillListItem",
+  "BookingDetail",
+  "BookingEventItem",
+  "BookingListItem",
+  "BranchPolicy",
+  "BranchSettings",
+  "CalendarDay",
+  "CareTaskItem",
+  "CommissionReport",
+  "CommissionRuleItem",
+  "CustomerDetail",
+  "CustomerListItem",
+  "CustomerPackageItem",
+  "DashboardToday",
+  "DataRequestItem",
+  "DaycareAvailability",
+  "DaycareSessionTypeItem",
+  "DaycareVisitItem",
+  "FeedbackItem",
+  "HotelAvailability",
+  "ImportJobItem",
+  "JobCard",
+  "LiffSession",
+  "LineStatus",
+  "LinkRequestItem",
+  "MyBookingDetail",
+  "MyBookingItem",
+  "MyPet",
+  "MyProfile",
+  "OccupancyReport",
+  "OrgListItem",
+  "PackageTemplateItem",
+  "PaymentInstruction",
+  "PetDetail",
+  "PetSummary",
+  "PhotoItem",
+  "PilotAnalytics",
+  "Quote",
+  "Receipt",
+  "ReportCardDetail",
+  "RoomMap",
+  "RoomTypeItem",
+  "RoomUnitItem",
+  "SalesReport",
+  "ServiceItem",
+  "ShopPublic",
+  "SizeTierItem",
+  "SkippedMessageItem",
+  "SlipItem",
+  "SlotList",
+  "StaffMe",
+  "StaffUserItem",
+  "StayCard",
+  "StayDetail",
+  "StayUpdates",
+  "SurchargeTypeItem",
+  "TemperamentFlagItem",
+  "UploadTicket",
+  "VaccinationItem",
+  "WeightItem",
+  "WorkingHours"
+ ]
+}

@@ -1,0 +1,81 @@
+{
+  "rule": "R-15",
+  "export": "applyPayment",
+  "module": "packages/domain/src/billing/totals.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "cash with change",
+      "input": {
+        "dueSatang": 40000,
+        "method": "cash",
+        "tenderedSatang": 50000
+      },
+      "expected": {
+        "amountSatang": 40000,
+        "changeSatang": 10000,
+        "dueAfterSatang": 0
+      }
+    },
+    {
+      "name": "partial cash",
+      "input": {
+        "dueSatang": 40000,
+        "method": "cash",
+        "tenderedSatang": 30000
+      },
+      "expected": {
+        "amountSatang": 30000,
+        "changeSatang": 0,
+        "dueAfterSatang": 10000
+      }
+    },
+    {
+      "name": "transfer exact",
+      "input": {
+        "dueSatang": 40000,
+        "method": "promptpay",
+        "amountSatang": 40000
+      },
+      "expected": {
+        "amountSatang": 40000,
+        "changeSatang": 0,
+        "dueAfterSatang": 0
+      }
+    },
+    {
+      "name": "transfer over due",
+      "input": {
+        "dueSatang": 40000,
+        "method": "bank_transfer",
+        "amountSatang": 40001
+      },
+      "expected": {
+        "error": "AMOUNT_EXCEEDS_DUE"
+      }
+    },
+    {
+      "name": "credit insufficient",
+      "input": {
+        "dueSatang": 40000,
+        "method": "credit",
+        "amountSatang": 10000,
+        "creditBalanceSatang": 5000
+      },
+      "expected": {
+        "error": "INSUFFICIENT_CREDIT"
+      }
+    },
+    {
+      "name": "already paid",
+      "input": {
+        "dueSatang": 0,
+        "method": "cash",
+        "tenderedSatang": 100
+      },
+      "expected": {
+        "error": "BILL_ALREADY_PAID"
+      }
+    }
+  ]
+}

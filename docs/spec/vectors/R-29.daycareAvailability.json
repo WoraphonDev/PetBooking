@@ -1,0 +1,220 @@
+{
+  "rule": "R-29",
+  "export": "daycareAvailability",
+  "module": "packages/domain/src/availability/daycare-availability.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "empty day",
+      "input": {
+        "sessionTypes": [
+          {
+            "session": "full_day",
+            "capacity": 6,
+            "status": "active"
+          },
+          {
+            "session": "morning",
+            "capacity": 10,
+            "status": "active"
+          },
+          {
+            "session": "afternoon",
+            "capacity": 10,
+            "status": "active"
+          }
+        ],
+        "visits": []
+      },
+      "expected": {
+        "full_day": 6,
+        "morning": 10,
+        "afternoon": 10
+      }
+    },
+    {
+      "name": "busy morning limits full day",
+      "input": {
+        "sessionTypes": [
+          {
+            "session": "full_day",
+            "capacity": 6,
+            "status": "active"
+          },
+          {
+            "session": "morning",
+            "capacity": 10,
+            "status": "active"
+          },
+          {
+            "session": "afternoon",
+            "capacity": 10,
+            "status": "active"
+          }
+        ],
+        "visits": [
+          {
+            "session": "full_day",
+            "status": "reserved"
+          },
+          {
+            "session": "full_day",
+            "status": "reserved"
+          },
+          {
+            "session": "morning",
+            "status": "checked_in"
+          },
+          {
+            "session": "morning",
+            "status": "checked_in"
+          },
+          {
+            "session": "morning",
+            "status": "checked_in"
+          },
+          {
+            "session": "morning",
+            "status": "checked_in"
+          },
+          {
+            "session": "morning",
+            "status": "checked_in"
+          },
+          {
+            "session": "morning",
+            "status": "checked_in"
+          },
+          {
+            "session": "morning",
+            "status": "checked_in"
+          },
+          {
+            "session": "afternoon",
+            "status": "reserved"
+          },
+          {
+            "session": "morning",
+            "status": "cancelled"
+          },
+          {
+            "session": "morning",
+            "status": "cancelled"
+          },
+          {
+            "session": "morning",
+            "status": "cancelled"
+          }
+        ]
+      },
+      "expected": {
+        "full_day": 1,
+        "morning": 1,
+        "afternoon": 7
+      }
+    },
+    {
+      "name": "full day cap reached",
+      "input": {
+        "sessionTypes": [
+          {
+            "session": "full_day",
+            "capacity": 6,
+            "status": "active"
+          },
+          {
+            "session": "morning",
+            "capacity": 10,
+            "status": "active"
+          },
+          {
+            "session": "afternoon",
+            "capacity": 10,
+            "status": "active"
+          }
+        ],
+        "visits": [
+          {
+            "session": "full_day",
+            "status": "reserved"
+          },
+          {
+            "session": "full_day",
+            "status": "reserved"
+          },
+          {
+            "session": "full_day",
+            "status": "reserved"
+          },
+          {
+            "session": "full_day",
+            "status": "reserved"
+          },
+          {
+            "session": "full_day",
+            "status": "reserved"
+          },
+          {
+            "session": "full_day",
+            "status": "reserved"
+          }
+        ]
+      },
+      "expected": {
+        "full_day": 0,
+        "morning": 4,
+        "afternoon": 4
+      }
+    },
+    {
+      "name": "only full_day offered",
+      "input": {
+        "sessionTypes": [
+          {
+            "session": "full_day",
+            "capacity": 6,
+            "status": "active"
+          }
+        ],
+        "visits": [
+          {
+            "session": "full_day",
+            "status": "reserved"
+          }
+        ]
+      },
+      "expected": {
+        "full_day": 5
+      }
+    },
+    {
+      "name": "closed",
+      "input": {
+        "sessionTypes": [
+          {
+            "session": "full_day",
+            "capacity": 6,
+            "status": "active"
+          },
+          {
+            "session": "morning",
+            "capacity": 10,
+            "status": "active"
+          },
+          {
+            "session": "afternoon",
+            "capacity": 10,
+            "status": "active"
+          }
+        ],
+        "visits": [],
+        "closed": true
+      },
+      "expected": {
+        "full_day": 0,
+        "morning": 0,
+        "afternoon": 0
+      }
+    }
+  ]
+}

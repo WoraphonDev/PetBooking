@@ -1,0 +1,16 @@
+{
+  "rule": "R-31",
+  "export": "formatTime",
+  "module": "packages/domain/src/format/thai.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "afternoon",
+      "input": {
+        "instant": "2026-10-05T07:30:00.000Z",
+        "timezone": "Asia/Bangkok"
+      },
+      "expected": "14:30 น."
+    }
+  ]
+}

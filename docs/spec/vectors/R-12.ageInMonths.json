@@ -1,0 +1,40 @@
+{
+  "rule": "R-12",
+  "export": "ageInMonths",
+  "module": "packages/domain/src/booking/eligibility.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "from birth date",
+      "input": {
+        "onDate": "2026-10-05",
+        "birthDate": "2024-03-10"
+      },
+      "expected": 30
+    },
+    {
+      "name": "birthday later this month",
+      "input": {
+        "onDate": "2026-10-05",
+        "birthDate": "2025-10-06"
+      },
+      "expected": 11
+    },
+    {
+      "name": "from estimate",
+      "input": {
+        "onDate": "2026-10-05",
+        "ageEstimateMonths": 24,
+        "estimateRecordedOn": "2026-01-20"
+      },
+      "expected": 32
+    },
+    {
+      "name": "unknown",
+      "input": {
+        "onDate": "2026-10-05"
+      },
+      "expected": null
+    }
+  ]
+}

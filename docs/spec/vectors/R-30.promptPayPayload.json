@@ -1,0 +1,62 @@
+{
+  "rule": "R-30",
+  "export": "promptPayPayload",
+  "module": "packages/domain/src/payment/promptpay.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "phone with amount",
+      "input": {
+        "type": "phone",
+        "id": "081-234-5678",
+        "amountSatang": 15000
+      },
+      "expected": {
+        "payload": "00020101021229370016A0000006770101110113006681234567853037645406150.005802TH6304C40C"
+      }
+    },
+    {
+      "name": "phone with satang amount",
+      "input": {
+        "type": "phone",
+        "id": "0812345678",
+        "amountSatang": 123456
+      },
+      "expected": {
+        "payload": "00020101021229370016A00000067701011101130066812345678530376454071234.565802TH630471D1"
+      }
+    },
+    {
+      "name": "national id static",
+      "input": {
+        "type": "national_id",
+        "id": "1-2345-67890-12-3"
+      },
+      "expected": {
+        "payload": "00020101021129370016A0000006770101110213123456789012353037645802TH630433FC"
+      }
+    },
+    {
+      "name": "ewallet",
+      "input": {
+        "type": "ewallet",
+        "id": "004999012345678",
+        "amountSatang": 50000
+      },
+      "expected": {
+        "payload": "00020101021229390016A000000677010111031500499901234567853037645406500.005802TH6304C5C9"
+      }
+    },
+    {
+      "name": "invalid phone",
+      "input": {
+        "type": "phone",
+        "id": "812345678",
+        "amountSatang": 1000
+      },
+      "expected": {
+        "error": "INVALID_PROMPTPAY_ID"
+      }
+    }
+  ]
+}

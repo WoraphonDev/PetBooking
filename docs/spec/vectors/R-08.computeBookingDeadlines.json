@@ -1,0 +1,64 @@
+{
+  "rule": "R-08",
+  "export": "computeBookingDeadlines",
+  "module": "packages/domain/src/booking/deadlines.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "deposit only",
+      "input": {
+        "createdAt": "2026-10-05T03:00:00.000Z",
+        "depositRequiredSatang": 20000,
+        "requiresApproval": false,
+        "holdMinutes": 15,
+        "approvalTimeoutMinutes": 120
+      },
+      "expected": {
+        "holdExpiresAt": "2026-10-05T03:15:00.000Z",
+        "approvalDueAt": null
+      }
+    },
+    {
+      "name": "approval only",
+      "input": {
+        "createdAt": "2026-10-05T03:00:00.000Z",
+        "depositRequiredSatang": 0,
+        "requiresApproval": true,
+        "holdMinutes": 15,
+        "approvalTimeoutMinutes": 120
+      },
+      "expected": {
+        "holdExpiresAt": null,
+        "approvalDueAt": "2026-10-05T05:00:00.000Z"
+      }
+    },
+    {
+      "name": "both",
+      "input": {
+        "createdAt": "2026-10-05T03:00:00.000Z",
+        "depositRequiredSatang": 20000,
+        "requiresApproval": true,
+        "holdMinutes": 30,
+        "approvalTimeoutMinutes": 60
+      },
+      "expected": {
+        "holdExpiresAt": "2026-10-05T03:30:00.000Z",
+        "approvalDueAt": "2026-10-05T04:00:00.000Z"
+      }
+    },
+    {
+      "name": "neither → confirmed immediately",
+      "input": {
+        "createdAt": "2026-10-05T03:00:00.000Z",
+        "depositRequiredSatang": 0,
+        "requiresApproval": false,
+        "holdMinutes": 15,
+        "approvalTimeoutMinutes": 120
+      },
+      "expected": {
+        "holdExpiresAt": null,
+        "approvalDueAt": null
+      }
+    }
+  ]
+}

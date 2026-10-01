@@ -1,0 +1,106 @@
+{
+  "rule": "R-15",
+  "export": "computeBillTotals",
+  "module": "packages/domain/src/billing/totals.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "lines + bill discount + deposit",
+      "input": {
+        "lines": [
+          {
+            "quantity": 1,
+            "unitPriceSatang": 45000,
+            "lineDiscountSatang": 0
+          },
+          {
+            "quantity": 2,
+            "unitPriceSatang": 10000,
+            "lineDiscountSatang": 2000
+          }
+        ],
+        "billDiscountSatang": 3000,
+        "payments": [
+          {
+            "method": "deposit",
+            "amountSatang": 20000,
+            "status": "posted"
+          },
+          {
+            "method": "cash",
+            "amountSatang": 5000,
+            "status": "voided"
+          }
+        ]
+      },
+      "expected": {
+        "subtotalSatang": 63000,
+        "totalSatang": 60000,
+        "paidSatang": 20000,
+        "dueSatang": 40000,
+        "canClose": false
+      }
+    },
+    {
+      "name": "fully paid",
+      "input": {
+        "lines": [
+          {
+            "quantity": 1,
+            "unitPriceSatang": 45000,
+            "lineDiscountSatang": 0
+          }
+        ],
+        "billDiscountSatang": 0,
+        "payments": [
+          {
+            "method": "promptpay",
+            "amountSatang": 45000,
+            "status": "posted"
+          }
+        ]
+      },
+      "expected": {
+        "subtotalSatang": 45000,
+        "totalSatang": 45000,
+        "paidSatang": 45000,
+        "dueSatang": 0,
+        "canClose": true
+      }
+    },
+    {
+      "name": "line discount too large",
+      "input": {
+        "lines": [
+          {
+            "quantity": 1,
+            "unitPriceSatang": 1000,
+            "lineDiscountSatang": 1500
+          }
+        ],
+        "billDiscountSatang": 0,
+        "payments": []
+      },
+      "expected": {
+        "error": "LINE_DISCOUNT_TOO_LARGE"
+      }
+    },
+    {
+      "name": "bill discount too large",
+      "input": {
+        "lines": [
+          {
+            "quantity": 1,
+            "unitPriceSatang": 1000,
+            "lineDiscountSatang": 0
+          }
+        ],
+        "billDiscountSatang": 1001,
+        "payments": []
+      },
+      "expected": {
+        "error": "BILL_DISCOUNT_TOO_LARGE"
+      }
+    }
+  ]
+}

@@ -1,0 +1,399 @@
+{
+  "rule": "R-02",
+  "export": "lookupServicePrice",
+  "module": "packages/domain/src/pricing/price-lookup.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "exact tier+coat",
+      "input": {
+        "serviceId": "svc-bath",
+        "sizeTierId": "t-s",
+        "coatGroup": "long",
+        "prices": [
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "short",
+            "priceSatang": 35000,
+            "durationMinutes": 60
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 45000,
+            "durationMinutes": 75
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-m",
+            "coatGroup": "any",
+            "priceSatang": 55000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 60000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-nail",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 10000,
+            "durationMinutes": 10
+          },
+          {
+            "serviceId": "svc-cut",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 80000,
+            "durationMinutes": 120
+          }
+        ]
+      },
+      "expected": {
+        "priceSatang": 45000,
+        "durationMinutes": 75,
+        "matched": "tier+coat"
+      }
+    },
+    {
+      "name": "tier with 'any' row",
+      "input": {
+        "serviceId": "svc-bath",
+        "sizeTierId": "t-m",
+        "coatGroup": "long",
+        "prices": [
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "short",
+            "priceSatang": 35000,
+            "durationMinutes": 60
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 45000,
+            "durationMinutes": 75
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-m",
+            "coatGroup": "any",
+            "priceSatang": 55000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 60000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-nail",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 10000,
+            "durationMinutes": 10
+          },
+          {
+            "serviceId": "svc-cut",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 80000,
+            "durationMinutes": 120
+          }
+        ]
+      },
+      "expected": {
+        "priceSatang": 55000,
+        "durationMinutes": 90,
+        "matched": "tier+any"
+      }
+    },
+    {
+      "name": "fallback to all sizes",
+      "input": {
+        "serviceId": "svc-bath",
+        "sizeTierId": "t-xl",
+        "coatGroup": "short",
+        "prices": [
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "short",
+            "priceSatang": 35000,
+            "durationMinutes": 60
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 45000,
+            "durationMinutes": 75
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-m",
+            "coatGroup": "any",
+            "priceSatang": 55000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 60000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-nail",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 10000,
+            "durationMinutes": 10
+          },
+          {
+            "serviceId": "svc-cut",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 80000,
+            "durationMinutes": 120
+          }
+        ]
+      },
+      "expected": {
+        "priceSatang": 60000,
+        "durationMinutes": 90,
+        "matched": "all+any"
+      }
+    },
+    {
+      "name": "unknown coat skips coat rows",
+      "input": {
+        "serviceId": "svc-bath",
+        "sizeTierId": "t-s",
+        "coatGroup": "any",
+        "prices": [
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "short",
+            "priceSatang": 35000,
+            "durationMinutes": 60
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 45000,
+            "durationMinutes": 75
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-m",
+            "coatGroup": "any",
+            "priceSatang": 55000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 60000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-nail",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 10000,
+            "durationMinutes": 10
+          },
+          {
+            "serviceId": "svc-cut",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 80000,
+            "durationMinutes": 120
+          }
+        ]
+      },
+      "expected": {
+        "priceSatang": 60000,
+        "durationMinutes": 90,
+        "matched": "all+any"
+      }
+    },
+    {
+      "name": "no size → all-size row",
+      "input": {
+        "serviceId": "svc-nail",
+        "sizeTierId": null,
+        "coatGroup": "short",
+        "prices": [
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "short",
+            "priceSatang": 35000,
+            "durationMinutes": 60
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 45000,
+            "durationMinutes": 75
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-m",
+            "coatGroup": "any",
+            "priceSatang": 55000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 60000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-nail",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 10000,
+            "durationMinutes": 10
+          },
+          {
+            "serviceId": "svc-cut",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 80000,
+            "durationMinutes": 120
+          }
+        ]
+      },
+      "expected": {
+        "priceSatang": 10000,
+        "durationMinutes": 10,
+        "matched": "all+any"
+      }
+    },
+    {
+      "name": "not offered for short coat",
+      "input": {
+        "serviceId": "svc-cut",
+        "sizeTierId": "t-s",
+        "coatGroup": "short",
+        "prices": [
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "short",
+            "priceSatang": 35000,
+            "durationMinutes": 60
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 45000,
+            "durationMinutes": 75
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-m",
+            "coatGroup": "any",
+            "priceSatang": 55000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 60000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-nail",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 10000,
+            "durationMinutes": 10
+          },
+          {
+            "serviceId": "svc-cut",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 80000,
+            "durationMinutes": 120
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "name": "not offered without size",
+      "input": {
+        "serviceId": "svc-cut",
+        "sizeTierId": null,
+        "coatGroup": "long",
+        "prices": [
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "short",
+            "priceSatang": 35000,
+            "durationMinutes": 60
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 45000,
+            "durationMinutes": 75
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": "t-m",
+            "coatGroup": "any",
+            "priceSatang": 55000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-bath",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 60000,
+            "durationMinutes": 90
+          },
+          {
+            "serviceId": "svc-nail",
+            "sizeTierId": null,
+            "coatGroup": "any",
+            "priceSatang": 10000,
+            "durationMinutes": 10
+          },
+          {
+            "serviceId": "svc-cut",
+            "sizeTierId": "t-s",
+            "coatGroup": "long",
+            "priceSatang": 80000,
+            "durationMinutes": 120
+          }
+        ]
+      },
+      "expected": null
+    }
+  ]
+}

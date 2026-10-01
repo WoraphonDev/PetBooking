@@ -1,0 +1,44 @@
+{
+  "rule": "R-31",
+  "export": "formatTHB",
+  "module": "packages/domain/src/format/thai.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "auto whole",
+      "input": {
+        "satang": 123400
+      },
+      "expected": "฿1,234"
+    },
+    {
+      "name": "auto with satang",
+      "input": {
+        "satang": 123450
+      },
+      "expected": "฿1,234.50"
+    },
+    {
+      "name": "always",
+      "input": {
+        "satang": 50000,
+        "decimals": "always"
+      },
+      "expected": "฿500.00"
+    },
+    {
+      "name": "negative",
+      "input": {
+        "satang": -50000
+      },
+      "expected": "-฿500"
+    },
+    {
+      "name": "zero",
+      "input": {
+        "satang": 0
+      },
+      "expected": "฿0"
+    }
+  ]
+}

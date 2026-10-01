@@ -1,0 +1,490 @@
+{
+  "rule": "R-01",
+  "export": "resolveSizeTier",
+  "module": "packages/domain/src/pricing/size-tier.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "dog 5.2 kg → S",
+      "input": {
+        "species": "dog",
+        "weightGrams": 5200,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          },
+          {
+            "id": "c-s",
+            "species": "cat",
+            "code": "S",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 5000
+          },
+          {
+            "id": "c-l",
+            "species": "cat",
+            "code": "L",
+            "minWeightGrams": 5000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": "t-s",
+        "reason": "matched"
+      }
+    },
+    {
+      "name": "lower bound inclusive 6000 → M",
+      "input": {
+        "species": "dog",
+        "weightGrams": 6000,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          },
+          {
+            "id": "c-s",
+            "species": "cat",
+            "code": "S",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 5000
+          },
+          {
+            "id": "c-l",
+            "species": "cat",
+            "code": "L",
+            "minWeightGrams": 5000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": "t-m",
+        "reason": "matched"
+      }
+    },
+    {
+      "name": "2999 → XS",
+      "input": {
+        "species": "dog",
+        "weightGrams": 2999,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          },
+          {
+            "id": "c-s",
+            "species": "cat",
+            "code": "S",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 5000
+          },
+          {
+            "id": "c-l",
+            "species": "cat",
+            "code": "L",
+            "minWeightGrams": 5000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": "t-xs",
+        "reason": "matched"
+      }
+    },
+    {
+      "name": "no ceiling 40 kg → XL",
+      "input": {
+        "species": "dog",
+        "weightGrams": 40000,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          },
+          {
+            "id": "c-s",
+            "species": "cat",
+            "code": "S",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 5000
+          },
+          {
+            "id": "c-l",
+            "species": "cat",
+            "code": "L",
+            "minWeightGrams": 5000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": "t-xl",
+        "reason": "matched"
+      }
+    },
+    {
+      "name": "cat uses cat tiers",
+      "input": {
+        "species": "cat",
+        "weightGrams": 6000,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          },
+          {
+            "id": "c-s",
+            "species": "cat",
+            "code": "S",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 5000
+          },
+          {
+            "id": "c-l",
+            "species": "cat",
+            "code": "L",
+            "minWeightGrams": 5000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": "c-l",
+        "reason": "matched"
+      }
+    },
+    {
+      "name": "no weight",
+      "input": {
+        "species": "dog",
+        "weightGrams": null,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          },
+          {
+            "id": "c-s",
+            "species": "cat",
+            "code": "S",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 5000
+          },
+          {
+            "id": "c-l",
+            "species": "cat",
+            "code": "L",
+            "minWeightGrams": 5000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": null,
+        "reason": "no_weight"
+      }
+    },
+    {
+      "name": "species other",
+      "input": {
+        "species": "other",
+        "weightGrams": 800,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          },
+          {
+            "id": "c-s",
+            "species": "cat",
+            "code": "S",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 5000
+          },
+          {
+            "id": "c-l",
+            "species": "cat",
+            "code": "L",
+            "minWeightGrams": 5000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": null,
+        "reason": "no_tier"
+      }
+    },
+    {
+      "name": "no tier configured for cat",
+      "input": {
+        "species": "cat",
+        "weightGrams": 3000,
+        "tiers": [
+          {
+            "id": "t-xs",
+            "species": "dog",
+            "code": "XS",
+            "minWeightGrams": 0,
+            "maxWeightGrams": 3000
+          },
+          {
+            "id": "t-s",
+            "species": "dog",
+            "code": "S",
+            "minWeightGrams": 3000,
+            "maxWeightGrams": 6000
+          },
+          {
+            "id": "t-m",
+            "species": "dog",
+            "code": "M",
+            "minWeightGrams": 6000,
+            "maxWeightGrams": 12000
+          },
+          {
+            "id": "t-l",
+            "species": "dog",
+            "code": "L",
+            "minWeightGrams": 12000,
+            "maxWeightGrams": 25000
+          },
+          {
+            "id": "t-xl",
+            "species": "dog",
+            "code": "XL",
+            "minWeightGrams": 25000,
+            "maxWeightGrams": null
+          }
+        ]
+      },
+      "expected": {
+        "tierId": null,
+        "reason": "no_tier"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6477 @@
+{
+ "note": "Screen catalog (06). page.tsx routes must come from here. DO NOT EDIT.",
+ "screens": [
+  {
+   "id": "A-01",
+   "app": "auth",
+   "route": "/login",
+   "title": "เข้าสู่ระบบ (ร้าน)",
+   "roles": "public",
+   "load": [],
+   "fields": [
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "อีเมล",
+     "source": "staff_user.email"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "รหัสผ่าน",
+     "source": "staff_user.password_hash"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เข้าสู่ระบบ",
+     "endpoints": "auth.staffLogin"
+    },
+    {
+     "label": "เข้าด้วย LINE",
+     "endpoints": "auth.staffLine"
+    },
+    {
+     "label": "ลืมรหัสผ่าน",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "A-02",
+   "app": "auth",
+   "route": "/forgot-password",
+   "title": "ลืมรหัสผ่าน",
+   "roles": "public",
+   "load": [],
+   "fields": [
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "อีเมล",
+     "source": "staff_user.email"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ส่งลิงก์",
+     "endpoints": "auth.resetRequest"
+    }
+   ]
+  },
+  {
+   "id": "A-03",
+   "app": "auth",
+   "route": "/reset-password?token=",
+   "title": "ตั้งรหัสผ่านใหม่",
+   "roles": "public",
+   "load": [],
+   "fields": [
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "รหัสผ่านใหม่",
+     "source": "staff_user.password_hash"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "ยืนยันรหัสผ่าน",
+     "source": "calc: ต้องตรงกับช่องแรก (ไม่ส่ง server)"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "auth.resetConfirm"
+    }
+   ]
+  },
+  {
+   "id": "A-04",
+   "app": "auth",
+   "route": "/invite/[token]",
+   "title": "รับคำเชิญเข้าร้าน",
+   "roles": "public",
+   "load": [],
+   "fields": [
+    {
+     "section": "ข้อมูลร้าน",
+     "mode": "R",
+     "label": "ชื่อร้าน",
+     "source": "organization.name"
+    },
+    {
+     "section": "ข้อมูลร้าน",
+     "mode": "R",
+     "label": "ตำแหน่ง",
+     "source": "staff_user.role"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "E",
+     "label": "ชื่อเล่นที่ลูกค้าเห็น",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "อีเมล",
+     "source": "staff_user.email"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "รหัสผ่าน",
+     "source": "staff_user.password_hash"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เริ่มใช้งาน",
+     "endpoints": "auth.inviteAccept"
+    },
+    {
+     "label": "ใช้ LINE แทนรหัสผ่าน",
+     "endpoints": "auth.inviteAccept + staffMe.linkLine"
+    }
+   ]
+  },
+  {
+   "id": "P-01",
+   "app": "public",
+   "route": "/b/[bookingSlug]",
+   "title": "หน้าลิงก์จองของร้าน",
+   "roles": "public",
+   "load": [
+    "public.branch"
+   ],
+   "fields": [
+    {
+     "section": "หัวร้าน",
+     "mode": "R",
+     "label": "โลโก้",
+     "source": "branch.logo_file_id"
+    },
+    {
+     "section": "หัวร้าน",
+     "mode": "R",
+     "label": "ชื่อร้าน",
+     "source": "branch.name"
+    },
+    {
+     "section": "หัวร้าน",
+     "mode": "R",
+     "label": "ที่อยู่",
+     "source": "branch.address_line"
+    },
+    {
+     "section": "หัวร้าน",
+     "mode": "R",
+     "label": "เบอร์โทร",
+     "source": "branch.phone"
+    },
+    {
+     "section": "หัวร้าน",
+     "mode": "R",
+     "label": "เวลาเปิด",
+     "source": "branch_hours.opens_at"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "ชื่อบริการ",
+     "source": "service.name_th"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "ราคาเริ่มต้น",
+     "source": "calc: min(service_price.price_satang)"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "ประเภทห้อง",
+     "source": "room_type.name_th"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "ราคาต่อคืนเริ่ม",
+     "source": "calc: min(room_rate.nightly_price_satang)"
+    }
+   ],
+   "actions": [
+    {
+     "label": "จองผ่าน LINE",
+     "endpoints": "—"
+    },
+    {
+     "label": "เพิ่มเพื่อน",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "P-02",
+   "app": "public",
+   "route": "/legal/[doc]",
+   "title": "เอกสารกฎหมาย",
+   "roles": "public",
+   "load": [],
+   "fields": [
+    {
+     "section": "เอกสาร",
+     "mode": "R",
+     "label": "ชื่อเอกสาร",
+     "source": "calc: LEGAL_DOCS[doc]"
+    },
+    {
+     "section": "เอกสาร",
+     "mode": "R",
+     "label": "ฉบับ",
+     "source": "calc: LEGAL_DOCS[doc].version (ค่าเดียวกับ consent_record.version ที่บันทึกตอนยอมรับ)"
+    },
+    {
+     "section": "เอกสาร",
+     "mode": "R",
+     "label": "เนื้อหา",
+     "source": "calc: ไฟล์ markdown ใน LEGAL_DOCS[doc].file"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "C-01",
+   "app": "console",
+   "route": "/console",
+   "title": "วันนี้ (Dashboard)",
+   "roles": "OF",
+   "load": [
+    "dashboard.today"
+   ],
+   "fields": [
+    {
+     "section": "การ์ดตัวเลข",
+     "mode": "R",
+     "label": "กรูมวันนี้",
+     "source": "calc: DashboardToday.groom.total"
+    },
+    {
+     "section": "การ์ดตัวเลข",
+     "mode": "R",
+     "label": "เข้า/ออก/พักอยู่",
+     "source": "calc: DashboardToday.hotel.*"
+    },
+    {
+     "section": "การ์ดตัวเลข",
+     "mode": "R",
+     "label": "Occupancy",
+     "source": "calc: DashboardToday.hotel.occupancyPercent"
+    },
+    {
+     "section": "การ์ดตัวเลข",
+     "mode": "R",
+     "label": "Daycare",
+     "source": "calc: DashboardToday.daycare.count"
+    },
+    {
+     "section": "การ์ดตัวเลข",
+     "mode": "R",
+     "label": "ยอดรับเงินวันนี้",
+     "source": "calc: DashboardToday.sales.paidTotalSatang"
+    },
+    {
+     "section": "ต้องทำ (กดแล้วไปหน้าที่เกี่ยวข้อง)",
+     "mode": "R",
+     "label": "สลิปรอตรวจ",
+     "source": "calc: count payment_slip submitted"
+    },
+    {
+     "section": "ต้องทำ (กดแล้วไปหน้าที่เกี่ยวข้อง)",
+     "mode": "R",
+     "label": "รออนุมัติ",
+     "source": "calc: count booking awaiting_approval"
+    },
+    {
+     "section": "ต้องทำ (กดแล้วไปหน้าที่เกี่ยวข้อง)",
+     "mode": "R",
+     "label": "งานดูแลเลยเวลา",
+     "source": "calc: care_task overdue"
+    },
+    {
+     "section": "ต้องทำ (กดแล้วไปหน้าที่เกี่ยวข้อง)",
+     "mode": "R",
+     "label": "Report card รอตรวจ",
+     "source": "calc: report_card pending_review"
+    },
+    {
+     "section": "ต้องทำ (กดแล้วไปหน้าที่เกี่ยวข้อง)",
+     "mode": "R",
+     "label": "ข้อความไม่ได้ส่ง",
+     "source": "calc: notification skipped วันนี้"
+    },
+    {
+     "section": "ต้องทำ (กดแล้วไปหน้าที่เกี่ยวข้อง)",
+     "mode": "R",
+     "label": "รับน้องแล้วยังไม่ปิดบิล",
+     "source": "calc: DashboardToday.todo.pickupsWithoutBill"
+    },
+    {
+     "section": "ต้องทำ (กดแล้วไปหน้าที่เกี่ยวข้อง)",
+     "mode": "R",
+     "label": "คำขอจับคู่ LINE",
+     "source": "calc: customer_link_request pending"
+    },
+    {
+     "section": "คิวถัดไป",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "คิวถัดไป",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "คิวถัดไป",
+     "mode": "R",
+     "label": "ช่าง",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "คิวถัดไป",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "groom_appointment.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "+ จองใหม่",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "C-02",
+   "app": "console",
+   "route": "/console/calendar?date=&view=day|week",
+   "title": "ปฏิทินคิว",
+   "roles": "OFS",
+   "load": [
+    "calendar.day"
+   ],
+   "fields": [
+    {
+     "section": "แถบบน",
+     "mode": "F",
+     "label": "วันที่",
+     "source": "calc: query date"
+    },
+    {
+     "section": "แถบบน",
+     "mode": "F",
+     "label": "มุมมอง",
+     "source": "calc: view"
+    },
+    {
+     "section": "แถบบน",
+     "mode": "F",
+     "label": "ช่าง",
+     "source": "groom_appointment.groomer_id"
+    },
+    {
+     "section": "แถบบน",
+     "mode": "R",
+     "label": "ปิดร้าน/ปิดบางช่วง",
+     "source": "branch_closure.starts_at"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "ช่วง buffer",
+     "source": "groom_appointment.blocked_until"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "ชื่อน้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "พันธุ์/ขนาด",
+     "source": "pet.breed"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "ป้ายนิสัย",
+     "source": "pet_temperament_flag.flag"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "บริการ",
+     "source": "groom_appointment_item.name_snapshot"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "groom_appointment.status"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "มัดจำ",
+     "source": "booking.deposit_status"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "ระดับลูกค้า",
+     "source": "customer.reliability_level"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "โต๊ะ",
+     "source": "groom_station.name"
+    },
+    {
+     "section": "การ์ดนัด (ในตาราง)",
+     "mode": "R",
+     "label": "เบอร์ลูกค้า",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "แถบข้าง",
+     "mode": "R",
+     "label": "Hotel วันนี้",
+     "source": "calc: CalendarDay.hotel.*"
+    },
+    {
+     "section": "แถบข้าง",
+     "mode": "R",
+     "label": "Daycare",
+     "source": "calc: CalendarDay.daycare.count"
+    },
+    {
+     "section": "แถบข้าง",
+     "mode": "R",
+     "label": "ช่วงพัก/ลาของช่าง",
+     "source": "staff_time_off.starts_at"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ลากการ์ดไปเวลา/ช่างใหม่",
+     "endpoints": "groom.reschedule"
+    },
+    {
+     "label": "คลิกช่องว่าง",
+     "endpoints": "—"
+    },
+    {
+     "label": "คลิกการ์ด",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "C-02D",
+   "app": "console",
+   "route": "(drawer บน C-02 / C-05 / C-01)",
+   "title": "รายละเอียดนัดกรูม (drawer)",
+   "roles": "OFS",
+   "load": [
+    "groom.jobCard"
+   ],
+   "fields": [
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "groom_appointment.status"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "เลขใบจอง",
+     "source": "booking.booking_no"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "ช่าง",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "โต๊ะ",
+     "source": "groom_station.name"
+    },
+    {
+     "section": "น้องและเจ้าของ",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "น้องและเจ้าของ",
+     "mode": "R",
+     "label": "ป้ายนิสัย",
+     "source": "pet_temperament_flag.flag"
+    },
+    {
+     "section": "น้องและเจ้าของ",
+     "mode": "R",
+     "label": "แพ้/ห้ามใช้",
+     "source": "pet_shop_profile.allergies"
+    },
+    {
+     "section": "น้องและเจ้าของ",
+     "mode": "R",
+     "label": "เจ้าของ",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "น้องและเจ้าของ",
+     "mode": "R",
+     "label": "เบอร์",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "น้องและเจ้าของ",
+     "mode": "R",
+     "label": "ระดับลูกค้า",
+     "source": "customer.reliability_level"
+    },
+    {
+     "section": "น้องและเจ้าของ",
+     "mode": "R",
+     "label": "มัดจำ",
+     "source": "booking.deposit_status"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "groom_appointment_item.name_snapshot"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "ค่าบริการเพิ่ม",
+     "source": "appointment_surcharge.name"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "รวมบริการ",
+     "source": "groom_appointment.services_total_satang"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "รวมค่าเพิ่ม",
+     "source": "groom_appointment.surcharge_total_satang"
+    },
+    {
+     "section": "หน้างาน",
+     "mode": "R",
+     "label": "เช็คอินเมื่อ",
+     "source": "groom_appointment.checked_in_at"
+    },
+    {
+     "section": "หน้างาน",
+     "mode": "R",
+     "label": "น้ำหนักวันนี้",
+     "source": "groom_appointment.weight_grams_checkin"
+    },
+    {
+     "section": "หน้างาน",
+     "mode": "R",
+     "label": "สภาพที่พบ",
+     "source": "groom_appointment.condition_flags"
+    },
+    {
+     "section": "หน้างาน",
+     "mode": "R",
+     "label": "ใบยินยอม",
+     "source": "calc: JobCard.consentSigned"
+    },
+    {
+     "section": "หน้างาน",
+     "mode": "R",
+     "label": "เสร็จเมื่อ",
+     "source": "groom_appointment.done_at"
+    },
+    {
+     "section": "หน้างาน",
+     "mode": "R",
+     "label": "โน้ตช่าง",
+     "source": "groom_appointment.staff_note"
+    },
+    {
+     "section": "หน้างาน",
+     "mode": "R",
+     "label": "โน้ตลูกค้า",
+     "source": "booking.customer_note"
+    },
+    {
+     "section": "ค่าบริการเพิ่ม (dialog)",
+     "mode": "W",
+     "label": "ประเภท",
+     "source": "appointment_surcharge.surcharge_type_id"
+    },
+    {
+     "section": "ค่าบริการเพิ่ม (dialog)",
+     "mode": "W",
+     "label": "ชื่อที่แสดงในบิล",
+     "source": "appointment_surcharge.name"
+    },
+    {
+     "section": "ค่าบริการเพิ่ม (dialog)",
+     "mode": "W",
+     "label": "ยอด",
+     "source": "appointment_surcharge.amount_satang"
+    },
+    {
+     "section": "ค่าบริการเพิ่ม (dialog)",
+     "mode": "W",
+     "label": "เหตุผล",
+     "source": "appointment_surcharge.reason"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เช็คอิน",
+     "endpoints": "groom.checkIn"
+    },
+    {
+     "label": "เริ่มงาน",
+     "endpoints": "groom.start"
+    },
+    {
+     "label": "เสร็จงาน",
+     "endpoints": "groom.finish"
+    },
+    {
+     "label": "แจ้งลูกค้ามารับ",
+     "endpoints": "groom.notifyPickup"
+    },
+    {
+     "label": "ลูกค้ารับน้องแล้ว",
+     "endpoints": "groom.pickUp"
+    },
+    {
+     "label": "ลูกค้าไม่มา",
+     "endpoints": "groom.noShow"
+    },
+    {
+     "label": "ยกเลิกนัดตัวนี้",
+     "endpoints": "groom.cancel"
+    },
+    {
+     "label": "ค่าบริการเพิ่มหน้างาน",
+     "endpoints": "groom.addSurcharge / groom.removeSurcharge"
+    }
+   ]
+  },
+  {
+   "id": "C-03",
+   "app": "console",
+   "route": "/console/bookings/new",
+   "title": "สร้างใบจอง (หน้าร้าน)",
+   "roles": "OF",
+   "load": [
+    "search.quick",
+    "availability.groomSlots",
+    "availability.hotel",
+    "availability.daycare",
+    "quotes.create"
+   ],
+   "fields": [
+    {
+     "section": "1. ลูกค้า",
+     "mode": "F",
+     "label": "ค้นหาลูกค้า",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "1. ลูกค้า",
+     "mode": "R",
+     "label": "ลูกค้าที่เลือก",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "1. ลูกค้า",
+     "mode": "W",
+     "label": "ช่องทาง",
+     "source": "booking.channel"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "น้อง",
+     "source": "groom_appointment.pet_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "บริการหลัก",
+     "source": "groom_appointment_item.service_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "Add-on",
+     "source": "groom_appointment_item.service_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "ขนาด (ถ้าไม่รู้น้ำหนัก)",
+     "source": "groom_appointment.size_tier_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "ใช้แพ็กเกจ",
+     "source": "groom_appointment_item.customer_package_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "ช่าง",
+     "source": "groom_appointment.groomer_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "วันที่",
+     "source": "calc: date"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "เวลา",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "Hotel: ประเภทห้อง",
+     "source": "stay.room_type_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "เช็คอิน–เช็คเอาท์",
+     "source": "stay.check_in_date"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "เวลาที่จะมา/รับ",
+     "source": "stay.expected_check_in_time"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "ห้อง (ไม่บังคับ)",
+     "source": "stay.room_unit_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "ติดสัด",
+     "source": "stay.in_heat"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "Add-on ระหว่างพัก",
+     "source": "stay_addon.service_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "อาบน้ำก่อนกลับ",
+     "source": "stay.bundle_appointment_id"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "Daycare: วัน",
+     "source": "daycare_visit.visit_date"
+    },
+    {
+     "section": "2. บริการ (เลือกได้หลายแท็บ)",
+     "mode": "W",
+     "label": "รอบ",
+     "source": "daycare_visit.session_type_id"
+    },
+    {
+     "section": "3. สรุป",
+     "mode": "R",
+     "label": "รายการและราคา",
+     "source": "calc: Quote"
+    },
+    {
+     "section": "3. สรุป",
+     "mode": "R",
+     "label": "ยอดประเมิน",
+     "source": "booking.estimated_total_satang"
+    },
+    {
+     "section": "3. สรุป",
+     "mode": "R",
+     "label": "มัดจำที่แนะนำ",
+     "source": "booking.deposit_required_satang"
+    },
+    {
+     "section": "3. สรุป",
+     "mode": "E",
+     "label": "ปรับมัดจำ",
+     "source": "booking.deposit_required_satang"
+    },
+    {
+     "section": "3. สรุป",
+     "mode": "W",
+     "label": "โน้ตจากลูกค้า",
+     "source": "booking.customer_note"
+    },
+    {
+     "section": "3. สรุป",
+     "mode": "R",
+     "label": "คำเตือน",
+     "source": "calc: R-11/R-12 warnings"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึกการจอง",
+     "endpoints": "bookings.create"
+    }
+   ]
+  },
+  {
+   "id": "C-04",
+   "app": "console",
+   "route": "/console/bookings?tab=approval|deposit|upcoming|all",
+   "title": "ใบจอง",
+   "roles": "OF",
+   "load": [
+    "bookings.list"
+   ],
+   "fields": [
+    {
+     "section": "แท็บ",
+     "mode": "F",
+     "label": "รออนุมัติ",
+     "source": "booking.status"
+    },
+    {
+     "section": "แท็บ",
+     "mode": "F",
+     "label": "รอมัดจำ",
+     "source": "booking.status"
+    },
+    {
+     "section": "แท็บ",
+     "mode": "F",
+     "label": "กำลังจะมา",
+     "source": "booking.status"
+    },
+    {
+     "section": "แท็บ",
+     "mode": "F",
+     "label": "ทั้งหมด",
+     "source": "booking.status"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เลขใบจอง",
+     "source": "booking.booking_no"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ลูกค้า",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "บริการ",
+     "source": "calc: modules"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "วันเวลาเริ่ม",
+     "source": "booking.first_service_at"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ยอด",
+     "source": "booking.estimated_total_satang"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "มัดจำ",
+     "source": "booking.deposit_status"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "หมดเวลา",
+     "source": "booking.hold_expires_at"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "อนุมัติภายใน",
+     "source": "booking.approval_due_at"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ช่องทาง",
+     "source": "booking.channel"
+    }
+   ],
+   "actions": [
+    {
+     "label": "อนุมัติ",
+     "endpoints": "bookings.approve"
+    },
+    {
+     "label": "ปฏิเสธ",
+     "endpoints": "bookings.decline"
+    }
+   ]
+  },
+  {
+   "id": "C-05",
+   "app": "console",
+   "route": "/console/bookings/[bookingId]",
+   "title": "รายละเอียดใบจอง",
+   "roles": "OF",
+   "load": [
+    "bookings.get"
+   ],
+   "fields": [
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "เลขใบจอง",
+     "source": "booking.booking_no"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "booking.status"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "ช่องทาง",
+     "source": "booking.channel"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "สร้างเมื่อ",
+     "source": "booking.created_at"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "ลูกค้า",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "นัดกรูม",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "การพัก",
+     "source": "stay.check_in_date"
+    },
+    {
+     "section": "บริการ",
+     "mode": "R",
+     "label": "Daycare",
+     "source": "daycare_visit.visit_date"
+    },
+    {
+     "section": "เงิน",
+     "mode": "R",
+     "label": "ยอดประเมิน",
+     "source": "booking.estimated_total_satang"
+    },
+    {
+     "section": "เงิน",
+     "mode": "R",
+     "label": "มัดจำที่ต้องจ่าย",
+     "source": "booking.deposit_required_satang"
+    },
+    {
+     "section": "เงิน",
+     "mode": "R",
+     "label": "มัดจำที่ยืนยันแล้ว",
+     "source": "booking.deposit_verified_satang"
+    },
+    {
+     "section": "เงิน",
+     "mode": "R",
+     "label": "สถานะมัดจำ",
+     "source": "booking.deposit_status"
+    },
+    {
+     "section": "เงิน",
+     "mode": "R",
+     "label": "สลิป",
+     "source": "payment_slip.file_id"
+    },
+    {
+     "section": "เงิน",
+     "mode": "R",
+     "label": "บิล",
+     "source": "booking.bill_id"
+    },
+    {
+     "section": "นโยบาย ณ เวลาจอง",
+     "mode": "R",
+     "label": "ยกเลิกฟรีก่อน",
+     "source": "booking.policy_snapshot"
+    },
+    {
+     "section": "ประวัติ",
+     "mode": "R",
+     "label": "เหตุการณ์",
+     "source": "booking_event.to_status"
+    },
+    {
+     "section": "โน้ต",
+     "mode": "R",
+     "label": "โน้ตจากลูกค้า",
+     "source": "booking.customer_note"
+    }
+   ],
+   "actions": [
+    {
+     "label": "อนุมัติ/ปฏิเสธ",
+     "endpoints": "bookings.approve / bookings.decline"
+    },
+    {
+     "label": "รับมัดจำ",
+     "endpoints": "bookings.recordDeposit"
+    },
+    {
+     "label": "ยกเว้นมัดจำ",
+     "endpoints": "bookings.waiveDeposit"
+    },
+    {
+     "label": "ยกเลิกใบจอง",
+     "endpoints": "bookings.cancelPreview → bookings.cancel"
+    },
+    {
+     "label": "เปิดบิล",
+     "endpoints": "bills.open"
+    },
+    {
+     "label": "ส่งลิงก์จ่ายยอดคงเหลือ",
+     "endpoints": "bookings.balanceLink"
+    },
+    {
+     "label": "คลิกการ์ดนัดกรูม",
+     "endpoints": "—"
+    },
+    {
+     "label": "ยกเลิกการพักตัวนี้",
+     "endpoints": "stays.cancel"
+    },
+    {
+     "label": "ยกเลิก Daycare วันนี้",
+     "endpoints": "daycare.cancel"
+    }
+   ]
+  },
+  {
+   "id": "C-06",
+   "app": "console",
+   "route": "(dialog บน C-02/C-05)",
+   "title": "เช็คอินกรูม",
+   "roles": "OF",
+   "load": [
+    "groom.jobCard"
+   ],
+   "fields": [
+    {
+     "section": "น้อง",
+     "mode": "R",
+     "label": "ชื่อ/พันธุ์/ป้ายนิสัย",
+     "source": "pet.name"
+    },
+    {
+     "section": "น้อง",
+     "mode": "R",
+     "label": "น้ำหนักล่าสุด",
+     "source": "pet.latest_weight_grams"
+    },
+    {
+     "section": "น้อง",
+     "mode": "R",
+     "label": "บริการที่จอง",
+     "source": "groom_appointment_item.name_snapshot"
+    },
+    {
+     "section": "ตรวจรับ",
+     "mode": "W",
+     "label": "น้ำหนักวันนี้ (กก.)",
+     "source": "groom_appointment.weight_grams_checkin"
+    },
+    {
+     "section": "ตรวจรับ",
+     "mode": "W",
+     "label": "สภาพที่พบ",
+     "source": "groom_appointment.condition_flags"
+    },
+    {
+     "section": "ตรวจรับ",
+     "mode": "W",
+     "label": "รายละเอียด",
+     "source": "groom_appointment.condition_note"
+    },
+    {
+     "section": "ใบยินยอม (แสดงเมื่อเลือก ขนพันกัน/ผิวหนัง หรือกดเพิ่มเอง)",
+     "mode": "W",
+     "label": "เหตุผล",
+     "source": "consent_document.reasons"
+    },
+    {
+     "section": "ใบยินยอม (แสดงเมื่อเลือก ขนพันกัน/ผิวหนัง หรือกดเพิ่มเอง)",
+     "mode": "R",
+     "label": "ข้อความใบยินยอม",
+     "source": "branch_policy.grooming_consent_text"
+    },
+    {
+     "section": "ใบยินยอม (แสดงเมื่อเลือก ขนพันกัน/ผิวหนัง หรือกดเพิ่มเอง)",
+     "mode": "W",
+     "label": "ชื่อผู้เซ็น",
+     "source": "consent_document.signer_name"
+    },
+    {
+     "section": "ใบยินยอม (แสดงเมื่อเลือก ขนพันกัน/ผิวหนัง หรือกดเพิ่มเอง)",
+     "mode": "W",
+     "label": "ลายเซ็น",
+     "source": "consent_document.signature_file_id"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เช็คอิน",
+     "endpoints": "groom.checkIn"
+    },
+    {
+     "label": "ปรับบริการ/ขนาดตามน้ำหนักวันนี้",
+     "endpoints": "groom.setItems"
+    }
+   ]
+  },
+  {
+   "id": "C-07",
+   "app": "console",
+   "route": "/console/slips",
+   "title": "สลิปรอตรวจ",
+   "roles": "OF",
+   "load": [
+    "slips.list"
+   ],
+   "fields": [
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "รูปสลิป",
+     "source": "payment_slip.file_id"
+    },
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "ใบจอง",
+     "source": "booking.booking_no"
+    },
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "ลูกค้า",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "ยอดที่ต้องจ่าย",
+     "source": "payment_slip.amount_expected_satang"
+    },
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "เลขอ้างอิงสลิป",
+     "source": "payment_slip.trans_ref"
+    },
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "สลิปซ้ำ",
+     "source": "payment_slip.duplicate_of_slip_id"
+    },
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "ส่งเมื่อ",
+     "source": "payment_slip.created_at"
+    },
+    {
+     "section": "รายการ (เรียงเก่า→ใหม่)",
+     "mode": "R",
+     "label": "คิวถูกกันถึง",
+     "source": "booking.hold_expires_at"
+    },
+    {
+     "section": "ยืนยัน",
+     "mode": "E",
+     "label": "ยอดที่เข้าจริง",
+     "source": "payment.amount_satang"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ยืนยัน (เงินเข้าแล้ว)",
+     "endpoints": "slips.verify"
+    },
+    {
+     "label": "ยืนยัน + อนุมัติจอง",
+     "endpoints": "slips.verify (approveBooking=true)"
+    },
+    {
+     "label": "ปฏิเสธ",
+     "endpoints": "slips.reject"
+    }
+   ]
+  },
+  {
+   "id": "C-08",
+   "app": "console",
+   "route": "/console/customers",
+   "title": "ลูกค้า",
+   "roles": "OF",
+   "load": [
+    "customers.list"
+   ],
+   "fields": [
+    {
+     "section": "ค้นหา",
+     "mode": "F",
+     "label": "ค้นหา",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ค้นหา",
+     "mode": "F",
+     "label": "เรียง",
+     "source": "customer.last_visit_at"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ชื่อ",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เบอร์",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "มาล่าสุด",
+     "source": "customer.last_visit_at"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "จำนวนครั้ง",
+     "source": "customer.visit_count"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ระดับ",
+     "source": "customer.reliability_level"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เครดิต",
+     "source": "customer.credit_balance_satang"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "LINE",
+     "source": "calc: มี line_identity"
+    }
+   ],
+   "actions": [
+    {
+     "label": "+ เพิ่มลูกค้า",
+     "endpoints": "—"
+    },
+    {
+     "label": "คลิกแถว",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "C-09",
+   "app": "console",
+   "route": "/console/customers/[customerId]?tab=info|pets|timeline|packages|credit",
+   "title": "ลูกค้า",
+   "roles": "OF",
+   "load": [
+    "customers.get",
+    "customers.timeline",
+    "customers.packages"
+   ],
+   "fields": [
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "ชื่อ",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "เบอร์",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "LINE",
+     "source": "line_identity.display_name"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "ระดับ",
+     "source": "customer.reliability_level"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "Blacklist",
+     "source": "customer.blacklisted"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "เครดิต",
+     "source": "customer.credit_balance_satang"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "อีเมล",
+     "source": "owner_profile.email"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "วันเกิด",
+     "source": "owner_profile.birth_date"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "ที่อยู่",
+     "source": "owner_profile.address_line"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "ผู้ติดต่อฉุกเฉิน",
+     "source": "customer.emergency_contact_name"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "รู้จักร้านจาก",
+     "source": "customer.source_channel"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "ยินยอมใช้รูป",
+     "source": "customer.photo_consent"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "ยกเว้นมัดจำ",
+     "source": "customer.deposit_exempt"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "โน้ตภายใน",
+     "source": "customer.internal_note"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "ยกเลิกกระชั้น/ไม่มา 12 เดือน",
+     "source": "customer.late_cancel_count_12m"
+    },
+    {
+     "section": "แท็บข้อมูล",
+     "mode": "R",
+     "label": "มาครั้งแรก/ล่าสุด",
+     "source": "customer.first_visit_at"
+    },
+    {
+     "section": "แท็บน้อง",
+     "mode": "R",
+     "label": "การ์ดน้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "แท็บประวัติ",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "calc: customers.timeline"
+    },
+    {
+     "section": "แท็บแพ็กเกจ",
+     "mode": "R",
+     "label": "แพ็กเกจ",
+     "source": "customer_package.status"
+    },
+    {
+     "section": "แท็บแพ็กเกจ",
+     "mode": "R",
+     "label": "ประวัติการใช้สิทธิ์",
+     "source": "package_redemption.redeemed_at"
+    },
+    {
+     "section": "แท็บเครดิต",
+     "mode": "R",
+     "label": "ยอดคงเหลือ",
+     "source": "customer.credit_balance_satang"
+    },
+    {
+     "section": "แท็บเครดิต",
+     "mode": "R",
+     "label": "ประวัติ",
+     "source": "credit_ledger.delta_satang"
+    }
+   ],
+   "actions": [
+    {
+     "label": "แก้ไข",
+     "endpoints": "—"
+    },
+    {
+     "label": "+ เพิ่มน้อง",
+     "endpoints": "pets.create"
+    },
+    {
+     "label": "จองให้ลูกค้านี้",
+     "endpoints": "—"
+    },
+    {
+     "label": "Blacklist",
+     "endpoints": "customers.blacklist"
+    },
+    {
+     "label": "กำหนดระดับเอง",
+     "endpoints": "customers.reliabilityOverride"
+    },
+    {
+     "label": "ปรับเครดิต",
+     "endpoints": "customers.credit"
+    },
+    {
+     "label": "บันทึกคืนเงิน",
+     "endpoints": "refunds.create"
+    }
+   ]
+  },
+  {
+   "id": "C-10",
+   "app": "console",
+   "route": "/console/customers/new | /console/customers/[customerId]/edit",
+   "title": "ฟอร์มลูกค้า",
+   "roles": "OF",
+   "load": [
+    "customers.get"
+   ],
+   "fields": [
+    {
+     "section": "ข้อมูลหลัก",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ข้อมูลหลัก",
+     "mode": "E",
+     "label": "นามสกุล",
+     "source": "owner_profile.last_name"
+    },
+    {
+     "section": "ข้อมูลหลัก",
+     "mode": "E",
+     "label": "ชื่อเล่น",
+     "source": "owner_profile.nickname"
+    },
+    {
+     "section": "ข้อมูลหลัก",
+     "mode": "E",
+     "label": "เบอร์โทร",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "ข้อมูลหลัก",
+     "mode": "E",
+     "label": "อีเมล",
+     "source": "owner_profile.email"
+    },
+    {
+     "section": "ข้อมูลหลัก",
+     "mode": "E",
+     "label": "วันเกิด",
+     "source": "owner_profile.birth_date"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "ที่อยู่",
+     "source": "owner_profile.address_line"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "ตำบล/แขวง",
+     "source": "owner_profile.subdistrict"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "อำเภอ/เขต",
+     "source": "owner_profile.district"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "จังหวัด",
+     "source": "owner_profile.province"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "รหัสไปรษณีย์",
+     "source": "owner_profile.postal_code"
+    },
+    {
+     "section": "ข้อมูลของร้าน",
+     "mode": "E",
+     "label": "รู้จักร้านจาก",
+     "source": "customer.source_channel"
+    },
+    {
+     "section": "ข้อมูลของร้าน",
+     "mode": "E",
+     "label": "รายละเอียด",
+     "source": "customer.referral_note"
+    },
+    {
+     "section": "ข้อมูลของร้าน",
+     "mode": "E",
+     "label": "ผู้ติดต่อฉุกเฉิน",
+     "source": "customer.emergency_contact_name"
+    },
+    {
+     "section": "ข้อมูลของร้าน",
+     "mode": "E",
+     "label": "เบอร์ฉุกเฉิน",
+     "source": "customer.emergency_contact_phone"
+    },
+    {
+     "section": "ข้อมูลของร้าน",
+     "mode": "E",
+     "label": "ยินยอมใช้รูปน้อง",
+     "source": "customer.photo_consent"
+    },
+    {
+     "section": "ข้อมูลของร้าน",
+     "mode": "E",
+     "label": "ยกเว้นมัดจำ",
+     "source": "customer.deposit_exempt"
+    },
+    {
+     "section": "ข้อมูลของร้าน",
+     "mode": "E",
+     "label": "โน้ตภายใน",
+     "source": "customer.internal_note"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "customers.create / customers.update"
+    }
+   ]
+  },
+  {
+   "id": "C-11",
+   "app": "console",
+   "route": "/console/pets/[petId]?tab=profile|grooming|health|vaccines|photos|weight",
+   "title": "น้อง",
+   "roles": "OFS",
+   "load": [
+    "pets.get",
+    "photos.list"
+   ],
+   "fields": [
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "รูปโปรไฟล์",
+     "source": "pet.profile_file_id"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "pet.name"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "ชนิด",
+     "source": "pet.species"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "ระบุชนิด",
+     "source": "pet.species_other"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "พันธุ์",
+     "source": "pet.breed"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "เพศ",
+     "source": "pet.sex"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "วันเกิด",
+     "source": "pet.birth_date"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "อายุโดยประมาณ (เดือน)",
+     "source": "pet.age_estimate_months"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "ทำหมัน",
+     "source": "pet.neutered"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "สี",
+     "source": "pet.color"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "ไมโครชิป",
+     "source": "pet.microchip_no"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "E",
+     "label": "ประเภทขน",
+     "source": "pet.coat_type"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "pet.status"
+    },
+    {
+     "section": "แท็บโปรไฟล์ (ข้อมูลกลางของน้อง)",
+     "mode": "R",
+     "label": "อายุ",
+     "source": "calc: R-12 ageInMonths"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "E",
+     "label": "ทรงที่ชอบ",
+     "source": "pet_shop_profile.preferred_style"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "E",
+     "label": "เบอร์ใบมีด",
+     "source": "pet_shop_profile.blade_no"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "E",
+     "label": "แชมพูที่ใช้ได้",
+     "source": "pet_shop_profile.shampoo_ok"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "E",
+     "label": "แชมพูที่ห้ามใช้",
+     "source": "pet_shop_profile.shampoo_avoid"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "E",
+     "label": "รูปทรงโปรด",
+     "source": "pet_shop_profile.favorite_style_photo_id"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "E",
+     "label": "รอบกรูม (วัน)",
+     "source": "pet_shop_profile.groom_interval_days"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "R",
+     "label": "กรูมล่าสุด",
+     "source": "pet_shop_profile.last_groomed_at"
+    },
+    {
+     "section": "แท็บกรูม",
+     "mode": "R",
+     "label": "ครบรอบถัดไป",
+     "source": "calc: R-17"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "แพ้",
+     "source": "pet_shop_profile.allergies"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "โรคประจำตัว",
+     "source": "pet_shop_profile.conditions"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "ยาที่ทานประจำ",
+     "source": "pet_shop_profile.medications"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "คลินิกประจำ",
+     "source": "pet_shop_profile.vet_clinic_name"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "เบอร์คลินิก",
+     "source": "pet_shop_profile.vet_clinic_phone"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "ป้ายนิสัย",
+     "source": "pet_temperament_flag.flag"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "โน้ตภายใน",
+     "source": "pet_shop_profile.internal_note"
+    },
+    {
+     "section": "แท็บสุขภาพ & นิสัย",
+     "mode": "E",
+     "label": "โน้ตถึงลูกค้า",
+     "source": "pet_shop_profile.shared_note"
+    },
+    {
+     "section": "แท็บวัคซีน",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "pet_vaccination.vaccine_code"
+    },
+    {
+     "section": "แท็บวัคซีน",
+     "mode": "W",
+     "label": "เพิ่ม: วัคซีน",
+     "source": "pet_vaccination.vaccine_code"
+    },
+    {
+     "section": "แท็บวัคซีน",
+     "mode": "W",
+     "label": "วันที่ฉีด",
+     "source": "pet_vaccination.administered_on"
+    },
+    {
+     "section": "แท็บวัคซีน",
+     "mode": "W",
+     "label": "หมดอายุ",
+     "source": "pet_vaccination.expires_on"
+    },
+    {
+     "section": "แท็บวัคซีน",
+     "mode": "W",
+     "label": "รูปสมุดวัคซีน",
+     "source": "pet_vaccination.proof_file_id"
+    },
+    {
+     "section": "แท็บรูป",
+     "mode": "R",
+     "label": "คลังรูป",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "แท็บรูป",
+     "mode": "R",
+     "label": "คำบรรยาย",
+     "source": "pet_photo.caption"
+    },
+    {
+     "section": "แท็บน้ำหนัก",
+     "mode": "R",
+     "label": "กราฟ",
+     "source": "pet_weight.weight_grams"
+    },
+    {
+     "section": "แท็บน้ำหนัก",
+     "mode": "W",
+     "label": "เพิ่มน้ำหนัก",
+     "source": "pet_weight.weight_grams"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก (แต่ละแท็บ)",
+     "endpoints": "pets.update / pets.updateShopProfile / pets.setFlags"
+    },
+    {
+     "label": "เพิ่มวัคซีน",
+     "endpoints": "vaccinations.create"
+    },
+    {
+     "label": "ยืนยัน/ปฏิเสธวัคซีน",
+     "endpoints": "vaccinations.verify / vaccinations.reject"
+    },
+    {
+     "label": "เพิ่มรูป",
+     "endpoints": "staff.uploadUrl → photos.add"
+    },
+    {
+     "label": "บันทึกน้ำหนัก",
+     "endpoints": "pets.addWeight"
+    },
+    {
+     "label": "น้องจากไป / ย้ายบ้าน",
+     "endpoints": "pets.setStatus"
+    }
+   ]
+  },
+  {
+   "id": "C-12",
+   "app": "console",
+   "route": "/console/link-requests",
+   "title": "คำขอจับคู่บัญชี LINE",
+   "roles": "OF",
+   "load": [
+    "linkRequests.list"
+   ],
+   "fields": [
+    {
+     "section": "คำขอ",
+     "mode": "R",
+     "label": "LINE",
+     "source": "line_identity.display_name"
+    },
+    {
+     "section": "คำขอ",
+     "mode": "R",
+     "label": "เบอร์ที่กรอก",
+     "source": "customer_link_request.phone_entered"
+    },
+    {
+     "section": "คำขอ",
+     "mode": "R",
+     "label": "ลูกค้าเดิมที่ตรง",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "คำขอ",
+     "mode": "R",
+     "label": "ขอเมื่อ",
+     "source": "customer_link_request.created_at"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ใช่ คนเดียวกัน",
+     "endpoints": "linkRequests.approve"
+    },
+    {
+     "label": "ไม่ใช่",
+     "endpoints": "linkRequests.reject"
+    }
+   ]
+  },
+  {
+   "id": "C-13",
+   "app": "console",
+   "route": "/console/hotel?date=",
+   "title": "Room map",
+   "roles": "OFS",
+   "load": [
+    "roomMap.get"
+   ],
+   "fields": [
+    {
+     "section": "ตัวกรอง",
+     "mode": "F",
+     "label": "วันที่",
+     "source": "calc: date"
+    },
+    {
+     "section": "ตัวกรอง",
+     "mode": "F",
+     "label": "โซน",
+     "source": "room_unit.zone"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "รหัสห้อง",
+     "source": "room_unit.code"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "ประเภท",
+     "source": "room_type.name_th"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "สถานะห้อง",
+     "source": "room_unit.status"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "ทำความสะอาด",
+     "source": "room_unit.housekeeping"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "น้องที่พัก",
+     "source": "pet.name"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "เช็คเอาท์",
+     "source": "stay.check_out_date"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "เข้าวันนี้",
+     "source": "calc: RoomMap.units.arrivingToday"
+    },
+    {
+     "section": "การ์ดห้อง (grid ตาม zone/sort_order)",
+     "mode": "R",
+     "label": "จองถัดไป",
+     "source": "calc: RoomMap.units.nextArrivalDate"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ลากน้องไปห้องอื่น",
+     "endpoints": "stays.changeRoom"
+    },
+    {
+     "label": "สลับ สะอาด/ต้องทำความสะอาด",
+     "endpoints": "roomUnits.housekeeping"
+    },
+    {
+     "label": "คลิกน้อง",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "C-14",
+   "app": "console",
+   "route": "/console/hotel/today?date=",
+   "title": "เข้า-ออกวันนี้",
+   "roles": "OFS",
+   "load": [
+    "stays.today"
+   ],
+   "fields": [
+    {
+     "section": "3 คอลัมน์",
+     "mode": "R",
+     "label": "เข้า",
+     "source": "stay.check_in_date"
+    },
+    {
+     "section": "3 คอลัมน์",
+     "mode": "R",
+     "label": "ออก",
+     "source": "stay.check_out_date"
+    },
+    {
+     "section": "3 คอลัมน์",
+     "mode": "R",
+     "label": "พักอยู่",
+     "source": "stay.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เช็คอิน",
+     "endpoints": "—"
+    },
+    {
+     "label": "เช็คเอาท์",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "C-15",
+   "app": "console",
+   "route": "/console/stays/[stayId]?step=intake|checkin|stay|checkout",
+   "title": "การพัก",
+   "roles": "OF",
+   "load": [
+    "stays.get"
+   ],
+   "fields": [
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "ห้อง",
+     "source": "room_unit.code"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "วันที่",
+     "source": "stay.check_in_date"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "stay.status"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "วัคซีน",
+     "source": "calc: R-11"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ยี่ห้ออาหาร",
+     "source": "stay_intake.food_brand"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ปริมาณ",
+     "source": "stay_intake.food_amount"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "เวลาให้อาหาร",
+     "source": "stay_intake.feeding_times"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "เจ้าของเตรียมอาหารมา",
+     "source": "stay_intake.food_provided_by_owner"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "พาเดินต่อวัน",
+     "source": "stay_intake.walks_per_day"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "สภาพร่างกายตอนรับ",
+     "source": "stay_intake.condition_note"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "รูปสภาพตอนรับ",
+     "source": "stay_intake.condition_photo_ids"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ผู้ติดต่อฉุกเฉิน",
+     "source": "stay_intake.emergency_contact_name"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "เบอร์ฉุกเฉิน",
+     "source": "stay_intake.emergency_contact_phone"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "คลินิก",
+     "source": "stay_intake.vet_clinic_name"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "เบอร์คลินิก",
+     "source": "stay_intake.vet_clinic_phone"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ยา: ชื่อ",
+     "source": "stay_medication.name"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ยา: ขนาด",
+     "source": "stay_medication.dose"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ยา: เวลา",
+     "source": "stay_medication.times"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ยา: วิธีให้",
+     "source": "stay_medication.instructions"
+    },
+    {
+     "section": "ฟอร์มรับฝาก",
+     "mode": "E",
+     "label": "ของที่นำมา",
+     "source": "stay_belonging.item"
+    },
+    {
+     "section": "ข้อตกลงรับฝาก",
+     "mode": "R",
+     "label": "ข้อความ",
+     "source": "branch_policy.boarding_agreement_text"
+    },
+    {
+     "section": "ข้อตกลงรับฝาก",
+     "mode": "W",
+     "label": "วงเงินพาไปหาหมอฉุกเฉิน",
+     "source": "consent_document.emergency_vet_limit_satang"
+    },
+    {
+     "section": "ข้อตกลงรับฝาก",
+     "mode": "W",
+     "label": "ชื่อผู้เซ็น",
+     "source": "consent_document.signer_name"
+    },
+    {
+     "section": "ข้อตกลงรับฝาก",
+     "mode": "W",
+     "label": "ลายเซ็น",
+     "source": "consent_document.signature_file_id"
+    },
+    {
+     "section": "เช็คอิน",
+     "mode": "W",
+     "label": "น้ำหนักวันเข้า",
+     "source": "stay.weight_grams_in"
+    },
+    {
+     "section": "เช็คอิน",
+     "mode": "W",
+     "label": "เหตุผลข้ามการตรวจวัคซีน",
+     "source": "stay.vaccine_override_reason"
+    },
+    {
+     "section": "ระหว่างพัก",
+     "mode": "R",
+     "label": "งานวันนี้",
+     "source": "care_task.title"
+    },
+    {
+     "section": "ระหว่างพัก",
+     "mode": "R",
+     "label": "Add-on",
+     "source": "stay_addon.name_snapshot"
+    },
+    {
+     "section": "ระหว่างพัก",
+     "mode": "R",
+     "label": "อัปเดตที่ส่งลูกค้า",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "ระหว่างพัก",
+     "mode": "E",
+     "label": "วันเช็คเอาท์",
+     "source": "stay.check_out_date"
+    },
+    {
+     "section": "เช็คเอาท์",
+     "mode": "W",
+     "label": "น้ำหนักวันออก",
+     "source": "stay.weight_grams_out"
+    },
+    {
+     "section": "เช็คเอาท์",
+     "mode": "W",
+     "label": "ของคืนครบ",
+     "source": "stay_belonging.returned_at"
+    },
+    {
+     "section": "เช็คเอาท์",
+     "mode": "R",
+     "label": "สรุปค่าใช้จ่าย",
+     "source": "calc: room_total + addons + bundle"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึกฟอร์ม",
+     "endpoints": "stays.saveIntake"
+    },
+    {
+     "label": "เซ็นข้อตกลง",
+     "endpoints": "stays.signAgreement"
+    },
+    {
+     "label": "เช็คอิน",
+     "endpoints": "stays.checkIn"
+    },
+    {
+     "label": "เพิ่ม add-on",
+     "endpoints": "stays.addAddon"
+    },
+    {
+     "label": "เปลี่ยนวัน",
+     "endpoints": "stays.changeDates"
+    },
+    {
+     "label": "ส่งอัปเดตรูป",
+     "endpoints": "stays.postUpdate"
+    },
+    {
+     "label": "เช็คเอาท์",
+     "endpoints": "stays.checkOut"
+    },
+    {
+     "label": "ไม่มา",
+     "endpoints": "stays.noShow"
+    },
+    {
+     "label": "ลบ add-on",
+     "endpoints": "stays.removeAddon"
+    },
+    {
+     "label": "ยกเลิกการพัก",
+     "endpoints": "stays.cancel"
+    }
+   ]
+  },
+  {
+   "id": "C-16",
+   "app": "console",
+   "route": "/console/hotel/tasks?date=",
+   "title": "งานดูแลรายวัน (มุมมองร้าน)",
+   "roles": "OFS",
+   "load": [
+    "careTasks.list"
+   ],
+   "fields": [
+    {
+     "section": "ตาราง (จัดกลุ่มตามเวลา)",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "care_task.due_at"
+    },
+    {
+     "section": "ตาราง (จัดกลุ่มตามเวลา)",
+     "mode": "R",
+     "label": "งาน",
+     "source": "care_task.title"
+    },
+    {
+     "section": "ตาราง (จัดกลุ่มตามเวลา)",
+     "mode": "R",
+     "label": "น้อง/ห้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "ตาราง (จัดกลุ่มตามเวลา)",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "care_task.status"
+    },
+    {
+     "section": "ตาราง (จัดกลุ่มตามเวลา)",
+     "mode": "R",
+     "label": "ทำโดย/เมื่อ",
+     "source": "care_task.done_by"
+    },
+    {
+     "section": "ตาราง (จัดกลุ่มตามเวลา)",
+     "mode": "R",
+     "label": "โน้ต",
+     "source": "care_task.note"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ทำแล้ว",
+     "endpoints": "careTasks.done"
+    },
+    {
+     "label": "ข้าม",
+     "endpoints": "careTasks.skip"
+    }
+   ]
+  },
+  {
+   "id": "C-17",
+   "app": "console",
+   "route": "/console/daycare?date=",
+   "title": "Daycare วันนี้",
+   "roles": "OFS",
+   "load": [
+    "daycare.list"
+   ],
+   "fields": [
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "รอบ",
+     "source": "daycare_session_type.name_th"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "daycare_visit.status"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "เข้า/ออก",
+     "source": "daycare_visit.checked_in_at"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "วัคซีน",
+     "source": "calc: R-11"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เช็คอิน",
+     "endpoints": "daycare.check_in"
+    },
+    {
+     "label": "เช็คเอาท์",
+     "endpoints": "daycare.check_out"
+    },
+    {
+     "label": "ไม่มา",
+     "endpoints": "daycare.no_show"
+    },
+    {
+     "label": "ยกเลิก",
+     "endpoints": "daycare.cancel"
+    }
+   ]
+  },
+  {
+   "id": "C-18",
+   "app": "console",
+   "route": "/console/bills/[billId]",
+   "title": "บิล (คิดเงิน)",
+   "roles": "OF",
+   "load": [
+    "bills.get"
+   ],
+   "fields": [
+    {
+     "section": "ลูกค้า",
+     "mode": "R",
+     "label": "ชื่อ",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ลูกค้า",
+     "mode": "R",
+     "label": "เครดิตคงเหลือ",
+     "source": "customer.credit_balance_satang"
+    },
+    {
+     "section": "ลูกค้า",
+     "mode": "R",
+     "label": "แพ็กเกจที่ใช้ได้",
+     "source": "customer_package.sessions_used"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "bill_line.description"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "ประเภท",
+     "source": "bill_line.line_type"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "จำนวน",
+     "source": "bill_line.quantity"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "ราคา/หน่วย",
+     "source": "bill_line.unit_price_satang"
+    },
+    {
+     "section": "รายการ",
+     "mode": "E",
+     "label": "ส่วนลด",
+     "source": "bill_line.line_discount_satang"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "รวม",
+     "source": "bill_line.line_total_satang"
+    },
+    {
+     "section": "รายการ",
+     "mode": "E",
+     "label": "ช่าง",
+     "source": "bill_line.performer_id"
+    },
+    {
+     "section": "เพิ่มรายการ",
+     "mode": "W",
+     "label": "สินค้า/บริการด่วน",
+     "source": "bill_line.description"
+    },
+    {
+     "section": "เพิ่มรายการ",
+     "mode": "W",
+     "label": "ขายแพ็กเกจ",
+     "source": "bill_line.ref_id"
+    },
+    {
+     "section": "เพิ่มรายการ",
+     "mode": "W",
+     "label": "ใช้สิทธิ์แพ็กเกจ",
+     "source": "bill_line.ref_id"
+    },
+    {
+     "section": "สรุป",
+     "mode": "R",
+     "label": "รวม",
+     "source": "bill.subtotal_satang"
+    },
+    {
+     "section": "สรุป",
+     "mode": "E",
+     "label": "ส่วนลดท้ายบิล",
+     "source": "bill.bill_discount_satang"
+    },
+    {
+     "section": "สรุป",
+     "mode": "R",
+     "label": "ยอดสุทธิ",
+     "source": "bill.total_satang"
+    },
+    {
+     "section": "สรุป",
+     "mode": "R",
+     "label": "ชำระแล้ว",
+     "source": "bill.paid_satang"
+    },
+    {
+     "section": "สรุป",
+     "mode": "R",
+     "label": "ค้างชำระ",
+     "source": "calc: total − paid"
+    },
+    {
+     "section": "สรุป",
+     "mode": "R",
+     "label": "เงินทอน",
+     "source": "bill.change_satang"
+    },
+    {
+     "section": "การชำระ",
+     "mode": "R",
+     "label": "รายการรับเงิน",
+     "source": "payment.method"
+    },
+    {
+     "section": "การชำระ",
+     "mode": "W",
+     "label": "วิธีรับเงิน",
+     "source": "payment.method"
+    },
+    {
+     "section": "การชำระ",
+     "mode": "W",
+     "label": "รับเงินสด",
+     "source": "payment.tendered_satang"
+    },
+    {
+     "section": "การชำระ",
+     "mode": "W",
+     "label": "ยอด (วิธีอื่น)",
+     "source": "payment.amount_satang"
+    },
+    {
+     "section": "การชำระ",
+     "mode": "W",
+     "label": "เลขอ้างอิง",
+     "source": "payment.reference"
+    },
+    {
+     "section": "การชำระ",
+     "mode": "R",
+     "label": "QR PromptPay",
+     "source": "calc: R-30"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เพิ่มรายการ",
+     "endpoints": "bills.addLine"
+    },
+    {
+     "label": "แก้บรรทัด (ส่วนลด/ช่าง/จำนวน)",
+     "endpoints": "bills.updateLine"
+    },
+    {
+     "label": "ลบบรรทัด",
+     "endpoints": "bills.removeLine"
+    },
+    {
+     "label": "ส่วนลดท้ายบิล",
+     "endpoints": "bills.setDiscount"
+    },
+    {
+     "label": "แสดง QR PromptPay",
+     "endpoints": "bills.promptpayQr"
+    },
+    {
+     "label": "รับเงิน",
+     "endpoints": "bills.addPayment"
+    },
+    {
+     "label": "ยกเลิกรายการรับเงิน",
+     "endpoints": "bills.voidPayment"
+    },
+    {
+     "label": "ปิดบิล",
+     "endpoints": "bills.close"
+    },
+    {
+     "label": "Void บิล",
+     "endpoints": "bills.void"
+    }
+   ]
+  },
+  {
+   "id": "C-19",
+   "app": "console",
+   "route": "/console/bills?status=&date=",
+   "title": "รายการบิล",
+   "roles": "OF",
+   "load": [
+    "bills.list"
+   ],
+   "fields": [
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เลขใบเสร็จ",
+     "source": "bill.receipt_no"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ลูกค้า",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ยอด",
+     "source": "bill.total_satang"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ชำระแล้ว",
+     "source": "bill.paid_satang"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "วิธีจ่าย",
+     "source": "payment.method"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "bill.status"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "bill.closed_at"
+    }
+   ],
+   "actions": [
+    {
+     "label": "+ บิลขายของ",
+     "endpoints": "bills.open"
+    }
+   ]
+  },
+  {
+   "id": "C-20",
+   "app": "console",
+   "route": "/console/bills/[billId]/receipt",
+   "title": "ใบเสร็จ (พิมพ์)",
+   "roles": "OF",
+   "load": [
+    "bills.receipt"
+   ],
+   "fields": [
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "โลโก้/ชื่อร้าน/ที่อยู่/โทร",
+     "source": "branch.name"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "เลขที่",
+     "source": "bill.receipt_no"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "วันที่",
+     "source": "bill.closed_at"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ลูกค้า",
+     "source": "calc: ชื่อ-นามสกุล"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "bill_line.description"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ส่วนลด",
+     "source": "bill.bill_discount_satang"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ยอดสุทธิ",
+     "source": "bill.total_satang"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ชำระโดย",
+     "source": "payment.method"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "เงินทอน",
+     "source": "bill.change_satang"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "แพ็กเกจคงเหลือ",
+     "source": "customer_package.sessions_used"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ผู้รับเงิน",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "VOID",
+     "source": "bill.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "พิมพ์",
+     "endpoints": "—"
+    },
+    {
+     "label": "ส่ง LINE อีกครั้ง",
+     "endpoints": "bills.sendReceipt"
+    }
+   ]
+  },
+  {
+   "id": "C-21",
+   "app": "console",
+   "route": "/console/report-cards",
+   "title": "Report card รอตรวจ",
+   "roles": "OF",
+   "load": [
+    "reportCards.list"
+   ],
+   "fields": [
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "ช่าง",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "ผลตรวจ",
+     "source": "report_card.skin"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "E",
+     "label": "ข้อความถึงลูกค้า",
+     "source": "report_card.staff_note"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "E",
+     "label": "คำแนะนำ",
+     "source": "report_card.recommendation"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "reportCards.update"
+    },
+    {
+     "label": "ส่งลูกค้า",
+     "endpoints": "reportCards.approve"
+    }
+   ]
+  },
+  {
+   "id": "C-22",
+   "app": "console",
+   "route": "/console/messages",
+   "title": "ข้อความที่ไม่ได้ส่ง",
+   "roles": "OF",
+   "load": [
+    "line.skipped",
+    "line.status"
+   ],
+   "fields": [
+    {
+     "section": "โควตา",
+     "mode": "R",
+     "label": "ใช้ไป/โควตา",
+     "source": "calc: LineStatus.usedThisMonth"
+    },
+    {
+     "section": "โควตา",
+     "mode": "R",
+     "label": "โหมดประหยัด",
+     "source": "branch_policy.economy_mode"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "ถึง",
+     "source": "calc: ชื่อลูกค้า"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "เรื่อง",
+     "source": "notification.template_key"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "เหตุผล",
+     "source": "notification.skip_reason"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "ข้อความ",
+     "source": "calc: render template"
+    },
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "notification.created_at"
+    }
+   ],
+   "actions": [
+    {
+     "label": "คัดลอกข้อความ",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "C-23",
+   "app": "console",
+   "route": "/console/reports/sales",
+   "title": "รายงานยอดขาย",
+   "roles": "O",
+   "load": [
+    "reports.sales"
+   ],
+   "fields": [
+    {
+     "section": "ตัวกรอง",
+     "mode": "F",
+     "label": "ช่วงวันที่",
+     "source": "calc: from/to"
+    },
+    {
+     "section": "ตัวกรอง",
+     "mode": "F",
+     "label": "จัดกลุ่ม",
+     "source": "calc: groupBy"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "ยอดรวม/ส่วนลด/สุทธิ",
+     "source": "calc: SalesReport.totals"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "กราฟ",
+     "source": "calc: SalesReport.rows"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "ตาราง",
+     "source": "calc: SalesReport.rows"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "แยกวิธีจ่าย",
+     "source": "payment.method"
+    }
+   ],
+   "actions": [
+    {
+     "label": "Export CSV",
+     "endpoints": "exports.csv"
+    }
+   ]
+  },
+  {
+   "id": "C-24",
+   "app": "console",
+   "route": "/console/reports/commissions",
+   "title": "รายงานค่ามือ",
+   "roles": "O",
+   "load": [
+    "reports.commissions"
+   ],
+   "fields": [
+    {
+     "section": "ตัวกรอง",
+     "mode": "F",
+     "label": "ช่วงวันที่",
+     "source": "calc: from/to"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ช่าง",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "จำนวนงาน",
+     "source": "calc: count"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ยอดฐาน",
+     "source": "commission_entry.base_satang"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ค่ามือ",
+     "source": "commission_entry.amount_satang"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "รายละเอียด",
+     "source": "commission_entry.bill_line_id"
+    }
+   ],
+   "actions": [
+    {
+     "label": "Export CSV",
+     "endpoints": "exports.csv"
+    }
+   ]
+  },
+  {
+   "id": "C-25",
+   "app": "console",
+   "route": "/console/reports/occupancy",
+   "title": "Occupancy",
+   "roles": "O",
+   "load": [
+    "reports.occupancy"
+   ],
+   "fields": [
+    {
+     "section": "ผล",
+     "mode": "F",
+     "label": "ช่วงวันที่",
+     "source": "calc: from/to"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "กราฟ",
+     "source": "calc: OccupancyReport.days"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "ตามประเภทห้อง",
+     "source": "calc: OccupancyReport.byRoomType"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "C-26",
+   "app": "console",
+   "route": "/console/settings/audit",
+   "title": "Audit log",
+   "roles": "O",
+   "load": [
+    "audit.list"
+   ],
+   "fields": [
+    {
+     "section": "ตัวกรอง",
+     "mode": "F",
+     "label": "การกระทำ",
+     "source": "audit_log.action"
+    },
+    {
+     "section": "ตัวกรอง",
+     "mode": "F",
+     "label": "ช่วงวันที่",
+     "source": "calc: from/to"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "audit_log.created_at"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ผู้ทำ",
+     "source": "audit_log.actor_id"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "การกระทำ",
+     "source": "audit_log.action"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "audit_log.entity_type"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เหตุผล",
+     "source": "audit_log.reason"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ก่อน/หลัง",
+     "source": "audit_log.before"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "C-30",
+   "app": "console",
+   "route": "/console/settings/shop",
+   "title": "ข้อมูลร้าน",
+   "roles": "O",
+   "load": [
+    "branch.get"
+   ],
+   "fields": [
+    {
+     "section": "ร้าน",
+     "mode": "E",
+     "label": "ชื่อร้าน",
+     "source": "branch.name"
+    },
+    {
+     "section": "ร้าน",
+     "mode": "E",
+     "label": "โลโก้",
+     "source": "branch.logo_file_id"
+    },
+    {
+     "section": "ร้าน",
+     "mode": "E",
+     "label": "เบอร์โทร",
+     "source": "branch.phone"
+    },
+    {
+     "section": "ร้าน",
+     "mode": "E",
+     "label": "Facebook",
+     "source": "branch.facebook_url"
+    },
+    {
+     "section": "ร้าน",
+     "mode": "E",
+     "label": "Instagram",
+     "source": "branch.instagram_url"
+    },
+    {
+     "section": "ร้าน",
+     "mode": "R",
+     "label": "ลิงก์จอง",
+     "source": "branch.booking_slug"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "ที่อยู่",
+     "source": "branch.address_line"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "ตำบล/แขวง",
+     "source": "branch.subdistrict"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "อำเภอ/เขต",
+     "source": "branch.district"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "จังหวัด",
+     "source": "branch.province"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "รหัสไปรษณีย์",
+     "source": "branch.postal_code"
+    },
+    {
+     "section": "ที่อยู่",
+     "mode": "E",
+     "label": "ตำแหน่งบนแผนที่",
+     "source": "branch.latitude"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "E",
+     "label": "อักษรนำหน้าเลขใบเสร็จ",
+     "source": "branch.receipt_prefix"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ตัวอย่าง",
+     "source": "calc: R-16"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "branch.update"
+    }
+   ]
+  },
+  {
+   "id": "C-31",
+   "app": "console",
+   "route": "/console/settings/hours",
+   "title": "เวลาเปิด-ปิดและวันหยุด",
+   "roles": "OF",
+   "load": [
+    "branch.get",
+    "closures.list"
+   ],
+   "fields": [
+    {
+     "section": "เวลาเปิดรายสัปดาห์ (owner)",
+     "mode": "E",
+     "label": "วัน",
+     "source": "branch_hours.weekday"
+    },
+    {
+     "section": "เวลาเปิดรายสัปดาห์ (owner)",
+     "mode": "E",
+     "label": "ปิดทั้งวัน",
+     "source": "branch_hours.is_closed"
+    },
+    {
+     "section": "เวลาเปิดรายสัปดาห์ (owner)",
+     "mode": "E",
+     "label": "เปิด",
+     "source": "branch_hours.opens_at"
+    },
+    {
+     "section": "เวลาเปิดรายสัปดาห์ (owner)",
+     "mode": "E",
+     "label": "ปิด",
+     "source": "branch_hours.closes_at"
+    },
+    {
+     "section": "วันปิด/ช่วงพิเศษ",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "branch_closure.starts_at"
+    },
+    {
+     "section": "วันปิด/ช่วงพิเศษ",
+     "mode": "W",
+     "label": "เริ่ม",
+     "source": "branch_closure.starts_at"
+    },
+    {
+     "section": "วันปิด/ช่วงพิเศษ",
+     "mode": "W",
+     "label": "สิ้นสุด",
+     "source": "branch_closure.ends_at"
+    },
+    {
+     "section": "วันปิด/ช่วงพิเศษ",
+     "mode": "W",
+     "label": "ปิดเฉพาะ",
+     "source": "branch_closure.scope"
+    },
+    {
+     "section": "วันปิด/ช่วงพิเศษ",
+     "mode": "W",
+     "label": "เหตุผล",
+     "source": "branch_closure.reason"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึกเวลา",
+     "endpoints": "branch.setHours"
+    },
+    {
+     "label": "เพิ่มวันปิด",
+     "endpoints": "closures.create"
+    },
+    {
+     "label": "ลบ",
+     "endpoints": "closures.delete"
+    },
+    {
+     "label": "เพิ่มวันหยุดราชการ",
+     "endpoints": "closures.importHolidays"
+    }
+   ]
+  },
+  {
+   "id": "C-32",
+   "app": "console",
+   "route": "/console/settings/modules",
+   "title": "บริการที่เปิด",
+   "roles": "O",
+   "load": [
+    "branch.get"
+   ],
+   "fields": [
+    {
+     "section": "โมดูล",
+     "mode": "E",
+     "label": "กรูมมิ่ง",
+     "source": "branch.module_grooming"
+    },
+    {
+     "section": "โมดูล",
+     "mode": "E",
+     "label": "โรงแรม",
+     "source": "branch.module_hotel"
+    },
+    {
+     "section": "โมดูล",
+     "mode": "E",
+     "label": "Daycare",
+     "source": "branch.module_daycare"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "branch.setModules"
+    }
+   ]
+  },
+  {
+   "id": "C-33",
+   "app": "console",
+   "route": "/console/settings/policy",
+   "title": "นโยบายร้าน",
+   "roles": "O",
+   "load": [
+    "branch.get"
+   ],
+   "fields": [
+    {
+     "section": "มัดจำ",
+     "mode": "E",
+     "label": "ประเภทมัดจำ",
+     "source": "branch_policy.default_deposit_type"
+    },
+    {
+     "section": "มัดจำ",
+     "mode": "E",
+     "label": "ค่ามัดจำ",
+     "source": "branch_policy.default_deposit_value"
+    },
+    {
+     "section": "มัดจำ",
+     "mode": "R",
+     "label": "ตัวอย่าง",
+     "source": "calc: R-06 กับยอด ฿850"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "กรูม ยกเลิกฟรีก่อน (ชม.)",
+     "source": "branch_policy.grooming_free_cancel_hours"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "โรงแรม (ชม.)",
+     "source": "branch_policy.hotel_free_cancel_hours"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "Daycare (ชม.)",
+     "source": "branch_policy.daycare_free_cancel_hours"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "ยกเลิกกระชั้น ริบ (%)",
+     "source": "branch_policy.late_cancel_forfeit_percent"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "ส่วนที่ไม่ริบ คืนเป็น",
+     "source": "branch_policy.cancel_refund_mode"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "ลูกค้าเลื่อน/ยกเลิกเองได้ถึง (ชม. ก่อนนัด)",
+     "source": "branch_policy.reschedule_cutoff_hours"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "กด no-show ได้หลังเวลานัด (นาที)",
+     "source": "branch_policy.no_show_grace_minutes"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "E",
+     "label": "ข้อความนโยบายที่ลูกค้าเห็น",
+     "source": "branch_policy.policy_text"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "จองออนไลน์ล่วงหน้าอย่างน้อย (นาที)",
+     "source": "branch_policy.booking_lead_minutes"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "จองล่วงหน้าได้ไกลสุด (วัน)",
+     "source": "branch_policy.booking_horizon_days"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "ช่วงเวลาเริ่มทุก",
+     "source": "branch_policy.slot_step_minutes"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "เวลาเผื่อทำความสะอาดหลังแต่ละคิว",
+     "source": "branch_policy.buffer_minutes"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "รับคิวกรูมสูงสุดต่อวัน",
+     "source": "branch_policy.max_appointments_per_day"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "สูงสุดต่อช่างต่อวัน",
+     "source": "branch_policy.max_appointments_per_groomer_day"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "เวลาให้ลูกค้าโอนมัดจำ (นาที)",
+     "source": "branch_policy.hold_minutes"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "ยืนยันอัตโนมัติ: กรูม",
+     "source": "branch_policy.auto_confirm_grooming"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "ยืนยันอัตโนมัติ: โรงแรม",
+     "source": "branch_policy.auto_confirm_hotel"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "ยืนยันอัตโนมัติ: Daycare",
+     "source": "branch_policy.auto_confirm_daycare"
+    },
+    {
+     "section": "การจอง",
+     "mode": "E",
+     "label": "เตือนร้านถ้ายังไม่อนุมัติภายใน (นาที)",
+     "source": "branch_policy.approval_timeout_minutes"
+    },
+    {
+     "section": "เงื่อนไขรับสัตว์",
+     "mode": "E",
+     "label": "วัคซีนที่ต้องมี (หมา)",
+     "source": "branch_policy.required_vaccines_dog"
+    },
+    {
+     "section": "เงื่อนไขรับสัตว์",
+     "mode": "E",
+     "label": "วัคซีนที่ต้องมี (แมว)",
+     "source": "branch_policy.required_vaccines_cat"
+    },
+    {
+     "section": "เงื่อนไขรับสัตว์",
+     "mode": "E",
+     "label": "ตรวจวัคซีนกับกรูมด้วย",
+     "source": "branch_policy.enforce_vaccines_grooming"
+    },
+    {
+     "section": "เงื่อนไขรับสัตว์",
+     "mode": "E",
+     "label": "สายพันธุ์ที่ไม่รับ",
+     "source": "branch_policy.rejected_breeds"
+    },
+    {
+     "section": "เงื่อนไขรับสัตว์",
+     "mode": "E",
+     "label": "น้ำหนักสูงสุดที่รับ (กก.)",
+     "source": "branch_policy.max_pet_weight_grams"
+    },
+    {
+     "section": "เอกสาร",
+     "mode": "E",
+     "label": "ใบยินยอมก่อนกรูม",
+     "source": "branch_policy.grooming_consent_text"
+    },
+    {
+     "section": "เอกสาร",
+     "mode": "E",
+     "label": "ข้อตกลงรับฝาก",
+     "source": "branch_policy.boarding_agreement_text"
+    },
+    {
+     "section": "หลังบริการ & ข้อความ",
+     "mode": "E",
+     "label": "เตือนลูกค้าก่อนนัด 24 ชม.",
+     "source": "branch_policy.reminder_24h_enabled"
+    },
+    {
+     "section": "หลังบริการ & ข้อความ",
+     "mode": "E",
+     "label": "โหมดประหยัดข้อความ LINE",
+     "source": "branch_policy.economy_mode"
+    },
+    {
+     "section": "หลังบริการ & ข้อความ",
+     "mode": "E",
+     "label": "รอบกรูมตั้งต้น (วัน)",
+     "source": "branch_policy.next_groom_default_days"
+    },
+    {
+     "section": "หลังบริการ & ข้อความ",
+     "mode": "E",
+     "label": "ลิงก์รีวิว Google",
+     "source": "branch_policy.google_review_url"
+    },
+    {
+     "section": "หลังบริการ & ข้อความ",
+     "mode": "E",
+     "label": "ตรวจ Report card ก่อนส่ง",
+     "source": "branch_policy.report_card_requires_review"
+    },
+    {
+     "section": "หลังบริการ & ข้อความ",
+     "mode": "E",
+     "label": "เวลาส่งสรุปรายวัน",
+     "source": "branch_policy.daily_summary_time"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "branch.updatePolicy"
+    }
+   ]
+  },
+  {
+   "id": "C-34",
+   "app": "console",
+   "route": "/console/settings/payment",
+   "title": "บัญชีรับเงิน PromptPay",
+   "roles": "O",
+   "load": [
+    "branch.get"
+   ],
+   "fields": [
+    {
+     "section": "บัญชี",
+     "mode": "E",
+     "label": "ประเภท",
+     "source": "branch.promptpay_type"
+    },
+    {
+     "section": "บัญชี",
+     "mode": "E",
+     "label": "หมายเลข PromptPay",
+     "source": "branch.promptpay_id"
+    },
+    {
+     "section": "บัญชี",
+     "mode": "E",
+     "label": "ชื่อบัญชี",
+     "source": "branch.promptpay_account_name"
+    },
+    {
+     "section": "บัญชี",
+     "mode": "W",
+     "label": "รหัสผ่านของคุณ (ยืนยัน)",
+     "source": "calc: ไม่บันทึก"
+    },
+    {
+     "section": "บัญชี",
+     "mode": "R",
+     "label": "QR ทดสอบ ฿1",
+     "source": "calc: R-30 amount 100"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "branch.setPromptpay"
+    }
+   ]
+  },
+  {
+   "id": "C-35",
+   "app": "console",
+   "route": "/console/settings/line",
+   "title": "LINE OA และลิงก์จอง",
+   "roles": "O",
+   "load": [
+    "line.status"
+   ],
+   "fields": [
+    {
+     "section": "สถานะ",
+     "mode": "R",
+     "label": "การเชื่อม",
+     "source": "line_channel.status"
+    },
+    {
+     "section": "สถานะ",
+     "mode": "R",
+     "label": "LINE ID",
+     "source": "line_channel.bot_basic_id"
+    },
+    {
+     "section": "สถานะ",
+     "mode": "R",
+     "label": "โควตา push/เดือน",
+     "source": "line_channel.monthly_push_quota"
+    },
+    {
+     "section": "สถานะ",
+     "mode": "R",
+     "label": "ใช้ไปเดือนนี้",
+     "source": "calc: LineStatus.usedThisMonth"
+    },
+    {
+     "section": "ลิงก์และโปสเตอร์",
+     "mode": "R",
+     "label": "ลิงก์จองใน LINE",
+     "source": "calc: LineStatus.liffUrl"
+    },
+    {
+     "section": "ลิงก์และโปสเตอร์",
+     "mode": "R",
+     "label": "ลิงก์หน้าร้าน",
+     "source": "branch.booking_slug"
+    },
+    {
+     "section": "ลิงก์และโปสเตอร์",
+     "mode": "R",
+     "label": "QR โปสเตอร์",
+     "source": "calc: QR ของ /b/{slug}"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "C-36",
+   "app": "console",
+   "route": "/console/settings/staff",
+   "title": "พนักงานและตารางงาน",
+   "roles": "OF",
+   "load": [
+    "staffUsers.list",
+    "timeOff.list"
+   ],
+   "fields": [
+    {
+     "section": "รายชื่อ",
+     "mode": "R",
+     "label": "ชื่อ",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "รายชื่อ",
+     "mode": "R",
+     "label": "บทบาท",
+     "source": "staff_user.role"
+    },
+    {
+     "section": "รายชื่อ",
+     "mode": "R",
+     "label": "เป็นช่าง",
+     "source": "staff_user.is_groomer"
+    },
+    {
+     "section": "รายชื่อ",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "staff_user.status"
+    },
+    {
+     "section": "รายชื่อ",
+     "mode": "R",
+     "label": "LINE",
+     "source": "calc: line linked"
+    },
+    {
+     "section": "รายชื่อ",
+     "mode": "R",
+     "label": "เข้าล่าสุด",
+     "source": "staff_user.last_login_at"
+    },
+    {
+     "section": "เชิญ (owner)",
+     "mode": "W",
+     "label": "ชื่อเล่น",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "เชิญ (owner)",
+     "mode": "W",
+     "label": "อีเมล",
+     "source": "staff_user.email"
+    },
+    {
+     "section": "เชิญ (owner)",
+     "mode": "W",
+     "label": "บทบาท",
+     "source": "staff_user.role"
+    },
+    {
+     "section": "เชิญ (owner)",
+     "mode": "W",
+     "label": "เป็นช่างกรูม",
+     "source": "staff_user.is_groomer"
+    },
+    {
+     "section": "ตารางงานรายสัปดาห์",
+     "mode": "E",
+     "label": "วันทำงาน",
+     "source": "staff_working_hours.weekday"
+    },
+    {
+     "section": "ตารางงานรายสัปดาห์",
+     "mode": "E",
+     "label": "เริ่ม",
+     "source": "staff_working_hours.starts_at"
+    },
+    {
+     "section": "ตารางงานรายสัปดาห์",
+     "mode": "E",
+     "label": "เลิก",
+     "source": "staff_working_hours.ends_at"
+    },
+    {
+     "section": "ตารางงานรายสัปดาห์",
+     "mode": "E",
+     "label": "พัก",
+     "source": "staff_working_hours.break_starts_at"
+    },
+    {
+     "section": "วันลา",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "staff_time_off.starts_at"
+    },
+    {
+     "section": "วันลา",
+     "mode": "W",
+     "label": "ช่วงลา",
+     "source": "staff_time_off.starts_at"
+    },
+    {
+     "section": "วันลา",
+     "mode": "W",
+     "label": "เหตุผล",
+     "source": "staff_time_off.reason"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เชิญ",
+     "endpoints": "staffUsers.invite"
+    },
+    {
+     "label": "แก้ไข/ปิดใช้งาน",
+     "endpoints": "staffUsers.update"
+    },
+    {
+     "label": "ส่งคำเชิญใหม่",
+     "endpoints": "staffUsers.resendInvite"
+    },
+    {
+     "label": "บันทึกตารางงาน",
+     "endpoints": "workingHours.set"
+    },
+    {
+     "label": "เพิ่มวันลา",
+     "endpoints": "timeOff.create"
+    },
+    {
+     "label": "ลบวันลา",
+     "endpoints": "timeOff.delete"
+    }
+   ]
+  },
+  {
+   "id": "C-37",
+   "app": "console",
+   "route": "/console/settings/services?scope=grooming|hotel|daycare",
+   "title": "บริการและราคา",
+   "roles": "O",
+   "load": [
+    "services.list",
+    "sizeTiers.list",
+    "surchargeTypes.list"
+   ],
+   "fields": [
+    {
+     "section": "รายการบริการ",
+     "mode": "R",
+     "label": "ชื่อ",
+     "source": "service.name_th"
+    },
+    {
+     "section": "รายการบริการ",
+     "mode": "R",
+     "label": "หมวด",
+     "source": "service.category"
+    },
+    {
+     "section": "รายการบริการ",
+     "mode": "R",
+     "label": "ราคาเริ่ม",
+     "source": "calc: min price"
+    },
+    {
+     "section": "รายการบริการ",
+     "mode": "R",
+     "label": "จองออนไลน์",
+     "source": "service.online_bookable"
+    },
+    {
+     "section": "รายการบริการ",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "service.status"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "ชื่อบริการ",
+     "source": "service.name_th"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "หมวด",
+     "source": "service.category"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "คำอธิบาย",
+     "source": "service.description"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "รูป",
+     "source": "service.photo_file_id"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "ชนิดสัตว์ที่รับ",
+     "source": "service.species_allowed"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "เป็น add-on",
+     "source": "service.is_addon"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "คิดต่อวัน (โรงแรม)",
+     "source": "service.addon_per_day"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "ใช้กับบริการหลัก",
+     "source": "service_addon_link.base_service_id"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "ต้นทุนโดยประมาณ",
+     "source": "service.est_cost_satang"
+    },
+    {
+     "section": "ฟอร์มบริการ",
+     "mode": "E",
+     "label": "ลำดับ",
+     "source": "service.sort_order"
+    },
+    {
+     "section": "ตารางราคา (แถว = ขนาด, คอลัมน์ = ขนสั้น/ขนยาว หรือ 'ทุกแบบ')",
+     "mode": "E",
+     "label": "ราคา",
+     "source": "service_price.price_satang"
+    },
+    {
+     "section": "ตารางราคา (แถว = ขนาด, คอลัมน์ = ขนสั้น/ขนยาว หรือ 'ทุกแบบ')",
+     "mode": "E",
+     "label": "เวลา (นาที)",
+     "source": "service_price.duration_minutes"
+    },
+    {
+     "section": "ตารางราคา (แถว = ขนาด, คอลัมน์ = ขนสั้น/ขนยาว หรือ 'ทุกแบบ')",
+     "mode": "E",
+     "label": "แยกตามขน",
+     "source": "service_price.coat_group"
+    },
+    {
+     "section": "ค่าบริการเพิ่มหน้างาน",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "surcharge_type.name_th"
+    },
+    {
+     "section": "ค่าบริการเพิ่มหน้างาน",
+     "mode": "E",
+     "label": "ราคาตั้งต้น",
+     "source": "surcharge_type.default_amount_satang"
+    },
+    {
+     "section": "ค่าบริการเพิ่มหน้างาน",
+     "mode": "E",
+     "label": "ใช้งาน",
+     "source": "surcharge_type.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึกบริการ",
+     "endpoints": "services.create / services.update"
+    },
+    {
+     "label": "บันทึกราคา",
+     "endpoints": "services.setPrices"
+    },
+    {
+     "label": "บันทึก add-on link",
+     "endpoints": "services.setAddonLinks"
+    },
+    {
+     "label": "บันทึกค่าบริการเพิ่ม",
+     "endpoints": "surchargeTypes.upsert"
+    }
+   ]
+  },
+  {
+   "id": "C-38",
+   "app": "console",
+   "route": "/console/settings/size-tiers",
+   "title": "ขนาดตามน้ำหนัก",
+   "roles": "O",
+   "load": [
+    "sizeTiers.list"
+   ],
+   "fields": [
+    {
+     "section": "แท็บหมา/แมว",
+     "mode": "E",
+     "label": "รหัส",
+     "source": "size_tier.code"
+    },
+    {
+     "section": "แท็บหมา/แมว",
+     "mode": "E",
+     "label": "ชื่อที่แสดง",
+     "source": "size_tier.label_th"
+    },
+    {
+     "section": "แท็บหมา/แมว",
+     "mode": "E",
+     "label": "ตั้งแต่ (กก.)",
+     "source": "size_tier.min_weight_grams"
+    },
+    {
+     "section": "แท็บหมา/แมว",
+     "mode": "E",
+     "label": "ไม่ถึง (กก.)",
+     "source": "size_tier.max_weight_grams"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "sizeTiers.set"
+    }
+   ]
+  },
+  {
+   "id": "C-39",
+   "app": "console",
+   "route": "/console/settings/rooms",
+   "title": "ห้องพัก",
+   "roles": "O",
+   "load": [
+    "roomTypes.list",
+    "roomUnits.list",
+    "sizeTiers.list"
+   ],
+   "fields": [
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "room_type.name_th"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "คำอธิบาย",
+     "source": "room_type.description"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "รูป",
+     "source": "room_type.photo_file_id"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "ชนิดสัตว์",
+     "source": "room_type.species_allowed"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "น้ำหนักสูงสุด (กก.)",
+     "source": "room_type.max_weight_grams"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "อายุขั้นต่ำ (เดือน)",
+     "source": "room_type.min_age_months"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "รับติดสัด",
+     "source": "room_type.allow_in_heat"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "รับน้องดุ/ไม่ถูกกับตัวอื่น",
+     "source": "room_type.allow_reactive"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "สิ่งอำนวยความสะดวก",
+     "source": "room_type.amenities"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "รวมในราคา",
+     "source": "room_type.included_text"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "จองออนไลน์",
+     "source": "room_type.online_bookable"
+    },
+    {
+     "section": "ประเภทห้อง",
+     "mode": "E",
+     "label": "ใช้งาน",
+     "source": "room_type.status"
+    },
+    {
+     "section": "ราคาต่อคืน",
+     "mode": "E",
+     "label": "ทุกขนาด / ตามขนาด",
+     "source": "room_rate.size_tier_id"
+    },
+    {
+     "section": "ราคาต่อคืน",
+     "mode": "E",
+     "label": "ราคา/คืน",
+     "source": "room_rate.nightly_price_satang"
+    },
+    {
+     "section": "ห้อง",
+     "mode": "E",
+     "label": "รหัสห้อง",
+     "source": "room_unit.code"
+    },
+    {
+     "section": "ห้อง",
+     "mode": "E",
+     "label": "ประเภท",
+     "source": "room_unit.room_type_id"
+    },
+    {
+     "section": "ห้อง",
+     "mode": "E",
+     "label": "โซน",
+     "source": "room_unit.zone"
+    },
+    {
+     "section": "ห้อง",
+     "mode": "E",
+     "label": "สถานะ",
+     "source": "room_unit.status"
+    },
+    {
+     "section": "ห้อง",
+     "mode": "E",
+     "label": "ลำดับ",
+     "source": "room_unit.sort_order"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึกประเภท",
+     "endpoints": "roomTypes.create / roomTypes.update"
+    },
+    {
+     "label": "บันทึกราคา",
+     "endpoints": "roomTypes.setRates"
+    },
+    {
+     "label": "บันทึกห้อง",
+     "endpoints": "roomUnits.upsert"
+    }
+   ]
+  },
+  {
+   "id": "C-40",
+   "app": "console",
+   "route": "/console/settings/daycare",
+   "title": "Daycare",
+   "roles": "O",
+   "load": [
+    "daycareTypes.list",
+    "sizeTiers.list"
+   ],
+   "fields": [
+    {
+     "section": "รอบ",
+     "mode": "E",
+     "label": "รอบ",
+     "source": "daycare_session_type.session"
+    },
+    {
+     "section": "รอบ",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "daycare_session_type.name_th"
+    },
+    {
+     "section": "รอบ",
+     "mode": "E",
+     "label": "เวลา",
+     "source": "daycare_session_type.starts_at"
+    },
+    {
+     "section": "รอบ",
+     "mode": "E",
+     "label": "รับได้ (ตัว)",
+     "source": "daycare_session_type.capacity"
+    },
+    {
+     "section": "รอบ",
+     "mode": "E",
+     "label": "ใช้งาน",
+     "source": "daycare_session_type.status"
+    },
+    {
+     "section": "รอบ",
+     "mode": "E",
+     "label": "ราคา",
+     "source": "daycare_rate.price_satang"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "daycareTypes.upsert"
+    }
+   ]
+  },
+  {
+   "id": "C-41",
+   "app": "console",
+   "route": "/console/settings/packages",
+   "title": "แพ็กเกจ",
+   "roles": "O",
+   "load": [
+    "packageTemplates.list",
+    "services.list"
+   ],
+   "fields": [
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "package_template.name_th"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "บริการ",
+     "source": "package_template.service_id"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "ขนาด",
+     "source": "package_template.size_tier_id"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "จำนวนครั้ง",
+     "source": "package_template.sessions_count"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "ราคา",
+     "source": "package_template.price_satang"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "R",
+     "label": "ตกครั้งละ",
+     "source": "calc: R-14 unitValue"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "อายุ (วัน)",
+     "source": "package_template.validity_days"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "ใช้ร่วมกัน",
+     "source": "package_template.share_scope"
+    },
+    {
+     "section": "แพ็กเกจ",
+     "mode": "E",
+     "label": "ขายอยู่",
+     "source": "package_template.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "packageTemplates.upsert"
+    }
+   ]
+  },
+  {
+   "id": "C-42",
+   "app": "console",
+   "route": "/console/settings/commissions",
+   "title": "ค่ามือ",
+   "roles": "O",
+   "load": [
+    "commissionRules.list",
+    "services.list",
+    "staffUsers.list"
+   ],
+   "fields": [
+    {
+     "section": "กติกา",
+     "mode": "E",
+     "label": "บริการ",
+     "source": "commission_rule.service_id"
+    },
+    {
+     "section": "กติกา",
+     "mode": "E",
+     "label": "ช่าง",
+     "source": "commission_rule.staff_user_id"
+    },
+    {
+     "section": "กติกา",
+     "mode": "E",
+     "label": "แบบ",
+     "source": "commission_rule.type"
+    },
+    {
+     "section": "กติกา",
+     "mode": "E",
+     "label": "ค่า",
+     "source": "commission_rule.value"
+    },
+    {
+     "section": "กติกา",
+     "mode": "R",
+     "label": "ลำดับที่ใช้",
+     "source": "calc: R-13 precedence"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "commissionRules.set"
+    }
+   ]
+  },
+  {
+   "id": "C-43",
+   "app": "console",
+   "route": "/console/settings/stations",
+   "title": "โต๊ะกรูม",
+   "roles": "O",
+   "load": [
+    "stations.list"
+   ],
+   "fields": [
+    {
+     "section": "โต๊ะ",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "groom_station.name"
+    },
+    {
+     "section": "โต๊ะ",
+     "mode": "E",
+     "label": "ลำดับ",
+     "source": "groom_station.sort_order"
+    },
+    {
+     "section": "โต๊ะ",
+     "mode": "E",
+     "label": "ใช้งาน",
+     "source": "groom_station.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "stations.upsert"
+    }
+   ]
+  },
+  {
+   "id": "C-44",
+   "app": "console",
+   "route": "/console/settings/import",
+   "title": "นำเข้าข้อมูล CSV",
+   "roles": "O",
+   "load": [
+    "imports.get"
+   ],
+   "fields": [
+    {
+     "section": "ขั้นที่ 1",
+     "mode": "W",
+     "label": "ชนิดข้อมูล",
+     "source": "import_job.kind"
+    },
+    {
+     "section": "ขั้นที่ 1",
+     "mode": "R",
+     "label": "ไฟล์ตัวอย่าง",
+     "source": "calc: template CSV"
+    },
+    {
+     "section": "ขั้นที่ 1",
+     "mode": "W",
+     "label": "ไฟล์",
+     "source": "import_job.file_id"
+    },
+    {
+     "section": "ขั้นที่ 2 ผลตรวจ",
+     "mode": "R",
+     "label": "ทั้งหมด/ถูก/ผิด",
+     "source": "import_job.total_rows"
+    },
+    {
+     "section": "ขั้นที่ 2 ผลตรวจ",
+     "mode": "R",
+     "label": "รายการผิด",
+     "source": "import_job.errors"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ตรวจไฟล์",
+     "endpoints": "imports.create"
+    },
+    {
+     "label": "นำเข้า",
+     "endpoints": "imports.commit"
+    }
+   ]
+  },
+  {
+   "id": "C-45",
+   "app": "console",
+   "route": "/console/account",
+   "title": "บัญชีของฉัน",
+   "roles": "OFS",
+   "load": [
+    "auth.me",
+    "staffMe.sessions"
+   ],
+   "fields": [
+    {
+     "section": "โปรไฟล์",
+     "mode": "R",
+     "label": "ชื่อ",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "โปรไฟล์",
+     "mode": "R",
+     "label": "อีเมล",
+     "source": "staff_user.email"
+    },
+    {
+     "section": "โปรไฟล์",
+     "mode": "R",
+     "label": "บทบาท",
+     "source": "staff_user.role"
+    },
+    {
+     "section": "อุปกรณ์",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "session.user_agent"
+    },
+    {
+     "section": "แจ้งเตือน",
+     "mode": "W",
+     "label": "เปิดแจ้งเตือนบนเครื่องนี้",
+     "source": "web_push_subscription.endpoint"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ออกจากระบบเครื่องอื่น",
+     "endpoints": "staffMe.revokeSession"
+    },
+    {
+     "label": "เปิดแจ้งเตือน",
+     "endpoints": "staffMe.pushSubscribe"
+    },
+    {
+     "label": "ปิดแจ้งเตือนเครื่องนี้",
+     "endpoints": "staffMe.pushUnsubscribe"
+    },
+    {
+     "label": "ผูก LINE",
+     "endpoints": "staffMe.linkLine"
+    }
+   ]
+  },
+  {
+   "id": "C-46",
+   "app": "console",
+   "route": "(ปุ่มลอยทุกหน้า)",
+   "title": "แจ้งปัญหา / ขอ feature",
+   "roles": "OFS",
+   "load": [],
+   "fields": [
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "เล่าปัญหา/สิ่งที่อยากได้",
+     "source": "feedback_report.message"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "ภาพหน้าจอ",
+     "source": "feedback_report.screenshot_file_id"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "R",
+     "label": "หน้าปัจจุบัน",
+     "source": "feedback_report.page_url"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "R",
+     "label": "เวอร์ชัน",
+     "source": "feedback_report.app_version"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ส่ง",
+     "endpoints": "feedback.create"
+    }
+   ]
+  },
+  {
+   "id": "S-01",
+   "app": "staff",
+   "route": "/staff",
+   "title": "คิวของฉันวันนี้",
+   "roles": "OFS",
+   "load": [
+    "groom.myQueue"
+   ],
+   "fields": [
+    {
+     "section": "การ์ดคิว",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "การ์ดคิว",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "การ์ดคิว",
+     "mode": "R",
+     "label": "ป้ายนิสัย",
+     "source": "pet_temperament_flag.flag"
+    },
+    {
+     "section": "การ์ดคิว",
+     "mode": "R",
+     "label": "บริการ",
+     "source": "groom_appointment_item.name_snapshot"
+    },
+    {
+     "section": "การ์ดคิว",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "groom_appointment.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "แตะการ์ด",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "S-02",
+   "app": "staff",
+   "route": "/staff/appointments/[appointmentId]",
+   "title": "Job card",
+   "roles": "OFS",
+   "load": [
+    "groom.jobCard"
+   ],
+   "fields": [
+    {
+     "section": "สำคัญ (บนสุด)",
+     "mode": "R",
+     "label": "ป้ายนิสัย",
+     "source": "pet_temperament_flag.flag"
+    },
+    {
+     "section": "สำคัญ (บนสุด)",
+     "mode": "R",
+     "label": "แพ้",
+     "source": "pet_shop_profile.allergies"
+    },
+    {
+     "section": "สำคัญ (บนสุด)",
+     "mode": "R",
+     "label": "ห้ามใช้แชมพู",
+     "source": "pet_shop_profile.shampoo_avoid"
+    },
+    {
+     "section": "สำคัญ (บนสุด)",
+     "mode": "R",
+     "label": "โรคประจำตัว",
+     "source": "pet_shop_profile.conditions"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "บริการ + add-on",
+     "source": "groom_appointment_item.name_snapshot"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "ทรงที่ชอบ",
+     "source": "pet_shop_profile.preferred_style"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "เบอร์ใบมีด",
+     "source": "pet_shop_profile.blade_no"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "แชมพูที่ใช้ได้",
+     "source": "pet_shop_profile.shampoo_ok"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "รูปทรงโปรด",
+     "source": "pet_shop_profile.favorite_style_photo_id"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "โน้ตร้าน",
+     "source": "pet_shop_profile.internal_note"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "โน้ตลูกค้า",
+     "source": "booking.customer_note"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "สภาพตอนรับ",
+     "source": "groom_appointment.condition_flags"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "น้ำหนักวันนี้",
+     "source": "groom_appointment.weight_grams_checkin"
+    },
+    {
+     "section": "งาน",
+     "mode": "R",
+     "label": "ครั้งก่อน",
+     "source": "calc: JobCard.lastVisit"
+    },
+    {
+     "section": "รูป",
+     "mode": "W",
+     "label": "รูปก่อนทำ",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "รูป",
+     "mode": "W",
+     "label": "รูปหลังทำ",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "ปิดงาน",
+     "mode": "W",
+     "label": "โน้ตถึงร้าน",
+     "source": "groom_appointment.staff_note"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เริ่มงาน",
+     "endpoints": "groom.start"
+    },
+    {
+     "label": "ถ่ายรูป",
+     "endpoints": "staff.uploadUrl → photos.add"
+    },
+    {
+     "label": "เสร็จงาน",
+     "endpoints": "groom.finish"
+    },
+    {
+     "label": "แจ้งลูกค้ามารับ",
+     "endpoints": "groom.notifyPickup"
+    }
+   ]
+  },
+  {
+   "id": "S-03",
+   "app": "staff",
+   "route": "/staff/report-cards/[reportCardId]",
+   "title": "Report card",
+   "roles": "OFS",
+   "load": [
+    "reportCards.get"
+   ],
+   "fields": [
+    {
+     "section": "ผลตรวจ (ปุ่มใหญ่แตะเลือก)",
+     "mode": "E",
+     "label": "ผิวหนัง",
+     "source": "report_card.skin"
+    },
+    {
+     "section": "ผลตรวจ (ปุ่มใหญ่แตะเลือก)",
+     "mode": "E",
+     "label": "หู",
+     "source": "report_card.ears"
+    },
+    {
+     "section": "ผลตรวจ (ปุ่มใหญ่แตะเลือก)",
+     "mode": "E",
+     "label": "เล็บ",
+     "source": "report_card.nails"
+    },
+    {
+     "section": "ผลตรวจ (ปุ่มใหญ่แตะเลือก)",
+     "mode": "E",
+     "label": "ฟัน",
+     "source": "report_card.teeth"
+    },
+    {
+     "section": "ผลตรวจ (ปุ่มใหญ่แตะเลือก)",
+     "mode": "E",
+     "label": "เห็บหมัด",
+     "source": "report_card.parasites"
+    },
+    {
+     "section": "ผลตรวจ (ปุ่มใหญ่แตะเลือก)",
+     "mode": "E",
+     "label": "ความร่วมมือ",
+     "source": "report_card.cooperation"
+    },
+    {
+     "section": "ข้อความ",
+     "mode": "E",
+     "label": "ถึงเจ้าของ",
+     "source": "report_card.staff_note"
+    },
+    {
+     "section": "ข้อความ",
+     "mode": "E",
+     "label": "คำแนะนำ",
+     "source": "report_card.recommendation"
+    },
+    {
+     "section": "พรีวิว",
+     "mode": "R",
+     "label": "รูปก่อน/หลัง",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "พรีวิว",
+     "mode": "R",
+     "label": "รอบถัดไป",
+     "source": "calc: R-17"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "reportCards.update"
+    },
+    {
+     "label": "ส่ง",
+     "endpoints": "reportCards.submit"
+    }
+   ]
+  },
+  {
+   "id": "S-04",
+   "app": "staff",
+   "route": "/staff/care",
+   "title": "งานดูแลวันนี้",
+   "roles": "OFS",
+   "load": [
+    "careTasks.list"
+   ],
+   "fields": [
+    {
+     "section": "ตามเวลา",
+     "mode": "R",
+     "label": "เวลา",
+     "source": "care_task.due_at"
+    },
+    {
+     "section": "ตามเวลา",
+     "mode": "R",
+     "label": "งาน",
+     "source": "care_task.title"
+    },
+    {
+     "section": "ตามเวลา",
+     "mode": "R",
+     "label": "น้อง/ห้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "ตามเวลา",
+     "mode": "W",
+     "label": "โน้ต",
+     "source": "care_task.note"
+    },
+    {
+     "section": "ตามเวลา",
+     "mode": "W",
+     "label": "รูป",
+     "source": "care_task.photo_file_id"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ทำแล้ว",
+     "endpoints": "careTasks.done"
+    },
+    {
+     "label": "ข้าม",
+     "endpoints": "careTasks.skip"
+    }
+   ]
+  },
+  {
+   "id": "S-05",
+   "app": "staff",
+   "route": "/staff/stays/[stayId]/update",
+   "title": "ส่งอัปเดตน้อง",
+   "roles": "OFS",
+   "load": [
+    "stays.get"
+   ],
+   "fields": [
+    {
+     "section": "อัปเดต",
+     "mode": "R",
+     "label": "น้อง/ห้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "อัปเดต",
+     "mode": "W",
+     "label": "รูป/วิดีโอ",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "อัปเดต",
+     "mode": "W",
+     "label": "ข้อความ",
+     "source": "pet_photo.caption"
+    },
+    {
+     "section": "อัปเดต",
+     "mode": "R",
+     "label": "ส่งวันนี้แล้ว",
+     "source": "calc: มี notification stay_update วันนี้"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ส่ง",
+     "endpoints": "stays.postUpdate"
+    }
+   ]
+  },
+  {
+   "id": "S-06",
+   "app": "staff",
+   "route": "/staff/me/commissions",
+   "title": "ค่ามือของฉัน",
+   "roles": "OFS",
+   "load": [
+    "staffMe.commissions"
+   ],
+   "fields": [
+    {
+     "section": "สรุป",
+     "mode": "F",
+     "label": "ช่วง",
+     "source": "calc: from/to"
+    },
+    {
+     "section": "สรุป",
+     "mode": "R",
+     "label": "รวม",
+     "source": "commission_entry.amount_satang"
+    },
+    {
+     "section": "สรุป",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "commission_entry.base_satang"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "S-07",
+   "app": "staff",
+   "route": "/staff/me",
+   "title": "ฉัน",
+   "roles": "OFS",
+   "load": [
+    "auth.me"
+   ],
+   "fields": [
+    {
+     "section": "ตั้งค่า",
+     "mode": "W",
+     "label": "แจ้งเตือน",
+     "source": "web_push_subscription.endpoint"
+    },
+    {
+     "section": "ตั้งค่า",
+     "mode": "R",
+     "label": "LINE",
+     "source": "calc: lineLinked"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เปิดแจ้งเตือน",
+     "endpoints": "staffMe.pushSubscribe"
+    },
+    {
+     "label": "ปิดแจ้งเตือน",
+     "endpoints": "staffMe.pushUnsubscribe"
+    },
+    {
+     "label": "ผูก LINE",
+     "endpoints": "staffMe.linkLine"
+    },
+    {
+     "label": "ออกจากระบบ",
+     "endpoints": "auth.staffLogout"
+    }
+   ]
+  },
+  {
+   "id": "L-01",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/register",
+   "title": "ลงทะเบียน",
+   "roles": "customer",
+   "load": [
+    "liff.session",
+    "liff.shop"
+   ],
+   "fields": [
+    {
+     "section": "ต้อนรับ",
+     "mode": "R",
+     "label": "โลโก้/ชื่อร้าน",
+     "source": "branch.name"
+    },
+    {
+     "section": "ต้อนรับ",
+     "mode": "R",
+     "label": "รูป/ชื่อ LINE",
+     "source": "line_identity.display_name"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "W",
+     "label": "ชื่อ",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "W",
+     "label": "นามสกุล",
+     "source": "owner_profile.last_name"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "W",
+     "label": "ชื่อเล่น",
+     "source": "owner_profile.nickname"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "W",
+     "label": "เบอร์โทร",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "ความยินยอม",
+     "mode": "W",
+     "label": "ยอมรับนโยบายความเป็นส่วนตัว",
+     "source": "consent_record.accepted"
+    },
+    {
+     "section": "ความยินยอม",
+     "mode": "W",
+     "label": "ยอมรับเงื่อนไขการใช้บริการ",
+     "source": "consent_record.accepted"
+    },
+    {
+     "section": "ความยินยอม",
+     "mode": "W",
+     "label": "ยินยอมให้ร้านใช้รูปน้อง",
+     "source": "customer.photo_consent"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เริ่มใช้งาน",
+     "endpoints": "liff.register"
+    }
+   ]
+  },
+  {
+   "id": "L-02",
+   "app": "liff",
+   "route": "/liff/[branchSlug]",
+   "title": "หน้าแรก",
+   "roles": "customer",
+   "load": [
+    "liff.shop",
+    "liff.bookings"
+   ],
+   "fields": [
+    {
+     "section": "ร้าน",
+     "mode": "R",
+     "label": "ชื่อร้าน",
+     "source": "branch.name"
+    },
+    {
+     "section": "ร้าน",
+     "mode": "R",
+     "label": "เวลาเปิดวันนี้",
+     "source": "branch_hours.opens_at"
+    },
+    {
+     "section": "นัดถัดไป",
+     "mode": "R",
+     "label": "การ์ด",
+     "source": "booking.first_service_at"
+    },
+    {
+     "section": "เมนู",
+     "mode": "R",
+     "label": "จองกรูม",
+     "source": "branch.module_grooming"
+    },
+    {
+     "section": "เมนู",
+     "mode": "R",
+     "label": "จองโรงแรม",
+     "source": "branch.module_hotel"
+    },
+    {
+     "section": "เมนู",
+     "mode": "R",
+     "label": "จอง Daycare",
+     "source": "branch.module_daycare"
+    },
+    {
+     "section": "เมนู",
+     "mode": "R",
+     "label": "นัดของฉัน / น้องของฉัน / แพ็กเกจ / โปรไฟล์",
+     "source": "calc: links"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "L-03",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/pets | /liff/[branchSlug]/pets/new | /liff/[branchSlug]/pets/[petId]",
+   "title": "น้องของฉัน",
+   "roles": "customer",
+   "load": [
+    "liff.pets"
+   ],
+   "fields": [
+    {
+     "section": "รายการ",
+     "mode": "R",
+     "label": "การ์ดน้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "รูป",
+     "source": "pet.profile_file_id"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "pet.name"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "ชนิด",
+     "source": "pet.species"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "พันธุ์",
+     "source": "pet.breed"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "เพศ",
+     "source": "pet.sex"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "วันเกิด",
+     "source": "pet.birth_date"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "อายุโดยประมาณ",
+     "source": "pet.age_estimate_months"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "ทำหมัน",
+     "source": "pet.neutered"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "E",
+     "label": "ประเภทขน",
+     "source": "pet.coat_type"
+    },
+    {
+     "section": "ฟอร์มน้อง",
+     "mode": "W",
+     "label": "น้ำหนักล่าสุด (กก.)",
+     "source": "pet_weight.weight_grams"
+    },
+    {
+     "section": "โน้ตจากร้าน",
+     "mode": "R",
+     "label": "โน้ต",
+     "source": "pet_shop_profile.shared_note"
+    },
+    {
+     "section": "วัคซีน",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "pet_vaccination.vaccine_code"
+    },
+    {
+     "section": "วัคซีน",
+     "mode": "W",
+     "label": "เพิ่ม: วัคซีน",
+     "source": "pet_vaccination.vaccine_code"
+    },
+    {
+     "section": "วัคซีน",
+     "mode": "W",
+     "label": "หมดอายุ",
+     "source": "pet_vaccination.expires_on"
+    },
+    {
+     "section": "วัคซีน",
+     "mode": "W",
+     "label": "รูปสมุดวัคซีน",
+     "source": "pet_vaccination.proof_file_id"
+    },
+    {
+     "section": "รูป",
+     "mode": "R",
+     "label": "รูปก่อน-หลังจากร้าน",
+     "source": "pet_photo.file_id"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "liff.createPet / liff.updatePet"
+    },
+    {
+     "label": "ส่งวัคซีน",
+     "endpoints": "customer.uploadUrl → liff.addVaccination"
+    }
+   ]
+  },
+  {
+   "id": "L-04",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/book/grooming",
+   "title": "จองกรูม",
+   "roles": "customer",
+   "load": [
+    "liff.shop",
+    "liff.pets",
+    "liff.groomSlots",
+    "liff.quote"
+   ],
+   "fields": [
+    {
+     "section": "1. น้อง",
+     "mode": "W",
+     "label": "เลือกน้อง",
+     "source": "groom_appointment.pet_id"
+    },
+    {
+     "section": "1. น้อง",
+     "mode": "W",
+     "label": "ขนาด (ถ้าไม่รู้น้ำหนัก)",
+     "source": "groom_appointment.size_tier_id"
+    },
+    {
+     "section": "2. บริการ",
+     "mode": "W",
+     "label": "บริการหลัก",
+     "source": "groom_appointment_item.service_id"
+    },
+    {
+     "section": "2. บริการ",
+     "mode": "W",
+     "label": "Add-on",
+     "source": "groom_appointment_item.service_id"
+    },
+    {
+     "section": "3. วันเวลา",
+     "mode": "W",
+     "label": "วันที่",
+     "source": "calc: date"
+    },
+    {
+     "section": "3. วันเวลา",
+     "mode": "W",
+     "label": "ช่าง",
+     "source": "groom_appointment.groomer_id"
+    },
+    {
+     "section": "3. วันเวลา",
+     "mode": "W",
+     "label": "เวลา",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "4. ยืนยัน",
+     "mode": "R",
+     "label": "สรุป",
+     "source": "calc: Quote"
+    },
+    {
+     "section": "4. ยืนยัน",
+     "mode": "R",
+     "label": "มัดจำ",
+     "source": "calc: R-06"
+    },
+    {
+     "section": "4. ยืนยัน",
+     "mode": "R",
+     "label": "นโยบายยกเลิก",
+     "source": "branch_policy.policy_text"
+    },
+    {
+     "section": "4. ยืนยัน",
+     "mode": "W",
+     "label": "โน้ตถึงร้าน",
+     "source": "booking.customer_note"
+    },
+    {
+     "section": "4. ยืนยัน",
+     "mode": "W",
+     "label": "ยอมรับนโยบาย",
+     "source": "calc: acceptedPolicy"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ยืนยันการจอง",
+     "endpoints": "liff.createBooking"
+    }
+   ]
+  },
+  {
+   "id": "L-05",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/book/hotel",
+   "title": "จองโรงแรม",
+   "roles": "customer",
+   "load": [
+    "liff.pets",
+    "liff.hotelAvailability",
+    "liff.quote"
+   ],
+   "fields": [
+    {
+     "section": "1. น้องและวันที่",
+     "mode": "W",
+     "label": "น้อง",
+     "source": "stay.pet_id"
+    },
+    {
+     "section": "1. น้องและวันที่",
+     "mode": "W",
+     "label": "วันเข้า–ออก",
+     "source": "stay.check_in_date"
+    },
+    {
+     "section": "1. น้องและวันที่",
+     "mode": "W",
+     "label": "เวลามาส่ง/รับ",
+     "source": "stay.expected_check_in_time"
+    },
+    {
+     "section": "1. น้องและวันที่",
+     "mode": "W",
+     "label": "น้องติดสัด",
+     "source": "stay.in_heat"
+    },
+    {
+     "section": "2. ห้อง",
+     "mode": "R",
+     "label": "ประเภทห้อง",
+     "source": "room_type.name_th"
+    },
+    {
+     "section": "2. ห้อง",
+     "mode": "R",
+     "label": "ไม่รับน้องตัวนี้",
+     "source": "calc: R-12 reasons"
+    },
+    {
+     "section": "2. ห้อง",
+     "mode": "W",
+     "label": "เลือก",
+     "source": "stay.room_type_id"
+    },
+    {
+     "section": "3. เพิ่มเติม",
+     "mode": "W",
+     "label": "Add-on",
+     "source": "stay_addon.service_id"
+    },
+    {
+     "section": "3. เพิ่มเติม",
+     "mode": "W",
+     "label": "อาบน้ำก่อนกลับบ้าน",
+     "source": "stay.bundle_appointment_id"
+    },
+    {
+     "section": "4. วัคซีน",
+     "mode": "R",
+     "label": "ผลตรวจ",
+     "source": "calc: R-11"
+    },
+    {
+     "section": "5. ยืนยัน",
+     "mode": "R",
+     "label": "สรุป",
+     "source": "calc: Quote"
+    },
+    {
+     "section": "5. ยืนยัน",
+     "mode": "R",
+     "label": "มัดจำ",
+     "source": "calc: R-06"
+    },
+    {
+     "section": "5. ยืนยัน",
+     "mode": "R",
+     "label": "นโยบาย",
+     "source": "branch_policy.policy_text"
+    },
+    {
+     "section": "5. ยืนยัน",
+     "mode": "W",
+     "label": "ยอมรับนโยบาย",
+     "source": "calc: acceptedPolicy"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ยืนยัน",
+     "endpoints": "liff.createBooking"
+    }
+   ]
+  },
+  {
+   "id": "L-06",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/book/daycare",
+   "title": "จอง Daycare",
+   "roles": "customer",
+   "load": [
+    "liff.pets",
+    "liff.daycareAvailability",
+    "liff.quote"
+   ],
+   "fields": [
+    {
+     "section": "เลือก",
+     "mode": "W",
+     "label": "น้อง",
+     "source": "daycare_visit.pet_id"
+    },
+    {
+     "section": "เลือก",
+     "mode": "W",
+     "label": "วันที่",
+     "source": "daycare_visit.visit_date"
+    },
+    {
+     "section": "เลือก",
+     "mode": "W",
+     "label": "รอบ",
+     "source": "daycare_visit.session_type_id"
+    },
+    {
+     "section": "เลือก",
+     "mode": "R",
+     "label": "วัคซีน",
+     "source": "calc: R-11"
+    },
+    {
+     "section": "ยืนยัน",
+     "mode": "R",
+     "label": "สรุป",
+     "source": "calc: Quote"
+    },
+    {
+     "section": "ยืนยัน",
+     "mode": "W",
+     "label": "ยอมรับนโยบาย",
+     "source": "calc: acceptedPolicy"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ยืนยัน",
+     "endpoints": "liff.createBooking"
+    }
+   ]
+  },
+  {
+   "id": "L-07",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/bookings/[bookingId]/pay",
+   "title": "จ่ายมัดจำ",
+   "roles": "customer",
+   "load": [
+    "liff.booking"
+   ],
+   "fields": [
+    {
+     "section": "QR",
+     "mode": "R",
+     "label": "ยอดที่ต้องโอน",
+     "source": "booking.deposit_required_satang"
+    },
+    {
+     "section": "QR",
+     "mode": "R",
+     "label": "QR PromptPay",
+     "source": "calc: R-30"
+    },
+    {
+     "section": "QR",
+     "mode": "R",
+     "label": "ชื่อบัญชี",
+     "source": "branch.promptpay_account_name"
+    },
+    {
+     "section": "QR",
+     "mode": "R",
+     "label": "เหลือเวลา",
+     "source": "booking.hold_expires_at"
+    },
+    {
+     "section": "ส่งสลิป",
+     "mode": "W",
+     "label": "รูปสลิป",
+     "source": "payment_slip.file_id"
+    },
+    {
+     "section": "ส่งสลิป",
+     "mode": "W",
+     "label": "QR บนสลิป",
+     "source": "payment_slip.qr_payload"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ส่งสลิป",
+     "endpoints": "customer.uploadUrl → liff.uploadSlip"
+    }
+   ]
+  },
+  {
+   "id": "L-08",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/bookings",
+   "title": "นัดของฉัน",
+   "roles": "customer",
+   "load": [
+    "liff.bookings"
+   ],
+   "fields": [
+    {
+     "section": "แท็บ",
+     "mode": "F",
+     "label": "กำลังจะมา/ที่ผ่านมา",
+     "source": "calc: scope"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "วันเวลา",
+     "source": "booking.first_service_at"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "บริการ",
+     "source": "calc: summary"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "booking.status"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "มัดจำ",
+     "source": "booking.deposit_status"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "เลขใบจอง",
+     "source": "booking.booking_no"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "L-09",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/bookings/[bookingId]",
+   "title": "รายละเอียดนัด",
+   "roles": "customer",
+   "load": [
+    "liff.booking"
+   ],
+   "fields": [
+    {
+     "section": "รายละเอียด",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "booking.status"
+    },
+    {
+     "section": "รายละเอียด",
+     "mode": "R",
+     "label": "เลขใบจอง",
+     "source": "booking.booking_no"
+    },
+    {
+     "section": "รายละเอียด",
+     "mode": "R",
+     "label": "กรูม",
+     "source": "groom_appointment.starts_at"
+    },
+    {
+     "section": "รายละเอียด",
+     "mode": "R",
+     "label": "โรงแรม",
+     "source": "stay.check_in_date"
+    },
+    {
+     "section": "รายละเอียด",
+     "mode": "R",
+     "label": "Daycare",
+     "source": "daycare_visit.visit_date"
+    },
+    {
+     "section": "รายละเอียด",
+     "mode": "R",
+     "label": "ยอดประเมิน",
+     "source": "booking.estimated_total_satang"
+    },
+    {
+     "section": "รายละเอียด",
+     "mode": "R",
+     "label": "มัดจำ",
+     "source": "booking.deposit_verified_satang"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "R",
+     "label": "ผลถ้ายกเลิกตอนนี้",
+     "source": "calc: R-07 cancelPreview"
+    },
+    {
+     "section": "ยกเลิก",
+     "mode": "W",
+     "label": "รับเงินคืนเป็น",
+     "source": "calc: customerChoice"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เพิ่มลงปฏิทิน",
+     "endpoints": "liff.ics"
+    },
+    {
+     "label": "นำทาง",
+     "endpoints": "—"
+    },
+    {
+     "label": "เลื่อนนัด",
+     "endpoints": "liff.groomSlots → liff.reschedule"
+    },
+    {
+     "label": "ยกเลิก",
+     "endpoints": "liff.cancel"
+    },
+    {
+     "label": "จ่ายมัดจำ",
+     "endpoints": "—"
+    },
+    {
+     "label": "โทรหาร้าน",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "L-10",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/stays/[stayId]",
+   "title": "อัปเดตน้องระหว่างพัก",
+   "roles": "customer",
+   "load": [
+    "liff.stayUpdates"
+   ],
+   "fields": [
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "หัว",
+     "mode": "R",
+     "label": "ช่วงพัก",
+     "source": "stay.check_in_date"
+    },
+    {
+     "section": "ฟีด",
+     "mode": "R",
+     "label": "รูป/วิดีโอ",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "ฟีด",
+     "mode": "R",
+     "label": "งานที่ทำแล้ววันนี้",
+     "source": "care_task.title"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "L-11",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/report-cards/[reportCardId]",
+   "title": "Report card",
+   "roles": "customer",
+   "load": [
+    "liff.reportCard"
+   ],
+   "fields": [
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "รูปก่อน/หลัง",
+     "source": "pet_photo.file_id"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "บริการที่ทำ",
+     "source": "groom_appointment_item.name_snapshot"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "ผลตรวจ",
+     "source": "report_card.skin"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "ความร่วมมือ",
+     "source": "report_card.cooperation"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "ข้อความจากช่าง",
+     "source": "report_card.staff_note"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "คำแนะนำ",
+     "source": "report_card.recommendation"
+    },
+    {
+     "section": "ผล",
+     "mode": "R",
+     "label": "รอบถัดไป",
+     "source": "calc: R-17"
+    },
+    {
+     "section": "ให้คะแนน",
+     "mode": "E",
+     "label": "ความพอใจ",
+     "source": "report_card.customer_rating"
+    },
+    {
+     "section": "ให้คะแนน",
+     "mode": "E",
+     "label": "ข้อความถึงร้าน",
+     "source": "report_card.customer_feedback"
+    },
+    {
+     "section": "รีวิว",
+     "mode": "R",
+     "label": "รีวิวบน Google",
+     "source": "branch_policy.google_review_url"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ส่งคะแนน",
+     "endpoints": "liff.rate"
+    },
+    {
+     "label": "รีวิวบน Google",
+     "endpoints": "liff.reviewClick"
+    },
+    {
+     "label": "จองรอบถัดไป",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "L-12",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/packages",
+   "title": "แพ็กเกจของฉัน",
+   "roles": "customer",
+   "load": [
+    "liff.packages"
+   ],
+   "fields": [
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "แพ็กเกจ",
+     "source": "package_template.name_th"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "น้อง",
+     "source": "pet.name"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "คงเหลือ",
+     "source": "calc: sessions_total − sessions_used"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "หมดอายุ",
+     "source": "customer_package.expires_at"
+    },
+    {
+     "section": "การ์ด",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "customer_package.status"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "L-13",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/receipts/[billId]",
+   "title": "ใบเสร็จ",
+   "roles": "customer",
+   "load": [
+    "liff.receipt"
+   ],
+   "fields": [
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ร้าน",
+     "source": "branch.name"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "เลขที่/วันที่",
+     "source": "bill.receipt_no"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "รายการ",
+     "source": "bill_line.description"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ส่วนลด",
+     "source": "bill.bill_discount_satang"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ยอดสุทธิ",
+     "source": "bill.total_satang"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "ชำระโดย",
+     "source": "payment.method"
+    },
+    {
+     "section": "ใบเสร็จ",
+     "mode": "R",
+     "label": "แพ็กเกจคงเหลือ",
+     "source": "customer_package.sessions_used"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึกรูป",
+     "endpoints": "—"
+    }
+   ]
+  },
+  {
+   "id": "L-14",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/pay/[billId]",
+   "title": "จ่ายยอดคงเหลือ",
+   "roles": "customer",
+   "load": [
+    "liff.payPage"
+   ],
+   "fields": [
+    {
+     "section": "QR",
+     "mode": "R",
+     "label": "ยอดค้าง",
+     "source": "calc: bill.total_satang − bill.paid_satang"
+    },
+    {
+     "section": "QR",
+     "mode": "R",
+     "label": "QR",
+     "source": "calc: R-30"
+    },
+    {
+     "section": "QR",
+     "mode": "R",
+     "label": "ชื่อบัญชี",
+     "source": "branch.promptpay_account_name"
+    },
+    {
+     "section": "สลิป",
+     "mode": "W",
+     "label": "รูปสลิป",
+     "source": "payment_slip.file_id"
+    },
+    {
+     "section": "สลิป",
+     "mode": "W",
+     "label": "QR บนสลิป",
+     "source": "payment_slip.qr_payload"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ส่งสลิป",
+     "endpoints": "liff.payUploadSlip"
+    }
+   ]
+  },
+  {
+   "id": "L-15",
+   "app": "liff",
+   "route": "/liff/[branchSlug]/me",
+   "title": "โปรไฟล์ของฉัน",
+   "roles": "customer",
+   "load": [
+    "liff.me"
+   ],
+   "fields": [
+    {
+     "section": "ข้อมูล",
+     "mode": "E",
+     "label": "ชื่อ",
+     "source": "owner_profile.first_name"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "E",
+     "label": "นามสกุล",
+     "source": "owner_profile.last_name"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "E",
+     "label": "ชื่อเล่น",
+     "source": "owner_profile.nickname"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "E",
+     "label": "เบอร์โทร",
+     "source": "owner_profile.phone_e164"
+    },
+    {
+     "section": "ข้อมูล",
+     "mode": "E",
+     "label": "อีเมล",
+     "source": "owner_profile.email"
+    },
+    {
+     "section": "เครดิต",
+     "mode": "R",
+     "label": "เครดิตคงเหลือ",
+     "source": "customer.credit_balance_satang"
+    },
+    {
+     "section": "ความยินยอม",
+     "mode": "E",
+     "label": "ให้ร้านใช้รูปน้อง",
+     "source": "customer.photo_consent"
+    },
+    {
+     "section": "สิทธิ์ของฉัน (PDPA)",
+     "mode": "W",
+     "label": "ขอสำเนาข้อมูล / ขอลบข้อมูล",
+     "source": "data_request.type"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "liff.updateMe"
+    },
+    {
+     "label": "ส่งคำขอ",
+     "endpoints": "liff.dataRequest"
+    }
+   ]
+  },
+  {
+   "id": "AD-01",
+   "app": "admin",
+   "route": "/admin/login",
+   "title": "Admin login",
+   "roles": "admin",
+   "load": [],
+   "fields": [
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "อีเมล",
+     "source": "platform_admin.email"
+    },
+    {
+     "section": "ฟอร์ม",
+     "mode": "W",
+     "label": "รหัสผ่าน",
+     "source": "platform_admin.password_hash"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เข้าสู่ระบบ",
+     "endpoints": "admin.login"
+    }
+   ]
+  },
+  {
+   "id": "AD-02",
+   "app": "admin",
+   "route": "/admin/organizations",
+   "title": "ร้านทั้งหมด",
+   "roles": "admin",
+   "load": [
+    "admin.orgs"
+   ],
+   "fields": [
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ร้าน",
+     "source": "organization.name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "slug",
+     "source": "organization.slug"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "organization.status"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "เจ้าของ",
+     "source": "staff_user.email"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "LINE",
+     "source": "line_channel.status"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ใช้งานล่าสุด",
+     "source": "calc: lastActivityAt"
+    },
+    {
+     "section": "สร้างร้าน",
+     "mode": "W",
+     "label": "ชื่อธุรกิจ",
+     "source": "organization.name"
+    },
+    {
+     "section": "สร้างร้าน",
+     "mode": "W",
+     "label": "slug",
+     "source": "organization.slug"
+    },
+    {
+     "section": "สร้างร้าน",
+     "mode": "W",
+     "label": "ชื่อสาขา",
+     "source": "branch.name"
+    },
+    {
+     "section": "สร้างร้าน",
+     "mode": "W",
+     "label": "ลิงก์จอง",
+     "source": "branch.booking_slug"
+    },
+    {
+     "section": "สร้างร้าน",
+     "mode": "W",
+     "label": "อีเมลเจ้าของ",
+     "source": "staff_user.email"
+    },
+    {
+     "section": "สร้างร้าน",
+     "mode": "W",
+     "label": "ชื่อเจ้าของ",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "สร้างร้าน",
+     "mode": "W",
+     "label": "โมดูล",
+     "source": "branch.module_grooming"
+    }
+   ],
+   "actions": [
+    {
+     "label": "สร้าง",
+     "endpoints": "admin.createOrg"
+    }
+   ]
+  },
+  {
+   "id": "AD-03",
+   "app": "admin",
+   "route": "/admin/organizations/[orgId]",
+   "title": "ร้าน (admin)",
+   "roles": "admin",
+   "load": [
+    "admin.orgs"
+   ],
+   "fields": [
+    {
+     "section": "สถานะ",
+     "mode": "E",
+     "label": "สถานะร้าน",
+     "source": "organization.status"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "E",
+     "label": "Provider ID",
+     "source": "line_channel.provider_id"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "E",
+     "label": "Messaging channel ID",
+     "source": "line_channel.messaging_channel_id"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "W",
+     "label": "Channel secret",
+     "source": "line_channel.channel_secret_enc"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "W",
+     "label": "Channel access token",
+     "source": "line_channel.channel_access_token_enc"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "E",
+     "label": "LINE Login channel ID",
+     "source": "line_channel.login_channel_id"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "E",
+     "label": "LIFF ID",
+     "source": "line_channel.liff_id"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "E",
+     "label": "Basic ID",
+     "source": "line_channel.bot_basic_id"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "E",
+     "label": "โควตา push/เดือน",
+     "source": "line_channel.monthly_push_quota"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "R",
+     "label": "Webhook URL",
+     "source": "calc: /api/webhooks/line/{messagingChannelId}"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "R",
+     "label": "ตรวจล่าสุด",
+     "source": "line_channel.webhook_verified_at"
+    },
+    {
+     "section": "LINE OA (ตาม ADR-001)",
+     "mode": "R",
+     "label": "สถานะการเชื่อม",
+     "source": "line_channel.status"
+    },
+    {
+     "section": "โหมดช่วยเหลือ",
+     "mode": "W",
+     "label": "เหตุผล",
+     "source": "support_access_log.reason"
+    },
+    {
+     "section": "โหมดช่วยเหลือ",
+     "mode": "W",
+     "label": "อ้างอิง",
+     "source": "support_access_log.ticket_ref"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึกสถานะ",
+     "endpoints": "admin.updateOrg"
+    },
+    {
+     "label": "บันทึก LINE",
+     "endpoints": "admin.setLineChannel"
+    },
+    {
+     "label": "ทดสอบ + ตั้ง webhook",
+     "endpoints": "admin.verifyLine"
+    },
+    {
+     "label": "เข้าโหมดช่วยเหลือ",
+     "endpoints": "admin.supportStart"
+    },
+    {
+     "label": "จบโหมดช่วยเหลือ",
+     "endpoints": "admin.supportEnd"
+    }
+   ]
+  },
+  {
+   "id": "AD-04",
+   "app": "admin",
+   "route": "/admin/feedback",
+   "title": "Feedback",
+   "roles": "admin",
+   "load": [
+    "admin.feedback"
+   ],
+   "fields": [
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ร้าน",
+     "source": "organization.name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ผู้แจ้ง",
+     "source": "staff_user.display_name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ข้อความ",
+     "source": "feedback_report.message"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "หน้า",
+     "source": "feedback_report.page_url"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ภาพ",
+     "source": "feedback_report.screenshot_file_id"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "E",
+     "label": "สถานะ",
+     "source": "feedback_report.status"
+    }
+   ],
+   "actions": [
+    {
+     "label": "เปลี่ยนสถานะ",
+     "endpoints": "admin.updateFeedback"
+    }
+   ]
+  },
+  {
+   "id": "AD-05",
+   "app": "admin",
+   "route": "/admin/data-requests",
+   "title": "คำขอ PDPA",
+   "roles": "admin",
+   "load": [
+    "admin.dataRequests"
+   ],
+   "fields": [
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ร้าน",
+     "source": "organization.name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ประเภท",
+     "source": "data_request.type"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "สถานะ",
+     "source": "data_request.status"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ขอเมื่อ",
+     "source": "data_request.created_at"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "W",
+     "label": "บันทึก",
+     "source": "data_request.note"
+    }
+   ],
+   "actions": [
+    {
+     "label": "ดำเนินการ",
+     "endpoints": "admin.resolveDataRequest"
+    }
+   ]
+  },
+  {
+   "id": "AD-06",
+   "app": "admin",
+   "route": "/admin/analytics",
+   "title": "Analytics นำร่อง",
+   "roles": "admin",
+   "load": [
+    "admin.analytics"
+   ],
+   "fields": [
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "ร้าน",
+     "source": "organization.name"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "วันที่ใช้งานใน 7 วัน",
+     "source": "calc: activeDays7"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "จองออนไลน์ %",
+     "source": "calc: onlineShare"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "No-show %",
+     "source": "calc: noShowRate"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "Push ที่ใช้",
+     "source": "calc: pushUsed"
+    },
+    {
+     "section": "ตาราง",
+     "mode": "R",
+     "label": "บิลที่ปิด",
+     "source": "calc: billsClosed"
+    }
+   ],
+   "actions": []
+  },
+  {
+   "id": "AD-07",
+   "app": "admin",
+   "route": "/admin/holidays",
+   "title": "วันหยุดราชการ",
+   "roles": "admin",
+   "load": [],
+   "fields": [
+    {
+     "section": "ปี",
+     "mode": "E",
+     "label": "วันที่",
+     "source": "public_holiday.holiday_date"
+    },
+    {
+     "section": "ปี",
+     "mode": "E",
+     "label": "ชื่อวันหยุด",
+     "source": "public_holiday.name_th"
+    }
+   ],
+   "actions": [
+    {
+     "label": "บันทึก",
+     "endpoints": "admin.holidays"
+    }
+   ]
+  }
+ ]
+}

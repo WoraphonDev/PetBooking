@@ -1,0 +1,1294 @@
+{
+  "rule": "R-04",
+  "export": "computeGroomSlots",
+  "module": "packages/domain/src/availability/groom-slots.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "any groomer, next day, online",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T03:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T04:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T04:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:00:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:30:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "specific groomer g-b",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "specific",
+          "groomerId": "g-b"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T03:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T04:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T04:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "same day online respects 120 min lead",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-05T02:20:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T04:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:00:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:30:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "closure 15:00-18:00 for grooming",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "endsAt": "2026-10-05T11:00:00.000Z",
+            "scope": "grooming"
+          }
+        ],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T03:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T04:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T04:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "hotel-only closure is ignored",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "endsAt": "2026-10-05T11:00:00.000Z",
+            "scope": "hotel"
+          }
+        ],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T03:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T04:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T04:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:00:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:30:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "single station shared by both groomers",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          },
+          {
+            "groomerId": "g-b",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "blockedUntil": "2026-10-05T07:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T04:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:30:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:00:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:30:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "branch closed",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": true,
+          "opensAt": null,
+          "closesAt": null
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [],
+        "reason": "closed"
+      }
+    },
+    {
+      "name": "specific groomer on time off",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": [
+              {
+                "startsAt": "2026-10-04T17:00:00.000Z",
+                "endsAt": "2026-10-05T17:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "specific",
+          "groomerId": "g-b"
+        }
+      },
+      "expected": {
+        "slots": [],
+        "reason": "no_capacity"
+      }
+    },
+    {
+      "name": "staff walk-in at 10:07 can take the 10:00 slot",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-05T03:07:00.000Z",
+        "channel": "staff",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T03:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T04:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T04:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:00:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T09:30:00.000Z",
+            "groomerId": "g-a",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "max 1 appointment per groomer",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": 1
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T03:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-2"
+          },
+          {
+            "startsAt": "2026-10-05T04:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T04:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T05:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T06:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T07:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:00:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          },
+          {
+            "startsAt": "2026-10-05T08:30:00.000Z",
+            "groomerId": "g-b",
+            "stationId": "st-1"
+          }
+        ],
+        "reason": "ok"
+      }
+    },
+    {
+      "name": "max per day reached",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-10-04T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": 1,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [],
+        "reason": "day_full"
+      }
+    },
+    {
+      "name": "beyond horizon",
+      "input": {
+        "date": "2026-10-05",
+        "timezone": "Asia/Bangkok",
+        "now": "2026-07-01T05:00:00.000Z",
+        "channel": "online",
+        "policy": {
+          "slotStepMinutes": 30,
+          "bufferMinutes": 15,
+          "bookingLeadMinutes": 120,
+          "bookingHorizonDays": 60,
+          "maxAppointmentsPerDay": null,
+          "maxAppointmentsPerGroomerDay": null
+        },
+        "branchHours": {
+          "isClosed": false,
+          "opensAt": "09:00",
+          "closesAt": "18:00"
+        },
+        "closures": [],
+        "stationIds": [
+          "st-1",
+          "st-2"
+        ],
+        "groomers": [
+          {
+            "id": "g-a",
+            "sortOrder": 1,
+            "workingHours": {
+              "startsAt": "09:00",
+              "endsAt": "18:00",
+              "breakStartsAt": "12:00",
+              "breakEndsAt": "13:00"
+            },
+            "timeOff": []
+          },
+          {
+            "id": "g-b",
+            "sortOrder": 2,
+            "workingHours": {
+              "startsAt": "10:00",
+              "endsAt": "17:00",
+              "breakStartsAt": null,
+              "breakEndsAt": null
+            },
+            "timeOff": []
+          }
+        ],
+        "appointments": [
+          {
+            "groomerId": "g-a",
+            "stationId": "st-1",
+            "startsAt": "2026-10-05T02:00:00.000Z",
+            "blockedUntil": "2026-10-05T03:45:00.000Z"
+          }
+        ],
+        "durationMinutes": 90,
+        "groomerPreference": {
+          "type": "any"
+        }
+      },
+      "expected": {
+        "slots": [],
+        "reason": "beyond_horizon"
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "rule": "R-25",
+  "export": "validateUpload",
+  "module": "packages/domain/src/files/upload-policy.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "photo ok",
+      "input": {
+        "kind": "after",
+        "mimeType": "image/webp",
+        "sizeBytes": 850000
+      },
+      "expected": {
+        "ok": true,
+        "error": null
+      }
+    },
+    {
+      "name": "photo too big",
+      "input": {
+        "kind": "after",
+        "mimeType": "image/jpeg",
+        "sizeBytes": 2500000
+      },
+      "expected": {
+        "ok": false,
+        "error": "UPLOAD_TOO_LARGE"
+      }
+    },
+    {
+      "name": "video on stay update",
+      "input": {
+        "kind": "stay_update",
+        "mimeType": "video/mp4",
+        "sizeBytes": 15000000
+      },
+      "expected": {
+        "ok": true,
+        "error": null
+      }
+    },
+    {
+      "name": "video not allowed for slip",
+      "input": {
+        "kind": "slip",
+        "mimeType": "video/mp4",
+        "sizeBytes": 1000000
+      },
+      "expected": {
+        "ok": false,
+        "error": "UPLOAD_TYPE_NOT_ALLOWED"
+      }
+    },
+    {
+      "name": "pdf vaccine",
+      "input": {
+        "kind": "vaccine_proof",
+        "mimeType": "application/pdf",
+        "sizeBytes": 3000000
+      },
+      "expected": {
+        "ok": true,
+        "error": null
+      }
+    },
+    {
+      "name": "unknown kind",
+      "input": {
+        "kind": "selfie",
+        "mimeType": "image/jpeg",
+        "sizeBytes": 1000
+      },
+      "expected": {
+        "ok": false,
+        "error": "UPLOAD_KIND_NOT_ALLOWED"
+      }
+    }
+  ]
+}

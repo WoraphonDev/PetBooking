@@ -1,0 +1,187 @@
+{
+  "rule": "R-03",
+  "export": "quoteBooking",
+  "module": "packages/domain/src/pricing/quote.ts",
+  "note": "Generated from the reference implementation. DO NOT EDIT — change requires human approval (label spec-change).",
+  "cases": [
+    {
+      "name": "two pets grooming",
+      "input": {
+        "bufferMinutes": 10,
+        "groom": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "items": [
+              {
+                "priceSatang": 45000,
+                "durationMinutes": 75
+              },
+              {
+                "priceSatang": 10000,
+                "durationMinutes": 10
+              }
+            ]
+          },
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "items": [
+              {
+                "priceSatang": 35000,
+                "durationMinutes": 60
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "groom": [
+          {
+            "servicesTotalSatang": 55000,
+            "durationMinutes": 85,
+            "endsAt": "2026-10-05T04:25:00.000Z",
+            "blockedUntil": "2026-10-05T04:35:00.000Z"
+          },
+          {
+            "servicesTotalSatang": 35000,
+            "durationMinutes": 60,
+            "endsAt": "2026-10-05T04:00:00.000Z",
+            "blockedUntil": "2026-10-05T04:10:00.000Z"
+          }
+        ],
+        "stays": [],
+        "daycareTotalSatang": 0,
+        "estimatedTotalSatang": 90000
+      }
+    },
+    {
+      "name": "stay 3 nights + per-day addon + one-off addon",
+      "input": {
+        "bufferMinutes": 10,
+        "stays": [
+          {
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-13",
+            "nightlyPriceSatang": 50000,
+            "addons": [
+              {
+                "unitPriceSatang": 5000,
+                "perDay": true
+              },
+              {
+                "unitPriceSatang": 30000,
+                "perDay": false
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "groom": [],
+        "stays": [
+          {
+            "nights": 3,
+            "roomTotalSatang": 150000,
+            "addons": [
+              {
+                "quantity": 3,
+                "totalSatang": 15000
+              },
+              {
+                "quantity": 1,
+                "totalSatang": 30000
+              }
+            ],
+            "addonsTotalSatang": 45000
+          }
+        ],
+        "daycareTotalSatang": 0,
+        "estimatedTotalSatang": 195000
+      }
+    },
+    {
+      "name": "stay + groom bundle + daycare",
+      "input": {
+        "bufferMinutes": 15,
+        "groom": [
+          {
+            "startsAt": "2026-10-13T04:00:00.000Z",
+            "items": [
+              {
+                "priceSatang": 45000,
+                "durationMinutes": 75
+              }
+            ]
+          }
+        ],
+        "stays": [
+          {
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-13",
+            "nightlyPriceSatang": 50000
+          }
+        ],
+        "daycare": [
+          {
+            "priceSatang": 40000
+          }
+        ]
+      },
+      "expected": {
+        "groom": [
+          {
+            "servicesTotalSatang": 45000,
+            "durationMinutes": 75,
+            "endsAt": "2026-10-13T05:15:00.000Z",
+            "blockedUntil": "2026-10-13T05:30:00.000Z"
+          }
+        ],
+        "stays": [
+          {
+            "nights": 3,
+            "roomTotalSatang": 150000,
+            "addons": [],
+            "addonsTotalSatang": 0
+          }
+        ],
+        "daycareTotalSatang": 40000,
+        "estimatedTotalSatang": 235000
+      }
+    },
+    {
+      "name": "zero duration rejected",
+      "input": {
+        "bufferMinutes": 10,
+        "groom": [
+          {
+            "startsAt": "2026-10-05T03:00:00.000Z",
+            "items": [
+              {
+                "priceSatang": 10000,
+                "durationMinutes": 0
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "error": "DURATION_ZERO"
+      }
+    },
+    {
+      "name": "same-day stay rejected",
+      "input": {
+        "bufferMinutes": 10,
+        "stays": [
+          {
+            "checkInDate": "2026-10-10",
+            "checkOutDate": "2026-10-10",
+            "nightlyPriceSatang": 50000
+          }
+        ]
+      },
+      "expected": {
+        "error": "INVALID_DATE_RANGE"
+      }
+    }
+  ]
+}
