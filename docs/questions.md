@@ -91,3 +91,11 @@
 - สิ่งที่พบใน spec: `07-notifications-jobs.md` §1 แถว `customer.booking_received`, `customer.ready_for_pickup`
 - ทางเลือกที่เป็นไปได้: A template ของ key นั้นประกอบบรรทัดเองจาก depositAmount/holdExpiresTime และ reportCardUrl (ระบุรูปแบบข้อความใน 07) / B เพิ่ม depositLine/reportCardLine เป็นตัวแปรที่ผู้เรียกจัดรูปแบบมาให้
 - คำตอบ: …
+
+## Q-0011 · T-0015 ต้องแก้ `pnpm-lock.yaml` แต่ไม่อยู่ใน allowed_paths ของการ์ด
+- สถานะ: spec-changed
+- Task: T-0015 · ผู้ถาม: agent (claude) · วันที่: 2026-10-02
+- คำถาม: ขั้นที่ 3 ของการ์ด (และคำตอบ Q-0002) ให้ `apps/web/src/lib/format.ts` re-export formatter จาก `@app/domain` แต่ `apps/web` ยังไม่มี dependency `@app/domain` — การเพิ่ม `"@app/domain": "workspace:*"` ใน `apps/web/package.json` ทำให้ `pnpm-lock.yaml` เปลี่ยน (importers ของ apps/web +3 บรรทัด) ซึ่งไม่อยู่ใน allowed_paths → `check-task-scope` จะ fail
+- สิ่งที่พบใน spec: `docs/tasks/T-0015.md` allowed_paths · `01-architecture.md` §2 (ทิศทาง dependency web → domain ผ่าน server แต่ Q-0002 ให้ web import formatter จาก domain ตรง)
+- ทางเลือกที่เป็นไปได้: A เพิ่ม `pnpm-lock.yaml` ใน allowed_paths ของ T-0015 (และการ์ด UI ที่จะเพิ่ม dependency) / B import ด้วย relative path ข้าม package (ไม่แนะนำ)
+- คำตอบ: มนุษย์เลือก A ในแชท session T-0015 (2026-10-02) — PR T-0015 commit การเปลี่ยน lockfile ไปแล้ว; การ์ดแก้แล้วใน spec-change PR #23 (INF-I18N allowed_paths += `pnpm-lock.yaml`)
