@@ -50,3 +50,27 @@
 - สิ่งที่พบใน spec: `04-business-rules.md#R-24` (อัลกอริทึมข้อ 5 + ตาราง vectors), `docs/spec/vectors/R-24.checkPasswordPolicy.json` (4 cases ไม่มีกรณียาวเกิน)
 - ทางเลือกที่เป็นไปได้: A `PASSWORD_TOO_LONG` / B ใช้ `PASSWORD_TOO_SHORT` ซ้ำ / C ยังไม่ตรวจ >128
 - คำตอบ: A (มนุษย์ตอบใน session T-0005) — `PASSWORD_TOO_LONG`; T-0005 implement แล้วพร้อม unit test · ต้องมี PR `spec-change` เพิ่มลงใน 04#R-24 (และ vector ถ้าต้องการ)
+
+## Q-0006 · CSRF (Origin ไม่ตรง APP_BASE_URL) ตอบ error code อะไร
+- สถานะ: open
+- Task: T-0007 · ผู้ถาม: agent (claude) · วันที่: 2026-10-01
+- คำถาม: 01 §4 ข้อ 5 กำหนดว่า method ≠ GET ต้องมี `Origin = APP_BASE_URL` แต่ไม่ระบุรหัส error เมื่อไม่ผ่าน และ 05 §1 ไม่มีรหัสเฉพาะ
+- สิ่งที่พบใน spec: `01-architecture.md` §4, §10 · `05-api.md` §1
+- ทางเลือกที่เป็นไปได้: A `FORBIDDEN` (403) — ที่ทำไว้ใน `packages/server/src/http/request.ts` / B เพิ่มรหัสใหม่ (เช่น `CSRF_FAILED`) ผ่าน spec-change
+- คำตอบ: …
+
+## Q-0007 · support session ("staff-like") ยืนยันตัวตนผ่าน withStaff อย่างไร
+- สถานะ: open
+- Task: T-0007 · ผู้ถาม: agent (claude) · วันที่: 2026-10-01
+- คำถาม: `admin.supportStart` สร้าง "session staff-like ที่ support_access_log_id มีค่า (60 นาที)" แต่ไม่ระบุ `session.subject_type`/`subject_id` (platform_admin ไม่ใช่ staff_user) และ role ที่ใช้กับ `requireRole` (ต้องอ่านหน้า owner-only ได้หรือไม่) — T-0007 รองรับเฉพาะ session `subject_type = staff` ที่มี `support_access_log_id` (→ `ctx.supportAccessLogId` + non-GET → `SUPPORT_READ_ONLY`)
+- สิ่งที่พบใน spec: `05-api.md#ep-admin.supportStart`, 05 §0 Support mode, `08-permissions.md` (platform admin ดูผ่าน support mode)
+- ทางเลือกที่เป็นไปได้: A session `subject_type = platform_admin` + `organization_id` + `support_access_log_id` ผ่าน cookie `sid` → withStaff ให้ actor `{type:"admin"}` + ถือเป็นสิทธิ์ owner แบบอ่านอย่างเดียว / B อื่น ๆ ตามที่ตัดสิน
+- คำตอบ: …
+
+## Q-0008 · ไม่มี endpoint ไหนระบุ HTTP 201
+- สถานะ: open
+- Task: T-0007 · ผู้ถาม: agent (claude) · วันที่: 2026-10-01
+- คำถาม: การ์ด T-0007 ข้อ 1 ระบุ status 200/201/204 แต่ 05 ไม่มี endpoint ใดระบุ 201 — wrappers ตอบ 204 เมื่อ service คืน `undefined` (endpoint ที่ response = `204`) และ 200 อย่างอื่นทั้งหมด; ต้องการ 201 สำหรับ POST ที่สร้างข้อมูลหรือไม่ (ถ้าใช่ endpoint ไหน)
+- สิ่งที่พบใน spec: `05-api.md` §0, §3 (`docs/spec/vectors/endpoints.json` response = DTO หรือ `"204"`)
+- ทางเลือกที่เป็นไปได้: A 200/204 ตามที่ทำไว้ / B เพิ่ม 201 ใน catalog แล้วให้ wrapper รับ option `status`
+- คำตอบ: …
