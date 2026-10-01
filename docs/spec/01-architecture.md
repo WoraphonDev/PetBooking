@@ -79,11 +79,11 @@ Request → route.ts → with{Staff|Customer|Admin|Public}(key, schemas, service
    2 org.status = suspended → FORBIDDEN (ยกเว้น admin)
    3 requireRole(ctx, key) จาก permissions.json            (→ FORBIDDEN)
    4 support mode + method ≠ GET → SUPPORT_READ_ONLY
-   5 CSRF: method ≠ GET ต้องมี Origin = APP_BASE_URL
+   5 CSRF: method ≠ GET ต้องมี Origin = APP_BASE_URL         (ไม่ตรง/ไม่มี → FORBIDDEN 403)
    6 rate limit (05 §0) → RATE_LIMITED
    7 zod parse params/query/body                              (→ VALIDATION_FAILED + details.fields)
    8 serviceFn(ctx, input) — เปิด transaction เอง (withTx)
-   9 JSON response / error JSON {error:{code,message,details}}
+   9 JSON response (200; 204 เมื่อ response ของ endpoint = 204 — ไม่มี 201) / error JSON {error:{code,message,details}}
 ```
 
 ```ts
@@ -102,6 +102,7 @@ type RequestContext = {
 - Cookie: `sid` staff (30 วัน sliding), `cid` customer (30 วัน), `aid` platform admin (12 ชม.) — HttpOnly, Secure, SameSite=Lax; token 32 bytes เก็บเป็น sha256 ใน `session.token_hash`
 - Customer: LIFF ส่ง ID token → `liff.session` verify กับ LINE (client_id = `line_channel.login_channel_id`) → หา `line_identity` → ออก `cid` ผูก branchSlug
 - Role staff เห็นข้อมูลลูกค้าแบบตัดข้อมูลติดต่อ (serializer ฝั่ง server — ไม่ใช่ซ่อนแค่ UI)
+- **Support mode** (`admin.supportStart`): สร้างแถว `session` ใหม่ `subject_type = platform_admin`, `subject_id = platform_admin.id`, `organization_id` = ร้านที่ช่วย, `branch_id` = สาขาแรกของร้าน, `support_access_log_id` มีค่า, หมดอายุ 60 นาที, ออก cookie **`sid`** → `withStaff` รับ session นี้ได้: `ctx.actor = {type: "admin", id: adminId, role: "owner"}` (อ่านได้ทุกหน้าเท่า owner), `ctx.supportAccessLogId` มีค่า และขั้นที่ 4 ปฏิเสธทุก method ที่ไม่ใช่ GET ด้วย `SUPPORT_READ_ONLY` ก่อนตรวจ role · `admin.supportEnd` หรือหมดเวลา → ลบ session นี้ · audit/event ที่เกิดใน support mode ใช้ `actor_type = platform_admin`
 
 ## §5 Testing strategy (สิ่งที่ "เสร็จ" แปลว่าอะไร)
 
