@@ -90,7 +90,7 @@ allowed_paths:
 
 | ID | งาน | ก่อน |
 |---|---|---|
-| H-01 | ตั้ง GitHub repo + branch protection + labels + ติดตั้ง Claude Code/Codex | ทุกอย่าง |
+| H-01 | ตั้ง GitHub repo (รวมไฟล์ซ่อน) + pre-push hook + labels + (ถ้ามี Pro) branch protection + ติดตั้ง Claude Code/Codex | ทุกอย่าง |
 | H-02 | ตัดสิน ADR-002/003/004 (hosting, email, storage) + สร้างบัญชี + ใส่ secrets | deploy, email, upload |
 | H-03 | SP-01 ทดลอง LINE provider → ADR-001 | งาน LINE ใน M3 |
 | H-05 | ร่าง Privacy Notice / Terms / DPA / ข้อความยินยอม (ให้ที่ปรึกษากฎหมายตรวจ) | M1 |
@@ -160,7 +160,7 @@ allowed_paths:
 
 ## 12. เริ่มพรุ่งนี้ได้เลย
 
-1. แตก zip → `git init` → push เป็น private repo (H-01) → ตั้ง branch protection ให้ต้องผ่าน `ci / verify`
+1. แตก zip → copy ด้วย `cp -R <kit>/. <repo>/` (รวมไฟล์ซ่อน `.github/` `.gitignore`) → `git config core.hooksPath scripts/hooks` → push เป็น private repo (H-01) → ถ้ามี GitHub Pro ตั้ง branch protection ให้ต้องผ่าน `ci / verify`
 2. ทำ H-02 และ H-03 คู่ขนาน
 3. เปิด `docs/tasks/README.md` → แจก M0 wave 2 (T-0001 web, T-0002 contracts, T-0003 db client, T-0005/T-0008/T-0009/T-0012/T-0014 domain rules) ให้ agent 3–5 ตัว
 4. ทุกเย็น: merge PR ที่เขียว + ตอบ `docs/questions.md`

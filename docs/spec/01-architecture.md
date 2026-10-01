@@ -170,4 +170,5 @@ type RequestContext = {
 | `pnpm --filter @app/db check:doc` | `pnpm verify` + CI | Drizzle schema ⇄ 02 ทุกตาราง/คอลัมน์/ชนิด/nullable/default |
 | `python3 tools/spec-src/check_drift.py` | CI | docs/spec + docs/tasks (ส่วนบนของการ์ด) ตรงกับที่ generate จาก tools/spec-src |
 | vectors harness | `pnpm --filter @app/domain test` | rule ที่ implement แล้วต้องผ่านทุกเคส |
-| CODEOWNERS + branch protection | GitHub | spec/CI/AGENTS/migration ต้องมีมนุษย์อนุมัติ |
+| `scripts/hooks/pre-push` (`git config core.hooksPath scripts/hooks`) | ทุก clone/worktree | ห้าม push ขึ้น `main` — ทำงานกับทั้ง Claude Code และ Codex แม้ใช้ GitHub Free |
+| CODEOWNERS + branch protection | GitHub (private repo ต้องใช้ Pro/Team) | spec/CI/AGENTS/migration ต้องมีมนุษย์อนุมัติ; ถ้ายังใช้ Free มนุษย์ merge เองเฉพาะ PR ที่ CI เขียว |

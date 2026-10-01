@@ -11,7 +11,7 @@ All product decisions are already written in `docs/spec/` (Thai prose, English i
 4. **Tests define done.** Run every command in the card's *Done when* section plus `pnpm verify`. All green, no `.skip`/`.only`/`todo` added by you, no weakened assertions, no edited vectors.
 5. **Data rules:** money = integer satang (`*_satang`, `*Satang`), never floats · instants = UTC `timestamptz` / ISO strings · local dates = `YYYY-MM-DD` strings (Drizzle `mode: "string"`) · current time only from `ctx.now` (server) or the `now` input (domain) · tenant queries only through `tenantDb(ctx)`.
 6. **No new dependencies** unless the card lists them under *Dependencies*. No paid services, no SaaS SDKs not listed in `docs/spec/01-architecture.md`.
-7. **Never:** run `drizzle-kit push`, edit a merged migration, commit `.env*`, log secrets/tokens/ID tokens, disable TLS checks, force-push, use `--no-verify`, bypass a failing check.
+7. **Never:** run `drizzle-kit push`, edit a merged migration, commit `.env*`, log secrets/tokens/ID tokens, disable TLS checks, force-push, use `--no-verify`, bypass a failing check, push to `main`, merge a PR, or change git hooks (`core.hooksPath`) — humans merge after CI is green.
 8. **Small PRs:** aim for < 400 changed lines (excluding generated migrations/snapshots). If the card turns out bigger, stop and propose a split in `docs/questions.md`.
 
 ## Commands

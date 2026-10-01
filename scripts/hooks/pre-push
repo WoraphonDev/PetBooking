@@ -1,0 +1,12 @@
+#!/bin/sh
+# Blocks pushes to main from every clone/worktree — needed because GitHub Free cannot enforce
+# branch protection on private repos. Enable once per clone: git config core.hooksPath scripts/hooks
+# Human override (after CI is green): ALLOW_MAIN_PUSH=1 git push origin main
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ] && [ "${ALLOW_MAIN_PUSH:-}" != "1" ]; then
+    echo "pre-push: pushing to main is blocked. Push your t-NNNN-* branch and open a PR instead." >&2
+    echo "          (humans only: ALLOW_MAIN_PUSH=1 git push origin main)" >&2
+    exit 1
+  fi
+done
+exit 0

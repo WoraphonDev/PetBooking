@@ -96,11 +96,13 @@ CONF = "node scripts/check-spec-conformance.mjs"
 # ================================================================= HUMAN tasks (owner = human)
 H = lambda key, title, ms, stories, steps, deps=None, notes=None: task(key, title, ms, "human", "-", stories, steps=steps, deps=deps, owner="human", notes=notes)
 H("H-REPO", "ตั้ง GitHub repo จาก starter kit + กฎ branch", "M0", "US-13-01", [
-  "สร้าง private repo แล้ว push starter kit ทั้งหมด (รวม pnpm-lock.yaml) เป็น commit แรกบน main",
-  "Branch protection บน main: require PR, require status check `ci / verify`, require 1 approval, require CODEOWNERS review, ห้าม force push",
+  "สร้าง private repo แล้ว push starter kit ทั้งหมด (รวม pnpm-lock.yaml) เป็น commit แรกบน main — **รวมไฟล์ที่ขึ้นต้นด้วยจุด** `.github/` `.gitignore` `.claude/` `.nvmrc` `.editorconfig` `.env.example`: copy ด้วย Terminal `cp -R <kit>/. <repo>/` (Finder ซ่อนไฟล์เหล่านี้ ถ้าลากใน Finder ให้กด ⌘⇧. ก่อน)",
+  "ตรวจ: `git ls-files .github .gitignore .nvmrc .claude` ต้องเจอครบ และ `git ls-files | grep -c node_modules` ต้องได้ 0",
+  "เปิด pre-push hook ในทุก clone: `git config core.hooksPath scripts/hooks` — บล็อกการ push ขึ้น main (มนุษย์ใช้ `ALLOW_MAIN_PUSH=1 git push origin main` เมื่อจำเป็น)",
+  "Branch protection บน main (require PR + status check `ci / verify` + ห้าม force push): repo private ต้องใช้ GitHub Pro/Team — ถ้ายังใช้ Free ให้ข้ามข้อนี้ได้ โดยใช้ pre-push hook แทน และมนุษย์ merge เฉพาะ PR ที่ CI เขียว",
   "สร้าง labels: `spec-change`, `infra-change`, `human-review`, `agent:claude`, `agent:codex`, `blocked`",
-  "แก้ `.github/CODEOWNERS` แทน @OWNER ด้วย GitHub handle ของ tech owner (PR label infra-change)",
-  "เปิด GitHub Actions; ทดสอบ PR ว่าง ๆ ให้ CI เขียว",
+  "แก้ `.github/CODEOWNERS` แทน @OWNER ด้วย GitHub handle ของ tech owner (ขอ review อัตโนมัติได้เฉพาะ Pro/Team หรือ repo public)",
+  "เปิด GitHub Actions (private repo แพ็ก Free ได้ 2,000 นาที/เดือน); ทดสอบ PR ว่าง ๆ ให้ CI เขียว",
   "ติดตั้ง Claude Code และ Codex ให้ใช้ repo นี้ (ทั้งคู่อ่าน AGENTS.md อัตโนมัติ)"])
 H("H-ADR-INFRA", "ตัดสินใจ ADR-002 hosting · ADR-003 email · ADR-004 storage + สร้างบัญชี/secret", "M0", "US-13-01, US-13-04", [
   "อ่าน docs/decisions/ADR-002..004 เลือกทางเลือก แล้วเปลี่ยนสถานะเป็น accepted (PR label spec-change)",

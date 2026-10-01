@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Edit(/docs/spec/**)",
+      "Edit(/AGENTS.md)",
+      "Edit(/CLAUDE.md)",
+      "Edit(/.github/**)",
+      "Edit(/scripts/**)",
+      "Edit(/tools/spec-src/**)",
+      "Bash(npx drizzle-kit push:*)",
+      "Bash(pnpm drizzle-kit push:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git push origin main:*)",
+      "Bash(git push -u origin main:*)",
+      "Bash(git push origin HEAD:main:*)",
+      "Bash(git push --no-verify:*)",
+      "Bash(ALLOW_MAIN_PUSH=1:*)",
+      "Bash(git config core.hooksPath:*)",
+      "Bash(gh pr merge:*)"
+    ]
+  }
+}

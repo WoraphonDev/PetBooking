@@ -6,6 +6,8 @@ Repo นี้ออกแบบให้ **AI coding agent (Claude Code / Codex
 ## เริ่มต้น (มนุษย์)
 1. อ่าน `docs/guide/AI_DEV_PLAN.md` (แผนทั้งหมด) และ `docs/tasks/README.md` (ลำดับการ์ด)
 2. ทำการ์ดมนุษย์ H-01…H-03 ก่อน (repo, ADR hosting/email/storage, LINE provider)
+   - copy kit เข้า repo ด้วย `cp -R <kit>/. <repo>/` เพื่อให้ไฟล์ซ่อน (`.github/`, `.gitignore`, `.claude/`, `.nvmrc`) ไปด้วย — Finder ไม่แสดงไฟล์เหล่านี้
+   - เปิด hook กัน push ขึ้น main: `git config core.hooksPath scripts/hooks`
 3. แจกการ์ด `T-xxxx` ให้ agent ทีละ wave — prompt ตัวอย่างอยู่ใน AI_DEV_PLAN §7
 
 ## สำหรับ agent
