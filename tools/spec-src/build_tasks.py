@@ -149,7 +149,7 @@ INF("INF-WEB", "Scaffold apps/web (Next.js 16 + Tailwind + shadcn) + /api/health
     ["`apps/web/package.json` name `@app/web`, scripts dev/build/start/typecheck/test; deps: next, react, react-dom, tailwindcss, @tailwindcss/postcss, next-intl, zod (เวอร์ชันล่าสุดที่ pin ตรงตัว)",
      "next.config.ts: `transpilePackages: ['@app/contracts','@app/domain','@app/server','@app/db']`, `output: 'standalone'`",
      "route groups ว่าง (auth) (public) (console) (staff) (liff) (admin) แต่ละอันมี layout.tsx เปล่า — **ห้ามสร้าง page.tsx ที่ไม่อยู่ใน 06**",
-     "ติดตั้ง shadcn/ui ลง src/components/ui: button, input, select, dialog, sheet, table, tabs, badge, toast(sonner), form, checkbox, radio-group, switch, textarea, calendar, popover, dropdown-menu, skeleton, card",
+     "ติดตั้ง shadcn/ui ลง src/components/ui: button, input, select, dialog, sheet, table, tabs, badge, toast(sonner), field (แทน form เดิม), checkbox, radio-group, switch, textarea, calendar, popover, dropdown-menu, skeleton, card",
      "ฟอนต์ไทย: next/font/google `Noto_Sans_Thai` + `IBM_Plex_Sans_Thai` fallback",
      "`app/api/health/route.ts` (endpoint `health`): GET → `{ ok: true, db: 'unknown', version: process.env.NEXT_PUBLIC_APP_VERSION }` (db check เพิ่มใน INF-MON)"],
     ["pnpm --filter @app/web build", CONF], deps=["H-REPO"], read=["docs/spec/01-architecture.md", "docs/spec/05-api.md#ep-health"])

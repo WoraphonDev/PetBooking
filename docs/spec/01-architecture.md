@@ -9,7 +9,7 @@
 |---|---|---|
 | Runtime | Node.js 22 LTS, pnpm 10 (workspaces) | `.nvmrc`, `packageManager` ใน root package.json |
 | Web | Next.js 16 (App Router, Route Handlers) + React 19 | `output: "standalone"` |
-| UI | Tailwind CSS v4 + shadcn/ui (copy ลง `apps/web/src/components/ui`) | ฟอนต์ Noto Sans Thai |
+| UI | Tailwind CSS v4 + shadcn/ui (copy ลง `apps/web/src/components/ui`) | ฟอนต์ Noto Sans Thai · dependency ที่ shadcn ต้องใช้ (radix-ui, class-variance-authority, clsx/tailwind-merge, lucide-react, sonner, next-themes, react-day-picker, tw-animate-css) อนุญาต · ฟอร์มใช้ shadcn `field` + zod (ไม่ใช้ react-hook-form) |
 | i18n | next-intl (locale เดียว `th`) | ข้อความทั้งหมดใน `apps/web/src/i18n/messages/th/*.json` |
 | Data fetching | TanStack Query v5 | ผ่าน `apps/web/src/lib/api.ts` เท่านั้น |
 | Validation | zod v4 | schema เดียวใช้ทั้ง client/server (`@app/contracts`) |
@@ -20,7 +20,7 @@
 | Push | `web-push` (VAPID) | ฟรี — แทน LINE Notify ที่ปิดบริการแล้ว |
 | Email | `nodemailer` (SMTP ตาม ADR-003) | |
 | Storage | S3-compatible (`@aws-sdk/client-s3` + presigner) ตาม ADR-004 | bucket private เสมอ |
-| Date/time | `date-fns` + `@date-fns/tz` (เฉพาะใน `@app/domain`) | |
+| Date/time | `date-fns` + `@date-fns/tz` — logic วันเวลา/การจัดรูปแบบทำใน `@app/domain` เท่านั้น | `apps/web` มี date-fns ได้เฉพาะเป็น dependency ของ shadcn `calendar` — โค้ดแอปห้าม import date-fns เอง |
 | Test | Vitest, PGlite, Testing Library + msw (UI), Playwright (E2E) | |
 | Lint/format | Biome | `pnpm lint` |
 
