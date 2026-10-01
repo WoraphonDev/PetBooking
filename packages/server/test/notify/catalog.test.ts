@@ -5,7 +5,10 @@ import { type NotificationPayloads, TEMPLATES, type TemplateKey } from "../../sr
 import { renderTemplate } from "../../src/notify/templates/index.ts";
 
 const md = readFileSync(new URL("../../../../docs/spec/07-notifications-jobs.md", import.meta.url), "utf8");
-const section = md.slice(md.indexOf("## 1. Templates"), md.indexOf("## 2."));
+// only the template table: §1 ends at its first subsection (### 1.x has other tables starting with `| \`key\``) or at §2
+const start = md.indexOf("## 1. Templates");
+const ends = [md.indexOf("\n### ", start), md.indexOf("\n## 2.", start)].filter((i) => i !== -1);
+const section = md.slice(start, Math.min(...ends));
 const rows = section
   .split("\n")
   .filter((l) => l.startsWith("| `"))
