@@ -154,7 +154,7 @@ export const notificationSkipReasonEnum = pgEnum("notification_skip_reason", [
   "opted_out",
   "duplicate",
 ]);
-export const recipientTypeEnum = pgEnum("recipient_type", ["customer", "staff"]);
+export const recipientTypeEnum = pgEnum("recipient_type", ["customer", "staff", "platform_admin"]);
 export const jobTypeEnum = pgEnum("job_type", [
   "expire_hold",
   "reminder_24h",

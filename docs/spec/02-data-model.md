@@ -1861,7 +1861,7 @@ Stories: US-13-05, US-13-06 · PK: `id` · schema: `packages/db/src/schema/messa
 | branch_id | `uuid` | YES |  | branch.id (cascade) |  |
 | channel | `notification_channel` | NO |  |  |  |
 | recipient_type | `recipient_type` | NO |  |  |  |
-| recipient_id | `uuid` | NO |  |  | customer.id หรือ staff_user.id |
+| recipient_id | `uuid` | NO |  |  | customer.id / staff_user.id / platform_admin.id ตาม recipient_type |
 | template_key | `text` | NO |  |  | ดู notification catalog ใน 05 |
 | payload | `jsonb` | NO |  |  | ตัวแปรของ template |
 | dedupe_key | `text` | NO |  |  | unique — กันส่งซ้ำ |
@@ -2108,7 +2108,7 @@ Stories: US-02-08 · PK: `id` · schema: `packages/db/src/schema/compliance.ts`
 | `notification_channel` | `line_reply`, `line_push`, `web_push`, `email` |  |
 | `notification_status` | `queued`, `sent`, `failed`, `skipped` |  |
 | `notification_skip_reason` | `quota_exhausted`, `economy_mode`, `pet_inactive`, `no_recipient`, `opted_out`, `duplicate` |  |
-| `recipient_type` | `customer`, `staff` |  |
+| `recipient_type` | `customer`, `staff`, `platform_admin` |  |
 | `job_type` | `expire_hold`, `reminder_24h`, `next_groom_reminder`, `owner_daily_summary`, `approval_overdue`, `care_task_overdue_scan`, `recompute_reliability`, `package_expiry`, `cleanup_uncommitted_files` |  |
 | `job_status` | `pending`, `running`, `done`, `failed`, `cancelled` |  |
 | `legal_doc` | `privacy_notice`, `terms_of_service`, `dpa`, `photo_consent` |  |
