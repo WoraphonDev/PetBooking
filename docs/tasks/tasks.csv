@@ -16,7 +16,7 @@ T-0011,INF-EMAIL,M0,5,infra,agent,S,,Email adapter (SMTP/nodemailer) + templates
 T-0012,DOM-R-20,M0,2,domain,agent,M,,Rule R-20 เวลาและวันที่ท้องถิ่น,US-13-03,H-01,4
 T-0013,DOM-R-31,M0,3,domain,agent,M,,Rule R-31 รูปแบบการแสดงผลไทย (เงิน วันที่ เวลา น้ำหนัก),US-13-03,H-01 T-0012,4
 T-0014,DOM-R-22,M0,2,domain,agent,M,,Rule R-22 เบอร์โทร: normalize และแสดงผล,US-03-01 US-03-10 US-11-01,H-01,4
-T-0015,INF-I18N,M0,4,infra,agent,M,,"i18n: next-intl (th), message namespaces per screen + enum labels + format helpers",US-13-03,T-0001 T-0013 T-0014,6
+T-0015,INF-I18N,M0,4,infra,agent,M,,"i18n: next-intl (th), message namespaces per screen + enum labels + format helpers",US-13-03,T-0001 T-0013 T-0014,7
 T-0016,INF-APICLIENT,M0,3,infra,agent,S,,Typed API client + query hooks + error toast,US-13-01,T-0001 T-0002,5
 T-0017,INF-DEPLOY,M0,3,infra,agent,M,yes,Deploy pipeline ตาม ADR-002 (staging + production) + migrate on deploy,US-13-01,T-0001 T-0003 H-02,4
 T-0018,INF-MON,M0,6,infra,agent,S,,"Monitoring: health (db ping), structured logs, error reporting, uptime check",US-13-09,T-0007,5
