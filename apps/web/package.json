@@ -10,7 +10,9 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@app/contracts": "workspace:*",
     "@tailwindcss/postcss": "4.3.3",
+    "@tanstack/react-query": "5.104.0",
     "class-variance-authority": "0.7.1",
     "cn": "0.4.0",
     "date-fns": "4.4.0",
