@@ -423,6 +423,12 @@ def api_task(ms, gkey, items):
         rf, cf, sf, tf = route_file(e), contract_file(e), service_file(e), service_test(e)
         req, res, qry = contract_names(e)
         allowed += [cf, sf, tf, rf]
+        if e["key"] == "auth.staffLogin":
+            # The staff login route imports the public server wrapper and service
+            # through the workspace package, so this task owns the package link,
+            # export map, and resulting lockfile importer update.
+            allowed += ["apps/web/package.json", "packages/server/package.json", "pnpm-lock.yaml"]
+            deliver += ["`apps/web/package.json`, `packages/server/package.json`, `pnpm-lock.yaml`: workspace dependency and server entry-point exports required by the route"]
         read.append(f"docs/spec/05-api.md#ep-{e['key']}")
         deliver += [f"`{cf}`: `{req}`" + (f", `{qry}`" if e["query"] else "") + f", `{res}` (ฟิลด์ตามตาราง endpoint ทีละช่อง)",
                     f"`{sf}`: `export async function {service_fn(e)}(ctx, input)`", f"`{rf}`: `export const {e['method']} = with{'Staff' if e['auth']=='staff' else 'Customer' if e['auth']=='customer' else 'Admin' if e['auth']=='admin' else 'Public'}(\"{e['key']}\", …, {service_fn(e)})`"]
