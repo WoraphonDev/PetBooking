@@ -74,3 +74,20 @@
 - สิ่งที่พบใน spec: `05-api.md` §0, §3 (`docs/spec/vectors/endpoints.json` response = DTO หรือ `"204"`)
 - ทางเลือกที่เป็นไปได้: A 200/204 ตามที่ทำไว้ / B เพิ่ม 201 ใน catalog แล้วให้ wrapper รับ option `status`
 - คำตอบ: A — 200 ทั้งหมด, 204 เมื่อ response ของ endpoint = `"204"` ไม่ใช้ 201 (แก้การ์ด T-0007 + 01 §4 แล้ว)
+
+## Q-0009 · notification ถึง platform admin (admin.feedback / admin.data_request) — `recipient_type` ไม่มี platform_admin
+- สถานะ: open
+- Task: T-0010 · ผู้ถาม: agent (claude) · วันที่: 2026-10-02
+- คำถาม: 07 §1 กำหนด `admin.feedback` และ `admin.data_request` ส่งอีเมลถึง platform admin แต่ `notification.recipient_type` มีแค่ `customer|staff` และ `recipient_id` = customer.id หรือ staff_user.id — จะเก็บแถวของ platform admin อย่างไร · T-0010 สร้าง key/payload type/stub template ครบ แต่ `enqueueNotification` โยน error สำหรับ 2 key นี้จนกว่าจะตัดสิน
+- สิ่งที่พบใน spec: `07-notifications-jobs.md` §1 · `02-data-model.md#tbl-notification` · enum `recipient_type`
+- ทางเลือกที่เป็นไปได้: A เพิ่มค่า `platform_admin` ใน enum `recipient_type` (migration) + `organization_id` ของร้านที่เกี่ยวข้อง / B ส่งอีเมลตรงไม่ผ่าน outbox / C อื่น ๆ
+- บันทึกการตัดสินใจใน session T-0010 (มนุษย์ตอบแล้ว — ควรเขียนลง 07 ด้วย spec-change): (1) แถว notification 1 แถวต่อผู้รับ, `dedupe_key` ที่เก็บ = `<dedupe key ใน 07>:<recipientId>` (2) ช่องทางที่ R-19 เลือกต้องอยู่ในคอลัมน์ 'ช่องทาง' ของ template ไม่งั้น skipped `no_recipient`; template ที่เป็น email อย่างเดียว (staff.invite, staff.password_reset) ส่งอีเมลเสมอ (ไม่มีอีเมล → `no_recipient`)
+- คำตอบ: …
+
+## Q-0010 · placeholder `{depositLine}` / `{reportCardLine}` ไม่อยู่ในคอลัมน์ 'ตัวแปร'
+- สถานะ: open
+- Task: T-0010 · ผู้ถาม: agent (claude) · วันที่: 2026-10-02
+- คำถาม: ข้อความ `customer.booking_received` ใช้ `{depositLine}` (ตัวแปรที่ระบุ: depositAmount, holdExpiresTime) และ `customer.ready_for_pickup` ใช้ `{reportCardLine}` (ตัวแปร: reportCardUrl) — บรรทัดเหล่านี้ประกอบจากตัวแปรอย่างไร (เช่น ไม่มีมัดจำ → ไม่แสดงบรรทัด?) · T-0010 stub แสดงเป็นค่าว่าง, payload type ตามคอลัมน์ 'ตัวแปร' ตรงตัว
+- สิ่งที่พบใน spec: `07-notifications-jobs.md` §1 แถว `customer.booking_received`, `customer.ready_for_pickup`
+- ทางเลือกที่เป็นไปได้: A template ของ key นั้นประกอบบรรทัดเองจาก depositAmount/holdExpiresTime และ reportCardUrl (ระบุรูปแบบข้อความใน 07) / B เพิ่ม depositLine/reportCardLine เป็นตัวแปรที่ผู้เรียกจัดรูปแบบมาให้
+- คำตอบ: …
