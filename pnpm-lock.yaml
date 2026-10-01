@@ -17,6 +17,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@app/domain':
+        specifier: workspace:*
+        version: link:../../packages/domain
       '@tailwindcss/postcss':
         specifier: 4.3.3
         version: 4.3.3

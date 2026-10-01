@@ -1,0 +1,292 @@
+{
+  "staff_role": {
+    "owner": "เจ้าของร้าน",
+    "front_desk": "หน้าร้าน",
+    "staff": "พนักงาน/ช่าง"
+  },
+  "staff_status": {
+    "invited": "รอรับคำเชิญ",
+    "active": "ใช้งาน",
+    "disabled": "ปิดใช้งาน"
+  },
+  "species": {
+    "dog": "หมา",
+    "cat": "แมว",
+    "other": "อื่นๆ"
+  },
+  "pet_sex": {
+    "male": "ผู้",
+    "female": "เมีย",
+    "unknown": "ไม่ทราบ"
+  },
+  "pet_status": {
+    "active": "ปกติ",
+    "deceased": "จากไปแล้ว",
+    "rehomed": "ย้ายบ้าน"
+  },
+  "coat_type": {
+    "short": "ขนสั้น",
+    "long": "ขนยาว",
+    "double": "ขนสองชั้น",
+    "curly": "ขนหยิก",
+    "wire": "ขนลวด",
+    "hairless": "ไม่มีขน",
+    "unknown": "ไม่ทราบ"
+  },
+  "coat_group": {
+    "short": "ขนสั้น",
+    "long": "ขนยาว",
+    "any": "ทุกแบบ"
+  },
+  "temperament_flag": {
+    "bites": "กัด",
+    "needs_muzzle": "ต้องใส่ตะกร้อ",
+    "dryer_fear": "กลัวไดร์",
+    "noise_sensitive": "กลัวเสียง",
+    "same_groomer_only": "ช่างคนเดิมเท่านั้น",
+    "dog_reactive": "ไม่ถูกกับหมา",
+    "cat_reactive": "ไม่ถูกกับแมว",
+    "anxious": "ขี้กังวล",
+    "other": "อื่นๆ"
+  },
+  "vaccine_status": {
+    "pending_review": "รอร้านตรวจ",
+    "verified": "ยืนยันแล้ว",
+    "rejected": "ไม่ผ่าน"
+  },
+  "photo_consent": {
+    "unknown": "ยังไม่ถาม",
+    "granted": "ยินยอม",
+    "denied": "ไม่ยินยอม"
+  },
+  "closure_scope": {
+    "all": "ทั้งร้าน",
+    "grooming": "กรูม",
+    "hotel": "โรงแรม",
+    "daycare": "Daycare"
+  },
+  "deposit_type": {
+    "none": "ไม่เก็บ",
+    "fixed": "จำนวนคงที่",
+    "percent": "เปอร์เซ็นต์"
+  },
+  "cancel_refund_mode": {
+    "refund": "คืนเงิน",
+    "credit": "คืนเป็นเครดิต",
+    "customer_choice": "ให้ลูกค้าเลือก"
+  },
+  "promptpay_type": {
+    "phone": "เบอร์มือถือ",
+    "national_id": "เลขบัตรประชาชน",
+    "tax_id": "เลขผู้เสียภาษี",
+    "ewallet": "e-Wallet"
+  },
+  "line_channel_status": {
+    "pending": "รอตั้งค่า",
+    "active": "เชื่อมแล้ว",
+    "error": "มีปัญหา"
+  },
+  "service_scope": {
+    "grooming": "กรูม",
+    "hotel": "โรงแรม",
+    "daycare": "Daycare"
+  },
+  "service_category": {
+    "bath": "อาบน้ำ",
+    "haircut": "ตัดขน",
+    "spa": "สปา",
+    "nail": "ตัดเล็บ",
+    "ear": "ทำความสะอาดหู",
+    "teeth": "ทำความสะอาดฟัน",
+    "deshed": "ลดขนร่วง",
+    "other": "อื่นๆ",
+    "hotel_addon": "เสริมโรงแรม",
+    "daycare_addon": "เสริม Daycare"
+  },
+  "room_unit_status": {
+    "active": "ใช้งาน",
+    "maintenance": "ซ่อม",
+    "archived": "เลิกใช้"
+  },
+  "housekeeping_status": {
+    "clean": "สะอาด",
+    "dirty": "ต้องทำความสะอาด"
+  },
+  "daycare_session": {
+    "full_day": "เต็มวัน",
+    "morning": "ครึ่งเช้า",
+    "afternoon": "ครึ่งบ่าย"
+  },
+  "booking_channel": {
+    "walk_in": "walk-in",
+    "phone": "โทรศัพท์",
+    "chat": "แชท",
+    "line_liff": "LINE",
+    "booking_link": "ลิงก์จอง",
+    "ota": "แพลตฟอร์มจอง",
+    "import": "นำเข้า"
+  },
+  "booking_status": {
+    "awaiting_deposit": "รอโอนมัดจำ",
+    "deposit_review": "รอร้านตรวจสลิป",
+    "awaiting_approval": "รอร้านยืนยัน",
+    "confirmed": "ยืนยันแล้ว",
+    "cancelled": "ยกเลิก",
+    "expired": "หมดเวลา",
+    "closed": "เสร็จสิ้น"
+  },
+  "deposit_status": {
+    "not_required": "ไม่ต้องมัดจำ",
+    "pending": "ค้างมัดจำ",
+    "submitted": "ส่งสลิปแล้ว",
+    "verified": "รับมัดจำแล้ว",
+    "rejected": "สลิปไม่ผ่าน",
+    "refunded": "คืนเงินแล้ว",
+    "credited": "คืนเป็นเครดิต",
+    "forfeited": "ริบมัดจำ",
+    "applied": "หักในบิลแล้ว"
+  },
+  "groom_status": {
+    "scheduled": "นัดไว้",
+    "checked_in": "มาถึงแล้ว",
+    "in_progress": "กำลังทำ",
+    "done": "เสร็จ รอรับ",
+    "picked_up": "รับกลับแล้ว",
+    "no_show": "ไม่มา",
+    "cancelled": "ยกเลิก"
+  },
+  "stay_status": {
+    "reserved": "จองแล้ว",
+    "checked_in": "พักอยู่",
+    "checked_out": "กลับบ้านแล้ว",
+    "no_show": "ไม่มา",
+    "cancelled": "ยกเลิก"
+  },
+  "daycare_status": {
+    "reserved": "จองแล้ว",
+    "checked_in": "อยู่ในร้าน",
+    "checked_out": "กลับแล้ว",
+    "no_show": "ไม่มา",
+    "cancelled": "ยกเลิก"
+  },
+  "care_task_type": {
+    "feed": "ให้อาหาร",
+    "medication": "ให้ยา",
+    "walk": "พาเดิน",
+    "clean": "ทำความสะอาด",
+    "other": "อื่นๆ"
+  },
+  "care_task_status": {
+    "pending": "รอทำ",
+    "done": "ทำแล้ว",
+    "skipped": "ข้าม"
+  },
+  "slip_status": {
+    "submitted": "รอตรวจ",
+    "verified": "ยืนยันแล้ว",
+    "rejected": "ไม่ผ่าน"
+  },
+  "payment_method": {
+    "cash": "เงินสด",
+    "promptpay": "PromptPay",
+    "bank_transfer": "โอนเงิน",
+    "card_edc": "บัตร",
+    "deposit": "มัดจำ",
+    "credit": "เครดิต"
+  },
+  "refund_mode": {
+    "bank_transfer": "โอนคืน",
+    "cash": "เงินสด",
+    "credit": "เครดิต"
+  },
+  "credit_reason": {
+    "cancellation_credit": "เครดิตจากการยกเลิก",
+    "deposit_credit": "มัดจำส่วนเกิน",
+    "bill_payment": "ใช้ชำระบิล",
+    "void_reversal": "ย้อนรายการ",
+    "adjustment": "ปรับโดยร้าน"
+  },
+  "bill_status": {
+    "open": "กำลังคิดเงิน",
+    "paid": "ชำระแล้ว",
+    "void": "ยกเลิก"
+  },
+  "bill_line_type": {
+    "groom_service": "บริการกรูม",
+    "groom_addon": "Add-on",
+    "surcharge": "ค่าบริการเพิ่ม",
+    "stay_night": "ค่าห้อง",
+    "stay_addon": "เสริมโรงแรม",
+    "daycare": "Daycare",
+    "quick_item": "สินค้า/บริการ",
+    "package_sale": "ขายแพ็กเกจ",
+    "package_redemption": "ใช้สิทธิ์แพ็กเกจ"
+  },
+  "customer_package_status": {
+    "active": "ใช้ได้",
+    "exhausted": "ใช้ครบแล้ว",
+    "expired": "หมดอายุ",
+    "void": "ยกเลิก"
+  },
+  "report_card_status": {
+    "draft": "ร่าง",
+    "pending_review": "รอตรวจ",
+    "sent": "ส่งแล้ว"
+  },
+  "skin_condition": {
+    "normal": "ปกติ",
+    "dry": "แห้ง",
+    "redness": "แดง/ระคายเคือง",
+    "lesion": "มีแผล/ตุ่ม"
+  },
+  "ear_condition": {
+    "clean": "สะอาด",
+    "dirty": "มีขี้หูมาก",
+    "suspected_infection": "สงสัยติดเชื้อ"
+  },
+  "nail_condition": {
+    "trimmed": "ตัดแล้ว",
+    "ok": "ปกติ",
+    "overgrown": "ยาวเกิน"
+  },
+  "teeth_condition": {
+    "ok": "ปกติ",
+    "tartar": "มีหินปูน",
+    "bad_breath": "มีกลิ่นปาก"
+  },
+  "parasite_finding": {
+    "none": "ไม่พบ",
+    "fleas": "พบหมัด",
+    "ticks": "พบเห็บ",
+    "both": "พบทั้งเห็บและหมัด"
+  },
+  "notification_skip_reason": {
+    "quota_exhausted": "โควตาข้อความหมด",
+    "economy_mode": "โหมดประหยัด",
+    "pet_inactive": "น้องไม่อยู่แล้ว",
+    "no_recipient": "ลูกค้ายังไม่ได้เพิ่มเพื่อน LINE",
+    "opted_out": "ลูกค้าปิดการแจ้งเตือน",
+    "duplicate": "ส่งซ้ำ"
+  },
+  "data_request_type": {
+    "access": "ขอสำเนาข้อมูล",
+    "delete": "ขอลบข้อมูล"
+  },
+  "org_status": {
+    "pilot": "นำร่อง",
+    "active": "ใช้งาน",
+    "suspended": "ระงับ"
+  },
+  "commission_type": {
+    "percent": "เปอร์เซ็นต์",
+    "fixed": "บาทต่อครั้ง"
+  },
+  "package_share_scope": {
+    "single_pet": "น้องตัวเดียว",
+    "household": "ทุกตัวในบ้าน"
+  },
+  "groomer_preference": {
+    "any": "ใครก็ได้",
+    "specific": "ระบุช่าง"
+  }
+}
