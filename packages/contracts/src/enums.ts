@@ -325,7 +325,7 @@ export const notificationSkipReasonValues = [
 export const notificationSkipReason = z.enum(notificationSkipReasonValues);
 export type NotificationSkipReason = z.infer<typeof notificationSkipReason>;
 
-export const recipientTypeValues = ["customer", "staff"] as const;
+export const recipientTypeValues = ["customer", "staff", "platform_admin"] as const;
 export const recipientType = z.enum(recipientTypeValues);
 export type RecipientType = z.infer<typeof recipientType>;
 
