@@ -108,3 +108,10 @@
 - Configuration conflict: the card names `SENTRY_DSN`, while 01 §6 names optional `ERROR_REPORT_DSN`; the card lists no approved reporting SDK dependency.
 - Options: expand task scope through spec-change and use `ERROR_REPORT_DSN`, or leave the affected work blocked until that change is merged. Optional external reporting requires an approved implementation/dependency decision.
 - Answer: user chose “ทำเฉพาะส่วนที่อยู่ในขอบเขตเดิม” in this chat (2026-10-02). Do not expand the card. Implement only the log helper, health service and monitoring documentation. Route integration, existing route test updates, package dependencies and external error reporting remain blocked; this task is incomplete. Service tests are colocated in the allowed health directory and run with a colocated Vitest config; the existing server test discovery does not include them.
+
+## Q-0013 · T-0019 needs workspace package wiring outside its allowed paths
+- Status: open (spec-change PR)
+- Task: T-0019 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: The required route imports `@app/server/http` and the `auth.staffLogin` service, but `apps/web` does not depend on `@app/server` and `packages/server` has no export map. Implementing the card requires `apps/web/package.json`, `packages/server/package.json`, and the corresponding `pnpm-lock.yaml` importer update, which are absent from `allowed_paths`.
+- Evidence: T-0019 deliverables; workspace package manifests; `packages/server` currently has no `exports` field.
+- Answer: user authorized expanding T-0019 through spec-change in this chat (2026-10-02). Add the workspace dependency, package exports, and lockfile to T-0019 `allowed_paths`.
