@@ -188,7 +188,7 @@ INF("INF-AUTH", "Auth core: sessions, argon2, cookies, permissions table", "M0",
     ["pnpm --filter @app/server test -- auth"], deps=["INF-SERVER", "DOM-R-24"], read=["docs/spec/04-business-rules.md#R-24", "docs/spec/08-permissions.md", "docs/spec/02-data-model.md#tbl-session"], hr=True)
 INF("INF-HTTP", "Route wrappers: withStaff/withCustomer/withAdmin/withPublic + error JSON + CSRF + rate limit", "M0", "L", "US-13-01, US-13-11",
     ["packages/server/src/http.ts", "packages/server/src/http/**", "packages/server/test/http/**"],
-    ["`withStaff(key, schemas, fn)` → Next.js handler: session จาก cookie → ctx (org suspended → FORBIDDEN) → requireRole → support mode + non-GET → SUPPORT_READ_ONLY → parse body/query/params ด้วย zod → fn → JSON (status 200/201/204)",
+    ["`withStaff(key, schemas, fn)` → Next.js handler: session จาก cookie → ctx (org suspended → FORBIDDEN) → requireRole → support mode + non-GET → SUPPORT_READ_ONLY → parse body/query/params ด้วย zod → fn → JSON (status 200; 204 เมื่อ response ของ endpoint = 204 — ไม่ใช้ 201)",
      "error → `{error:{code,message,details}}` ตาม docs/spec/vectors/errors.json; zod error → VALIDATION_FAILED + details.fields",
      "CSRF: method ≠ GET ต้องมี Origin = APP_BASE_URL (ยกเว้น webhook/cron)",
      "rate limit แบบ in-memory token bucket ต่อ key (ip/session) ตามตัวเลขใน 05 §0 → RATE_LIMITED",
