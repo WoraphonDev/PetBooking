@@ -297,3 +297,11 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0111 · Asked by: agent (codex) · Date: 2026-10-02
 - Evidence: 05#dto-Quote defines cancelSummary only as a summary calculated from branch_policy free_cancel_hours/forfeit, without exact text.
 - Answer (2026-10-02): user approved this text in chat: ยกเลิกก่อนเริ่มบริการอย่างน้อย {hours} ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ {percent}% . Substitute freeCancelHours and lateCancelForfeitPercent respectively.
+
+## Q-0045 · P-02 legal documents: content files missing and outside allowed paths
+- Status: open (T-0317 blocked)
+- Task: T-0317 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 06#scr-P-02 renders `LEGAL_DOCS[doc].file` markdown at build time and 10#legal-docs points to `apps/web/content/legal/{privacy_notice,terms_of_service,dpa}.2026-10-01.md`, but those files do not exist, no `LEGAL_DOCS` constant exists, and no markdown renderer is a dependency. The card's allowed_paths cover only the page, `components/p-02/**`, the messages file and the test.
+- Evidence: 06#scr-P-02, 10-reference-data.md#legal-docs, `ls apps/web/content` → missing.
+- Proposed decision: a human (legal owner) supplies the three markdown files; the card gains `apps/web/content/legal/**` (or the files land first in a separate PR) and lists the markdown dependency (or the page renders plain paragraphs without one). `LEGAL_DOCS` can live in `components/p-02/`.
+- Work: none on T-0317 until the content exists.
