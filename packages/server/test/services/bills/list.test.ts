@@ -46,14 +46,12 @@ beforeAll(async () => {
       ] as const
     ).map(([method, status]) => ({ ...tenant, billId: ids.paidToday, method, amountSatang: 1_000, status })),
   );
-  await env.db
-    .insert(bill)
-    .values({
-      organizationId: foreign.orgId,
-      branchId: foreign.branchId,
-      openedBy: foreign.staff.owner,
-      openedAt: at("2026-10-05T03:00:00Z"),
-    });
+  await env.db.insert(bill).values({
+    organizationId: foreign.orgId,
+    branchId: foreign.branchId,
+    openedBy: foreign.staff.owner,
+    openedAt: at("2026-10-05T03:00:00Z"),
+  });
 }, 60_000);
 afterAll(() => env.close());
 beforeEach(() => resetRateLimits());

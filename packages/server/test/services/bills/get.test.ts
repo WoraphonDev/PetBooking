@@ -27,16 +27,14 @@ beforeAll(async () => {
     })
     .returning();
   ids.bill = b?.id ?? "";
-  await env.db
-    .insert(billLine)
-    .values({
-      organizationId: env.base.orgId,
-      billId: ids.bill,
-      lineType: "quick_item",
-      description: "แชมพู",
-      unitPriceSatang: 50_000,
-      lineTotalSatang: 50_000,
-    });
+  await env.db.insert(billLine).values({
+    organizationId: env.base.orgId,
+    billId: ids.bill,
+    lineType: "quick_item",
+    description: "แชมพู",
+    unitPriceSatang: 50_000,
+    lineTotalSatang: 50_000,
+  });
   const [bk] = await env.db
     .insert(booking)
     .values({
