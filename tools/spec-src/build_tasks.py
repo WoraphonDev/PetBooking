@@ -270,12 +270,14 @@ for app, title, routes in (("console", "Console shell: layout + sidebar (คร�
                            ("liff", "LIFF shell: liff.init + session + header ร้าน", "L-"), ("admin", "Admin shell: layout + guard", "AD-")):
     task(f"UI-SHELL-{app}", title, {"console": "M1", "staff": "M2", "liff": "M3", "admin": "M0"}[app], "ui", "M", "US-13-01",
          allowed=[f"apps/web/app/({app})/layout.tsx", f"apps/web/app/({app})/{app}/layout.tsx", f"apps/web/src/components/shell-{app}/**", f"apps/web/src/i18n/messages/th/shell-{app}.json"]
+         + ([f"apps/web/app/(admin)/admin/{root}/layout.tsx" for root in ("organizations", "feedback", "data-requests", "analytics", "holidays")] + ["packages/server/src/http.ts"] if app == "admin" else [])
          + (["apps/web/app/(liff)/liff/[branchSlug]/layout.tsx", "apps/web/src/lib/liff.ts", "apps/web/package.json", "pnpm-lock.yaml"] if app == "liff" else []),
          steps=[f"layout ของ route group ({app}) ตามกติการ่วมใน 06 + เมนู/ลิงก์ไปทุกหน้าจอ `{routes}*` ใน 06 (หน้าที่ยังไม่ทำแสดง disabled)",
-                "server-side guard: อ่าน session (sid/cid/aid) → ไม่มี → redirect หน้าเข้าสู่ระบบที่ถูกต้อง; role ไม่ถึง → หน้า 403",
+                ("Admin: parent layout มี providers เท่านั้น; AD-01 public อยู่นอก guard. Protected root layouts เรียก resolveAdmin จาก @app/server/http (re-export เดิมเท่านั้น) แล้วแสดง shell; ตั้ง now ครั้งเดียวที่ guard request entry และใช้ ctx.now หลังจากนั้น. aid ไม่มี/หมดอายุ/disabled/subject ผิด → redirect /admin/login; ไม่มี role ย่อย/403 route/experimental authInterrupts (06 Q-0022)" if app == "admin" else
+                 "server-side guard: อ่าน session (sid/cid/aid) → ไม่มี → redirect หน้าเข้าสู่ระบบที่ถูกต้อง; role ไม่ถึง → หน้า 403"),
                 "แถบแดง 'โหมดช่วยเหลือ (อ่านอย่างเดียว)' เมื่อ ctx.supportMode" if app == "console" else
                 ("liff.init ด้วย liff_id ของสาขา (จาก liff.shop) → getIDToken → liff.session; LINE_FAKE โหมด dev ใช้ fake token" if app == "liff" else "ใช้ได้ที่ 360px")],
-         done=["pnpm --filter @app/web build", CONF, VERIFY], deps=["INF-I18N", "INF-APICLIENT"] + (["INF-LINE"] if app == "liff" else []) + (["H-LINE-PLATFORM"] if app == "staff" else []),
+         done=["pnpm --filter @app/web build", CONF, VERIFY], deps=["INF-I18N", "INF-APICLIENT"] + (["INF-HTTP"] if app == "admin" else []) + (["INF-LINE"] if app == "liff" else []) + (["H-LINE-PLATFORM"] if app == "staff" else []),
          read=["docs/spec/06-screens.md", "docs/spec/08-permissions.md"])
 task("INF-E2E", "Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test", "M1", "infra", "M", "US-13-14",
      allowed=["apps/web/playwright.config.ts", "apps/web/e2e/**", "packages/server/src/dev/**", "packages/server/package.json"],
@@ -579,6 +581,9 @@ for s in SCR:
                  "สร้างทุก section/field ตามตาราง 06 ครบทุกแถว: โหมด (แสดง/กรอก/แก้), แหล่งข้อมูล table.column → ฟิลด์ใน DTO ของ endpoint ที่โหลด, UI/รูปแบบ, กติกา",
                  "ปุ่ม: แสดงตามเงื่อนไข 'แสดงเมื่อ' และทำตาม 'หลังสำเร็จ'", "ข้อความไทยใน messages/th/" + s["id"] + ".json; ป้าย enum ผ่าน enumLabel()",
                  "component test: render ด้วย mock API (msw หรือ mock ของ api.ts) — ตรวจว่าทุกป้ายฟิลด์ในตาราง 06 ปรากฏ และปุ่มเรียก endpoint ที่ถูกต้อง"]
+        if s["app"] == "admin":
+            allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
+            steps.append("เปิด entry ของหน้าจอนี้ใน shell-admin/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว; AD-03 สร้างลิงก์เฉพาะเมื่อมี orgId ปัจจุบัน ไม่เลือก org แทนผู้ใช้ (06 Q-0022)")
         if note: steps.insert(1, f"ขอบเขตรอบนี้: {note}")
         if suf and suf.startswith("ext-"): steps.insert(1, "เพิ่มเฉพาะส่วน/ปุ่มที่ใช้ endpoint: " + ", ".join(new_eps))
         else:
