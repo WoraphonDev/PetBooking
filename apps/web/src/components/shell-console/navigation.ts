@@ -43,7 +43,7 @@ import { entry as c43 } from "./navigation/C-43";
 import { entry as c44 } from "./navigation/C-44";
 import { entry as c45 } from "./navigation/C-45";
 
-/** one registry entry per routed C-* screen; each screen task flips `implemented` in its own file (Q-0047) */
+/** one registry entry per routed C-* screen; each screen task flips `implemented` in its own file (Q-0048) */
 export const consoleNavigation = [
   c01,
   c02,

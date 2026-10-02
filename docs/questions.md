@@ -358,7 +358,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
 - Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
 
-## Q-0047 · Console menu entries: C-* screen cards cannot enable their own menu item
+## Q-0048 · Console menu entries: C-* screen cards cannot enable their own menu item
 - Status: answered for T-0070; task-generator follow-up open
 - Task: T-0070 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: T-0070 must show not-yet-built console screens as disabled. Admin screen cards own `shell-admin/navigation/AD-xx.ts` to switch their entry on, but no C-* screen card has a `shell-console/**` path, so a later screen task cannot enable its menu item.

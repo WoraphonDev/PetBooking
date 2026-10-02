@@ -1,2 +1,2 @@
-// The screen task enables this entry when its page is implemented (Q-0047).
+// The screen task enables this entry when its page is implemented (Q-0048).
 export const entry = { id: "C-20", route: "/console/bills/[billId]/receipt", implemented: false } as const;
