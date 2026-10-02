@@ -27,6 +27,7 @@
   "T-0020",
   "T-0021",
   "T-0022",
+  "T-0319",
   "T-0023",
   "T-0024",
   "T-0318",
@@ -693,10 +694,23 @@
    "wave": 6,
    "deps": [
     "T-0007",
-    "T-0005",
+    "T-0005"
+   ],
+   "title": "API admin.login",
+   "human_review": true
+  },
+  "T-0319": {
+   "key": "API-admin-organizations",
+   "ms": "M0",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0007",
     "T-0035"
    ],
-   "title": "API admin.login, admin.orgs, admin.updateOrg",
+   "title": "API admin.orgs, admin.updateOrg",
    "human_review": true
   },
   "T-0023": {
@@ -708,7 +722,7 @@
    "wave": 7,
    "deps": [
     "T-0007",
-    "T-0022"
+    "T-0319"
    ],
    "title": "API admin.createOrg",
    "human_review": true
@@ -850,7 +864,7 @@
     "T-0025",
     "T-0026",
     "T-0027",
-    "T-0022",
+    "T-0319",
     "T-0023"
    ],
    "title": "Screen AD-02 ร้านทั้งหมด",
@@ -895,6 +909,7 @@
     "T-0020",
     "T-0021",
     "T-0022",
+    "T-0319",
     "T-0023",
     "T-0024",
     "T-0028",
@@ -4011,7 +4026,7 @@
    "deps": [
     "T-0025",
     "T-0026",
-    "T-0022",
+    "T-0319",
     "T-0184",
     "T-0185",
     "T-0125"
