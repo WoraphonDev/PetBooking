@@ -11,7 +11,8 @@
       },
       "expected": {
         "bankCode": "004",
-        "transRef": "014242082547BPM04988"
+        "transRef": "014242082547BPM04988",
+        "crcValid": true
       }
     },
     {
@@ -21,7 +22,8 @@
       },
       "expected": {
         "bankCode": "014",
-        "transRef": "202610051030451234"
+        "transRef": "202610051030451234",
+        "crcValid": true
       }
     },
     {
@@ -29,7 +31,11 @@
       "input": {
         "payload": "0041000600000101030040220014242082547BPM049885102TH91040000"
       },
-      "expected": null
+      "expected": {
+        "bankCode": "004",
+        "transRef": "014242082547BPM04988",
+        "crcValid": false
+      }
     },
     {
       "name": "not a slip QR (PromptPay payment QR)",

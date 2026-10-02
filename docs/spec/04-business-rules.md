@@ -279,9 +279,9 @@ export function findDuplicateSlip(input: { transRef: string | null;
 
 | # | case | expected (ย่อ) |
 |---|---|---|
-| 1 | KBank-style payload | `{"bankCode": "004", "transRef": "014242082547BPM04988"}` |
-| 2 | SCB-style payload | `{"bankCode": "014", "transRef": "202610051030451234"}` |
-| 3 | tampered CRC is flagged, still parsed | `null` |
+| 1 | KBank-style payload | `{"bankCode": "004", "transRef": "014242082547BPM04988", "crcValid": true}` |
+| 2 | SCB-style payload | `{"bankCode": "014", "transRef": "202610051030451234", "crcValid": true}` |
+| 3 | tampered CRC is flagged, still parsed | `{"bankCode": "004", "transRef": "014242082547BPM04988", "crcValid": false}` |
 | 4 | not a slip QR (PromptPay payment QR) | `null` |
 | 5 | garbage | `null` |
 

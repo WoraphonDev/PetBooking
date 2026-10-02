@@ -10,6 +10,15 @@ import messages from "../../i18n/messages/th/shell-admin.json";
 import { AdminShell } from "./admin-shell";
 import { adminNavigation, navigationItems } from "./navigation";
 
+// These tests exercise shell behavior with an explicit unimplemented-screen fixture.
+vi.mock("./navigation/AD-01", () => ({ entry: { id: "AD-01", route: "/admin/login", implemented: false } }));
+vi.mock("./navigation/AD-02", () => ({ entry: { id: "AD-02", route: "/admin/organizations", implemented: false } }));
+vi.mock("./navigation/AD-03", () => ({ entry: { id: "AD-03", route: "/admin/organizations/[orgId]", implemented: false } }));
+vi.mock("./navigation/AD-04", () => ({ entry: { id: "AD-04", route: "/admin/feedback", implemented: false } }));
+vi.mock("./navigation/AD-05", () => ({ entry: { id: "AD-05", route: "/admin/data-requests", implemented: false } }));
+vi.mock("./navigation/AD-06", () => ({ entry: { id: "AD-06", route: "/admin/analytics", implemented: false } }));
+vi.mock("./navigation/AD-07", () => ({ entry: { id: "AD-07", route: "/admin/holidays", implemented: false } }));
+
 const mocks = vi.hoisted(() => ({ resolve: vi.fn(), redirect: vi.fn(), params: {} as { orgId?: string } }));
 vi.mock("@app/server/http", () => ({ resolveAdmin: mocks.resolve }));
 vi.mock("next/headers", () => ({ headers: async () => new Headers({ cookie: "aid=test", "user-agent": "test" }) }));
