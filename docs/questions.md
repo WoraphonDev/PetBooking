@@ -303,3 +303,11 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0162 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 05#ep-bookings.balanceLink mentions "send=true" but has no request table, names no error for "ต้องมี bill open", and says only "url = LIFF /pay/{billId}".
 - Answer (2026-10-02): user chose in chat. Body `{ send?: boolean }` (default false = only return the link). No bill on the booking, or the bill is paid/void → `BILL_NOT_OPEN` (409). `amountSatang = bill.total_satang − bill.paid_satang`. `url = APP_BASE_URL + /liff/{branch.booking_slug}/pay/{billId}` (route of L-14; 01 §6 APP_BASE_URL is the base for links in messages). send=true enqueues `customer.balance_link` to booking.customer_id with `amount` formatted by R-31 formatTHB(always).
+
+## Q-0044 · A-04 shows shop name and role but no endpoint loads them
+- Status: open (T-0074 blocked)
+- Task: T-0074 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 06#scr-A-04 shows `organization.name` and `staff_user.role` and hides the email field unless the invite has none, but its "โหลดข้อมูล" is "—" and 05 has no public endpoint that reads an invite by token (only `auth.inviteAccept`, POST). The "ใช้ LINE แทนรหัสผ่าน" button also needs `staffMe.linkLine` (T-0105), which needs the LINE ID-token verifier (T-0149, blocked on H-03).
+- Evidence: 06#scr-A-04, 05#ep-auth.inviteAccept, 05 catalogue (no invite preview).
+- Proposed decision: add a public endpoint, e.g. `auth.invitePreview` GET `/api/v1/auth/staff/invite?token=` → `{orgName, role, hasEmail}` with `TOKEN_INVALID`, as a spec change + its own API card; A-04 then loads it. Alternatively drop the two display rows and always show the optional email field.
+- Work: none on T-0074 until answered.
