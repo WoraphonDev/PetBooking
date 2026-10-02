@@ -253,6 +253,12 @@ dto("BookingListItem", "แถวรายการใบจอง", [
  ("depositStatus", "booking.deposit_status"), ("depositRequiredSatang", "booking.deposit_required_satang"), ("holdExpiresAt", "booking.hold_expires_at"),
  ("approvalDueAt", "booking.approval_due_at"), ("createdAt", "booking.created_at"),
 ])
+dto("AffectedServiceItem", "รายการบริการที่ได้รับผลจากวันปิด/วันลา (closures.create, timeOff.create — Q-0028) · 1 แถวต่อ groom_appointment / stay / daycare_visit", [
+ ("module", "calc: service_scope ของรายการ — grooming (groom_appointment) | hotel (stay) | daycare (daycare_visit)"), ("bookingId", "booking.id"),
+ ("bookingNo", "booking.booking_no"), ("itemId", "calc: groom_appointment.id | stay.id | daycare_visit.id ตาม module"), ("petName", "pet.name"),
+ ("customerName", "calc: owner_profile.first_name + nickname"), ("startsAt", "calc: groom_appointment.starts_at (instant) เมื่อ module = grooming; อื่น ๆ = null"),
+ ("date", "calc: วันท้องถิ่นของสาขา — วันของ groom_appointment.starts_at | stay.check_in_date | daycare_visit.visit_date"),
+])
 dto("BookingDetail", "ใบจองแบบเต็ม", [
  ("id", "booking.id"), ("bookingNo", "booking.booking_no"), ("status", "booking.status"), ("channel", "booking.channel"),
  ("customer", "dto:CustomerListItem"), ("createdByType", "booking.created_by_type"), ("createdAt", "booking.created_at"),
