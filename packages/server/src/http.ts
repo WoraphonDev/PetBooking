@@ -1,4 +1,5 @@
 // HTTP entry for apps/web route handlers (01 §2, §4): `export const POST = withStaff("groom.checkIn", { body, params }, groomCheckIn);`
+export { resolveAdmin } from "./http/auth.ts";
 export { RATE_RULES, resetRateLimits } from "./http/rate-limit.ts";
 export { errorResponse } from "./http/respond.ts";
 export type { ParseSchema, RouteInput, RouteSchemas } from "./http/schemas.ts";

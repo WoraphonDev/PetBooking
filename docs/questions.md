@@ -204,7 +204,7 @@
 - Answer (2026-10-02): user approved in chat. When the accepted invite's staff_user.role is owner, auth.inviteAccept inserts consent_record ×2 (dpa, terms_of_service) in the same transaction: subject_type organization, subject_id = organization_id = the shop, version from reference-data legalDocs, accepted true, ip/user_agent from the request. A-04 should later show the document links (separate spec-change for the screen).
 
 ## Q-0024 · T-0025 server guard scope and admin login boundary
-- Status: answered (spec-change pending merge)
+- Status: spec-changed (PR #56 merged)
 - Task: T-0025 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: How should the Admin shell validate its aid session while keeping /admin/login reachable without a session, and how should insufficient privilege produce the required 403 page?
 - Evidence: T-0025 allows only the group layout, admin/layout.tsx, shell components and translations. Both allowed layouts also wrap /admin/login. Applying the required unauthenticated redirect there causes a login redirect loop; server layouts have no supported pathname argument to exempt only the login child. 06#scr-AD-01 marks this login screen admin even though 05#ep-admin.login is public. The existing resolveAdmin in packages/server/src/http/auth.ts validates hashed tokens, expiry and active platform-admin identity, but @app/server/http does not export it and the server export map exposes only HTTP wrappers/services. No 403 route is defined in 06; inventing one is forbidden.
@@ -213,3 +213,5 @@
 - Technical references: [Next.js layout pathname limitations](https://nextjs.org/docs/app/api-reference/file-conventions/layout#pathname); [Next.js forbidden()](https://nextjs.org/docs/app/api-reference/functions/forbidden) requires experimental authInterrupts, which would require authorized next.config.ts scope if selected.
 - Answer (2026-10-02): user approved the recommended decision in this chat. Publish the clarified public login/protected layout boundary, existing aid validation/redirect behavior, no subordinate admin-role/403 requirement, resolver re-export scope and screen-owned navigation activation in the prerequisite spec-change. Resume T-0025 after it merges.
 - Implementation detail: use per-screen entries in shell-admin/navigation/<SCREEN-ID>.ts behind the shell-owned navigation registry. Each AD-* task edits only its own entry, preserving parallel-safety rather than granting every screen the same shared file. No auth or menu behavior differs from the approved decision.
+
+- Implementation (2026-10-02): PR #56 merged; resumed T-0025 in #44 with provider-only public parent, five guarded roots, unchanged resolveAdmin re-export and per-screen navigation entries.
