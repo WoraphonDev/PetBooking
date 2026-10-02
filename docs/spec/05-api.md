@@ -101,14 +101,14 @@
 
 ## 2. Response DTOs
 
-แต่ละฟิลด์ระบุแหล่งข้อมูล — `table.column` = อ่านตรงจากคอลัมน์ (ชนิด/ความหมายตาม 02), `calc:` = คำนวณ, `dto:` = ซ้อน DTO อื่น
+แต่ละฟิลด์ระบุแหล่งข้อมูล — `table.column` = อ่านตรงจากคอลัมน์ (ชนิด/ความหมายตาม 02), `calc:` = คำนวณ, `dto:` = ซ้อน DTO อื่น · คอลัมน์ที่ 02 ระบุว่า null ได้ → ฟิลด์ใน DTO เป็น `T | null` (zod `.nullable()`) เสมอ
 
 
 <a id="dto-StaffMe"></a>
 
 ### StaffMe
 
-ข้อมูล session ของพนักงาน
+ข้อมูล session ของพนักงาน · `staff.email` เป็น `string | null` (staff ที่ใช้ LINE อย่างเดียว) · **Support mode** (session ของ platform admin, Q-0014): `staff.id` = platform_admin.id, `staff.displayName` = platform_admin.display_name, `staff.email` = platform_admin.email, `staff.role` = `owner`, `staff.isGroomer` = false, `staff.lineLinked` = false, `permissions` = ของ owner (การเขียนยังถูกกันด้วย SUPPORT_READ_ONLY), `supportMode` = true; organization/branch มาจาก session
 
 | field | source |
 |---|---|

@@ -86,7 +86,7 @@ DTOS = {}
 def dto(name, desc, fields):
     DTOS[name] = dict(desc=desc, fields=fields)
 
-dto("StaffMe", "ข้อมูล session ของพนักงาน", [
+dto("StaffMe", "ข้อมูล session ของพนักงาน · `staff.email` เป็น `string | null` (staff ที่ใช้ LINE อย่างเดียว) · **Support mode** (session ของ platform admin, Q-0014): `staff.id` = platform_admin.id, `staff.displayName` = platform_admin.display_name, `staff.email` = platform_admin.email, `staff.role` = `owner`, `staff.isGroomer` = false, `staff.lineLinked` = false, `permissions` = ของ owner (การเขียนยังถูกกันด้วย SUPPORT_READ_ONLY), `supportMode` = true; organization/branch มาจาก session", [
  ("staff.id", "staff_user.id"), ("staff.displayName", "staff_user.display_name"), ("staff.email", "staff_user.email"),
  ("staff.role", "staff_user.role"), ("staff.isGroomer", "staff_user.is_groomer"), ("staff.lineLinked", "calc: staff_user.line_user_id is not null"),
  ("organization.id", "organization.id"), ("organization.name", "organization.name"), ("organization.status", "organization.status"),

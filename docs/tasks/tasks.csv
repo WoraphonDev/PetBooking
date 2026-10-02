@@ -19,9 +19,9 @@ T-0014,DOM-R-22,M0,2,domain,agent,M,,Rule R-22 เบอร์โทร: normali
 T-0015,INF-I18N,M0,4,infra,agent,M,,"i18n: next-intl (th), message namespaces per screen + enum labels + format helpers",US-13-03,T-0001 T-0013 T-0014,7
 T-0016,INF-APICLIENT,M0,3,infra,agent,S,,Typed API client + query hooks + error toast,US-13-01,T-0001 T-0002,5
 T-0017,INF-DEPLOY,M0,3,infra,agent,M,yes,Deploy pipeline ตาม ADR-002 (staging + production) + migrate on deploy,US-13-01,T-0001 T-0003 H-02,4
-T-0018,INF-MON,M0,6,infra,agent,S,,"Monitoring: health (db ping), structured logs, error reporting, uptime check",US-13-09,T-0007,5
+T-0018,INF-MON,M0,6,infra,agent,S,,"Monitoring: health (db ping), structured logs, error reporting, uptime check",US-13-09,T-0007,8
 T-0019,API-auth.staffLogin,M0,6,api,agent,L,yes,API auth.staffLogin,US-01-02,T-0007 T-0005,8
-T-0020,API-auth-0,M0,7,api,agent,M,,"API auth.staffLogout, auth.me, auth.resetRequest",US-01-02,T-0007 T-0019 T-0010,12
+T-0020,API-auth-0,M0,7,api,agent,M,,"API auth.staffLogout, auth.me, auth.resetRequest",US-01-02,T-0007 T-0019 T-0010,14
 T-0021,API-auth-1,M0,6,api,agent,S,,API auth.resetConfirm,US-01-02,T-0007 T-0005,4
 T-0022,API-admin-0,M0,6,api,agent,M,,"API admin.login, admin.orgs, admin.updateOrg",US-13-10,T-0007 T-0005,13
 T-0023,API-admin.createOrg,M0,7,api,agent,L,yes,API admin.createOrg,US-13-10 US-13-14,T-0007 T-0022,4
