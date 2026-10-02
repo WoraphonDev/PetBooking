@@ -115,3 +115,13 @@
 - Question: The required route imports `@app/server/http` and the `auth.staffLogin` service, but `apps/web` does not depend on `@app/server` and `packages/server` has no export map. Implementing the card requires `apps/web/package.json`, `packages/server/package.json`, and the corresponding `pnpm-lock.yaml` importer update, which are absent from `allowed_paths`.
 - Evidence: T-0019 deliverables; workspace package manifests; `packages/server` currently has no `exports` field.
 - Answer: user authorized expanding T-0019 through spec-change in this chat (2026-10-02). Add the workspace dependency, package exports, and lockfile to T-0019 `allowed_paths`.
+
+## Q-0014 · T-0020 StaffMe nullable email and support identity
+- Status: open
+- Task: T-0020 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: What should `auth.me` return for a LINE-only staff member with null email, and whose `staff` fields should it return for a platform-admin support session?
+- Evidence: `02-data-model.md#tbl-staff_user` permits null email; `05-api.md#dto-StaffMe` maps email to that column, while the existing `packages/contracts/src/dto/staff-me.ts` requires a string email. Support sessions resolve to a platform-admin actor (Q-0007), but StaffMe maps every staff field to staff_user and gives no identity-selection rule.
+- Scope: the shared StaffMe DTO is outside T-0020 allowed_paths. Changing its nullability or inventing support identity behavior is not authorized by this card.
+- Options: clarify the support-session DTO and allow nullable staff email through a spec-change that includes the shared DTO in scope.
+- Work: pause auth.me; implement the independently specified staffLogout and resetRequest endpoints.
+- Answer: user requested a draft PR with only staffLogout/resetRequest in this chat (2026-10-02). Leave auth.me blocked pending a spec-change; T-0020 remains incomplete.
