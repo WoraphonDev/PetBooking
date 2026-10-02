@@ -233,7 +233,7 @@
 - Evidence: 04#R-05 signature + step 3; docs/spec/vectors/R-05.parseSlipQr.json cases 1–3; rules_impl.py.
 - Answer (2026-10-02): user approved following the 04 text in chat. The reference implementation now returns `{ bankCode, transRef, crcValid }` and parses a CRC mismatch with `crcValid = false` (bank CRC formats are only confirmed in SP-02; rejecting would lose duplicate detection for a whole bank). Regenerated R-05.parseSlipQr vectors and the 04 vector table; non-slip and garbage payloads still return `null`.
 
-## Q-0027 · closures.create: `204` response vs "ตอบ affected[]"
+## Q-0028 · closures.create: `204` response vs "ตอบ affected[]"
 - Status: open
 - Task: T-0046 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 05#ep-closures.create declares `Response: 204 (No Content)`, but its "ผลที่ต้องเกิด" says "ตอบ affected[] = นัด/การพักที่ทับช่วงปิด" and 06 (closures.create action) shows "affected → dialog". A 204 cannot carry a body. Which is the contract, and if affected[] is returned, what is its item shape (booking/groom_appointment/stay ids? a DTO such as BookingListItem?) and which rows count (statuses, scope matching per module)?

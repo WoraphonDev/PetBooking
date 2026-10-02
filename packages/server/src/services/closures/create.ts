@@ -7,7 +7,7 @@ import { withTx } from "../../db.ts";
 import { AppError } from "../../errors.ts";
 import { tenantDb } from "../../repo/tenant.ts";
 
-// Q-0027: 05 declares 204 but also "ตอบ affected[]" — affected[] is not returned until the contract is clarified.
+// Q-0028: 05 declares 204 but also "ตอบ affected[]" — affected[] is not returned until the contract is clarified.
 export async function closuresCreate(ctx: RequestContext, input: ClosuresCreateRequest): Promise<ClosuresCreateResponse> {
   requireRole(ctx, "closures.create");
   if (!ctx.branchId) throw new AppError("NOT_FOUND");
