@@ -30,22 +30,20 @@ it("returns the exact status fields and R-18 branch/month counts without exposin
     .insert(branch)
     .values({ organizationId: env.base.orgId, name: "Second", bookingSlug: "second-line" })
     .returning();
-  await env.db
-    .insert(lineChannel)
-    .values({
-      organizationId: env.base.orgId,
-      branchId: env.base.branchId,
-      providerId: "provider",
-      messagingChannelId: "messaging",
-      channelSecretEnc: "encrypted-secret",
-      channelAccessTokenEnc: "encrypted-token",
-      loginChannelId: "login",
-      liffId: "liff",
-      botBasicId: "@shop",
-      status: "active",
-      monthlyPushQuota: 300,
-      webhookVerifiedAt: TEST_NOW,
-    });
+  await env.db.insert(lineChannel).values({
+    organizationId: env.base.orgId,
+    branchId: env.base.branchId,
+    providerId: "provider",
+    messagingChannelId: "messaging",
+    channelSecretEnc: "encrypted-secret",
+    channelAccessTokenEnc: "encrypted-token",
+    loginChannelId: "login",
+    liffId: "liff",
+    botBasicId: "@shop",
+    status: "active",
+    monthlyPushQuota: 300,
+    webhookVerifiedAt: TEST_NOW,
+  });
   const base = {
     organizationId: env.base.orgId,
     branchId: env.base.branchId,
