@@ -357,3 +357,9 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
 - Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
+
+## Q-0047 · T-0036: stale notification cutoff and production adapter wiring
+- Status: open (awaiting user answer)
+- Task: T-0036 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: notify/dispatch.ts claims all queued rows; NotifyDeps has interfaces but no runtime adapter factory. The card owns jobs/cron, not notify/** or integrations/**.
+- Proposed decision: expand scope for dispatcher cutoff and adapter wiring; absent integration adapters leave their rows queued. Alternatively implement the independent scheduled-job runner and defer cron notification dispatch. No dependent code written before approval.
