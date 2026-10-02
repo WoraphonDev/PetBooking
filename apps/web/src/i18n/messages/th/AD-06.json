@@ -1,0 +1,11 @@
+{
+  "title": "Analytics นำร่อง",
+  "range": "{from} – {to}",
+  "shop": "ร้าน",
+  "activeDays7": "วันที่ใช้งานใน 7 วัน",
+  "onlineShare": "จองออนไลน์ %",
+  "noShowRate": "No-show %",
+  "pushUsed": "Push ที่ใช้",
+  "billsClosed": "บิลที่ปิด",
+  "unavailable": "—"
+}

@@ -345,3 +345,9 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 06#scr-P-02, 10-reference-data.md#legal-docs, `ls apps/web/content` → missing.
 - Proposed decision: a human (legal owner) supplies the three markdown files; the card gains `apps/web/content/legal/**` (or the files land first in a separate PR) and lists the markdown dependency (or the page renders plain paragraphs without one). `LEGAL_DOCS` can live in `components/p-02/`.
 - Work: none on T-0317 until the content exists.
+
+## Q-0046 · AD-06: shop name and date range for admin.analytics
+- Status: answered (implemented in T-0315)
+- Task: T-0315 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 06#scr-AD-06 shows `organization.name` but 05#dto-PilotAnalytics returns only `orgId`; 05#ep-admin.analytics requires `from`/`to` but the 06 table has no date inputs.
+- Answer (2026-10-03): user chose in chat. The screen also loads the existing `admin.orgs` list and maps orgId → name ("—" when missing); no API/DTO change. It requests the 7 Bangkok days ending today (to = today Asia/Bangkok, from = to − 6, inclusive per Q-0037) and shows that range under the title.
