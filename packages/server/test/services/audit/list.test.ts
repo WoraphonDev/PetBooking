@@ -144,14 +144,19 @@ it("never returns another organization's audit rows", async () => {
   expect((await list(await token("owner", other))).items).toHaveLength(1);
 });
 
-it.each(["?from=04-10-2026", "?to=2026-13-01", "?from=2026-02-30", "?from=2026-10-05&to=2026-10-04", "?limit=0", "?limit=201", "?cursor=bm9wZQ"])(
-  "rejects %s with VALIDATION_FAILED",
-  async (qs) => {
-    const response = await request(await token("owner"), qs);
-    expect(response.status).toBe(422);
-    expect(((await response.json()) as { error: { code: string } }).error.code).toBe("VALIDATION_FAILED");
-  },
-);
+it.each([
+  "?from=04-10-2026",
+  "?to=2026-13-01",
+  "?from=2026-02-30",
+  "?from=2026-10-05&to=2026-10-04",
+  "?limit=0",
+  "?limit=201",
+  "?cursor=bm9wZQ",
+])("rejects %s with VALIDATION_FAILED", async (qs) => {
+  const response = await request(await token("owner"), qs);
+  expect(response.status).toBe(422);
+  expect(((await response.json()) as { error: { code: string } }).error.code).toBe("VALIDATION_FAILED");
+});
 
 it.each(["front_desk", "staff"] as const)("forbids %s", async (role) => {
   const response = await request(await token(role));
