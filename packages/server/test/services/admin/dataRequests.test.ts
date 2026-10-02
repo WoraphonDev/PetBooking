@@ -4,8 +4,8 @@ import { eq } from "drizzle-orm";
 import { afterEach, beforeEach, expect, it } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { makeSystemCtx } from "../../../src/context.ts";
-import { resetRateLimits } from "../../../src/http.ts";
 import { withAdmin } from "../../../src/http/wrap.ts";
+import { resetRateLimits } from "../../../src/http.ts";
 import { adminDataRequests } from "../../../src/services/admin/dataRequests.ts";
 import { otherOrg, setupTestDb, TEST_NOW, type TestEnv } from "../../helpers/setup.ts";
 
@@ -99,9 +99,6 @@ it("requires an active platform admin session", async () => {
     expect((await GET(new Request("https://petbooking.test/api/v1/admin/data-requests", { headers: { cookie } }))).status).toBe(401);
   }
   const cookie = await adminCookie();
-  await env.db
-    .update(platformAdmin)
-    .set({ status: "disabled" })
-    .where(eq(platformAdmin.email, "admin@example.test"));
+  await env.db.update(platformAdmin).set({ status: "disabled" }).where(eq(platformAdmin.email, "admin@example.test"));
   expect((await GET(new Request("https://petbooking.test/api/v1/admin/data-requests", { headers: { cookie } }))).status).toBe(401);
 });

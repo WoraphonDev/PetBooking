@@ -4,8 +4,8 @@ import { asc } from "drizzle-orm";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { makeSystemCtx } from "../../../src/context.ts";
-import { resetRateLimits } from "../../../src/http.ts";
 import { withAdmin } from "../../../src/http/wrap.ts";
+import { resetRateLimits } from "../../../src/http.ts";
 import { adminHolidays } from "../../../src/services/admin/holidays.ts";
 import { setupTestDb, TEST_NOW, type TestEnv } from "../../helpers/setup.ts";
 
