@@ -477,3 +477,6 @@ dto("PilotAnalytics", "ตัวชี้วัดนำร่อง", [("orgs[]
  ("orgs[].bookingsByChannel", "calc: count booking group by channel"), ("orgs[].onlineShare", "calc: line_liff+booking_link / ทั้งหมด"),
  ("orgs[].noShowRate", "calc: no_show / นัดที่ถึงเวลา"), ("orgs[].pushUsed", "calc: notification line_push sent"), ("orgs[].reportCardsSent", "calc"),
  ("orgs[].billsClosed", "calc")])
+
+# Q-0038: exact editable rows returned by the annual holiday loader.
+dto("PublicHoliday", "วันหยุดราชการ", [("date", "public_holiday.holiday_date"), ("nameTh", "public_holiday.name_th")])

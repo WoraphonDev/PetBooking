@@ -6451,22 +6451,38 @@
    "route": "/admin/holidays",
    "title": "วันหยุดราชการ",
    "roles": "admin",
-   "load": [],
+   "load": [
+    "admin.listHolidays"
+   ],
    "fields": [
     {
      "section": "ปี",
+     "mode": "E",
+     "label": "ปี (ค.ศ.)",
+     "source": "calc: year"
+    },
+    {
+     "section": "รายการวันหยุด",
      "mode": "E",
      "label": "วันที่",
      "source": "public_holiday.holiday_date"
     },
     {
-     "section": "ปี",
+     "section": "รายการวันหยุด",
      "mode": "E",
      "label": "ชื่อวันหยุด",
      "source": "public_holiday.name_th"
     }
    ],
    "actions": [
+    {
+     "label": "เพิ่มวันหยุด",
+     "endpoints": ""
+    },
+    {
+     "label": "ลบวันหยุด",
+     "endpoints": ""
+    },
     {
      "label": "บันทึก",
      "endpoints": "admin.holidays"
