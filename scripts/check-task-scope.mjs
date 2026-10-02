@@ -71,7 +71,14 @@ const journalAppendError = (ref) => {
 };
 const violations = [];
 for (const { status, file, from } of changes) {
-  if (from) violations.push(`${file}: renames are not allowed in task PRs (from ${from})`);
+  // Q-0015: T-0018 explicitly requires relocating this test into the standard server suite.
+  const healthTestRelocation =
+    taskId === "T-0018" &&
+    status === "R" &&
+    from === "packages/server/src/services/health/health.test.ts" &&
+    file === "packages/server/test/services/health/health.test.ts" &&
+    allowRes.some((re) => re.test(from));
+  if (from && !healthTestRelocation) violations.push(`${file}: renames are not allowed in task PRs (from ${from})`);
   if (file === "docs/questions.md") continue;
   if (file === card) {
     const cut = "## Status log";
