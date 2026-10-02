@@ -51,7 +51,7 @@ T-0042,API-auth-2,M1,1,api,agent,S,,API auth.inviteAccept,US-01-04,T-0007 T-0035
 T-0043,API-staffMe-1,M1,1,api,agent,M,,"API staffMe.sessions, staffMe.revokeSession",US-01-05,T-0007,8
 T-0044,API-branch-0,M1,3,api,agent,M,,"API branch.get, branch.update, branch.setHours",US-02-01,T-0007 T-0038,13
 T-0045,API-branch-1,M1,4,api,agent,M,,"API branch.setModules, branch.updatePolicy",US-02-02 US-02-04 US-05-05 US-06-05 US-07-03 US-07-04 US-13-06,T-0007 T-0044 T-0035,8
-T-0046,API-closures-0,M1,1,api,agent,M,,"API closures.list, closures.create, closures.delete",US-02-05,T-0007,11
+T-0046,API-closures-0,M1,1,api,agent,M,,"API closures.list, closures.create, closures.delete",US-02-05,T-0007,12
 T-0047,API-closures-1,M1,1,api,agent,S,,API closures.importHolidays,US-02-05 US-13-03,T-0007,4
 T-0048,API-staffUsers-0,M1,3,api,agent,M,,"API staffUsers.list, staffUsers.invite, staffUsers.update",US-01-04 US-09-01,T-0007 T-0035 T-0010 T-0038,14
 T-0049,API-staffUsers-1,M1,1,api,agent,S,,API staffUsers.resendInvite,US-01-04,T-0007,4
@@ -119,7 +119,7 @@ T-0104,API-auth-3,M2,1,api,agent,S,,API auth.staffLine,US-01-03,T-0007 T-0019,4
 T-0105,API-staffMe-0,M2,1,api,agent,M,,"API staffMe.linkLine, staffMe.pushSubscribe, staffMe.pushUnsubscribe",US-01-03 US-09-04 US-13-05,T-0007 T-0019,11
 T-0106,API-stations-0,M2,1,api,agent,M,,"API stations.list, stations.upsert",US-05-01,T-0007,7
 T-0107,API-workingHours-0,M2,1,api,agent,S,,API workingHours.set,US-09-01,T-0007 T-0048,4
-T-0108,API-timeOff-0,M2,1,api,agent,M,,"API timeOff.list, timeOff.create, timeOff.delete",US-09-01,T-0007,11
+T-0108,API-timeOff-0,M2,1,api,agent,M,,"API timeOff.list, timeOff.create, timeOff.delete",US-09-01,T-0007 T-0046,11
 T-0109,API-surchargeTypes-0,M2,1,api,agent,M,,"API surchargeTypes.list, surchargeTypes.upsert",US-04-05,T-0007,8
 T-0110,API-availability.groomSlots,M2,2,api,agent,L,,API availability.groomSlots,US-05-01 US-05-04 US-05-08,T-0007 T-0040 T-0041 T-0092 T-0093,5
 T-0111,API-quotes.create-grooming,M2,2,api,agent,L,,API quotes.create (grooming),US-05-04,T-0007 T-0092 T-0094 T-0096 T-0097,5

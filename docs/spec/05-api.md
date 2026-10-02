@@ -715,6 +715,23 @@
 | `approvalDueAt` | booking.approval_due_at |
 | `createdAt` | booking.created_at |
 
+<a id="dto-AffectedServiceItem"></a>
+
+### AffectedServiceItem
+
+รายการบริการที่ได้รับผลจากวันปิด/วันลา (closures.create, timeOff.create — Q-0028) · 1 แถวต่อ groom_appointment / stay / daycare_visit
+
+| field | source |
+|---|---|
+| `module` | calc: service_scope ของรายการ — grooming (groom_appointment) \| hotel (stay) \| daycare (daycare_visit) |
+| `bookingId` | booking.id |
+| `bookingNo` | booking.booking_no |
+| `itemId` | calc: groom_appointment.id \| stay.id \| daycare_visit.id ตาม module |
+| `petName` | pet.name |
+| `customerName` | calc: owner_profile.first_name + nickname |
+| `startsAt` | calc: groom_appointment.starts_at (instant) เมื่อ module = grooming; อื่น ๆ = null |
+| `date` | calc: วันท้องถิ่นของสาขา — วันของ groom_appointment.starts_at \| stay.check_in_date \| daycare_visit.visit_date |
+
 <a id="dto-BookingDetail"></a>
 
 ### BookingDetail
@@ -2242,11 +2259,13 @@ Request body:
 | `scope` | enum:closure_scope | ✓ | branch_closure.scope |  |
 | `reason` | string |  | branch_closure.reason | ≤ 200 |
 
-Response: `204` (No Content)
+Response: `object {affected: AffectedServiceItem[]}`
 
 
 ผลที่ต้องเกิด:
-- ตอบ affected[] = นัด/การพักที่ทับช่วงปิด (ไม่ยกเลิกอัตโนมัติ — หน้าร้านจัดการเอง)
+- ไม่ยกเลิก/ย้ายอัตโนมัติ — หน้าร้านจัดการเอง; ตอบ 200 เสมอ, ไม่มีรายการทับ → affected = [] (Q-0028)
+- affected[] = รายการที่ยังไม่จบในสาขานี้ที่ทับช่วงปิด (ใช้ scope แบบเดียวกับการหาเวลาว่างกรูม/ห้องว่าง): grooming (scope all/grooming) — groom_appointment status scheduled/checked_in/in_progress และ [starts_at, ends_at) ทับ [startsAt, endsAt) · hotel (scope all/hotel) — stay status reserved/checked_in ที่มีคืนพัก d (check_in_date ≤ d < check_out_date) ซึ่งวันท้องถิ่น d ทับช่วงปิด · daycare (scope all/daycare) — daycare_visit status reserved/checked_in ที่วันท้องถิ่น visit_date ทับช่วงปิด
+- เรียง affected[] ตาม date, startsAt (null ท้าย), bookingNo
 
 
 <a id="ep-closures.delete"></a>
@@ -2498,11 +2517,12 @@ Request body:
 | `endsAt` | datetime | ✓ | staff_time_off.ends_at | > startsAt |
 | `reason` | string |  | staff_time_off.reason |  |
 
-Response: `204` (No Content)
+Response: `object {affected: AffectedServiceItem[]}`
 
 
 ผลที่ต้องเกิด:
-- ตอบ affected[] นัดที่ทับ (ต้องย้ายเอง)
+- ไม่ย้ายนัดอัตโนมัติ — หน้าร้านย้ายเอง; ตอบ 200 เสมอ, ไม่มีนัดทับ → affected = [] (Q-0028)
+- affected[] = groom_appointment ของ groomer_id = staffUserId ในสาขานี้ status scheduled/checked_in/in_progress ที่ [starts_at, ends_at) ทับ [startsAt, endsAt) (module = grooming) เรียงตาม startsAt
 
 
 <a id="ep-timeOff.delete"></a>

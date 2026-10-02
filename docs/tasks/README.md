@@ -136,7 +136,7 @@
 | [T-0105](T-0105.md) | 1 | api | M |  | API staffMe.linkLine, staffMe.pushSubscribe, staffMe.pushUnsubscribe | T-0007 T-0019 |
 | [T-0106](T-0106.md) | 1 | api | M |  | API stations.list, stations.upsert | T-0007 |
 | [T-0107](T-0107.md) | 1 | api | S |  | API workingHours.set | T-0007 T-0048 |
-| [T-0108](T-0108.md) | 1 | api | M |  | API timeOff.list, timeOff.create, timeOff.delete | T-0007 |
+| [T-0108](T-0108.md) | 1 | api | M |  | API timeOff.list, timeOff.create, timeOff.delete | T-0007 T-0046 |
 | [T-0109](T-0109.md) | 1 | api | M |  | API surchargeTypes.list, surchargeTypes.upsert | T-0007 |
 | [T-0110](T-0110.md) | 2 | api | L |  | API availability.groomSlots | T-0007 T-0040 T-0041 T-0092 T-0093 |
 | [T-0111](T-0111.md) | 2 | api | L |  | API quotes.create (grooming) | T-0007 T-0092 T-0094 T-0096 T-0097 |

@@ -233,9 +233,17 @@
 - Evidence: 04#R-05 signature + step 3; docs/spec/vectors/R-05.parseSlipQr.json cases 1–3; rules_impl.py.
 - Answer (2026-10-02): user approved following the 04 text in chat. The reference implementation now returns `{ bankCode, transRef, crcValid }` and parses a CRC mismatch with `crcValid = false` (bank CRC formats are only confirmed in SP-02; rejecting would lose duplicate detection for a whole bank). Regenerated R-05.parseSlipQr vectors and the 04 vector table; non-slip and garbage payloads still return `null`.
 
-## Q-0028 · closures.create: `204` response vs "ตอบ affected[]"
-- Status: open
-- Task: T-0046 · Asked by: agent (claude) · Date: 2026-10-02
-- Question: 05#ep-closures.create declares `Response: 204 (No Content)`, but its "ผลที่ต้องเกิด" says "ตอบ affected[] = นัด/การพักที่ทับช่วงปิด" and 06 (closures.create action) shows "affected → dialog". A 204 cannot carry a body. Which is the contract, and if affected[] is returned, what is its item shape (booking/groom_appointment/stay ids? a DTO such as BookingListItem?) and which rows count (statuses, scope matching per module)?
-- Evidence: 05#ep-closures.create; 06-screens.md line ~1616 `| เพิ่มวันปิด | closures.create | | affected → dialog |`; T-0046 test list includes the affected[] effect.
-- Interim: T-0046 implements the declared `204` (insert only, no auto-cancel). The affected[] part is not implemented and its test is not written until this is answered via spec-change.
+## Q-0027 · T-0050 search.quick requires a migration outside its allowed paths
+
+Status: open
+- Task selection (2026-10-02): T-0050 dependencies T-0007 and T-0014 are merged, but implementation has not started.
+- Evidence: `docs/spec/05-api.md#ep-search.quick` requires pg_trgm indexes in a US-03-10 migration. No pg_trgm extension or trigram index exists in the merged schema/migrations; T-0050 allows only its endpoint/service/tests/route and two DTO files, not schema or migration files.
+- Question: assign a prerequisite task for the specified pg_trgm indexes, or approve a spec change expanding T-0050's dependencies and migration/schema scope. Clarify the indexed columns and migration handling for PGlite.
+- Work: search implementation paused under AGENTS.md; selected independent T-0106 instead. No merged migration or read-only spec changed.
+
+## Q-0028 · closures.create / timeOff.create: `204` response vs "ตอบ affected[]"
+- Status: spec-changed (pending merge of `spec-change-q0028-closure-affected`)
+- Task: T-0046 (also T-0108) · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 05#ep-closures.create and 05#ep-timeOff.create declared `Response: 204 (No Content)` while their effects said "ตอบ affected[]" and 06 shows "affected → dialog". A 204 cannot carry a body. Which is the contract, what is the item shape and which rows count as affected?
+- Evidence: 05#ep-closures.create, 05#ep-timeOff.create; 06 actions `closures.create` "affected → dialog", `timeOff.create` "affected"; T-0046 test list includes the affected[] effect.
+- Answer (2026-10-02): user approved in chat. Both endpoints respond `200 { affected: AffectedServiceItem[] }` (empty array when nothing overlaps; nothing is cancelled or moved automatically). New DTO 05#dto-AffectedServiceItem: `module` (service_scope), `bookingId`, `bookingNo`, `itemId` (groom_appointment/stay/daycare_visit id), `petName`, `customerName`, `startsAt` (grooming instant, else null), `date` (branch-local date). Only unfinished items count: grooming scheduled/checked_in/in_progress overlapping `[starts_at, ends_at)` for scope all/grooming; stays reserved/checked_in with a night whose local day overlaps for scope all/hotel; daycare reserved/checked_in whose local visit day overlaps for scope all/daycare. timeOff.create returns only that groomer's unfinished grooming appointments. T-0046 owns the DTO file; T-0108 now depends on T-0046.
