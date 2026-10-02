@@ -36,7 +36,7 @@ T-0027,UI-C-TABLE,M0,5,ui,agent,M,,"Shared component: DataTable (cursor paginati
 T-0028,SCR-A-01,M0,7,ui,agent,S,,Screen A-01 เข้าสู่ระบบ (ร้าน),US-01-02,T-0015 T-0019,4
 T-0029,SCR-A-02,M0,8,ui,agent,S,,Screen A-02 ลืมรหัสผ่าน,US-01-02,T-0015 T-0020,4
 T-0030,SCR-A-03,M0,7,ui,agent,S,,Screen A-03 ตั้งรหัสผ่านใหม่,US-01-02,T-0015 T-0021,4
-T-0031,SCR-AD-01,M0,7,ui,agent,S,,Screen AD-01 Admin login,US-13-10,T-0025 T-0022,5
+T-0031,SCR-AD-01,M0,7,ui,agent,S,,Screen AD-01 Admin login,US-13-10,T-0025 T-0022,6
 T-0032,SCR-AD-02,M0,8,ui,agent,M,,Screen AD-02 ร้านทั้งหมด,US-13-10 US-13-14,T-0025 T-0026 T-0027 T-0319 T-0023,5
 T-0033,SCR-AD-07,M0,7,ui,agent,S,,Screen AD-07 วันหยุดราชการ,US-13-03,T-0025 T-0026,5
 H-04,H-GATE-M0,M0,9,human,human,-,,Milestone review M0: demo + ตรวจคุณภาพ,,T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 T-0017 T-0018 T-0012 T-0005 T-0013 T-0019 T-0020 T-0021 T-0022 T-0319 T-0023 T-0024 T-0028 T-0029 T-0030 T-0031 T-0032 T-0033,0

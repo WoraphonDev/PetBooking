@@ -583,6 +583,8 @@ for s in SCR:
                  "component test: render ด้วย mock API (msw หรือ mock ของ api.ts) — ตรวจว่าทุกป้ายฟิลด์ในตาราง 06 ปรากฏ และปุ่มเรียก endpoint ที่ถูกต้อง"]
         if s["app"] == "admin":
             allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
+            if s["id"] == "AD-01":
+                allowed.append("apps/web/src/components/shell-admin/admin-shell.test.tsx")  # Q-0025: explicit menu fixtures
             steps.append("เปิด entry ของหน้าจอนี้ใน shell-admin/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว; AD-03 สร้างลิงก์เฉพาะเมื่อมี orgId ปัจจุบัน ไม่เลือก org แทนผู้ใช้ (06 Q-0024)")
         if note: steps.insert(1, f"ขอบเขตรอบนี้: {note}")
         if suf and suf.startswith("ext-"): steps.insert(1, "เพิ่มเฉพาะส่วน/ปุ่มที่ใช้ endpoint: " + ", ".join(new_eps))
