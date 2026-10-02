@@ -1,0 +1,2 @@
+// The screen task enables this entry when its page is implemented (Q-0047).
+export const entry = { id: "C-24", route: "/console/reports/commissions", implemented: false } as const;

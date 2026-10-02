@@ -351,3 +351,10 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
 - Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
+
+## Q-0047 · Console menu entries: C-* screen cards cannot enable their own menu item
+- Status: answered for T-0070; task-generator follow-up open
+- Task: T-0070 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: T-0070 must show not-yet-built console screens as disabled. Admin screen cards own `shell-admin/navigation/AD-xx.ts` to switch their entry on, but no C-* screen card has a `shell-console/**` path, so a later screen task cannot enable its menu item.
+- Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
+- Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
