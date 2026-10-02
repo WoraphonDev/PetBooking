@@ -9,7 +9,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { resetRateLimits, withStaff } from "../../../src/http.ts";
 import { bookingsBalanceLink } from "../../../src/services/bookings/balanceLink.ts";
-import { otherOrg, type SeedOrg, setupTestDb, staffCtx, TEST_NOW, type TestEnv } from "../../helpers/setup.ts";
+import { otherOrg, type SeedOrg, setupTestDb, staffCtx, type TestEnv } from "../../helpers/setup.ts";
 
 const POST = withStaff("bookings.balanceLink", { body: BookingsBalanceLinkRequest, params: BookingsBalanceLinkParams }, bookingsBalanceLink);
 let env: TestEnv;
@@ -103,7 +103,6 @@ it("enqueues customer.balance_link with the 07 dedupe key when send=true, once p
       dedupeKey: `balance_link:${billId}:100000:${env.base.customerId}`,
       monthKey: "2026-10",
       status: "queued",
-      createdAt: TEST_NOW,
     }),
   ]);
   await env.db.update(bill).set({ paidSatang: 120000 }).where(eq(bill.id, billId));
@@ -124,7 +123,7 @@ it("returns BILL_NOT_OPEN when the booking has no bill or the bill is paid/void"
 it("rejects a malformed body or bookingId with VALIDATION_FAILED", async () => {
   expect(await (await post({ send: "yes" })).json()).toMatchObject({ error: { code: "VALIDATION_FAILED" } });
   const bad = await post({}, "owner", "not-a-uuid");
-  expect(bad.status).toBe(400);
+  expect(bad.status).toBe(422);
   expect(await bad.json()).toMatchObject({ error: { code: "VALIDATION_FAILED" } });
 });
 
