@@ -188,3 +188,10 @@
 - Question: 06#scr-A-03 requires "→ /login พร้อม toast 'ตั้งรหัสผ่านแล้ว'", and `src/lib/query.ts` (T-0016) reports failed queries/mutations with `toast.error`, but no layout renders sonner's `<Toaster />`, so no toast is ever visible. A toast that must survive navigation to another route also needs a Toaster above both routes. No task card owns the root or `(auth)` layout.
 - Options: (a) spec-change mounting the existing shadcn `<Toaster />` once in `apps/web/app/layout.tsx`; (b) mount it per route-group layout in later shell tasks.
 - Answer (2026-10-02): user approved option (a) in chat. Screens call `toast.success(...)` from `sonner` before navigating.
+
+## Q-0022 · R-25 per-kind MIME/size table for all `file_kind` values
+- Status: answered
+- Task: T-0037 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 04#R-25 step 2 names categories only (slips/general photos 2 MB, vaccine documents 5 MB, stay_update video 20 MB ≤ 30 s, signature PNG 500 KB, CSV 2 MB), while `file_kind` has 14 values. Which MIME types and limits apply to consent_pdf, proof, feedback, logo, room_photo, service_photo, and to stay_update photos? Is 1 MB 10^6 or 2^20 bytes?
+- Evidence: 02#tbl-file_object allows image/jpeg, image/png, image/webp, video/mp4, application/pdf, text/csv; R-25 vectors cover after/stay_update/slip/vaccine_proof only.
+- Answer (2026-10-02): user approved the proposed table in chat. Images (jpeg/png/webp) ≤ 2 MB: pet_profile, before, after, slip, logo, room_photo, service_photo, feedback, proof · stay_update: images ≤ 2 MB or video/mp4 ≤ 20 MB · vaccine_proof: images or application/pdf ≤ 5 MB · signature: image/png ≤ 500 KB · import_csv: text/csv ≤ 2 MB · consent_pdf: application/pdf ≤ 5 MB · 1 MB = 1,000,000 bytes, 1 KB = 1,000 bytes · the 30-second video limit is not checkable from validateUpload's input and is enforced client-side. A human may later copy this table into 04#R-25 via spec-change.
