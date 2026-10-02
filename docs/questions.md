@@ -292,6 +292,14 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-customers.blacklist validation column; `packages/server/src/audit.ts` writeAudit reason check.
 - Work: T-0156 requires the reason in both directions (`REASON_REQUIRED`), so the audit trail always has a reason. If unblacklisting should be allowed without one, audit.ts (outside T-0156) needs an exception for `customer.blacklist` with `after.blacklisted = false`.
 
+## Q-0035 · T-0155: missing LINE channel and non-customer skipped recipients
+- Status: answered
+- Task: T-0155 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: May line.status return NOT_FOUND when the tenant-checked branch has no line_channel? Should line.skipped include every skipped notification, with recipientName nullable for a non-customer recipient or unavailable owner_profile, or only customer messages?
+- Evidence: 05#ep-line.status/#dto-LineStatus require line_channel fields but do not define the unconnected branch case. 05#dto-SkippedMessageItem defines recipientName from owner_profile.first_name, while notification supports staff/platform_admin recipients as well. 04#R-18 defines customer push quota skips.
+- Proposed decision: NOT_FOUND for a missing channel; include all skipped rows of the branch and return nullable recipientName for rows without a customer owner. No new endpoint, error code, table or permission. Asked in the user chat; no dependent behavior implemented before the answer.
+- Answer (2026-10-02): user approved the proposed decision in chat. Missing channel returns NOT_FOUND; include all branch-scoped skipped rows and return null recipientName when no tenant customer owner can be resolved.
+
 ## Q-0036 · T-0111 cancelSummary wording
 - Status: answered
 - Task: T-0111 · Asked by: agent (codex) · Date: 2026-10-02
