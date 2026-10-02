@@ -119,7 +119,7 @@
    "code": "IN_USE",
    "http": 409,
    "messageTh": "ใช้งานอยู่ ลบไม่ได้ — ให้ปิดใช้งานแทน",
-   "when": "FK violation 23503 ตอนลบ"
+   "when": "FK violation 23503 ตอนลบ หรือ service ตรวจเองเมื่อ FK เป็น cascade/set null (เช่น sizeTiers.set — Q-0029)"
   },
   {
    "code": "SIZE_TIER_OVERLAP",

@@ -51,7 +51,7 @@ ep("staffMe.pushUnsubscribe", "DELETE", f"{ST}/me/push-subscriptions", "staff", 
    [F("endpoint", "string", True, "web_push_subscription.endpoint", "")])
 ep("staffMe.commissions", "GET", f"{ST}/me/commissions", "staff", ALL, "US-09-05", "ค่ามือของฉัน",
    query=[F("from", "date", True, "", ""), F("to", "date", True, "", "≤ 93 วัน")], res="CommissionReport", rules="R-13",
-   effects=["กรองเฉพาะ staff_user_id = ผู้ใช้ปัจจุบัน"])
+   effects=["กรองเฉพาะ staff_user_id = ผู้ใช้ปัจจุบัน และสาขาของ session", "from..to = วันท้องถิ่นของสาขา (รวมทั้งสองวัน); ยอดคิดตาม CommissionReport (Q-0030)"])
 
 # =========================================================== FILES
 for aud, base, roles in (("staff", ST, ALL), ("customer", LF, "")):
@@ -238,7 +238,12 @@ ep("sizeTiers.set", "PUT", f"{ST}/size-tiers", "staff", O, "US-04-02", "ตั�
    [F("species", "enum:species", True, "size_tier.species", "dog | cat"), F("tiers[].id", "uuid", False, "size_tier.id", ""),
     F("tiers[].code", "string", True, "size_tier.code", "^[A-Z]{1,4}$ ไม่ซ้ำ"), F("tiers[].labelTh", "string", True, "size_tier.label_th", "1–30"),
     F("tiers[].minWeightGrams", "int", True, "size_tier.min_weight_grams", ""), F("tiers[].maxWeightGrams", "int", False, "size_tier.max_weight_grams", "> min; แถวสุดท้าย null")],
-   res="SizeTierItem[]", rules="R-01", errors="SIZE_TIER_OVERLAP,IN_USE", effects=["ต้องต่อเนื่องไม่ทับไม่เว้น เริ่มที่ 0"])
+   res="SizeTierItem[]", rules="R-01", errors="SIZE_TIER_OVERLAP,IN_USE",
+   effects=["ต้องต่อเนื่องไม่ทับไม่เว้น เริ่มที่ 0",
+            "แทนที่ทั้งชุดของ species นี้: tiers[].id = แก้แถวเดิม, ไม่มี id = สร้างใหม่, แถวเดิมที่ไม่ส่งมา = ลบ; tiers[] ว่าง = ล้าง tier ของ species นี้ (Q-0029)",
+            "ไม่ต่อเนื่อง → SIZE_TIER_OVERLAP details.rows = index ใน tiers[] ที่ส่งมา: แถว min น้อยสุดที่ไม่เริ่ม 0, แถวที่ min ≠ max ของแถวก่อน (เว้น/ทับ/แถวก่อนไม่มีเพดาน), แถวสุดท้ายที่มีเพดาน (Q-0029)",
+            "ลบ tier ที่ groom_appointment (ทุกสถานะ) หรือ package_template อ้างอิง → IN_USE ไม่เปลี่ยนอะไร; ราคา service_price/room_rate/daycare_rate ของ tier ที่ลบได้ถูกลบตาม cascade (Q-0029)",
+            "sort_order = ลำดับตามน้ำหนัก; ตอบเฉพาะ tier ของ species นี้ เรียงตาม sort_order"])
 ep("services.list", "GET", f"{ST}/services", "staff", ALL, "US-04-01", "บริการ",
    query=[F("scope", "enum:service_scope", False, "", ""), F("includeArchived", "bool", False, "", "")], res="ServiceItem[]")
 ep("services.create", "POST", f"{ST}/services", "staff", O, "US-04-01, US-04-04, US-06-06", "เพิ่มบริการ/add-on",

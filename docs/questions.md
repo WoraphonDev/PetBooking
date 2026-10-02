@@ -249,14 +249,14 @@ Status: open
 - Answer (2026-10-02): user approved in chat. Both endpoints respond `200 { affected: AffectedServiceItem[] }` (empty array when nothing overlaps; nothing is cancelled or moved automatically). New DTO 05#dto-AffectedServiceItem: `module` (service_scope), `bookingId`, `bookingNo`, `itemId` (groom_appointment/stay/daycare_visit id), `petName`, `customerName`, `startsAt` (grooming instant, else null), `date` (branch-local date). Only unfinished items count: grooming scheduled/checked_in/in_progress overlapping `[starts_at, ends_at)` for scope all/grooming; stays reserved/checked_in with a night whose local day overlaps for scope all/hotel; daycare reserved/checked_in whose local visit day overlaps for scope all/daycare. timeOff.create returns only that groomer's unfinished grooming appointments. T-0046 owns the DTO file; T-0108 now depends on T-0046.
 
 ## Q-0029 · sizeTiers.set: when is `IN_USE`, and what does `SIZE_TIER_OVERLAP` return for row highlighting?
-- Status: answered (implemented in T-0058; spec text not yet updated — candidate for a follow-up spec-change)
+- Status: spec-changed (pending merge of `spec-change-q0029-q0030`; implemented in T-0058)
 - Task: T-0058 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 05#ep-sizeTiers.set lists `IN_USE`, whose 05 §1 source is "FK violation 23503 ตอนลบ", but every FK to size_tier is `on delete cascade` (service_price, room_rate, daycare_rate) or `set null` (package_template, groom_appointment), so the database never raises it. Which references block removing a tier? Also 06#scr-C-38 says "SIZE_TIER_OVERLAP ไฮไลต์แถว" but no `details` shape is defined.
 - Evidence: 05#ep-sizeTiers.set; 05 §1 `IN_USE`; 02 FKs to size_tier; 06#scr-C-38 action table.
 - Answer (2026-10-02): user approved in chat. Removing (omitting) a tier referenced by any groom_appointment (any status, to keep history) or package_template → `IN_USE`; prices/rates of a removed tier cascade as designed. `SIZE_TIER_OVERLAP` carries `details: { rows: number[] }` = indexes into the submitted `tiers[]`: the lowest-min row when it does not start at 0, a row whose min ≠ the previous row's max (gap/overlap, or previous row open-ended), and the last row when it has a ceiling. An empty `tiers[]` is allowed (clears the species).
 
 ## Q-0030 · CommissionReport: which entries fall in from..to, and how is "earned − reversed" applied?
-- Status: answered (implemented in T-0223; T-0240 uses the same DTO; spec text not yet updated — candidate for a follow-up spec-change)
+- Status: spec-changed (pending merge of `spec-change-q0029-q0030`; implemented in T-0223; T-0240 uses the same DTO)
 - Task: T-0223 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 05#dto-CommissionReport defines `jobs` = count earned, `baseSatang` = Σ base, `amountSatang` = Σ amount "(earned − reversed)", but not which timestamp places an entry in from..to (earned_at vs reversed_at) nor how a reversal of an entry earned in an earlier period is reported.
 - Evidence: 05#dto-CommissionReport, 05#ep-staffMe.commissions, 02#tbl-commission_entry (earned_at, reversed_at, status), R-13 step 6.
