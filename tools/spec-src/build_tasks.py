@@ -290,8 +290,11 @@ INF("INF-DEPLOY", "Deploy pipeline ตาม ADR-002 (staging + production) + mi
     ["(staging) curl /api/health ได้ ok"], deps=["INF-WEB", "INF-DB-CLIENT", "H-ADR-INFRA"], read=["docs/decisions/ADR-002-hosting.md", "docs/spec/01-architecture.md §6"], hr=True,
     notes=["ต้องมีมนุษย์ใส่ secret และกด deploy ครั้งแรก — agent เตรียมไฟล์และคู่มือเท่านั้น"])
 INF("INF-MON", "Monitoring: health (db ping), structured logs, error reporting, uptime check", "M0", "S", "US-13-09",
-    ["packages/server/src/log.ts", "packages/server/src/services/health/**", "apps/web/app/api/health/route.ts", "apps/web/instrumentation.ts", "docs/ops/monitoring.md"],
-    ["log.ts: JSON log (requestId, orgId, key, ms, status) — ห้าม log body/secret", "health: SELECT 1 → db ok/error", "SENTRY_DSN มีค่า → ส่ง error (optional dependency ระบุใน card ถ้าใช้)",
+    ["packages/server/src/log.ts", "packages/server/src/services/health/**", "packages/server/test/services/health/**", "packages/server/package.json",
+     "apps/web/app/api/health/route.ts", "apps/web/test/api/health.test.ts", "apps/web/instrumentation.ts", "docs/ops/monitoring.md"],
+    ["log.ts: JSON log (requestId, orgId, key, ms, status) — ห้าม log body/secret", "health: SELECT 1 → db ok/error; route ต่อกับ service (db error → 503, ok: false) และแก้ `apps/web/test/api/health.test.ts` ให้ตรง 05#ep-health",
+     "เทสต์ service อยู่ที่ `packages/server/test/services/health/**` (ใช้ vitest config เดิมของ server — ไม่สร้าง config แยก); `packages/server/package.json` แก้ได้เฉพาะเพิ่ม export entry ที่ route ต้องใช้",
+     "error reporting ใน MVP = `log.ts` level error ไป stdout ของ hosting เท่านั้น — ไม่เพิ่ม SDK/dependency; env `ERROR_REPORT_DSN` (01 §6) สงวนไว้ ยังไม่ใช้ (Q-0012)",
      "docs/ops/monitoring.md: ตั้ง uptime monitor ฟรีเรียก /api/health ทุก 5 นาที แจ้งเตือนทางอีเมล/LINE ของทีม"],
     ["pnpm --filter @app/server test -- health"], deps=["INF-HTTP"], read=["docs/spec/05-api.md#ep-health"])
 
@@ -429,6 +432,10 @@ def api_task(ms, gkey, items):
             # export map, and resulting lockfile importer update.
             allowed += ["apps/web/package.json", "packages/server/package.json", "pnpm-lock.yaml"]
             deliver += ["`apps/web/package.json`, `packages/server/package.json`, `pnpm-lock.yaml`: workspace dependency and server entry-point exports required by the route"]
+        if e["key"] == "auth.me":
+            # Q-0014: the shared StaffMe contract needs nullable email; owned by the auth.me task.
+            allowed += ["packages/contracts/src/dto/staff-me.ts", "packages/contracts/test/**"]
+            deliver += ["`packages/contracts/src/dto/staff-me.ts`: `staff.email` → `z.string().email().nullable()` (05#dto-StaffMe, Q-0014)"]
         read.append(f"docs/spec/05-api.md#ep-{e['key']}")
         deliver += [f"`{cf}`: `{req}`" + (f", `{qry}`" if e["query"] else "") + f", `{res}` (ฟิลด์ตามตาราง endpoint ทีละช่อง)",
                     f"`{sf}`: `export async function {service_fn(e)}(ctx, input)`", f"`{rf}`: `export const {e['method']} = with{'Staff' if e['auth']=='staff' else 'Customer' if e['auth']=='customer' else 'Admin' if e['auth']=='admin' else 'Public'}(\"{e['key']}\", …, {service_fn(e)})`"]

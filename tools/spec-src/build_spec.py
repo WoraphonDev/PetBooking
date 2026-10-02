@@ -337,7 +337,7 @@ L = ["# 05 — API Contract (REST, field-level)\n",
      "| Support mode | session ที่มี `support_access_log_id` → ทุก method ที่ไม่ใช่ GET ตอบ `SUPPORT_READ_ONLY` |\n",
      "## 1. Error codes\n", "| code | HTTP | ข้อความ (th) | เมื่อไร |", "|---|---|---|---|"]
 for c, h, m, wh in ERRORS: L.append(f"| `{c}` | {h} | {md(m)} | {md(wh)} |")
-L.append("\n## 2. Response DTOs\n\nแต่ละฟิลด์ระบุแหล่งข้อมูล — `table.column` = อ่านตรงจากคอลัมน์ (ชนิด/ความหมายตาม 02), `calc:` = คำนวณ, `dto:` = ซ้อน DTO อื่น\n")
+L.append("\n## 2. Response DTOs\n\nแต่ละฟิลด์ระบุแหล่งข้อมูล — `table.column` = อ่านตรงจากคอลัมน์ (ชนิด/ความหมายตาม 02), `calc:` = คำนวณ, `dto:` = ซ้อน DTO อื่น · คอลัมน์ที่ 02 ระบุว่า null ได้ → ฟิลด์ใน DTO เป็น `T | null` (zod `.nullable()`) เสมอ\n")
 for name, d in DTOS.items():
     L.append(f"\n<a id=\"dto-{name}\"></a>\n\n### {name}\n\n{d['desc']}\n\n| field | source |\n|---|---|")
     for fn_, src in d["fields"]: L.append(f"| `{fn_}` | {md(src)} |")
