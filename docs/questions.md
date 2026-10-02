@@ -232,3 +232,11 @@
 - Question: 04#R-05 declares `SlipQr = { bankCode; transRef; crcValid } | null` and step 3 says a CRC mismatch is still parsed with `crcValid = false`, but the reference implementation (`tools/spec-src/rules_impl.py` r05_parse_slip_qr) returns `null` on a CRC mismatch and never emits `crcValid`; vector 3 ("tampered CRC is flagged, still parsed") expects `null`. The vector runner uses `toStrictEqual`, so no implementation satisfies both.
 - Evidence: 04#R-05 signature + step 3; docs/spec/vectors/R-05.parseSlipQr.json cases 1–3; rules_impl.py.
 - Answer (2026-10-02): user approved following the 04 text in chat. The reference implementation now returns `{ bankCode, transRef, crcValid }` and parses a CRC mismatch with `crcValid = false` (bank CRC formats are only confirmed in SP-02; rejecting would lose duplicate detection for a whole bank). Regenerated R-05.parseSlipQr vectors and the 04 vector table; non-slip and garbage payloads still return `null`.
+
+## Q-0027 · T-0050 search.quick requires a migration outside its allowed paths
+
+Status: open
+- Task selection (2026-10-02): T-0050 dependencies T-0007 and T-0014 are merged, but implementation has not started.
+- Evidence: `docs/spec/05-api.md#ep-search.quick` requires pg_trgm indexes in a US-03-10 migration. No pg_trgm extension or trigram index exists in the merged schema/migrations; T-0050 allows only its endpoint/service/tests/route and two DTO files, not schema or migration files.
+- Question: assign a prerequisite task for the specified pg_trgm indexes, or approve a spec change expanding T-0050's dependencies and migration/schema scope. Clarify the indexed columns and migration handling for PGlite.
+- Work: search implementation paused under AGENTS.md; selected independent T-0106 instead. No merged migration or read-only spec changed.
