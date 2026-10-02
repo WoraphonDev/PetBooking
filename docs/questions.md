@@ -166,6 +166,29 @@
 - Work: implementation paused before adding production code. The tests-first drafts are preserved locally outside the PR; they intentionally fail because the contracts/services do not exist yet. This PR changes only this question and T-0022's Status log. Human approval is required before editing the task generator/card scope; no failing tests are included in the PR.
 - Answer (2026-10-02): user approved this split in the current chat. Keep T-0022 for admin.login, retaining identity-schema/new-migration scope and human review; create a separate generated card for admin.orgs/admin.updateOrg and OrgListItem with T-0035 as a dependency. Update the task generator, stable ID registry, generated cards and indexes in a prerequisite spec-change PR; endpoint implementation follows after it merges.
 
+## Q-0019 · T-0023 owner invite `staff_invite.created_by` when the inviter is a platform admin
+- Status: answered
+- Task: T-0023 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 02#tbl-staff_invite requires `created_by` (NOT NULL, FK staff_user.id), but admin.createOrg's owner invite is created by a platform admin, who has no staff_user row. What should `created_by` reference?
+- Evidence: 05#ep-admin.createOrg requires an owner invite in the creation transaction; 02#tbl-staff_invite.created_by is NOT NULL → staff_user.id; platform_admin is a separate table.
+- Options: (a) reference the new owner's own staff_user.id; (b) spec-change making created_by nullable via a new migration.
+- Answer (2026-10-02): user approved option (a) in chat. The owner invite sets `created_by` = the new owner's staff_user.id. No schema change.
+
+## Q-0020 · apps/web Vitest cannot transform .tsx (screen component tests)
+- Status: spec-changed (pending merge of `spec-change-q0020-web-vitest-jsx`)
+- Task: T-0028 (affects every ui card that requires `apps/web/test/screens/*.test.tsx`) · Asked by: agent (claude) · Date: 2026-10-02
+- Question: Screen cards require component tests in `apps/web/test/screens/<id>.test.tsx`, but `apps/web` has no Vitest config and its tsconfig uses `jsx: "preserve"` (required by Next.js). Vite refuses to parse any .tsx test or imported component ("make sure to not set jsx to preserve"). The fix is outside every ui card's allowed_paths.
+- Evidence: `pnpm --filter @app/web test -- screens/a-01` fails at import analysis; a `@jsxRuntime` pragma does not help. `apps/web/src/components/ui/*` also import via the `@/` alias, which Vitest does not resolve without config.
+- Options: (a) prerequisite spec-change adding `apps/web/vitest.config.ts` (oxc JSX automatic runtime, `@/` → `src` alias, same default include plus .tsx) with no new dependency; (b) add the config inside each ui task PR (fails check-task-scope).
+- Answer (2026-10-02): user approved option (a) in chat. Screen tests render with `react-dom/server` and mocks (no DOM library is in the dependency list).
+
+## Q-0021 · No mounted `<Toaster />` for success/error toasts
+- Status: spec-changed (pending merge of `spec-change-q0021-root-toaster`)
+- Task: T-0030 (affects every screen with a toast, and the error toasts of `src/lib/query.ts`) · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 06#scr-A-03 requires "→ /login พร้อม toast 'ตั้งรหัสผ่านแล้ว'", and `src/lib/query.ts` (T-0016) reports failed queries/mutations with `toast.error`, but no layout renders sonner's `<Toaster />`, so no toast is ever visible. A toast that must survive navigation to another route also needs a Toaster above both routes. No task card owns the root or `(auth)` layout.
+- Options: (a) spec-change mounting the existing shadcn `<Toaster />` once in `apps/web/app/layout.tsx`; (b) mount it per route-group layout in later shell tasks.
+- Answer (2026-10-02): user approved option (a) in chat. Screens call `toast.success(...)` from `sonner` before navigating.
+
 ## Q-0022 · T-0025 server guard scope and admin login boundary
 - Status: answered (spec-change pending merge)
 - Task: T-0025 · Asked by: agent (codex) · Date: 2026-10-02
