@@ -346,6 +346,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: a human (legal owner) supplies the three markdown files; the card gains `apps/web/content/legal/**` (or the files land first in a separate PR) and lists the markdown dependency (or the page renders plain paragraphs without one). `LEGAL_DOCS` can live in `components/p-02/`.
 - Work: none on T-0317 until the content exists.
 
+## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
+- Status: answered for T-0147; spec follow-up open
+- Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
+- Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
+
 ## Q-0046 · AD-06: shop name and date range for admin.analytics
 - Status: answered (implemented in T-0315)
 - Task: T-0315 · Asked by: agent (claude) · Date: 2026-10-03
