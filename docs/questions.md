@@ -325,6 +325,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bookings.balanceLink mentions "send=true" but has no request table, names no error for "ต้องมี bill open", and says only "url = LIFF /pay/{billId}".
 - Answer (2026-10-02): user chose in chat. Body `{ send?: boolean }` (default false = only return the link). No bill on the booking, or the bill is paid/void → `BILL_NOT_OPEN` (409). `amountSatang = bill.total_satang − bill.paid_satang`. `url = APP_BASE_URL + /liff/{branch.booking_slug}/pay/{billId}` (route of L-14; 01 §6 APP_BASE_URL is the base for links in messages). send=true enqueues `customer.balance_link` to booking.customer_id with `amount` formatted by R-31 formatTHB(always).
 
+## Q-0038 · T-0090 annual holidays editor and loader
+- Status: answered
+- Task: T-0090 · Asked by: agent (codex) · Date: 2026-10-02
+- Evidence: admin.holidays replaces the entire year, while AD-07 had one editable day and no read API. Saving that single row could remove existing holidays.
+- Answer: user approved expanding the spec to edit the full annual list and load existing rows before saving. Add admin.listHolidays GET on the same year path, returning date/nameTh rows sorted by date, and a year selector plus add/remove controls. T-0090 owns the loader, DTO and client mapping; existing merged dependencies are unchanged. Save is disabled until loading succeeds. Spec and implementation are separate small PRs; merge the spec prerequisite first.
+
 ## Q-0044 · A-04 shows shop name and role but no endpoint loads them
 - Status: open (T-0074 blocked)
 - Task: T-0074 · Asked by: agent (claude) · Date: 2026-10-02
@@ -358,3 +364,9 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
 - Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
+
+## Q-0046 · AD-06: shop name and date range for admin.analytics
+- Status: answered (implemented in T-0315)
+- Task: T-0315 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 06#scr-AD-06 shows `organization.name` but 05#dto-PilotAnalytics returns only `orgId`; 05#ep-admin.analytics requires `from`/`to` but the 06 table has no date inputs.
+- Answer (2026-10-03): user chose in chat. The screen also loads the existing `admin.orgs` list and maps orgId → name ("—" when missing); no API/DTO change. It requests the 7 Bangkok days ending today (to = today Asia/Bangkok, from = to − 6, inclusive per Q-0037) and shows that range under the title.

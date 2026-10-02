@@ -767,3 +767,6 @@ ep("admin.analytics", "GET", f"{AD}/analytics/pilot", "admin", "", "US-13-12", "
    res="PilotAnalytics")
 ep("admin.holidays", "PUT", f"{AD}/public-holidays/{{year}}", "admin", "", "US-13-03", "ตั้งวันหยุดราชการประจำปี",
    [F("days[].date", "date", True, "public_holiday.holiday_date", ""), F("days[].nameTh", "string", True, "public_holiday.name_th", "")])
+
+# Q-0038: AD-07 loads the complete year before replacing it.
+ep("admin.listHolidays", "GET", f"{AD}/public-holidays/{{year}}", "admin", "", "US-13-03", "โหลดวันหยุดราชการทั้งปี", res="PublicHoliday[]", effects=["year เป็น ค.ศ. 1000–9999; อ่านเฉพาะปีนั้น เรียงตาม date; ไม่มีข้อมูลตอบ []"])
