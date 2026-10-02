@@ -1553,6 +1553,17 @@ Dashboard วันนี้
 | `orgs[].reportCardsSent` | calc |
 | `orgs[].billsClosed` | calc |
 
+<a id="dto-PublicHoliday"></a>
+
+### PublicHoliday
+
+วันหยุดราชการ
+
+| field | source |
+|---|---|
+| `date` | public_holiday.holiday_date |
+| `nameTh` | public_holiday.name_th |
+
 ## 3. Endpoints
 
 | Key | Method | Path | สิทธิ์ | Stories |
@@ -1771,6 +1782,7 @@ Dashboard วันนี้
 | [`admin.resolveDataRequest`](#ep-admin.resolveDataRequest) | POST | `/api/v1/admin/data-requests/{requestId}/resolve` | platform admin | US-13-08 |
 | [`admin.analytics`](#ep-admin.analytics) | GET | `/api/v1/admin/analytics/pilot` | platform admin | US-13-12 |
 | [`admin.holidays`](#ep-admin.holidays) | PUT | `/api/v1/admin/public-holidays/{year}` | platform admin | US-13-03 |
+| [`admin.listHolidays`](#ep-admin.listHolidays) | GET | `/api/v1/admin/public-holidays/{year}` | platform admin | US-13-03 |
 
 ### กลุ่ม `auth`
 
@@ -6155,4 +6167,18 @@ Request body:
 | `days[].nameTh` | string | ✓ | public_holiday.name_th |  |
 
 Response: `204` (No Content)
+
+
+<a id="ep-admin.listHolidays"></a>
+
+#### admin.listHolidays
+
+**GET `/api/v1/admin/public-holidays/{year}`** — โหลดวันหยุดราชการทั้งปี  
+สิทธิ์: platform admin · Stories: US-13-03
+
+Response: `PublicHoliday[]`
+
+
+ผลที่ต้องเกิด:
+- year เป็น ค.ศ. 1000–9999; อ่านเฉพาะปีนั้น เรียงตาม date; ไม่มีข้อมูลตอบ []
 
