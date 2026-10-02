@@ -173,3 +173,11 @@
 - Evidence: 05#ep-admin.createOrg requires an owner invite in the creation transaction; 02#tbl-staff_invite.created_by is NOT NULL → staff_user.id; platform_admin is a separate table.
 - Options: (a) reference the new owner's own staff_user.id; (b) spec-change making created_by nullable via a new migration.
 - Answer (2026-10-02): user approved option (a) in chat. The owner invite sets `created_by` = the new owner's staff_user.id. No schema change.
+
+## Q-0020 · apps/web Vitest cannot transform .tsx (screen component tests)
+- Status: spec-changed (pending merge of `spec-change-q0020-web-vitest-jsx`)
+- Task: T-0028 (affects every ui card that requires `apps/web/test/screens/*.test.tsx`) · Asked by: agent (claude) · Date: 2026-10-02
+- Question: Screen cards require component tests in `apps/web/test/screens/<id>.test.tsx`, but `apps/web` has no Vitest config and its tsconfig uses `jsx: "preserve"` (required by Next.js). Vite refuses to parse any .tsx test or imported component ("make sure to not set jsx to preserve"). The fix is outside every ui card's allowed_paths.
+- Evidence: `pnpm --filter @app/web test -- screens/a-01` fails at import analysis; a `@jsxRuntime` pragma does not help. `apps/web/src/components/ui/*` also import via the `@/` alias, which Vitest does not resolve without config.
+- Options: (a) prerequisite spec-change adding `apps/web/vitest.config.ts` (oxc JSX automatic runtime, `@/` → `src` alias, same default include plus .tsx) with no new dependency; (b) add the config inside each ui task PR (fails check-task-scope).
+- Answer (2026-10-02): user approved option (a) in chat. Screen tests render with `react-dom/server` and mocks (no DOM library is in the dependency list).
