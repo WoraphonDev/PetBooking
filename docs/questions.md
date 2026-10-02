@@ -285,6 +285,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed fix (outside T-0125 allowed_paths): let `requireRole` also accept `ctx.actor.type === "admin" && ctx.supportAccessLogId && roles.includes(ctx.actor.role)`. Writes are already blocked earlier by `SUPPORT_READ_ONLY`. That needs a small card that owns permissions.ts and adds a test.
 - Work: T-0125 implemented supportStart/End without touching permissions.ts.
 
+## Q-0050 · T-0073: Recharts lockfile exceeds the small-PR budget
+- Status: open (awaiting user answer)
+- Task: T-0073 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: the card explicitly names Recharts; installing it changes package/lockfile by 303 lines, before approximately 123 lines of chart components/tests.
+- Proposed decision: approve a size exception for this card; alternatively split dependency installation into a separately authorized card. Implementation is preserved and publication awaits the answer, as AGENTS.md rule 8 requires.
+
+
 ## Q-0034 · customers.blacklist: unblacklisting without a reason
 - Status: open
 - Task: T-0156 · Asked by: agent (claude) · Date: 2026-10-02
