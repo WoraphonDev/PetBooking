@@ -412,6 +412,17 @@ for e in EP:
         GK_MS[gk] = ms
         API_GROUPS.setdefault((ms, gk), []).append((e, None, None))
 
+# Q-0018: preserve the stable admin~0 key/ID for login and split only its
+# organization endpoints. Leave every other auto-group and stable task ID intact.
+admin_core = API_GROUPS[("M0", "admin~0")]
+assert [item[0]["key"] for item in admin_core] == ["admin.login", "admin.orgs", "admin.updateOrg"]
+API_GROUPS = collections.OrderedDict(
+    entry
+    for group, items in API_GROUPS.items()
+    for entry in ([(group, items[:1]), (("M0", "admin-organizations"), items[1:])]
+                  if group == ("M0", "admin~0") else [(group, items)])
+)
+
 route_owner = {}   # route file -> task key (first)
 DTO_OWNER = {}
 def api_task(ms, gkey, items):
@@ -486,7 +497,7 @@ def api_task(ms, gkey, items):
     size = max((ep_size(e) for e in eps), key=lambda s: "SML".index(s))
     if len(eps) > 1 and size == "S": size = "M"
     hr = any(e["key"].split(".")[0] in ("auth", "bills", "slips", "refunds", "admin", "liff", "webhook", "customers") and (e["audit"] or e["key"] in COMPLEX) for e in eps) or \
-         any(e["key"] in ("bookings.create", "bookings.cancel", "liff.createBooking", "liff.session", "liff.register", "webhook.line", "bills.close", "bills.void", "bills.addPayment") for e in eps)
+         any(e["key"] in ("admin.login", "bookings.create", "bookings.cancel", "liff.createBooking", "liff.session", "liff.register", "webhook.line", "bills.close", "bills.void", "bills.addPayment") for e in eps)
     task(tkey, title, ms, "api", size, " ".join(stories), allowed=allowed, read=list(dict.fromkeys(read)), deliver=deliver, steps=steps,
          done=list(dict.fromkeys(done_tests)) + [CONF, VERIFY], deps=list(dict.fromkeys(deps)), human_review=hr,
          artifacts={"endpoints": keys, "tests": tests})

@@ -139,7 +139,7 @@
 - Answer: user explicitly authorized a separate spec-change PR on 2026-10-02 to allow only this exact T-0018 health-test relocation. All other renames remain forbidden, and source/destination must still match the card scope. PR #33 merged on 2026-10-02. T-0018 implementation on t-0018-health-completion incorporates the merged guard change.
 
 ## Q-0016 · T-0022 admin login lockout storage and response contract
-- Status: answered (spec-change pending merge)
+- Status: spec-changed (PR #37 merged)
 - Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: How should admin.login persist R-24 failed attempts and lock expiry, and which fields belong inside its `{ admin }` response?
 - Evidence: 05#ep-admin.login requires INVALID_CREDENTIALS and ACCOUNT_LOCKED under R-24. R-24 uses staff_user.failed_login_count/locked_until; 02#tbl-platform_admin and the merged identity schema have neither column. The endpoint says only `object {admin}`, with no admin DTO or field list.
@@ -149,10 +149,19 @@
 - Answer (2026-10-02): user approved the proposed decision in this chat. Add the two persistent platform_admin lockout columns and apply R-24 unchanged; login response is `{ admin: { id, email, displayName } }`. The approved spec-change includes the additive schema migration so check:doc remains consistent, and expands T-0022 schema/new-migration paths. Service implementation waits for the spec-change to merge.
 
 ## Q-0017 · T-0022 organization summary selection, empty relations and status audit
-- Status: answered (spec-change pending merge)
+- Status: spec-changed (PR #37 merged)
 - Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: Which owner's email should OrgListItem return when a shop has multiple owners; what should lineStatus return before any line_channel exists; what is lastActivityAt when there are no bookings; and which audit action records admin.updateOrg?
 - Evidence: 05#dto-OrgListItem specifies staff_user.email, line_channel.status and max booking.created_at without selection/empty-result rules. 05 §2 already makes ownerEmail nullable because staff_user.email is nullable; that rule does not select one of multiple owners or specify the absence of a non-null line_channel.status row. 02 allows multiple staff with owner role, and admin.createOrg does not create a line_channel. AGENTS.md requires audit for permission-sensitive actions, while R-27's action list has no organization status action and 05#ep-admin.updateOrg gives none.
 - Proposed decision (approved in the answer below): select the owner with the earliest created_at (id ascending as tie-breaker); return lineStatus = null when no line_channel exists and lastActivityAt = null when there are no bookings; add audit action `organization.status_change` with before/after status in the same transaction. Publish these decisions through spec-change and authorize any required audit contract/schema changes or a prerequisite task. Implementation follows the generated spec after the spec-change merges.
 - Initial blocker: admin.orgs and admin.updateOrg shared the unresolved DTO. The approved spec-change now defines the selection, nullability and audit action; endpoint implementation remains pending.
 - Answer (2026-10-02): user approved the proposed decision in this chat. Select owner by created_at ASC, id ASC; ownerEmail remains nullable; lineStatus and lastActivityAt are nullable for absent data. Audit action is `organization.status_change` with before/after status in the same transaction. Generated dependencies require the existing T-0035 audit writer (and its T-0034 state-table prerequisite) before T-0022. The endpoint records an audit only when status changes.
+
+## Q-0018 · T-0022 exceeds the small-PR task boundary
+- Status: answered (task-split PR pending merge)
+- Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: May the generated task be split into admin.login and a separate card for admin.orgs/admin.updateOrg before implementation?
+- Evidence: PR #37 and prerequisites T-0005/T-0007/T-0035 are merged. Tests-first planning produced 290 formatted lines across the three PGlite integration test files, covering persisted lockout, safe login fields/cookie/session lifetime, organization DTO selection/nullability, authorization, suspension and transactional audit rollback. Contracts, services and routes would add approximately 150–200 lines, taking the combined implementation above the 400-line boundary in AGENTS.md golden rule 8.
+- Proposed split: keep T-0022 for admin.login (contract, service, route and integration test), retaining its approved identity-schema scope; assign a new task ID to admin.orgs/admin.updateOrg and the shared OrgListItem DTO, with T-0035 as a dependency. Both task cards must retain their endpoint-specific acceptance checks and pnpm verify. No product behavior or specification changes are proposed.
+- Work: implementation paused before adding production code. The tests-first drafts are preserved locally outside the PR; they intentionally fail because the contracts/services do not exist yet. This PR changes only this question and T-0022's Status log. Human approval is required before editing the task generator/card scope; no failing tests are included in the PR.
+- Answer (2026-10-02): user approved this split in the current chat. Keep T-0022 for admin.login, retaining identity-schema/new-migration scope and human review; create a separate generated card for admin.orgs/admin.updateOrg and OrgListItem with T-0035 as a dependency. Update the task generator, stable ID registry, generated cards and indexes in a prerequisite spec-change PR; endpoint implementation follows after it merges.

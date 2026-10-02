@@ -2,7 +2,7 @@
 
 > สร้างจาก `tools/spec-src/build_tasks.py` · การ์ดแต่ละใบ: `docs/tasks/<ID>.md` · **ห้ามเริ่ม task ที่ depends_on ยังไม่ merge**
 
-## M0 — รากฐาน (Walking skeleton) (40 tasks)
+## M0 — รากฐาน (Walking skeleton) (41 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
@@ -32,8 +32,9 @@
 | [T-0019](T-0019.md) | 6 | api | L | ⚠️ | API auth.staffLogin | T-0007 T-0005 |
 | [T-0020](T-0020.md) | 7 | api | M |  | API auth.staffLogout, auth.me, auth.resetRequest | T-0007 T-0019 T-0010 |
 | [T-0021](T-0021.md) | 6 | api | S |  | API auth.resetConfirm | T-0007 T-0005 |
-| [T-0022](T-0022.md) | 6 | api | M | ⚠️ | API admin.login, admin.orgs, admin.updateOrg | T-0007 T-0005 T-0035 |
-| [T-0023](T-0023.md) | 7 | api | L | ⚠️ | API admin.createOrg | T-0007 T-0022 |
+| [T-0022](T-0022.md) | 6 | api | M | ⚠️ | API admin.login | T-0007 T-0005 |
+| [T-0319](T-0319.md) | 6 | api | M | ⚠️ | API admin.orgs, admin.updateOrg | T-0007 T-0035 |
+| [T-0023](T-0023.md) | 7 | api | L | ⚠️ | API admin.createOrg | T-0007 T-0319 |
 | [T-0024](T-0024.md) | 6 | notify | M |  | Notification templates (staff, M0): password_reset | T-0010 T-0011 |
 | [T-0318](T-0318.md) | 3 | ui | S |  | ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006 | T-0001 |
 | [T-0025](T-0025.md) | 5 | ui | M |  | Admin shell: layout + guard | T-0015 T-0016 |
@@ -43,7 +44,7 @@
 | [T-0029](T-0029.md) | 8 | ui | S |  | Screen A-02 ลืมรหัสผ่าน | T-0015 T-0020 |
 | [T-0030](T-0030.md) | 7 | ui | S |  | Screen A-03 ตั้งรหัสผ่านใหม่ | T-0015 T-0021 |
 | [T-0031](T-0031.md) | 7 | ui | S |  | Screen AD-01 Admin login | T-0025 T-0022 |
-| [T-0032](T-0032.md) | 8 | ui | M |  | Screen AD-02 ร้านทั้งหมด | T-0025 T-0026 T-0027 T-0022 T-0023 |
+| [T-0032](T-0032.md) | 8 | ui | M |  | Screen AD-02 ร้านทั้งหมด | T-0025 T-0026 T-0027 T-0319 T-0023 |
 | [T-0033](T-0033.md) | 6 | ui | S |  | Screen AD-07 วันหยุดราชการ | T-0025 T-0026 |
 | [H-04](H-04.md) | 9 | human | - |  | Milestone review M0: demo + ตรวจคุณภาพ | T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 … |
 
@@ -250,7 +251,7 @@
 | [T-0214](T-0214.md) | 4 | ui | M |  | Screen L-09 รายละเอียดนัด | T-0195 T-0026 T-0174 T-0178 T-0175 T-0180 T-0179 |
 | [T-0215](T-0215.md) | 4 | ui | S |  | Screen L-14 จ่ายยอดคงเหลือ | T-0195 T-0026 T-0196 T-0071 T-0178 T-0181 |
 | [T-0216](T-0216.md) | 3 | ui | S |  | Screen L-15 โปรไฟล์ของฉัน | T-0195 T-0026 T-0071 T-0172 T-0181 |
-| [T-0217](T-0217.md) | 3 | ui | M |  | Screen AD-03 ร้าน (admin) | T-0025 T-0026 T-0022 T-0184 T-0185 T-0125 |
+| [T-0217](T-0217.md) | 3 | ui | M |  | Screen AD-03 ร้าน (admin) | T-0025 T-0026 T-0319 T-0184 T-0185 T-0125 |
 | [T-0218](T-0218.md) | 5 | e2e | L |  | E2E M3: ลูกค้าเปิด LIFF (fake LINE) … | T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186 |
 | [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 T-0153 … |
 

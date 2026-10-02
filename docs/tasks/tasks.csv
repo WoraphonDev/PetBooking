@@ -25,8 +25,9 @@ T-0018,INF-MON,M0,6,infra,agent,S,,"Monitoring: health (db ping), structured log
 T-0019,API-auth.staffLogin,M0,6,api,agent,L,yes,API auth.staffLogin,US-01-02,T-0007 T-0005,8
 T-0020,API-auth-0,M0,7,api,agent,M,,"API auth.staffLogout, auth.me, auth.resetRequest",US-01-02,T-0007 T-0019 T-0010,14
 T-0021,API-auth-1,M0,6,api,agent,S,,API auth.resetConfirm,US-01-02,T-0007 T-0005,4
-T-0022,API-admin-0,M0,6,api,agent,M,yes,"API admin.login, admin.orgs, admin.updateOrg",US-13-10,T-0007 T-0005 T-0035,15
-T-0023,API-admin.createOrg,M0,7,api,agent,L,yes,API admin.createOrg,US-13-10 US-13-14,T-0007 T-0022,4
+T-0022,API-admin-0,M0,6,api,agent,M,yes,API admin.login,US-13-10,T-0007 T-0005,6
+T-0319,API-admin-organizations,M0,6,api,agent,M,yes,"API admin.orgs, admin.updateOrg",US-13-10,T-0007 T-0035,9
+T-0023,API-admin.createOrg,M0,7,api,agent,L,yes,API admin.createOrg,US-13-10 US-13-14,T-0007 T-0319,4
 T-0024,NTF-staff-M0-0,M0,6,notify,agent,M,,"Notification templates (staff, M0): password_reset",US-01-02,T-0010 T-0011,2
 T-0318,UI-THEME,M0,3,ui,agent,S,,ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006,US-13-01,T-0001,1
 T-0025,UI-SHELL-admin,M0,5,ui,agent,M,,Admin shell: layout + guard,US-13-01,T-0015 T-0016,4
@@ -36,9 +37,9 @@ T-0028,SCR-A-01,M0,7,ui,agent,S,,Screen A-01 เข้าสู่ระบบ (
 T-0029,SCR-A-02,M0,8,ui,agent,S,,Screen A-02 ลืมรหัสผ่าน,US-01-02,T-0015 T-0020,4
 T-0030,SCR-A-03,M0,7,ui,agent,S,,Screen A-03 ตั้งรหัสผ่านใหม่,US-01-02,T-0015 T-0021,4
 T-0031,SCR-AD-01,M0,7,ui,agent,S,,Screen AD-01 Admin login,US-13-10,T-0025 T-0022,4
-T-0032,SCR-AD-02,M0,8,ui,agent,M,,Screen AD-02 ร้านทั้งหมด,US-13-10 US-13-14,T-0025 T-0026 T-0027 T-0022 T-0023,4
+T-0032,SCR-AD-02,M0,8,ui,agent,M,,Screen AD-02 ร้านทั้งหมด,US-13-10 US-13-14,T-0025 T-0026 T-0027 T-0319 T-0023,4
 T-0033,SCR-AD-07,M0,6,ui,agent,S,,Screen AD-07 วันหยุดราชการ,US-13-03,T-0025 T-0026,4
-H-04,H-GATE-M0,M0,9,human,human,-,,Milestone review M0: demo + ตรวจคุณภาพ,,T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 T-0017 T-0018 T-0012 T-0005 T-0013 T-0019 T-0020 T-0021 T-0022 T-0023 T-0024 T-0028 T-0029 T-0030 T-0031 T-0032 T-0033,0
+H-04,H-GATE-M0,M0,9,human,human,-,,Milestone review M0: demo + ตรวจคุณภาพ,,T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 T-0017 T-0018 T-0012 T-0005 T-0013 T-0019 T-0020 T-0021 T-0022 T-0319 T-0023 T-0024 T-0028 T-0029 T-0030 T-0031 T-0032 T-0033,0
 H-05,H-LEGAL,M1,1,human,human,-,,ร่าง Privacy Notice / Terms / DPA / ข้อความยินยอมรูป + ตรวจแม่แบบใบยินยอม,US-03-12 US-05-06 US-06-08 US-13-08,,0
 T-0036,INF-JOBS,M1,1,infra,agent,L,,Job runner + POST /api/cron/tick + stub handlers ทุก job_type,US-05-02 US-07-06 US-12-05,T-0007 T-0010,5
 T-0037,DOM-R-25,M1,1,domain,agent,S,,Rule R-25 ข้อจำกัดการอัปโหลดไฟล์,US-03-06 US-07-02 US-13-04,H-01,4
@@ -228,7 +229,7 @@ T-0213,SCR-L-08,M3,3,ui,agent,S,,Screen L-08 นัดของฉัน,US-11-0
 T-0214,SCR-L-09,M3,4,ui,agent,M,,Screen L-09 รายละเอียดนัด,US-11-08 US-11-10,T-0195 T-0026 T-0174 T-0178 T-0175 T-0180 T-0179,4
 T-0215,SCR-L-14,M3,4,ui,agent,S,,Screen L-14 จ่ายยอดคงเหลือ,US-07-08,T-0195 T-0026 T-0196 T-0071 T-0178 T-0181,4
 T-0216,SCR-L-15,M3,3,ui,agent,S,,Screen L-15 โปรไฟล์ของฉัน,US-03-12 US-11-01 US-13-08,T-0195 T-0026 T-0071 T-0172 T-0181,4
-T-0217,SCR-AD-03,M3,3,ui,agent,M,,Screen AD-03 ร้าน (admin),US-02-06 US-13-10 US-13-11,T-0025 T-0026 T-0022 T-0184 T-0185 T-0125,4
+T-0217,SCR-AD-03,M3,3,ui,agent,M,,Screen AD-03 ร้าน (admin),US-02-06 US-13-10 US-13-11,T-0025 T-0026 T-0319 T-0184 T-0185 T-0125,4
 T-0218,E2E-M3,M3,5,e2e,agent,L,,E2E M3: ลูกค้าเปิด LIFF (fake LINE) …,,T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186,2
 H-12,H-GATE-M3,M3,6,human,human,-,,Milestone review M3: demo + ตรวจคุณภาพ,,T-0149 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 T-0153 T-0154 T-0155 T-0156 T-0157 T-0158 T-0159 T-0160 T-0161 T-0162 T-0163 T-0164 T-0165 T-0166 T-0167 T-0168 T-0169 T-0170 T-0171 T-0172 T-0173 T-0174 T-0175 T-0176 T-0177 T-0178 T-0179 T-0180 T-0181 T-0182 T-0183 T-0184 T-0185 T-0186 T-0187 T-0188 T-0189 T-0190 T-0191 T-0192 T-0193 T-0194 T-0197 T-0198 T-0199 T-0200 T-0201 T-0202 T-0203 T-0204 T-0205 T-0206 T-0207 T-0208 T-0209 T-0210 T-0211 T-0212 T-0213 T-0214 T-0215 T-0216 T-0217 T-0218 H-11,0
 H-13,H-SP05,M4,1,human,human,-,,SP-05 ทดสอบพิมพ์ใบเสร็จ 58/80 มม. จาก browser,US-08-05,,0
