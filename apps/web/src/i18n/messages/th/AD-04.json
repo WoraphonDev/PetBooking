@@ -1,0 +1,14 @@
+{
+  "title": "Feedback",
+  "shop": "ร้าน",
+  "staff": "ผู้แจ้ง",
+  "message": "ข้อความ",
+  "page": "หน้า",
+  "screenshot": "ภาพ",
+  "status": "สถานะ",
+  "changeStatus": "เปลี่ยนสถานะ",
+  "statusNew": "ใหม่",
+  "statusAcknowledged": "รับทราบแล้ว",
+  "statusDone": "เสร็จแล้ว",
+  "unavailable": "—"
+}

@@ -291,3 +291,9 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-customers.blacklist makes `reason` required only when `blacklisted = true`, but R-27's `writeAudit` (`packages/server/src/audit.ts`) requires a reason of ≥ 3 chars for every action matching /blacklist/, so every `customer.blacklist` entry needs one, including lifting the block. Which rule wins?
 - Evidence: 05#ep-customers.blacklist validation column; `packages/server/src/audit.ts` writeAudit reason check.
 - Work: T-0156 requires the reason in both directions (`REASON_REQUIRED`), so the audit trail always has a reason. If unblacklisting should be allowed without one, audit.ts (outside T-0156) needs an exception for `customer.blacklist` with `after.blacklisted = false`.
+
+## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
+- Status: answered for T-0147; spec follow-up open
+- Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
+- Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
