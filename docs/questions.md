@@ -235,11 +235,12 @@
 
 ## Q-0027 · T-0050 search.quick requires a migration outside its allowed paths
 
-Status: open
+Status: partially answered (endpoint implemented in T-0050; pg_trgm index still needs its own task)
 - Task selection (2026-10-02): T-0050 dependencies T-0007 and T-0014 are merged, but implementation has not started.
 - Evidence: `docs/spec/05-api.md#ep-search.quick` requires pg_trgm indexes in a US-03-10 migration. No pg_trgm extension or trigram index exists in the merged schema/migrations; T-0050 allows only its endpoint/service/tests/route and two DTO files, not schema or migration files.
 - Question: assign a prerequisite task for the specified pg_trgm indexes, or approve a spec change expanding T-0050's dependencies and migration/schema scope. Clarify the indexed columns and migration handling for PGlite.
 - Work: search implementation paused under AGENTS.md; selected independent T-0106 instead. No merged migration or read-only spec changed.
+- Answer (2026-10-02): user chose in chat to implement the endpoint now with plain ILIKE / exact match / E.164 prefix (the index changes performance, not behaviour). The pg_trgm extension + GIN trigram indexes on owner_profile.first_name/last_name/nickname and pet.name remain open: they need a separate card with schema + custom migration scope (and a check that PGlite supports the extension).
 
 ## Q-0028 · closures.create / timeOff.create: `204` response vs "ตอบ affected[]"
 - Status: spec-changed (pending merge of `spec-change-q0028-closure-affected`)
