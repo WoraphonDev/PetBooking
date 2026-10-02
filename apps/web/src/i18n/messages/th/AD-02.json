@@ -1,0 +1,23 @@
+{
+  "title": "ร้านทั้งหมด",
+  "shop": "ร้าน",
+  "slug": "slug",
+  "status": "สถานะ",
+  "owner": "เจ้าของ",
+  "line": "LINE",
+  "lastActivityAt": "ใช้งานล่าสุด",
+  "createTitle": "สร้างร้าน",
+  "name": "ชื่อธุรกิจ",
+  "branchName": "ชื่อสาขา",
+  "bookingSlug": "ลิงก์จอง",
+  "ownerEmail": "อีเมลเจ้าของ",
+  "ownerName": "ชื่อเจ้าของ",
+  "modules": "โมดูล",
+  "grooming": "กรูม",
+  "hotel": "โรงแรม",
+  "daycare": "Daycare",
+  "create": "สร้าง",
+  "ownerInviteUrl": "ลิงก์เชิญเจ้าของ",
+  "invalid": "กรุณาตรวจสอบข้อมูล",
+  "unavailable": "—"
+}
