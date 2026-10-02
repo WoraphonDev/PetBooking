@@ -95,7 +95,10 @@ ep("closures.list", "GET", f"{ST}/branch/closures", "staff", ALL, "US-02-05", "�
 ep("closures.create", "POST", f"{ST}/branch/closures", "staff", OF, "US-02-05", "เพิ่มวันปิด",
    [F("startsAt", "datetime", True, "branch_closure.starts_at", ""), F("endsAt", "datetime", True, "branch_closure.ends_at", "> startsAt"),
     F("scope", "enum:closure_scope", True, "branch_closure.scope", ""), F("reason", "string", False, "branch_closure.reason", "≤ 200")],
-   effects=["ตอบ affected[] = นัด/การพักที่ทับช่วงปิด (ไม่ยกเลิกอัตโนมัติ — หน้าร้านจัดการเอง)"])
+   res="object {affected: AffectedServiceItem[]}",
+   effects=["ไม่ยกเลิก/ย้ายอัตโนมัติ — หน้าร้านจัดการเอง; ตอบ 200 เสมอ, ไม่มีรายการทับ → affected = [] (Q-0028)",
+            "affected[] = รายการที่ยังไม่จบในสาขานี้ที่ทับช่วงปิด (ใช้ scope แบบเดียวกับการหาเวลาว่างกรูม/ห้องว่าง): grooming (scope all/grooming) — groom_appointment status scheduled/checked_in/in_progress และ [starts_at, ends_at) ทับ [startsAt, endsAt) · hotel (scope all/hotel) — stay status reserved/checked_in ที่มีคืนพัก d (check_in_date ≤ d < check_out_date) ซึ่งวันท้องถิ่น d ทับช่วงปิด · daycare (scope all/daycare) — daycare_visit status reserved/checked_in ที่วันท้องถิ่น visit_date ทับช่วงปิด",
+            "เรียง affected[] ตาม date, startsAt (null ท้าย), bookingNo"])
 ep("closures.delete", "DELETE", f"{ST}/branch/closures/{{closureId}}", "staff", OF, "US-02-05", "ลบวันปิด")
 ep("closures.importHolidays", "POST", f"{ST}/branch/closures/public-holidays", "staff", O, "US-02-05, US-13-03", "เพิ่มวันหยุดราชการเป็นวันปิด",
    [F("year", "int", True, "public_holiday.holiday_date", "ปี ค.ศ."), F("dates[]", "date[]", True, "public_holiday.holiday_date", "เลือกบางวัน"),
@@ -135,7 +138,9 @@ ep("timeOff.list", "GET", f"{ST}/time-off", "staff", ALL, "US-09-01", "วัน
 ep("timeOff.create", "POST", f"{ST}/time-off", "staff", OF, "US-09-01", "เพิ่มวันลา",
    [F("staffUserId", "uuid", True, "staff_time_off.staff_user_id", ""), F("startsAt", "datetime", True, "staff_time_off.starts_at", ""),
     F("endsAt", "datetime", True, "staff_time_off.ends_at", "> startsAt"), F("reason", "string", False, "staff_time_off.reason", "")],
-   effects=["ตอบ affected[] นัดที่ทับ (ต้องย้ายเอง)"])
+   res="object {affected: AffectedServiceItem[]}",
+   effects=["ไม่ย้ายนัดอัตโนมัติ — หน้าร้านย้ายเอง; ตอบ 200 เสมอ, ไม่มีนัดทับ → affected = [] (Q-0028)",
+            "affected[] = groom_appointment ของ groomer_id = staffUserId ในสาขานี้ status scheduled/checked_in/in_progress ที่ [starts_at, ends_at) ทับ [startsAt, endsAt) (module = grooming) เรียงตาม startsAt"])
 ep("timeOff.delete", "DELETE", f"{ST}/time-off/{{timeOffId}}", "staff", OF, "US-09-01", "ลบวันลา")
 
 # =========================================================== CUSTOMERS & PETS
