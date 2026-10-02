@@ -56,19 +56,17 @@ const tpl = (nameTh: string, at: number, extra: Partial<typeof packageTemplate.$
 });
 
 it.each(["owner", "front_desk", "staff"] as const)("lists every PackageTemplateItem field with R-14 unit value for %s", async (role) => {
-  await env.db
-    .insert(packageTemplate)
-    .values([
-      tpl("อาบ 3 ครั้ง", 1000, {
-        sessionsCount: 3,
-        priceSatang: 100000,
-        sizeTierId: tierId,
-        validityDays: 90,
-        shareScope: "household",
-        status: "archived",
-      }),
-      tpl("อาบ 10 ครั้ง", 0),
-    ]);
+  await env.db.insert(packageTemplate).values([
+    tpl("อาบ 3 ครั้ง", 1000, {
+      sessionsCount: 3,
+      priceSatang: 100000,
+      sizeTierId: tierId,
+      validityDays: 90,
+      shareScope: "household",
+      status: "archived",
+    }),
+    tpl("อาบ 10 ครั้ง", 0),
+  ]);
   const response = await get("", role);
   expect(response.status).toBe(200);
   const body = PackageTemplatesListResponse.parse(await response.json());
