@@ -137,3 +137,20 @@
 - Proposed resolution: a separate human-approved spec-change allowing only this exact source/destination rename for T-0018, preserving all other forbidden-path and scope checks. The task must not modify scripts or disguise the rename to evade the guard.
 - Work: health route/service integration, HTTP 200/503 tests, stdout error logging, removal of the separate config and runbook updates are implemented. PR #33 merged and permits the exact relocation; T-0018 can pass task-scope validation and proceed to publication.
 - Answer: user explicitly authorized a separate spec-change PR on 2026-10-02 to allow only this exact T-0018 health-test relocation. All other renames remain forbidden, and source/destination must still match the card scope. PR #33 merged on 2026-10-02. T-0018 implementation on t-0018-health-completion incorporates the merged guard change.
+
+## Q-0016 · T-0022 admin login lockout storage and response contract
+- Status: open
+- Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: How should admin.login persist R-24 failed attempts and lock expiry, and which fields belong inside its `{ admin }` response?
+- Evidence: 05#ep-admin.login requires INVALID_CREDENTIALS and ACCOUNT_LOCKED under R-24. R-24 uses staff_user.failed_login_count/locked_until; 02#tbl-platform_admin and the merged identity schema have neither column. The endpoint says only `object {admin}`, with no admin DTO or field list.
+- Scope: T-0022 permits endpoint contracts/services/tests/routes, but no DB schema or migration. An in-memory lockout or an invented admin response would introduce unspecified auth behavior.
+- Proposed decision (awaiting human confirmation): add platform_admin.failed_login_count (integer, not null, default 0) and locked_until (nullable timestamptz); apply the same R-24 attempt/reset/15-minute lockout rules to admins; define the response as `{ admin: { id, email, displayName } }` using platform_admin columns. Publish a prerequisite spec-change and explicitly authorize identity schema/new migration paths in a task before implementation. Alternatively, explicitly revise the endpoint's lockout requirement. No proposal here is an approved contract.
+- Work: admin.login implementation is paused under AGENTS.md golden rules 2–3 and the stop-and-ask rule. No auth code, schema or migration has been changed.
+
+## Q-0017 · T-0022 organization summary selection, empty relations and status audit
+- Status: open
+- Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: Which owner's email should OrgListItem return when a shop has multiple owners; what should lineStatus return before any line_channel exists; what is lastActivityAt when there are no bookings; and which audit action records admin.updateOrg?
+- Evidence: 05#dto-OrgListItem specifies staff_user.email, line_channel.status and max booking.created_at without selection/empty-result rules. 05 §2 already makes ownerEmail nullable because staff_user.email is nullable; that rule does not select one of multiple owners or specify the absence of a non-null line_channel.status row. 02 allows multiple staff with owner role, and admin.createOrg does not create a line_channel. AGENTS.md requires audit for permission-sensitive actions, while R-27's action list has no organization status action and 05#ep-admin.updateOrg gives none.
+- Proposed decision (awaiting human confirmation): select the owner with the earliest created_at (id ascending as tie-breaker); return lineStatus = null when no line_channel exists and lastActivityAt = null when there are no bookings; add audit action `organization.status_change` with before/after status in the same transaction. Publish these decisions through spec-change and authorize any required audit contract/schema changes or a prerequisite task. No proposal here is an approved contract.
+- Work: admin.orgs and admin.updateOrg share this unresolved DTO; their implementation is paused. No fallback enum, owner selection, calculated-field type or audit action has been invented.
