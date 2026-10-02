@@ -269,3 +269,11 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#dto-OccupancyReport lists `byRoomType[]` as `calc` with no item fields, and does not say how `percent` is rounded, which stays count, or how long from..to may be. 06#scr-C-25 only shows it as a table.
 - Evidence: 05#dto-OccupancyReport, 05#ep-reports.occupancy, 06#scr-C-25.
 - Answer (2026-10-02): user approved the proposal in chat. `byRoomType[]` = `{ roomTypeId, roomTypeName (room_type.name_th), occupiedNights, totalNights, percent }` for room types of the branch with an active unit or an occupied night, ordered by sort_order, name. A night d is occupied by a checked_in/checked_out stay with check_in_date ≤ d < check_out_date; `occupiedUnits` counts distinct room units. `totalUnits` = active room units of the session branch; `totalNights` = active units of the type × number of days. `percent` = whole number round(occupied × 100 / total), 0 when total = 0. from..to is inclusive, at most 93 days (same cap as staffMe.commissions).
+
+## Q-0033 · Support mode reads are refused by every service's `requireRole`
+- Status: open
+- Task: found in T-0125 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 01 §4 / Q-0007 say a support session (actor `{type:"admin", role:"owner"}`) reads every page like an owner. `withStaff` lets that actor through (`requireRoleOrSupport`), but each service then calls `requireRole(ctx, key)` (`packages/server/src/auth/permissions.ts`), which accepts only `actor.type === "staff"` and answers `FORBIDDEN`. Only `auth.me` handles the support actor itself. So support mode can open the console, but every other read (audit.list, customers.get, …) fails.
+- Evidence: `packages/server/src/auth/permissions.ts` requireRole; `packages/server/src/http/wrap.ts` requireRoleOrSupport; `packages/server/src/services/auth/me.ts`; T-0125 test "lets the support session read like an owner…" (uses auth.me for that reason).
+- Proposed fix (outside T-0125 allowed_paths): let `requireRole` also accept `ctx.actor.type === "admin" && ctx.supportAccessLogId && roles.includes(ctx.actor.role)`. Writes are already blocked earlier by `SUPPORT_READ_ONLY`. That needs a small card that owns permissions.ts and adds a test.
+- Work: T-0125 implemented supportStart/End without touching permissions.ts.
