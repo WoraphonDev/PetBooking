@@ -220,6 +220,7 @@ export const ENDPOINTS = {
   "admin.resolveDataRequest": ["POST", "/api/v1/admin/data-requests/{requestId}/resolve"],
   "admin.analytics": ["GET", "/api/v1/admin/analytics/pilot"],
   "admin.holidays": ["PUT", "/api/v1/admin/public-holidays/{year}"],
+  "admin.listHolidays": ["GET", "/api/v1/admin/public-holidays/{year}"],
 } as const satisfies Record<string, readonly [Method, string]>;
 
 export type EndpointKey = keyof typeof ENDPOINTS;

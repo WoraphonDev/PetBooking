@@ -3219,6 +3219,17 @@
    "query": [],
    "response": "204",
    "errors": []
+  },
+  {
+   "key": "admin.listHolidays",
+   "method": "GET",
+   "path": "/api/v1/admin/public-holidays/{year}",
+   "auth": "admin",
+   "roles": "",
+   "request": [],
+   "query": [],
+   "response": "PublicHoliday[]",
+   "errors": []
   }
  ],
  "dtos": [
@@ -3263,6 +3274,7 @@
   "PetSummary",
   "PhotoItem",
   "PilotAnalytics",
+  "PublicHoliday",
   "Quote",
   "Receipt",
   "ReportCardDetail",

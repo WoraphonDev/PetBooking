@@ -391,10 +391,13 @@ def ep_deps(e):
     if "scheduled_job" in blob or "job " in blob or "ตั้ง job" in blob or "reminder_24h" in blob: d.append("INF-JOBS")
     return d
 
+# Q-0038: this loader is delivered with AD-07 ext-M1, not a new dependent task.
+SCREEN_OWNED = {"admin.listHolidays": "admin.holidays"}
+
 API_GROUPS = collections.OrderedDict()
 GK_MS = {}
 for e in EP:
-    if e["key"] in INFRA_OWNED: continue
+    if e["key"] in INFRA_OWNED or e["key"] in SCREEN_OWNED: continue
     if e["key"] in SPLIT:
         for ms, suf, note in SPLIT[e["key"]]:
             API_GROUPS.setdefault((ms, e["key"] + "#" + suf), []).append((e, suf, note))
@@ -510,6 +513,7 @@ for (ms, gkey), items in sorted(API_GROUPS.items(), key=lambda kv: (MSI[kv[0][0]
 def endpoint_task(key, ms=None):
     """task that implements endpoint (first split if split)"""
     if key in INFRA_OWNED: return INFRA_OWNED[key]
+    if key in SCREEN_OWNED: return endpoint_task(SCREEN_OWNED[key], ms)
     cands = [t for t in TASKS if t["lane"] == "api" and key in t["artifacts"].get("endpoints", [])]
     if ms is not None:
         ok = [t for t in cands if MSI[t["ms"]] <= MSI[ms]]
@@ -591,10 +595,15 @@ for s in SCR:
         else:
             hidden = [k for k in screen_endpoint_keys(s) if k not in allowed_eps]
             if hidden: steps.insert(1, "ยังไม่ทำส่วน/ปุ่มที่ใช้ endpoint ต่อไปนี้ (มี task ต่อยอดภายหลัง): " + ", ".join(hidden))
+        # Q-0038: own the read API, its shared DTO and client mapping in T-0090.
+        if tkey == "SCR-AD-07-ext-M1":
+            loader = EPK["admin.listHolidays"]
+            allowed += [contract_file(loader), service_file(loader), service_test(loader), route_file(loader), dto_file("PublicHoliday"), "apps/web/src/lib/api.ts"]
+            steps.insert(1, "เพิ่ม admin.listHolidays GET และ PublicHoliday DTO; withAdmin, อ่าน public_holiday ทั้งปีเรียง date; ใช้ API client/query เดิม; โหลดสำเร็จก่อนแก้และส่งรายการครบปี")
         deps = [shell] + comps + [endpoint_task(k, ms) for k in new_eps] + ([prev] if prev else [])
         task(tkey, f"Screen {s['id']} {s['title']}" + (f" ({suf})" if suf else ""), ms, "ui", size, s["stories"], allowed=allowed,
              read=[f"docs/spec/06-screens.md#scr-{s['id']}"] + [f"docs/spec/05-api.md#ep-{k}" for k in new_eps],
-             steps=steps, done=["pnpm --filter @app/web test -- screens/" + slug, CONF, VERIFY], deps=list(dict.fromkeys(deps)),
+             steps=steps, done=["pnpm --filter @app/web test -- screens/" + slug] + (["pnpm --filter @app/server exec vitest run test/services/admin/listHolidays.test.ts"] if tkey == "SCR-AD-07-ext-M1" else []) + [CONF, VERIFY], deps=list(dict.fromkeys(deps)),
              artifacts={"screen": s["id"], "endpoints": new_eps})
         prev = tkey
 

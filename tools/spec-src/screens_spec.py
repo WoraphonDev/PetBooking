@@ -679,8 +679,11 @@ scr("AD-05", "admin", "/admin/data-requests", "คำขอ PDPA", "admin", "US-
 scr("AD-06", "admin", "/admin/analytics", "Analytics นำร่อง", "admin", "US-13-12", "วัดผลร้านนำร่อง", ["admin.analytics"],
     [("ตาราง", [R("ร้าน", "organization.name"), R("วันที่ใช้งานใน 7 วัน", "calc: activeDays7", "number"), R("จองออนไลน์ %", "calc: onlineShare", "percent"),
                 R("No-show %", "calc: noShowRate", "percent"), R("Push ที่ใช้", "calc: pushUsed", "number"), R("บิลที่ปิด", "calc: billsClosed", "number")])])
-scr("AD-07", "admin", "/admin/holidays", "วันหยุดราชการ", "admin", "US-13-03", "seed วันหยุดประจำปี", [],
-    [("ปี", [E("วันที่", "public_holiday.holiday_date", "date", ""), E("ชื่อวันหยุด", "public_holiday.name_th", "text", "")])], [("บันทึก", "admin.holidays", "", "")])
+scr("AD-07", "admin", "/admin/holidays", "วันหยุดราชการ", "admin", "US-13-03", "แก้รายการวันหยุดทั้งปี โหลดข้อมูลเดิมก่อนบันทึก", ["admin.listHolidays"],
+    [("ปี", [E("ปี (ค.ศ.)", "calc: year", "number", "1000–9999; เริ่มด้วยปีไทยปัจจุบันจาก now; เปลี่ยนปีแล้วโหลดใหม่" )]),
+     ("รายการวันหยุด", [E("วันที่", "public_holiday.holiday_date", "date", "แต่ละแถวต้องอยู่ในปีที่เลือก ห้ามซ้ำ"), E("ชื่อวันหยุด", "public_holiday.name_th", "text", "trim; ห้ามว่าง")])],
+    [("เพิ่มวันหยุด", "", "โหลดสำเร็จ", "เพิ่มแถวว่างในรายการ"), ("ลบวันหยุด", "", "โหลดสำเร็จ", "ลบแถวจากรายการ"),
+     ("บันทึก", "admin.holidays", "โหลดสำเร็จและไม่กำลังบันทึก", "ส่งรายการทั้งปี รวม [] เพื่อล้างปีนั้น; สำเร็จแจ้งบันทึกแล้ว; ล้มเหลวคงข้อมูลที่แก้ไว้")])
 
 ENUM_LABELS = {
  "staff_role": {"owner": "เจ้าของร้าน", "front_desk": "หน้าร้าน", "staff": "พนักงาน/ช่าง"},
