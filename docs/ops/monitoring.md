@@ -2,10 +2,8 @@
 
 ## Readiness
 
-`GET /api/health` is public. The health service in this PR checks PostgreSQL
-with `SELECT 1`, but route integration is blocked by Q-0012. The current route
-still returns `db: unknown`; it must not be used as a database readiness monitor.
-The following response contract applies after route integration:
+`GET /api/health` is public and checks PostgreSQL with `SELECT 1` through the
+health service. Its HTTP adapter creates one request context and returns:
 
 - Healthy: HTTP 200, `{ "ok": true, "db": "ok", "version": "..." }`.
 - Database unavailable or `DATABASE_URL` missing: HTTP 503,
@@ -31,29 +29,31 @@ and deployment; no monitor has been provisioned by this task.
 ## Request logs
 
 The health service emits JSON records; other routes are not instrumented by
-this partial task. JSON records contain only `requestId`, `orgId`, `key`, `ms`, and `status`.
-Failures with status 500 or higher go to stderr; other records go to stdout.
+this task. JSON records contain only `requestId`, `orgId`, `key`, `ms`, and `status`.
+Error records (status 500 or higher) and other records all go to stdout.
 Never attach request bodies, query strings, headers, cookies, tokens, database
 connection strings, raw exceptions or customer data to these records.
 
 When health returns 503, check database reachability, server-side environment
 configuration and deployment state. Use the request ID to correlate logs.
 
-## Optional external error reporting
+## MVP error reporting
 
-External reporting is not enabled. T-0018 names `SENTRY_DSN`, while 01 §6 names
-`ERROR_REPORT_DSN`, and no SDK dependency is approved in the card. Q-0012 records
-this conflict. Resolve it before configuring an external reporter.
+MVP error reporting consists of the sanitized error records in stdout. No SDK,
+dependency or outbound reporter is used. `ERROR_REPORT_DSN` (01 §6) is reserved
+for a future integration and is not consumed in MVP (Q-0012, resolved by PR #31).
 
 ## Service validation
 
-The new tests are inside the allowed health directory. The default server test
-configuration only discovers `test/**/*.test.ts`, so run these explicitly:
+Service and HTTP-adapter integration tests are discovered by the default server
+test configuration in `packages/server/test/services/health/`:
 
 ```bash
-pnpm --filter @app/server exec vitest run --config src/services/health/vitest.config.ts
+pnpm --filter @app/server exec vitest run test/services/health/health.test.ts
+pnpm --filter @app/web test -- api/health
 ```
 
 This covers real PGlite success, a closed connection, a missing database URL,
-version fallback and log-field allowlisting. Standard route tests continue to
-cover the existing placeholder route until Q-0012 is resolved.
+version fallback, log-field allowlisting and HTTP 200/503 payloads. Web route
+tests verify service delegation and the response contract. `pnpm verify` runs
+both suites; no separate Vitest configuration is required.

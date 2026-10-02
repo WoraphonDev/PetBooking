@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import type { RequestContext } from "../../context.ts";
+import { makeSystemCtx, type RequestContext } from "../../context.ts";
 import { getDb } from "../../db.ts";
 import { logRequest } from "../../log.ts";
 
@@ -18,3 +18,13 @@ export async function health(ctx: RequestContext) {
     logRequest({ requestId: ctx.requestId, orgId: ctx.orgId, key: "health", ms: performance.now() - started, status });
   }
 }
+
+/** Public HTTP entry point; health's 503 payload differs from ordinary API errors. */
+export function withHealth(service = health) {
+  return async (_request: Request): Promise<Response> => {
+    const result = await service(makeSystemCtx(null, new Date()));
+    return Response.json(result, { status: result.ok ? 200 : 503 });
+  };
+}
+
+export const healthGet = withHealth();

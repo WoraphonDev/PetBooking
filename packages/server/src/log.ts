@@ -10,7 +10,7 @@ export type RequestLog = {
 export function logRequest(entry: RequestLog): void {
   const { requestId, orgId, key, ms, status } = entry;
   const line = JSON.stringify({ requestId, orgId, key, ms, status });
-  if (status >= 500) console.error(line);
+  if (status >= 500) process.stdout.write(`${line}\n`);
   else {
     // biome-ignore lint/suspicious/noConsole: approved structured operational logs go to stdout.
     console.info(line);

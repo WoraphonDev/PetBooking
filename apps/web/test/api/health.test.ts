@@ -1,20 +1,34 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { GET } from "../../app/api/health/route.ts";
 
+const { health } = vi.hoisted(() => ({ health: vi.fn() }));
+vi.mock("@app/server/services/health/health", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@app/server/services/health/health")>();
+  return { ...actual, healthGet: actual.withHealth(health) };
+});
+
 describe("GET /api/health", () => {
+  beforeEach(() => {
+    health.mockReset();
+  });
   afterEach(() => {
-    delete process.env.NEXT_PUBLIC_APP_VERSION;
+    vi.restoreAllMocks();
   });
-
-  it("returns ok with db placeholder and app version", async () => {
-    process.env.NEXT_PUBLIC_APP_VERSION = "1.2.3";
-    const res = GET();
-    expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true, db: "unknown", version: "1.2.3" });
+  it("returns the healthy service payload with HTTP 200", async () => {
+    health.mockResolvedValue({ ok: true, db: "ok", version: "1.2.3" });
+    const response = await GET(new Request("https://petbooking.test/api/health"));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true, db: "ok", version: "1.2.3" });
+    expect(health).toHaveBeenCalledWith(
+      expect.objectContaining({ orgId: null, actor: { type: "system", id: null }, now: expect.any(Date), requestId: expect.any(String) }),
+    );
+    expect(response.headers.get("content-type")).toContain("application/json");
   });
-
-  it("falls back to version 'dev' when NEXT_PUBLIC_APP_VERSION is unset", async () => {
-    delete process.env.NEXT_PUBLIC_APP_VERSION;
-    expect(await GET().json()).toEqual({ ok: true, db: "unknown", version: "dev" });
+  it("preserves the sanitized service failure payload and returns HTTP 503", async () => {
+    health.mockResolvedValue({ ok: false, db: "error", version: "dev" });
+    const response = await GET(new Request("https://petbooking.test/api/health"));
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ ok: false, db: "error", version: "dev" });
+    expect(response.headers.get("set-cookie")).toBeNull();
   });
 });
