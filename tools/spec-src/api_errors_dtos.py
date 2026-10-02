@@ -22,7 +22,7 @@ ERRORS = [
  ("EMAIL_TAKEN", 409, "อีเมลนี้ถูกใช้แล้ว", "unique staff_user.email"),
  ("SLUG_TAKEN", 409, "ชื่อลิงก์นี้ถูกใช้แล้ว", "unique slug/booking_slug"),
  ("CODE_TAKEN", 409, "รหัสนี้ถูกใช้แล้ว", "unique code (room_unit, size_tier)"),
- ("IN_USE", 409, "ใช้งานอยู่ ลบไม่ได้ — ให้ปิดใช้งานแทน", "FK violation 23503 ตอนลบ"),
+ ("IN_USE", 409, "ใช้งานอยู่ ลบไม่ได้ — ให้ปิดใช้งานแทน", "FK violation 23503 ตอนลบ หรือ service ตรวจเองเมื่อ FK เป็น cascade/set null (เช่น sizeTiers.set — Q-0029)"),
  ("SIZE_TIER_OVERLAP", 422, "ช่วงน้ำหนักทับกัน", "R-01"),
  ("INVALID_PHONE", 422, "เบอร์โทรไม่ถูกต้อง", "R-22"),
  ("LINK_REQUEST_PENDING", 409, "มีคำขอจับคู่บัญชีรอร้านยืนยันอยู่", "customer_link_request pending"),
@@ -414,9 +414,9 @@ dto("DashboardToday", "Dashboard วันนี้", [
 dto("SalesReport", "รายงานยอดขาย", [("from", "calc: input"), ("to", "calc: input"), ("rows[].key", "calc: วัน/บริการ/ช่าง/วิธีจ่าย ตาม groupBy"),
  ("rows[].billCount", "calc"), ("rows[].grossSatang", "calc: Σ bill_line.line_total_satang"), ("rows[].discountSatang", "calc: Σ bill_discount + line_discount"),
  ("rows[].netSatang", "calc"), ("totals", "calc"), ("payments[].method", "payment.method"), ("payments[].amountSatang", "calc: Σ payment.amount_satang")])
-dto("CommissionReport", "รายงานค่ามือ", [("from", "calc: input"), ("to", "calc: input"), ("rows[].staffUserId", "commission_entry.staff_user_id"),
- ("rows[].staffName", "staff_user.display_name"), ("rows[].jobs", "calc: count commission_entry earned"), ("rows[].baseSatang", "calc: Σ commission_entry.base_satang"),
- ("rows[].amountSatang", "calc: Σ commission_entry.amount_satang (earned − reversed)"), ("rows[].entries[]", "commission_entry.id")])
+dto("CommissionReport", "รายงานค่ามือ · แบบบัญชี (Q-0030): รายการที่ earned_at อยู่ในช่วง from..to (วันท้องถิ่นของสาขา) นับ +1 งาน/+base/+amount; รายการ status reversed ที่ reversed_at อยู่ในช่วง นับ −1/−base/−amount (เกิดและยกเลิกในช่วงเดียวกัน = 0; void ทีหลังติดลบในช่วงที่ void) · ไม่มีรายการ → rows = []", [("from", "calc: input"), ("to", "calc: input"), ("rows[].staffUserId", "commission_entry.staff_user_id"),
+ ("rows[].staffName", "staff_user.display_name"), ("rows[].jobs", "calc: count earned_at ในช่วง − count reversed_at ในช่วง"), ("rows[].baseSatang", "calc: Σ commission_entry.base_satang (earned_at ในช่วง) − Σ (reversed_at ในช่วง)"),
+ ("rows[].amountSatang", "calc: Σ commission_entry.amount_satang (earned_at ในช่วง) − Σ (reversed_at ในช่วง)"), ("rows[].entries[]", "calc: commission_entry.id ทุกแถวที่นับ (บวกหรือลบ)")])
 dto("OccupancyReport", "รายงาน occupancy", [("from", "calc: input"), ("to", "calc: input"), ("days[].date", "calc"), ("days[].occupiedUnits", "calc: stay checked_in/checked_out ครอบคืนนั้น"),
  ("days[].totalUnits", "calc: room_unit active"), ("days[].percent", "calc"), ("byRoomType[]", "calc")])
 dto("SkippedMessageItem", "ข้อความที่ไม่ได้ส่ง (ให้ร้านส่งเอง)", [("id", "notification.id"), ("templateKey", "notification.template_key"),
