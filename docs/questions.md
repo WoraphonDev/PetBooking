@@ -130,10 +130,10 @@
 - Verification: PR #31 merged on 2026-10-02. T-0020 follow-up implements auth.me with nullable email, platform-admin support identity, session-derived organization/branch, role permissions and tenant isolation tests. The earlier logout/resetRequest implementation is merged in PR #30.
 
 ## Q-0015 · T-0018 test relocation conflicts with the task-scope rename guard
-- Status: open
+- Status: spec-changed (PR #33 merged)
 - Task: T-0018 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: The updated card explicitly requires moving the health service tests into the standard suite, but `scripts/check-task-scope.mjs:74` rejects all renames. Git recognizes the moved and updated test as a 62% similar rename from `packages/server/src/services/health/health.test.ts` to `packages/server/test/services/health/health.test.ts`; both paths are allowed by the card.
 - Evidence: T-0018 step 3 and allowed_paths after merged spec-change #31; scope guard unconditionally reports "renames are not allowed in task PRs" when git diff includes a source path.
 - Proposed resolution: a separate human-approved spec-change allowing only this exact source/destination rename for T-0018, preserving all other forbidden-path and scope checks. The task must not modify scripts or disguise the rename to evade the guard.
-- Work: health route/service integration, HTTP 200/503 tests, stdout error logging, removal of the separate config and runbook updates are implemented. Done when health tests and pnpm verify pass; task-scope validation blocks publication/completion until the guard decision is resolved.
-- Answer: pending.
+- Work: health route/service integration, HTTP 200/503 tests, stdout error logging, removal of the separate config and runbook updates are implemented. PR #33 merged and permits the exact relocation; T-0018 can pass task-scope validation and proceed to publication.
+- Answer: user explicitly authorized a separate spec-change PR on 2026-10-02 to allow only this exact T-0018 health-test relocation. All other renames remain forbidden, and source/destination must still match the card scope. PR #33 merged on 2026-10-02. T-0018 implementation on t-0018-health-completion incorporates the merged guard change.
