@@ -215,3 +215,14 @@
 - Implementation detail: use per-screen entries in shell-admin/navigation/<SCREEN-ID>.ts behind the shell-owned navigation registry. Each AD-* task edits only its own entry, preserving parallel-safety rather than granting every screen the same shared file. No auth or menu behavior differs from the approved decision.
 
 - Implementation (2026-10-02): PR #56 merged; resumed T-0025 in #44 with provider-only public parent, five guarded roots, unchanged resolveAdmin re-export and per-screen navigation entries.
+
+
+## Q-0025 · T-0031 activation conflicts with the Admin shell's unimplemented-menu tests
+- Status: answered (spec-change pending merge)
+- Task: T-0031 · Asked by: agent (codex) · Date: 2026-10-02
+- Question: May a prerequisite spec-change add apps/web/src/components/shell-admin/admin-shell.test.tsx to T-0031's allowed_paths so the shell tests use explicit unimplemented-screen fixtures while T-0031 enables its AD-01 entry?
+- Evidence: merged Q-0024 requires each screen to enable its navigation entry when implemented. The T-0025 shell tests currently consume production entries and assert seven disabled controls/no links and all entries disabled. Enabling AD-01 correctly therefore breaks those tests. T-0031 cannot edit that shell-owned test under its current allowed_paths.
+- Proposed fix: add only the shell test file to T-0031 scope through the task generator/generated card; isolate all seven navigation entries as explicit unimplemented fixtures in the shell suite, retaining every existing assertion. T-0031's screen suite separately verifies the real AD-01 entry is enabled. No product/spec/authentication behavior or dependency changes. A reviewable fixture patch is prepared locally; it has not been applied to the protected task file.
+- Work: preparing the independently allowed Admin login screen and tests; navigation activation/test-fixture repair remains paused pending approval and prerequisite merge under AGENTS.md.
+
+- Answer (2026-10-02): user approved the proposed prerequisite scope change and explicit unimplemented-screen fixtures, retaining all existing assertions. Apply the test repair and enable AD-01 in T-0031 after the prerequisite merges.
