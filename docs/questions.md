@@ -306,6 +306,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#dto-Quote defines cancelSummary only as a summary calculated from branch_policy free_cancel_hours/forfeit, without exact text.
 - Answer (2026-10-02): user approved this text in chat: ยกเลิกก่อนเริ่มบริการอย่างน้อย {hours} ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ {percent}% . Substitute freeCancelHours and lateCancelForfeitPercent respectively.
 
+## Q-0037 · T-0308 pilot analytics definitions
+- Status: answered
+- Task: T-0308 · Asked by: agent (codex) · Date: 2026-10-02
+- Evidence: 05#dto-PilotAnalytics lists counts and ratios without a concrete channel object shape, rate units/empty denominators, date boundaries or the seven-day anchor.
+- Answer (2026-10-02): user approved in chat: from/to are inclusive Thai local dates; activeDays7 uses seven days ending on to; bookingsByChannel contains every booking channel; onlineShare/noShowRate are whole percentages, zero with an empty denominator; noShowRate covers due grooming/stay/daycare items excluding cancelled items; reportCardsSent and billsClosed use sentAt/closedAt. Booking activity uses booking/bill creation dates; push usage uses sentAt. Scheduled starts use grooming.startsAt, stay expected check-in time (branch opening when absent, as bookings.create defines first service time), and daycare session start. These details preserve the existing 02 columns and 05 scheduling semantics.
+
 ## Q-0040 · bookings.balanceLink: request body, missing-bill error and URL
 - Status: answered (implemented in T-0162)
 - Task: T-0162 · Asked by: agent (claude) · Date: 2026-10-02
