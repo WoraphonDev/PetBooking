@@ -277,6 +277,14 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#dto-PetSummary, 05#ep-customers.create, 05#ep-customers.get, 05 §0 Warnings.
 - Answer (2026-10-02): user chose in chat. (1) `photoUrl` is nullable and returns null until T-0038 lands; wiring the signed URL is a follow-up for whoever owns pets/photos after T-0038. (2) `warnings: [{ code: "DUPLICATE_PHONE", message: "เบอร์นี้ซ้ำกับลูกค้าเดิมในร้าน", data: { duplicateCustomerIds } }]` appended to CustomerDetail; no duplicate → no `warnings` key. (3) Keys are left out of the JSON: phone, email, addressLine, subdistrict, district, province, postalCode, internalNote, creditBalanceSatang (optional in the schema).
 
+## Q-0051 · T-0036: stale notification cutoff and production adapter wiring
+- Status: answered (T-0036 ships the runner; dispatch deferred)
+- Task: T-0036 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: notify/dispatch.ts claims all queued rows; NotifyDeps has interfaces but no runtime adapter factory. The card owns jobs/cron, not notify/** or integrations/**.
+- Proposed decision: expand scope for dispatcher cutoff and adapter wiring; absent integration adapters leave their rows queued. Alternatively implement the independent scheduled-job runner and defer cron notification dispatch. No dependent code written before approval.
+- Answer (2026-10-03): user chose in chat (asked by claude while finishing T-0036). Ship the scheduled-job runner now: cron.tick = secret check → seed recurring jobs → run due jobs → `{processed, failed}`. Dispatching queued notifications from the tick (stale cutoff in notify/dispatch.ts + runtime adapter factory for LINE/SMTP/push) is deferred to a separate follow-up card; T-0036 does not touch notify/** or integrations/**.
+
+
 ## Q-0033 · Support mode reads are refused by every service's `requireRole`
 - Status: open
 - Task: found in T-0125 · Asked by: agent (claude) · Date: 2026-10-02
