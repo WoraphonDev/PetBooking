@@ -292,6 +292,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-customers.blacklist validation column; `packages/server/src/audit.ts` writeAudit reason check.
 - Work: T-0156 requires the reason in both directions (`REASON_REQUIRED`), so the audit trail always has a reason. If unblacklisting should be allowed without one, audit.ts (outside T-0156) needs an exception for `customer.blacklist` with `after.blacklisted = false`.
 
+## Q-0053 · T-0304 dashboard count definitions
+- Status: answered
+- Task: T-0304 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 05#dto-DashboardToday does not fully define cancellation filtering, occupancy rounding, overdue boundary or skipped-message date.
+- Answer (2026-10-03): user approved in chat. groom.byStatus excludes cancelled; hotel arrivals/departures and daycare.count exclude cancelled; occupancyPercent is a whole percent rounded to nearest integer, zero with no active room units; overdueCareTasks counts pending rows with dueAt < ctx.now; unsentMessages counts skipped rows by today's createdAt.
+
 ## Q-0035 · T-0155: missing LINE channel and non-customer skipped recipients
 - Status: answered
 - Task: T-0155 · Asked by: agent (codex) · Date: 2026-10-02
