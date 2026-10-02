@@ -195,3 +195,10 @@
 - Question: 04#R-25 step 2 names categories only (slips/general photos 2 MB, vaccine documents 5 MB, stay_update video 20 MB ≤ 30 s, signature PNG 500 KB, CSV 2 MB), while `file_kind` has 14 values. Which MIME types and limits apply to consent_pdf, proof, feedback, logo, room_photo, service_photo, and to stay_update photos? Is 1 MB 10^6 or 2^20 bytes?
 - Evidence: 02#tbl-file_object allows image/jpeg, image/png, image/webp, video/mp4, application/pdf, text/csv; R-25 vectors cover after/stay_update/slip/vaccine_proof only.
 - Answer (2026-10-02): user approved the proposed table in chat. Images (jpeg/png/webp) ≤ 2 MB: pet_profile, before, after, slip, logo, room_photo, service_photo, feedback, proof · stay_update: images ≤ 2 MB or video/mp4 ≤ 20 MB · vaccine_proof: images or application/pdf ≤ 5 MB · signature: image/png ≤ 500 KB · import_csv: text/csv ≤ 2 MB · consent_pdf: application/pdf ≤ 5 MB · 1 MB = 1,000,000 bytes, 1 KB = 1,000 bytes · the 30-second video limit is not checkable from validateUpload's input and is enforced client-side. A human may later copy this table into 04#R-25 via spec-change.
+
+## Q-0023 · Shop consent records when the owner accepts the invite
+- Status: answered
+- Task: T-0042 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 05#ep-admin.createOrg says "consent_record ฝั่งร้าน (dpa, terms_of_service) ทำตอน owner รับคำเชิญ", but 05#ep-auth.inviteAccept lists no consent effect and 06#scr-A-04 has no document acceptance UI. Should auth.inviteAccept write those records?
+- Evidence: 02#tbl-consent_record (subject_type organization, subject_id organization.id); legal document versions in 10 §5 / reference-data.json legalDocs.
+- Answer (2026-10-02): user approved in chat. When the accepted invite's staff_user.role is owner, auth.inviteAccept inserts consent_record ×2 (dpa, terms_of_service) in the same transaction: subject_type organization, subject_id = organization_id = the shop, version from reference-data legalDocs, accepted true, ip/user_agent from the request. A-04 should later show the document links (separate spec-change for the screen).
