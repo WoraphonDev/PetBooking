@@ -364,6 +364,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bills.open marks both `bookingIds[]` and `customerId` optional and lists no error codes; it does not say what happens with mixed bookings, which booking statuses may be billed, or when a package item can no longer be redeemed (R-14).
 - Answer (2026-10-03): user chose in chat. bookingIds must belong to one customer (and one branch); a sent customerId must match → else VALIDATION_FAILED. customerId only → empty bill for that customer; neither → empty walk-in bill (customer null). Only `confirmed` bookings may be billed (else VALIDATION_FAILED). Idempotency: every booking already on the same open bill → that bill; a booking on a paid/void bill → BILL_NOT_OPEN; bookings spread over bills → VALIDATION_FAILED. A package item that fails R-14 canRedeemPackage (or belongs to another customer) is billed at its booked price. Lines per appointment: main services, add-ons, then surcharges (performer = groomer); stay/daycare lines are T-0270.
 
+## Q-0055 · bills.list date/order and bills.updateLine rules
+- Status: answered (implemented in T-0230)
+- Task: T-0230 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-bills.list says `date` is "closed_at หรือ opened_at ตามสถานะ" without the mapping or the order; 05#ep-bills.updateLine names DISCOUNT_LIMIT_EXCEEDED / REASON_REQUIRED without thresholds, limits quantity to quick_item without an error, and says "delete+insert" although package_redemption references bill_line.id.
+- Answer (2026-10-03): user chose in chat. bills.list: a paid bill is dated by closed_at, open/void by opened_at (also without a status filter); `date` = that branch-local day; newest first (ms precision) with the 05 §0 keyset cursor and limit; customerName = owner_profile.first_name (null for walk-in). bills.updateLine: discount > 0 needs a reason ≥ 3 chars (REASON_REQUIRED); discount ≤ qty × unit (LINE_DISCOUNT_TOO_LARGE); front_desk: all discounts on the bill (lines + bill discount) ≤ 20% of the gross Σ qty × unit (DISCOUNT_LIMIT_EXCEEDED; owner unlimited); quantity on a non-quick_item line or a performer that is not an active staff of the org → VALIDATION_FAILED; a subtotal below the bill discount → BILL_DISCOUNT_TOO_LARGE; audit `bill.discount` only when the discount/reason changes; the row is updated in place.
+
 ## Q-0045 · P-02 legal documents: content files missing and outside allowed paths
 - Status: open (T-0317 blocked)
 - Task: T-0317 · Asked by: agent (claude) · Date: 2026-10-02
