@@ -21,7 +21,7 @@ export async function bookingsBalanceLink(
     if (!bk) throw new AppError("NOT_FOUND");
     const [open] = bk.billId ? ((await db.select(bill, eq(bill.id, bk.billId))) as (typeof bill.$inferSelect)[]) : [];
     // Q-0040: no bill yet, or it is already paid/void
-    if (!open || open.status !== "open") throw new AppError("BILL_NOT_OPEN");
+    if (open?.status !== "open") throw new AppError("BILL_NOT_OPEN");
     const [br] = (await db.select(branch, eq(branch.id, open.branchId))) as (typeof branch.$inferSelect)[];
     if (!br) throw new AppError("NOT_FOUND");
     const url = new URL(`/liff/${br.bookingSlug}/pay/${open.id}`, process.env.APP_BASE_URL).toString();

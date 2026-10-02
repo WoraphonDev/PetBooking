@@ -11,7 +11,11 @@ import { resetRateLimits, withStaff } from "../../../src/http.ts";
 import { bookingsBalanceLink } from "../../../src/services/bookings/balanceLink.ts";
 import { otherOrg, type SeedOrg, setupTestDb, staffCtx, type TestEnv } from "../../helpers/setup.ts";
 
-const POST = withStaff("bookings.balanceLink", { body: BookingsBalanceLinkRequest, params: BookingsBalanceLinkParams }, bookingsBalanceLink);
+const POST = withStaff(
+  "bookings.balanceLink",
+  { body: BookingsBalanceLinkRequest, params: BookingsBalanceLinkParams },
+  bookingsBalanceLink,
+);
 let env: TestEnv;
 let foreign: SeedOrg;
 let bookingId: string;
