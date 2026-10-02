@@ -1,0 +1,7 @@
+{
+  "title": "Admin login",
+  "email": "อีเมล",
+  "password": "รหัสผ่าน",
+  "submit": "เข้าสู่ระบบ",
+  "invalid": "ข้อมูลไม่ถูกต้อง"
+}
