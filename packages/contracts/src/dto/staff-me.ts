@@ -6,7 +6,7 @@ export const StaffMe = z.object({
   staff: z.object({
     id: Uuid,
     displayName: z.string(),
-    email: z.string().email(),
+    email: z.string().email().nullable(),
     role: staffRole,
     isGroomer: z.boolean(),
     lineLinked: z.boolean(),

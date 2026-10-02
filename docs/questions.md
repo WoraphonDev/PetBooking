@@ -101,7 +101,7 @@
 - คำตอบ: มนุษย์เลือก A ในแชท session T-0015 (2026-10-02) — PR T-0015 commit การเปลี่ยน lockfile ไปแล้ว; การ์ดแก้แล้วใน spec-change PR #23 (INF-I18N allowed_paths += `pnpm-lock.yaml`)
 
 ## Q-0012 · T-0018 monitoring scope and error-reporting configuration
-- Status: spec-changed (this PR; awaiting merge)
+- Status: spec-changed (PR #31 merged)
 - Task: T-0018 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: T-0018 needs `apps/web/package.json` and `pnpm-lock.yaml` to link `@app/server`, `packages/server/package.json` to export entry points, and `apps/web/test/api/health.test.ts` to replace the old synchronous `db: unknown` assertions. Integration tests need `packages/server/test/services/health/**`, which the server's existing Vitest config discovers. These paths are missing from allowed_paths.
 - Evidence: T-0018 allowed_paths; apps/web health tests; server Vitest include `test/**/*.test.ts`; 05#ep-health requires HTTP 503 on database failure.
@@ -109,7 +109,7 @@
 - Options: expand task scope through spec-change and use `ERROR_REPORT_DSN`, or leave the affected work blocked until that change is merged. Optional external reporting requires an approved implementation/dependency decision.
 - Answer (2026-10-02, supersedes the original-scope decision): user reports PR `spec-change-q0012-0014` expands T-0018 allowed_paths. Complete the remaining work in a new T-0018 PR: connect `apps/web/app/api/health/route.ts` to the health service (database error -> HTTP 503, ok: false); update `apps/web/test/api/health.test.ts` to 05#ep-health; move service tests to `packages/server/test/services/health/**` and remove the separate Vitest config. Changes to `packages/server/package.json` are limited to adding the export entry required by the route.
 - Error reporting decision: MVP emits log.ts level error to stdout only; no SDK or dependency, and no external reporting implementation. Use `ERROR_REPORT_DSN` (01 §6), not `SENTRY_DSN`.
-- Verification: fetched/GitHub main remains `246c829`. The matching local spec-change commit `f6d3128` was found and is being published by this PR. T-0018 follow-up implementation awaits human merge; the regenerated card includes the approved scope and MVP reporting decision.
+- Verification: PR #31 merged on 2026-10-02; main includes the expanded T-0018 scope and MVP reporting decision. The separate T-0018 implementation follow-up can proceed.
 
 ## Q-0013 · T-0019 needs workspace package wiring outside its allowed paths
 - Status: spec-changed
@@ -119,12 +119,12 @@
 - Answer: PR #28 merged. T-0019 allowed_paths now include the web/server package manifests and pnpm-lock.yaml for workspace dependency and package-export wiring.
 
 ## Q-0014 · T-0020 StaffMe nullable email and support identity
-- Status: spec-changed (this PR; awaiting merge)
+- Status: spec-changed (PR #31 merged)
 - Task: T-0020 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: What should `auth.me` return for a LINE-only staff member with null email, and whose `staff` fields should it return for a platform-admin support session?
 - Evidence: `02-data-model.md#tbl-staff_user` permits null email; `05-api.md#dto-StaffMe` maps email to that column, while the existing `packages/contracts/src/dto/staff-me.ts` requires a string email. Support sessions resolve to a platform-admin actor (Q-0007), but StaffMe maps every staff field to staff_user and gives no identity-selection rule.
-- Scope: the shared StaffMe DTO is outside T-0020 allowed_paths. Changing its nullability or inventing support identity behavior is not authorized by this card.
+- Scope: PR #31 added the shared StaffMe DTO and contract tests to T-0020 allowed_paths and specified support identity.
 - Options: clarify the support-session DTO and allow nullable staff email through a spec-change that includes the shared DTO in scope.
 - Answer (2026-10-02, supersedes the partial-draft decision): user reports PR `spec-change-q0012-0014` updates 05#dto-StaffMe and permits the shared DTO in T-0020. Set staff.email to string | null using `z.string().email().nullable()`. General rule (05 §2): columns nullable in 02 always produce DTO fields T | null.
 - Support mode decision: staff.id/displayName/email come from platform_admin; role = owner, isGroomer = false, lineLinked = false, permissions are the owner's, supportMode = true. Organization/branch come from the session. Continue auth.me once the updated task scope is available.
-- Verification: the matching local commit `f6d3128` is included in this PR, with generated 05#dto-StaffMe and expanded T-0020 scope. Human merge is still required; afterwards update the existing T-0020 PR and implement auth.me. The behavior decisions above require no reconfirmation.
+- Verification: PR #31 merged on 2026-10-02. T-0020 follow-up implements auth.me with nullable email, platform-admin support identity, session-derived organization/branch, role permissions and tenant isolation tests. The earlier logout/resetRequest implementation is merged in PR #30.
