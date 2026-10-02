@@ -648,7 +648,7 @@ scr("L-15", "liff", "/liff/[branchSlug]/me", "โปรไฟล์ของฉ�
     [("บันทึก", "liff.updateMe", "", ""), ("ส่งคำขอ", "liff.dataRequest", "", "toast 'ทีมงานจะติดต่อภายใน 30 วัน'")])
 
 # ====================================================================== ADMIN
-scr("AD-01", "admin", "/admin/login", "Admin login", "admin", "US-13-10", "ทีมแพลตฟอร์มเข้าระบบ", [],
+scr("AD-01", "admin", "/admin/login", "Admin login", "public", "US-13-10", "ทีมแพลตฟอร์มเข้าระบบ", [],
     [("ฟอร์ม", [W("อีเมล", "platform_admin.email", "email", ""), W("รหัสผ่าน", "platform_admin.password_hash", "password", "")])], [("เข้าสู่ระบบ", "admin.login", "", "→ AD-02")])
 scr("AD-02", "admin", "/admin/organizations", "ร้านทั้งหมด", "admin", "US-13-10, US-13-14", "ดูและสร้างร้านนำร่อง", ["admin.orgs"],
     [("ตาราง", [R("ร้าน", "organization.name"), R("slug", "organization.slug", "mono"), R("สถานะ", "organization.status", "enum"), R("เจ้าของ", "staff_user.email"),

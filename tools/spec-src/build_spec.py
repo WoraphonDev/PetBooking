@@ -386,6 +386,13 @@ L = ["# 06 — Screen Specs (field-level: แสดง/กรอก/บันท
      "- ตัวเลขเงินทุกที่มาจาก server — client ห้ามคำนวณยอดเงินเอง (ยกเว้นพรีวิวเงินทอนบนปุ่มลัด)",
      "- รูปทุกใบผ่าน signed URL; อัปโหลดผ่าน `*.uploadUrl` + presigned PUT (R-25)",
      "- ช่องเบอร์ใช้ `inputmode=tel`, เงิน `inputmode=decimal` (รับบาท แปลงเป็นสตางค์ก่อนส่ง), น้ำหนักรับ กก. 1 ตำแหน่ง แปลงเป็นกรัม\n",
+     "### Admin shell (Q-0024)\n",
+     "- AD-01 `/admin/login` เป็น public และอยู่นอก guard; parent layout จัด providers เท่านั้น",
+     "- Guard + shell อยู่ที่ layout ของ `/admin/organizations` (รวม AD-02/AD-03), `/admin/feedback`, `/admin/data-requests`, `/admin/analytics`, `/admin/holidays`",
+     "- Guard ใช้ `resolveAdmin` เดิมจาก `@app/server/http`: อ่าน `aid`, ตรวจ token hash/expiry และ platform_admin active; ไม่มี/หมดอายุ/disabled/subject ผิด → redirect `/admin/login`",
+     "- Platform admin ไม่มีลำดับ role ย่อย: กติกา role ไม่ถึง → 403 ไม่ใช้กับ admin shell; ไม่เพิ่ม route 403 หรือ experimental authInterrupts",
+     "- Guard เป็น request entry: ตั้ง now ครั้งเดียวให้ resolver สร้าง ctx; หลังจากนั้นเวลาใช้ ctx.now เท่านั้น",
+     "- เมนู AD-* disabled จน screen task เปิด entry ใน `apps/web/src/components/shell-admin/navigation/<SCREEN-ID>.ts`; AD-03 ต้องมี orgId ปัจจุบันที่เป็นรูปธรรมจึงสร้างลิงก์ได้ (ไม่มี → disabled)\n",
      "## สารบัญ\n", "| ID | App | Route | หน้า | สิทธิ์ | Stories |", "|---|---|---|---|---|---|"]
 for s in SCR: L.append(f"| [{s['id']}](#scr-{s['id']}) | {s['app']} | `{md(s['route'])}` | {s['title']} | {s['roles']} | {s['stories']} |")
 for app, title in APPS.items():

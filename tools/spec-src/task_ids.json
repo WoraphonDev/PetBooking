@@ -333,8 +333,8 @@
   "SCR-C-25": "T-0314",
   "SCR-AD-06": "T-0315",
   "E2E-M6": "T-0316",
-  "H-GATE-M6": "H-16"
+  "H-GATE-M6": "H-16",
+  "API-admin-organizations": "T-0319"
  },
- "retired": {},
- "API-admin-organizations": "T-0319"
+ "retired": {}
 }

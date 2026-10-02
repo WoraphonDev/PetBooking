@@ -760,10 +760,11 @@
    "lane": "ui",
    "size": "M",
    "owner": "agent",
-   "wave": 5,
+   "wave": 6,
    "deps": [
     "T-0015",
-    "T-0016"
+    "T-0016",
+    "T-0007"
    ],
    "title": "Admin shell: layout + guard",
    "human_review": false
@@ -876,7 +877,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 6,
+   "wave": 7,
    "deps": [
     "T-0025",
     "T-0026"
