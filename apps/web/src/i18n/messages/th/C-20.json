@@ -1,0 +1,23 @@
+{
+  "title": "ใบเสร็จรับเงิน",
+  "receiptNo": "เลขที่",
+  "date": "วันที่",
+  "customer": "ลูกค้า",
+  "items": "รายการ",
+  "discount": "ส่วนลด",
+  "total": "ยอดสุทธิ",
+  "paidBy": "ชำระโดย",
+  "change": "เงินทอน",
+  "packagesRemaining": "แพ็กเกจคงเหลือ",
+  "packageLine": "{name} เหลือ {left} ครั้ง หมดอายุ {expires}",
+  "cashier": "ผู้รับเงิน",
+  "void": "ยกเลิก",
+  "print": "พิมพ์",
+  "paperSize": "ขนาดกระดาษ",
+  "paper58": "58 มม.",
+  "paper80": "80 มม.",
+  "paperA5": "A5",
+  "sendLine": "ส่ง LINE อีกครั้ง",
+  "sent": "ส่งใบเสร็จแล้ว",
+  "unavailable": "—"
+}
