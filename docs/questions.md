@@ -158,7 +158,7 @@
 - Answer (2026-10-02): user approved the proposed decision in this chat. Select owner by created_at ASC, id ASC; ownerEmail remains nullable; lineStatus and lastActivityAt are nullable for absent data. Audit action is `organization.status_change` with before/after status in the same transaction. Generated dependencies require the existing T-0035 audit writer (and its T-0034 state-table prerequisite) before T-0022. The endpoint records an audit only when status changes.
 
 ## Q-0018 · T-0022 exceeds the small-PR task boundary
-- Status: answered (task-split PR pending merge)
+- Status: spec-changed (PR #41 merged)
 - Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: May the generated task be split into admin.login and a separate card for admin.orgs/admin.updateOrg before implementation?
 - Evidence: PR #37 and prerequisites T-0005/T-0007/T-0035 are merged. Tests-first planning produced 290 formatted lines across the three PGlite integration test files, covering persisted lockout, safe login fields/cookie/session lifetime, organization DTO selection/nullability, authorization, suspension and transactional audit rollback. Contracts, services and routes would add approximately 150–200 lines, taking the combined implementation above the 400-line boundary in AGENTS.md golden rule 8.
