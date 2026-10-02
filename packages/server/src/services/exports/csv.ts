@@ -1,7 +1,7 @@
 import type { ExportsCsvRequest, ExportsCsvResponse } from "@app/contracts/endpoints/exports.csv";
 import { bill, billLine, booking, commissionEntry, customer, pet } from "@app/db/schema";
 import { localDayBounds } from "@app/domain/time/local-time";
-import { and, asc, eq, getTableColumns, gte, inArray, lt, type SQL } from "drizzle-orm";
+import { and, asc, getTableColumns, gte, inArray, lt, type SQL } from "drizzle-orm";
 import type { PgColumn, PgTable } from "drizzle-orm/pg-core";
 import { writeAudit } from "../../audit.ts";
 import { requireRole } from "../../auth/permissions.ts";
@@ -28,12 +28,20 @@ const SPECS: Record<ExportType, Spec> = {
       const owners = await tenantDb(ctx, tx).select(customer);
       const ids = owners.map((c) => (c as typeof customer.$inferSelect).ownerProfileId);
       if (ids.length === 0) return [];
-      return tx.select().from(pet).where(and(inArray(pet.ownerProfileId, ids), range)).orderBy(asc(pet.createdAt), asc(pet.id));
+      return tx
+        .select()
+        .from(pet)
+        .where(and(inArray(pet.ownerProfileId, ids), range))
+        .orderBy(asc(pet.createdAt), asc(pet.id));
     },
   },
   bills: { table: bill, dateColumn: bill.closedAt, load: tenantRows(bill, bill.closedAt) },
   bill_lines: { table: billLine, dateColumn: billLine.createdAt, load: tenantRows(billLine, billLine.createdAt) },
-  commissions: { table: commissionEntry, dateColumn: commissionEntry.earnedAt, load: tenantRows(commissionEntry, commissionEntry.earnedAt) },
+  commissions: {
+    table: commissionEntry,
+    dateColumn: commissionEntry.earnedAt,
+    load: tenantRows(commissionEntry, commissionEntry.earnedAt),
+  },
   bookings: { table: booking, dateColumn: booking.firstServiceAt, load: tenantRows(booking, booking.firstServiceAt) },
 };
 
@@ -75,6 +83,6 @@ export async function exportsCsv(ctx: RequestContext, input: ExportsCsvRequest):
     });
     const header = columns.map(([, c]) => c.name.replace(/_satang$/, ""));
     const lines = rows.map((r) => columns.map(([key, c]) => cell(r[key], c.name.endsWith("_satang"))).join(","));
-    return `﻿${[header.join(","), ...lines].join("\r\n")}\r\n`;
+    return `\uFEFF${[header.join(","), ...lines].join("\r\n")}\r\n`;
   });
 }

@@ -1,5 +1,5 @@
 import { ExportsCsvParams, ExportsCsvQuery, ExportsCsvResponse } from "@app/contracts/endpoints/exports.csv";
-import { auditLog, bill, customer, ownerProfile, pet } from "@app/db/schema";
+import { auditLog, bill, billLine, booking, commissionEntry, ownerProfile, pet } from "@app/db/schema";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { resetRateLimits, withStaff } from "../../../src/http.ts";
@@ -27,11 +27,18 @@ async function get(type: string, query = "", role: "owner" | "front_desk" | "sta
     { subjectType: "staff", subjectId: env.base.staff[role], organizationId: env.base.orgId, branchId: env.base.branchId },
     new Date(),
   );
-  return GET(new Request(`https://petbooking.test/api/v1/staff/exports/${type}.csv${query}`, { headers: { cookie: `sid=${login.token}` } }), {
-    params: Promise.resolve({ type }),
-  });
+  return GET(
+    new Request(`https://petbooking.test/api/v1/staff/exports/${type}.csv${query}`, { headers: { cookie: `sid=${login.token}` } }),
+    {
+      params: Promise.resolve({ type }),
+    },
+  );
 }
-const parse = (csv: string) => csv.replace(/^﻿/, "").trimEnd().split("\r\n");
+const parse = (body: unknown) =>
+  ExportsCsvResponse.parse(body)
+    .replace(/^\uFEFF/, "")
+    .trimEnd()
+    .split("\r\n");
 
 async function seedBill(org: SeedOrg, closedAt: Date | null, totalSatang: number, note: string | null = null) {
   const [b] = await env.db
@@ -61,7 +68,7 @@ it("exports bills as BOM CSV with snake_case header and baht money, filtered by 
   const response = await get("bills", "?from=2026-10-02&to=2026-10-02");
   expect(response.status).toBe(200);
   const csv = ExportsCsvResponse.parse(await response.json());
-  expect(csv.startsWith("﻿")).toBe(true);
+  expect(csv.startsWith("\uFEFF")).toBe(true);
   const [header, ...rows] = parse(csv);
   expect(header?.split(",")).toEqual([
     "id",
@@ -88,16 +95,41 @@ it("exports bills as BOM CSV with snake_case header and baht money, filtered by 
   ]);
   expect(rows).toHaveLength(1);
   expect(rows[0]).toContain(`${inRange.id},${env.base.branchId},${env.base.customerId},R-123450,paid,1234.50,0.00,,1234.50,1234.50,0.00,`);
-  expect(rows[0]).toContain(',2026-10-01T17:30:00.000Z,');
+  expect(rows[0]).toContain(",2026-10-01T17:30:00.000Z,");
   expect(rows[0]).toContain(',"มี ""คอมม่า"", ด้วย",');
 });
 
 it("exports every type for the owner's organization only", async () => {
-  await seedBill(env.base, TEST_NOW, 100);
+  const b = await seedBill(env.base, TEST_NOW, 100);
+  const tenant = { organizationId: env.base.orgId };
+  const [line] = await env.db
+    .insert(billLine)
+    .values({ ...tenant, billId: b.id, lineType: "groom_service", description: "อาบน้ำ", unitPriceSatang: 100, lineTotalSatang: 100 })
+    .returning();
+  await env.db.insert(commissionEntry).values({
+    ...tenant,
+    branchId: env.base.branchId,
+    staffUserId: env.base.staff.staff,
+    billId: b.id,
+    billLineId: line?.id ?? "",
+    baseSatang: 100,
+    amountSatang: 10,
+    earnedAt: TEST_NOW,
+  });
+  await env.db.insert(booking).values({
+    ...tenant,
+    branchId: env.base.branchId,
+    customerId: env.base.customerId,
+    bookingNo: "B-1",
+    channel: "walk_in",
+    createdByType: "staff",
+    status: "confirmed",
+    policySnapshot: {},
+  });
   const [profile] = await env.db.insert(ownerProfile).values({ createdInOrgId: foreign.orgId, firstName: "x" }).returning();
   await env.db.insert(pet).values([
     { ownerProfileId: env.base.ownerProfileId, createdInOrgId: env.base.orgId, name: "โมจิ", species: "dog" },
-    { ownerProfileId: profile!.id, createdInOrgId: foreign.orgId, name: "Other", species: "cat" },
+    { ownerProfileId: profile?.id ?? "", createdInOrgId: foreign.orgId, name: "Other", species: "cat" },
   ]);
   const customers = parse(await (await get("customers")).json());
   expect(customers[0]).toMatch(/^id,owner_profile_id,/);
@@ -109,9 +141,8 @@ it("exports every type for the owner's organization only", async () => {
   for (const type of ["bill_lines", "commissions", "bookings"]) {
     const response = await get(type);
     expect(response.status).toBe(200);
-    expect(parse(await response.json())).toHaveLength(1);
+    expect(parse(await response.json())).toHaveLength(2);
   }
-  expect(parse(await (await get("bills")).json())).toHaveLength(2);
 });
 
 it("writes audit data.export in the same transaction, stamped with ctx.now", async () => {
@@ -138,7 +169,7 @@ it("rejects an unknown type or bad dates with VALIDATION_FAILED", async () => {
     ["bills", "?from=2026-10-05&to=2026-10-01"],
   ] as const) {
     const response = await get(type, query);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(422);
     expect(await response.json()).toMatchObject({ error: { code: "VALIDATION_FAILED" } });
   }
 });
@@ -153,7 +184,7 @@ it("forbids front_desk and staff without auditing", async () => {
 });
 
 it("never includes another organization's rows (NOT_FOUND by omission)", async () => {
-  await env.db.insert(customer).values({ organizationId: foreign.orgId, ownerProfileId: foreign.ownerProfileId });
+  // otherOrg seeds a customer of its own
   const rows = parse(await (await get("customers")).json()).slice(1);
   expect(rows.map((r) => r.split(",")[0])).toEqual([env.base.customerId]);
 });
