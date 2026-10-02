@@ -41,7 +41,7 @@ IGNORE_REF = {("line", "me"), ("liff", "line"), ("window", "print"), ("bill", "d
               ("customer", "reliability_override"), ("stay", "vaccine_override"), ("staff", "invite"), ("staff", "role_change"), ("staff", "disable"),
               ("policy", "update"), ("promptpay", "update"), ("line_channel", "update"), ("commission_rule", "update"), ("data", "export"),
               ("pdpa", "erase"), ("support", "session_start"), ("support", "session_end"), ("import", "commit"), ("deposit", "waive"),
-              ("refund", "create"), ("credit", "adjust"), ("slip", "verify"), ("slip", "reject")}
+              ("refund", "create"), ("credit", "adjust"), ("slip", "verify"), ("slip", "reject"), ("organization", "status_change")}
 
 def check_refs(text, where, strict=False):
     if not text: return

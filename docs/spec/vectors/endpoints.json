@@ -3030,7 +3030,7 @@
     "password"
    ],
    "query": [],
-   "response": "object {admin}",
+   "response": "object {admin: {id: uuid, email: string, displayName: string}}",
    "errors": [
     "INVALID_CREDENTIALS",
     "ACCOUNT_LOCKED"

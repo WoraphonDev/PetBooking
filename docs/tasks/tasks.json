@@ -10,6 +10,8 @@
   "T-0005",
   "T-0006",
   "T-0007",
+  "T-0034",
+  "T-0035",
   "T-0008",
   "T-0009",
   "T-0010",
@@ -39,8 +41,6 @@
   "T-0033",
   "H-04",
   "H-05",
-  "T-0034",
-  "T-0035",
   "T-0036",
   "T-0037",
   "T-0038",
@@ -462,6 +462,33 @@
    "title": "Route wrappers: withStaff/withCustomer/withAdmin/withPublic + error JSON + CSRF + rate limit",
    "human_review": true
   },
+  "T-0034": {
+   "key": "DOM-STATE",
+   "ms": "M0",
+   "lane": "domain",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "H-01"
+   ],
+   "title": "State tables ทุก entity (03) + canTransition",
+   "human_review": false
+  },
+  "T-0035": {
+   "key": "INF-AUDIT",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0004",
+    "T-0034"
+   ],
+   "title": "Audit log writer (R-27) + booking_event writer + state transition helper",
+   "human_review": true
+  },
   "T-0008": {
    "key": "DOM-R-18",
    "ms": "M0",
@@ -666,10 +693,11 @@
    "wave": 6,
    "deps": [
     "T-0007",
-    "T-0005"
+    "T-0005",
+    "T-0035"
    ],
    "title": "API admin.login, admin.orgs, admin.updateOrg",
-   "human_review": false
+   "human_review": true
   },
   "T-0023": {
    "key": "API-admin.createOrg",
@@ -890,33 +918,6 @@
    "title": "ร่าง Privacy Notice / Terms / DPA / ข้อความยินยอมรูป + ตรวจแม่แบบใบยินยอม",
    "human_review": false
   },
-  "T-0034": {
-   "key": "DOM-STATE",
-   "ms": "M1",
-   "lane": "domain",
-   "size": "M",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "H-01"
-   ],
-   "title": "State tables ทุก entity (03) + canTransition",
-   "human_review": false
-  },
-  "T-0035": {
-   "key": "INF-AUDIT",
-   "ms": "M1",
-   "lane": "infra",
-   "size": "M",
-   "owner": "agent",
-   "wave": 2,
-   "deps": [
-    "T-0004",
-    "T-0034"
-   ],
-   "title": "Audit log writer (R-27) + booking_event writer + state transition helper",
-   "human_review": true
-  },
   "T-0036": {
    "key": "INF-JOBS",
    "ms": "M1",
@@ -1005,7 +1006,7 @@
    "lane": "api",
    "size": "S",
    "owner": "agent",
-   "wave": 3,
+   "wave": 1,
    "deps": [
     "T-0007",
     "T-0035",
@@ -1363,7 +1364,7 @@
    "lane": "api",
    "size": "L",
    "owner": "agent",
-   "wave": 3,
+   "wave": 2,
    "deps": [
     "T-0007",
     "T-0035",
@@ -1460,7 +1461,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 4,
+   "wave": 2,
    "deps": [
     "T-0015",
     "T-0042"
@@ -1729,7 +1730,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 4,
+   "wave": 3,
    "deps": [
     "T-0025",
     "T-0026",

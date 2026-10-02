@@ -459,7 +459,7 @@ dto("StayUpdates", "หน้าอัปเดตน้องระหว่า
  ("checkOutDate", "stay.check_out_date"), ("updates[]", "[]dto:PhotoItem"), ("doneTasks[].title", "care_task.title"),
  ("doneTasks[].doneAt", "care_task.done_at"), ("doneTasks[].note", "care_task.note")])
 # ---- admin
-dto("OrgListItem", "ร้านในระบบ", [("id", "organization.id"), ("name", "organization.name"), ("slug", "organization.slug"), ("status", "organization.status"),
+dto("OrgListItem", "ร้านในระบบ · ownerEmail เป็น string | null: เลือก staff_user ที่ role = owner เรียง created_at ASC แล้ว id ASC และใช้ email ของแถวแรก · lineStatus เป็น enum:line_channel_status | null: ไม่มี line_channel ของสาขา → null · lastActivityAt เป็น ISO instant | null: max booking.created_at ของร้าน; ไม่มี booking → null · สาขาเดียวต่อธุรกิจตาม MVP", [("id", "organization.id"), ("name", "organization.name"), ("slug", "organization.slug"), ("status", "organization.status"),
  ("branchName", "branch.name"), ("bookingSlug", "branch.booking_slug"), ("ownerEmail", "staff_user.email"), ("lineStatus", "line_channel.status"),
  ("createdAt", "organization.created_at"), ("lastActivityAt", "calc: max booking.created_at")])
 dto("FeedbackItem", "แจ้งปัญหา", [("id", "feedback_report.id"), ("orgName", "organization.name"), ("staffName", "staff_user.display_name"),
