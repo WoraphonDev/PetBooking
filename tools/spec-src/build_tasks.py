@@ -440,6 +440,8 @@ def api_task(ms, gkey, items):
         deliver += [f"`{cf}`: `{req}`" + (f", `{qry}`" if e["query"] else "") + f", `{res}` (ฟิลด์ตามตาราง endpoint ทีละช่อง)",
                     f"`{sf}`: `export async function {service_fn(e)}(ctx, input)`", f"`{rf}`: `export const {e['method']} = with{'Staff' if e['auth']=='staff' else 'Customer' if e['auth']=='customer' else 'Admin' if e['auth']=='admin' else 'Public'}(\"{e['key']}\", …, {service_fn(e)})`"]
         tests.append(f"**{e['key']}** ({e['method']} `{e['path']}`)")
+        if e["key"] == "admin.login":
+            allowed += ["packages/db/src/schema/identity.ts", "packages/db/migrations/**"]
         tests.append("  - happy path: response ตรง schema `" + res + "` และค่าที่บันทึกใน DB ตรงกับ 'maps to' ของแต่ละฟิลด์")
         for code in [c.strip() for c in e["errors"].split(",") if c.strip()]:
             tests.append(f"  - error `{code}`")

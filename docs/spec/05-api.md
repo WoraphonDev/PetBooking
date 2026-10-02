@@ -1470,7 +1470,7 @@ Dashboard วันนี้
 
 ### OrgListItem
 
-ร้านในระบบ
+ร้านในระบบ · ownerEmail เป็น string | null: เลือก staff_user ที่ role = owner เรียง created_at ASC แล้ว id ASC และใช้ email ของแถวแรก · lineStatus เป็น enum:line_channel_status | null: ไม่มี line_channel ของสาขา → null · lastActivityAt เป็น ISO instant | null: max booking.created_at ของร้าน; ไม่มี booking → null · สาขาเดียวต่อธุรกิจตาม MVP
 
 | field | source |
 |---|---|
@@ -5881,13 +5881,15 @@ Request body:
 | `email` | string | ✓ | platform_admin.email |  |
 | `password` | string | ✓ | platform_admin.password_hash |  |
 
-Response: `object {admin}`
+Response: `object {admin: {id: uuid, email: string, displayName: string}}`
   
 Errors: `INVALID_CREDENTIALS`, `ACCOUNT_LOCKED`
 
 
 ผลที่ต้องเกิด:
 - session 12 ชม. cookie `aid`
+- admin.id/email/displayName มาจาก platform_admin.id/email/display_name เท่านั้น
+- R-24: บันทึก failed_login_count และ locked_until ใน platform_admin; ผิดครั้งที่ 5 ล็อก 15 นาทีและ reset count; สำเร็จ reset count และ locked_until
 
 
 <a id="ep-admin.orgs"></a>
@@ -5936,7 +5938,7 @@ Errors: `SLUG_TAKEN`, `EMAIL_TAKEN`
 #### admin.updateOrg
 
 **PATCH `/api/v1/admin/organizations/{orgId}`** — เปลี่ยนสถานะร้าน  
-สิทธิ์: platform admin · Stories: US-13-10
+สิทธิ์: platform admin · Stories: US-13-10 · Rules: R-27
 
 Request body:
 
@@ -5945,10 +5947,13 @@ Request body:
 | `status` | enum:org_status | ✓ | organization.status |  |
 
 Response: `OrgListItem`
+  
+Audit: `organization.status_change`
 
 
 ผลที่ต้องเกิด:
 - suspended → ทุก session ของร้านถูกปฏิเสธ (403) ยกเว้น admin
+- บันทึก audit ใน transaction เดียวกับ status: organization_id = ร้านที่แก้, actor_type = platform_admin, entity_type = organization, entity_id = orgId, before/after = {status} เฉพาะเมื่อ status เปลี่ยน
 
 
 <a id="ep-admin.setLineChannel"></a>

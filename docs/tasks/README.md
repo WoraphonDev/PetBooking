@@ -2,7 +2,7 @@
 
 > สร้างจาก `tools/spec-src/build_tasks.py` · การ์ดแต่ละใบ: `docs/tasks/<ID>.md` · **ห้ามเริ่ม task ที่ depends_on ยังไม่ merge**
 
-## M0 — รากฐาน (Walking skeleton) (38 tasks)
+## M0 — รากฐาน (Walking skeleton) (40 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
@@ -16,6 +16,8 @@
 | [T-0005](T-0005.md) | 2 | domain | M |  | Rule R-24 ล็อกบัญชีเมื่อใส่รหัสผิด + นโยบายรหัสผ่าน | H-01 |
 | [T-0006](T-0006.md) | 4 | infra | L | ⚠️ | Auth core: sessions, argon2, cookies, permissions table | T-0004 T-0005 |
 | [T-0007](T-0007.md) | 5 | infra | L | ⚠️ | Route wrappers: withStaff/withCustomer/withAdmin/withPublic + error JSON + CSRF + rate limit | T-0006 |
+| [T-0034](T-0034.md) | 2 | domain | M |  | State tables ทุก entity (03) + canTransition | H-01 |
+| [T-0035](T-0035.md) | 4 | infra | M | ⚠️ | Audit log writer (R-27) + booking_event writer + state transition helper | T-0004 T-0034 |
 | [T-0008](T-0008.md) | 2 | domain | S |  | Rule R-18 โควตาข้อความ LINE (push) และโหมดประหยัด | H-01 |
 | [T-0009](T-0009.md) | 2 | domain | S |  | Rule R-19 เลือกช่องทางส่งข้อความ | H-01 |
 | [T-0010](T-0010.md) | 4 | infra | L |  | Notification outbox + dispatcher + stub templates ทุก key | T-0004 T-0008 T-0009 |
@@ -30,7 +32,7 @@
 | [T-0019](T-0019.md) | 6 | api | L | ⚠️ | API auth.staffLogin | T-0007 T-0005 |
 | [T-0020](T-0020.md) | 7 | api | M |  | API auth.staffLogout, auth.me, auth.resetRequest | T-0007 T-0019 T-0010 |
 | [T-0021](T-0021.md) | 6 | api | S |  | API auth.resetConfirm | T-0007 T-0005 |
-| [T-0022](T-0022.md) | 6 | api | M |  | API admin.login, admin.orgs, admin.updateOrg | T-0007 T-0005 |
+| [T-0022](T-0022.md) | 6 | api | M | ⚠️ | API admin.login, admin.orgs, admin.updateOrg | T-0007 T-0005 T-0035 |
 | [T-0023](T-0023.md) | 7 | api | L | ⚠️ | API admin.createOrg | T-0007 T-0022 |
 | [T-0024](T-0024.md) | 6 | notify | M |  | Notification templates (staff, M0): password_reset | T-0010 T-0011 |
 | [T-0318](T-0318.md) | 3 | ui | S |  | ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006 | T-0001 |
@@ -45,20 +47,18 @@
 | [T-0033](T-0033.md) | 6 | ui | S |  | Screen AD-07 วันหยุดราชการ | T-0025 T-0026 |
 | [H-04](H-04.md) | 9 | human | - |  | Milestone review M0: demo + ตรวจคุณภาพ | T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 … |
 
-## M1 — ร้านใส่ข้อมูลได้ (60 tasks)
+## M1 — ร้านใส่ข้อมูลได้ (58 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
 | [H-05](H-05.md) | 1 | human | - |  | ร่าง Privacy Notice / Terms / DPA / ข้อความยินยอมรูป + ตรวจแม่แบบใบยินยอม |  |
-| [T-0034](T-0034.md) | 1 | domain | M |  | State tables ทุก entity (03) + canTransition | H-01 |
-| [T-0035](T-0035.md) | 2 | infra | M | ⚠️ | Audit log writer (R-27) + booking_event writer + state transition helper | T-0004 T-0034 |
 | [T-0036](T-0036.md) | 1 | infra | L |  | Job runner + POST /api/cron/tick + stub handlers ทุก job_type | T-0007 T-0010 |
 | [T-0037](T-0037.md) | 1 | domain | S |  | Rule R-25 ข้อจำกัดการอัปโหลดไฟล์ | H-01 |
 | [T-0038](T-0038.md) | 2 | infra | M | ⚠️ | Object storage (presign) + upload-url endpoints + file commit + cleanup job | T-0007 T-0037 T-0036 |
 | [T-0039](T-0039.md) | 1 | infra | M |  | Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test | T-0001 T-0004 |
 | [T-0040](T-0040.md) | 1 | domain | S |  | Rule R-01 หาขนาด (size tier) จากน้ำหนัก | H-01 |
 | [T-0041](T-0041.md) | 1 | domain | M |  | Rule R-02 กลุ่มขนและการหาราคา/เวลาของบริการ | H-01 |
-| [T-0042](T-0042.md) | 3 | api | S |  | API auth.inviteAccept | T-0007 T-0035 T-0005 T-0019 |
+| [T-0042](T-0042.md) | 1 | api | S |  | API auth.inviteAccept | T-0007 T-0035 T-0005 T-0019 |
 | [T-0043](T-0043.md) | 1 | api | M |  | API staffMe.sessions, staffMe.revokeSession | T-0007 |
 | [T-0044](T-0044.md) | 3 | api | M |  | API branch.get, branch.update, branch.setHours | T-0007 T-0038 |
 | [T-0045](T-0045.md) | 4 | api | M |  | API branch.setModules, branch.updatePolicy | T-0007 T-0044 T-0035 |
@@ -83,14 +83,14 @@
 | [T-0064](T-0064.md) | 4 | api | L |  | API imports.commit | T-0007 T-0035 T-0062 |
 | [T-0065](T-0065.md) | 1 | api | S |  | API audit.list | T-0007 |
 | [T-0066](T-0066.md) | 1 | api | M |  | API admin.dataRequests, admin.holidays | T-0007 |
-| [T-0067](T-0067.md) | 3 | api | L | ⚠️ | API admin.resolveDataRequest | T-0007 T-0035 T-0066 |
+| [T-0067](T-0067.md) | 2 | api | L | ⚠️ | API admin.resolveDataRequest | T-0007 T-0035 T-0066 |
 | [T-0068](T-0068.md) | 1 | notify | M |  | Notification templates (staff, M1): invite | T-0010 T-0011 |
 | [T-0069](T-0069.md) | 1 | notify | M |  | Notification templates (admin, M1): data_request | T-0010 T-0011 |
 | [T-0070](T-0070.md) | 1 | ui | M |  | Console shell: layout + sidebar (ครบทุกเมนูใน 06) + auth guard | T-0015 T-0016 |
 | [T-0071](T-0071.md) | 3 | ui | M |  | Shared component: PhotoUploader: กล้อง/อัลบั้ม, ย่อรูป 1600px + ลบ EXIF (R-25), presigned PUT, progress, หลายไฟล์ | T-0015 T-0038 |
 | [T-0072](T-0072.md) | 1 | ui | M |  | Shared component: SlotPicker: แถบวัน + grid เวลา จาก SlotList (R-04) + แสดงชื่อช่าง + สถานะว่าง/เต็ม | T-0015 |
 | [T-0073](T-0073.md) | 1 | ui | M |  | Shared component: BarChart/LineChart เบา ๆ (recharts) สำหรับรายงาน | T-0015 |
-| [T-0074](T-0074.md) | 4 | ui | S |  | Screen A-04 รับคำเชิญเข้าร้าน | T-0015 T-0042 |
+| [T-0074](T-0074.md) | 2 | ui | S |  | Screen A-04 รับคำเชิญเข้าร้าน | T-0015 T-0042 |
 | [T-0317](T-0317.md) | 1 | ui | S |  | Screen P-02 เอกสารกฎหมาย | T-0015 |
 | [T-0075](T-0075.md) | 3 | ui | M |  | Screen C-08 ลูกค้า | T-0070 T-0026 T-0027 T-0051 |
 | [T-0076](T-0076.md) | 4 | ui | L |  | Screen C-09 ลูกค้า | T-0070 T-0026 T-0027 T-0071 T-0051 T-0053 |
@@ -106,7 +106,7 @@
 | [T-0086](T-0086.md) | 3 | ui | S |  | Screen C-38 ขนาดตามน้ำหนัก | T-0070 T-0057 T-0058 |
 | [T-0087](T-0087.md) | 5 | ui | S |  | Screen C-44 นำเข้าข้อมูล CSV | T-0070 T-0027 T-0071 T-0063 T-0062 T-0064 |
 | [T-0088](T-0088.md) | 2 | ui | M |  | Screen C-45 บัญชีของฉัน | T-0070 T-0020 T-0043 |
-| [T-0089](T-0089.md) | 4 | ui | S |  | Screen AD-05 คำขอ PDPA | T-0025 T-0026 T-0027 T-0066 T-0067 |
+| [T-0089](T-0089.md) | 3 | ui | S |  | Screen AD-05 คำขอ PDPA | T-0025 T-0026 T-0027 T-0066 T-0067 |
 | [T-0090](T-0090.md) | 2 | ui | S |  | Screen AD-07 วันหยุดราชการ (ext-M1) | T-0025 T-0026 T-0066 T-0033 |
 | [H-06](H-06.md) | 6 | human | - |  | Milestone review M1: demo + ตรวจคุณภาพ | T-0035 T-0010 T-0036 T-0038 T-0011 T-0015 T-0016 T-0070 … |
 

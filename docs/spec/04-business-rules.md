@@ -1037,7 +1037,7 @@ export function nextBookingNo(input: { now: string; timezone: string; counter: {
 
 Stories: US-01-02 · Module: `packages/domain/src/auth/lockout.ts`
 
-ใช้กับ `staff_user.failed_login_count`, `locked_until`
+ใช้กับ `staff_user.failed_login_count`, `staff_user.locked_until` และ `platform_admin.failed_login_count`, `platform_admin.locked_until` (กฎการนับ/ล็อก/สำเร็จเหมือนกัน)
 
 ```ts
 export function loginAttempt(input: { now: string; failedLoginCount: number; lockedUntil: string | null; passwordCorrect: boolean }):
@@ -1153,7 +1153,7 @@ export async function writeAudit(tx: Tx, entry: { organizationId: string | null;
 
 **อัลกอริทึม**
 
-1. รายการ action (type AuditAction): `bill.discount`, `bill.close`, `bill.void`, `bill.reopen_forbidden_attempt`, `payment.create`, `payment.void`, `slip.verify`, `slip.reject`, `deposit.waive`, `refund.create`, `credit.adjust`, `booking.cancel`, `booking.no_show`, `booking.price_override`, `stay.vaccine_override`, `customer.blacklist`, `customer.reliability_override`, `customer.merge_link_approve`, `staff.invite`, `staff.role_change`, `staff.disable`, `policy.update`, `promptpay.update`, `line_channel.update`, `commission_rule.update`, `data.export`, `pdpa.erase`, `support.session_start`, `support.session_end`, `import.commit`
+1. รายการ action (type AuditAction): `bill.discount`, `bill.close`, `bill.void`, `bill.reopen_forbidden_attempt`, `payment.create`, `payment.void`, `slip.verify`, `slip.reject`, `deposit.waive`, `refund.create`, `credit.adjust`, `booking.cancel`, `booking.no_show`, `booking.price_override`, `stay.vaccine_override`, `customer.blacklist`, `customer.reliability_override`, `customer.merge_link_approve`, `staff.invite`, `staff.role_change`, `staff.disable`, `policy.update`, `promptpay.update`, `line_channel.update`, `commission_rule.update`, `data.export`, `pdpa.erase`, `support.session_start`, `support.session_end`, `import.commit`, `organization.status_change`
 2. ทุก action ที่มีคำว่า void/cancel/waive/override/adjust/blacklist ต้องมี reason (API บังคับ ≥ 3 ตัวอักษร)
 3. หน้าดู audit log: owner เท่านั้น (filter ตาม action/ช่วงวัน/ผู้ทำ)
 
