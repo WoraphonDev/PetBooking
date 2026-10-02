@@ -24,11 +24,10 @@ beforeEach(async () => {
   resetRateLimits();
 });
 
-const dogTiers = [
-  { code: "S", labelTh: "เล็ก", minWeightGrams: 0, maxWeightGrams: 6000 },
-  { code: "M", labelTh: "กลาง", minWeightGrams: 6000, maxWeightGrams: 15000 },
-  { code: "L", labelTh: "ใหญ่", minWeightGrams: 15000, maxWeightGrams: null },
-];
+const tierS = { code: "S", labelTh: "เล็ก", minWeightGrams: 0, maxWeightGrams: 6000 as number | null };
+const tierM = { code: "M", labelTh: "กลาง", minWeightGrams: 6000, maxWeightGrams: 15000 as number | null };
+const tierL = { code: "L", labelTh: "ใหญ่", minWeightGrams: 15000, maxWeightGrams: null as number | null };
+const dogTiers = [tierS, tierM, tierL];
 async function put(input: unknown, role: "owner" | "front_desk" | "staff" = "owner") {
   const login = await createSession(
     env.db,
@@ -53,7 +52,7 @@ const rowsOf = (species: "dog" | "cat", branchId = env.base.branchId) =>
     .then((r) => r.filter((t) => t.species === species));
 
 it("creates a continuous tier set and returns it as SizeTierItem[] in weight order", async () => {
-  const response = await put({ species: "dog", tiers: [dogTiers[2], dogTiers[0], dogTiers[1]] });
+  const response = await put({ species: "dog", tiers: [tierL, tierS, tierM] });
   expect(response.status).toBe(200);
   const body = SizeTiersSetResponse.parse(await response.json());
   const rows = await rowsOf("dog");
@@ -129,11 +128,11 @@ it("deletes tiers whose only references are prices (they cascade) and accepts an
 });
 
 it.each([
-  ["not starting at 0", [{ ...dogTiers[0], minWeightGrams: 1000 }, dogTiers[1], dogTiers[2]], [0]],
-  ["a gap", [dogTiers[0], { ...dogTiers[1], minWeightGrams: 7000 }, dogTiers[2]], [1]],
-  ["an overlap", [dogTiers[0], { ...dogTiers[1], minWeightGrams: 5000 }, dogTiers[2]], [1]],
-  ["a ceiling on the last row", [dogTiers[0], dogTiers[1], { ...dogTiers[2], maxWeightGrams: 40000 }], [2]],
-  ["an open row before the last", [dogTiers[0], { ...dogTiers[1], maxWeightGrams: null }, dogTiers[2]], [2]],
+  ["not starting at 0", [{ ...tierS, minWeightGrams: 1000 }, tierM, tierL], [0]],
+  ["a gap", [tierS, { ...tierM, minWeightGrams: 7000 }, tierL], [1]],
+  ["an overlap", [tierS, { ...tierM, minWeightGrams: 5000 }, tierL], [1]],
+  ["a ceiling on the last row", [tierS, tierM, { ...tierL, maxWeightGrams: 40000 }], [2]],
+  ["an open row before the last", [tierS, { ...tierM, maxWeightGrams: null }, tierL], [2]],
 ])("rejects %s with SIZE_TIER_OVERLAP and the input row indexes", async (_case, tiers, rows) => {
   const response = await put({ species: "dog", tiers });
   expect(response.status).toBe(422);
@@ -142,7 +141,7 @@ it.each([
 });
 
 it("reports indexes of the submitted order, not the weight order", () => {
-  expect(discontinuousRows([dogTiers[2], { ...dogTiers[1], minWeightGrams: 7000 }, dogTiers[0]])).toEqual([1]);
+  expect(discontinuousRows([tierL, { ...tierM, minWeightGrams: 7000 }, tierS])).toEqual([1]);
 });
 
 it("rejects missing and malformed fields with VALIDATION_FAILED", async () => {
@@ -150,14 +149,14 @@ it("rejects missing and malformed fields with VALIDATION_FAILED", async () => {
     {},
     { species: "other", tiers: dogTiers },
     { species: "dog" },
-    { species: "dog", tiers: [{ ...dogTiers[0], code: "s" }] },
-    { species: "dog", tiers: [{ ...dogTiers[0], code: "SMALL" }] },
-    { species: "dog", tiers: [{ ...dogTiers[0], labelTh: "" }] },
-    { species: "dog", tiers: [{ ...dogTiers[0], labelTh: "ก".repeat(31) }] },
-    { species: "dog", tiers: [{ ...dogTiers[0], minWeightGrams: 1.5 }] },
-    { species: "dog", tiers: [{ ...dogTiers[0], maxWeightGrams: 0 }] },
-    { species: "dog", tiers: [{ ...dogTiers[0], id: "nope" }] },
-    { species: "dog", tiers: [dogTiers[0], { ...dogTiers[1], code: "S" }, dogTiers[2]] },
+    { species: "dog", tiers: [{ ...tierS, code: "s" }] },
+    { species: "dog", tiers: [{ ...tierS, code: "SMALL" }] },
+    { species: "dog", tiers: [{ ...tierS, labelTh: "" }] },
+    { species: "dog", tiers: [{ ...tierS, labelTh: "ก".repeat(31) }] },
+    { species: "dog", tiers: [{ ...tierS, minWeightGrams: 1.5 }] },
+    { species: "dog", tiers: [{ ...tierS, maxWeightGrams: 0 }] },
+    { species: "dog", tiers: [{ ...tierS, id: "nope" }] },
+    { species: "dog", tiers: [tierS, { ...tierM, code: "S" }, tierL] },
   ]) {
     const response = await put(invalid);
     expect(response.status).toBe(422);
@@ -209,8 +208,8 @@ it("returns IN_USE when an omitted tier is referenced by an appointment, without
   const response = await put({
     species: "dog",
     tiers: [
-      { id: m?.id, ...dogTiers[1], minWeightGrams: 0 },
-      { id: l?.id, ...dogTiers[2] },
+      { id: m?.id, ...tierM, minWeightGrams: 0 },
+      { id: l?.id, ...tierL },
     ],
   });
   expect(response.status).toBe(409);
@@ -221,7 +220,7 @@ it("returns IN_USE when an omitted tier is referenced by an appointment, without
     ["L", 15000],
   ]);
   // keeping the referenced tier is fine
-  expect(await sizeTiersSet(owner(), { species: "dog", tiers: [{ id: s?.id, ...dogTiers[0], maxWeightGrams: null }] })).toHaveLength(1);
+  expect(await sizeTiersSet(owner(), { species: "dog", tiers: [{ id: s?.id, ...tierS, maxWeightGrams: null }] })).toHaveLength(1);
 });
 
 it("returns IN_USE when an omitted tier is referenced by a package template", async () => {
@@ -242,8 +241,8 @@ it("returns IN_USE when an omitted tier is referenced by a package template", as
   const response = await put({
     species: "dog",
     tiers: [
-      { id: s?.id, ...dogTiers[0] },
-      { id: m?.id, ...dogTiers[1], maxWeightGrams: null },
+      { id: s?.id, ...tierS },
+      { id: m?.id, ...tierM, maxWeightGrams: null },
     ],
   });
   expect(response.status).toBe(409);
@@ -267,17 +266,17 @@ it("returns NOT_FOUND for another organization's branch or tier ids, and for ids
   const foreign = await otherOrg(env.db);
   const [foreignTier] = await sizeTiersSet(staffCtx(foreign, "owner"), {
     species: "dog",
-    tiers: [{ ...dogTiers[0], maxWeightGrams: null }],
+    tiers: [{ ...tierS, maxWeightGrams: null }],
   });
   for (const branchId of [foreign.branchId, null]) {
     await expect(sizeTiersSet({ ...owner(), branchId }, { species: "dog", tiers: dogTiers })).rejects.toMatchObject({ code: "NOT_FOUND" });
   }
   await expect(
-    sizeTiersSet(owner(), { species: "dog", tiers: [{ id: foreignTier?.id, ...dogTiers[0], maxWeightGrams: null }] }),
+    sizeTiersSet(owner(), { species: "dog", tiers: [{ id: foreignTier?.id, ...tierS, maxWeightGrams: null }] }),
   ).rejects.toMatchObject({ code: "NOT_FOUND" });
-  const [catTier] = await sizeTiersSet(owner(), { species: "cat", tiers: [{ ...dogTiers[0], maxWeightGrams: null }] });
+  const [catTier] = await sizeTiersSet(owner(), { species: "cat", tiers: [{ ...tierS, maxWeightGrams: null }] });
   await expect(
-    sizeTiersSet(owner(), { species: "dog", tiers: [{ id: catTier?.id, ...dogTiers[0], maxWeightGrams: null }] }),
+    sizeTiersSet(owner(), { species: "dog", tiers: [{ id: catTier?.id, ...tierS, maxWeightGrams: null }] }),
   ).rejects.toMatchObject({ code: "NOT_FOUND" });
   expect((await rowsOf("dog", foreign.branchId)).map((r) => r.id)).toEqual([foreignTier?.id]);
   expect(await rowsOf("dog")).toEqual([]);
