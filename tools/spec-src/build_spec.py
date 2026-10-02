@@ -386,7 +386,7 @@ L = ["# 06 — Screen Specs (field-level: แสดง/กรอก/บันท
      "- ตัวเลขเงินทุกที่มาจาก server — client ห้ามคำนวณยอดเงินเอง (ยกเว้นพรีวิวเงินทอนบนปุ่มลัด)",
      "- รูปทุกใบผ่าน signed URL; อัปโหลดผ่าน `*.uploadUrl` + presigned PUT (R-25)",
      "- ช่องเบอร์ใช้ `inputmode=tel`, เงิน `inputmode=decimal` (รับบาท แปลงเป็นสตางค์ก่อนส่ง), น้ำหนักรับ กก. 1 ตำแหน่ง แปลงเป็นกรัม\n",
-     "### Admin shell (Q-0022)\n",
+     "### Admin shell (Q-0024)\n",
      "- AD-01 `/admin/login` เป็น public และอยู่นอก guard; parent layout จัด providers เท่านั้น",
      "- Guard + shell อยู่ที่ layout ของ `/admin/organizations` (รวม AD-02/AD-03), `/admin/feedback`, `/admin/data-requests`, `/admin/analytics`, `/admin/holidays`",
      "- Guard ใช้ `resolveAdmin` เดิมจาก `@app/server/http`: อ่าน `aid`, ตรวจ token hash/expiry และ platform_admin active; ไม่มี/หมดอายุ/disabled/subject ผิด → redirect `/admin/login`",

@@ -273,7 +273,7 @@ for app, title, routes in (("console", "Console shell: layout + sidebar (คร�
          + ([f"apps/web/app/(admin)/admin/{root}/layout.tsx" for root in ("organizations", "feedback", "data-requests", "analytics", "holidays")] + ["packages/server/src/http.ts"] if app == "admin" else [])
          + (["apps/web/app/(liff)/liff/[branchSlug]/layout.tsx", "apps/web/src/lib/liff.ts", "apps/web/package.json", "pnpm-lock.yaml"] if app == "liff" else []),
          steps=[f"layout ของ route group ({app}) ตามกติการ่วมใน 06 + เมนู/ลิงก์ไปทุกหน้าจอ `{routes}*` ใน 06 (หน้าที่ยังไม่ทำแสดง disabled)",
-                ("Admin: parent layout มี providers เท่านั้น; AD-01 public อยู่นอก guard. Protected root layouts เรียก resolveAdmin จาก @app/server/http (re-export เดิมเท่านั้น) แล้วแสดง shell; ตั้ง now ครั้งเดียวที่ guard request entry และใช้ ctx.now หลังจากนั้น. aid ไม่มี/หมดอายุ/disabled/subject ผิด → redirect /admin/login; ไม่มี role ย่อย/403 route/experimental authInterrupts (06 Q-0022)" if app == "admin" else
+                ("Admin: parent layout มี providers เท่านั้น; AD-01 public อยู่นอก guard. Protected root layouts เรียก resolveAdmin จาก @app/server/http (re-export เดิมเท่านั้น) แล้วแสดง shell; ตั้ง now ครั้งเดียวที่ guard request entry และใช้ ctx.now หลังจากนั้น. aid ไม่มี/หมดอายุ/disabled/subject ผิด → redirect /admin/login; ไม่มี role ย่อย/403 route/experimental authInterrupts (06 Q-0024)" if app == "admin" else
                  "server-side guard: อ่าน session (sid/cid/aid) → ไม่มี → redirect หน้าเข้าสู่ระบบที่ถูกต้อง; role ไม่ถึง → หน้า 403"),
                 "แถบแดง 'โหมดช่วยเหลือ (อ่านอย่างเดียว)' เมื่อ ctx.supportMode" if app == "console" else
                 ("liff.init ด้วย liff_id ของสาขา (จาก liff.shop) → getIDToken → liff.session; LINE_FAKE โหมด dev ใช้ fake token" if app == "liff" else "ใช้ได้ที่ 360px")],
@@ -583,7 +583,7 @@ for s in SCR:
                  "component test: render ด้วย mock API (msw หรือ mock ของ api.ts) — ตรวจว่าทุกป้ายฟิลด์ในตาราง 06 ปรากฏ และปุ่มเรียก endpoint ที่ถูกต้อง"]
         if s["app"] == "admin":
             allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
-            steps.append("เปิด entry ของหน้าจอนี้ใน shell-admin/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว; AD-03 สร้างลิงก์เฉพาะเมื่อมี orgId ปัจจุบัน ไม่เลือก org แทนผู้ใช้ (06 Q-0022)")
+            steps.append("เปิด entry ของหน้าจอนี้ใน shell-admin/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว; AD-03 สร้างลิงก์เฉพาะเมื่อมี orgId ปัจจุบัน ไม่เลือก org แทนผู้ใช้ (06 Q-0024)")
         if note: steps.insert(1, f"ขอบเขตรอบนี้: {note}")
         if suf and suf.startswith("ext-"): steps.insert(1, "เพิ่มเฉพาะส่วน/ปุ่มที่ใช้ endpoint: " + ", ".join(new_eps))
         else:
