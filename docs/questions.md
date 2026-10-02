@@ -262,3 +262,10 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#dto-CommissionReport defines `jobs` = count earned, `baseSatang` = Σ base, `amountSatang` = Σ amount "(earned − reversed)", but not which timestamp places an entry in from..to (earned_at vs reversed_at) nor how a reversal of an entry earned in an earlier period is reported.
 - Evidence: 05#dto-CommissionReport, 05#ep-staffMe.commissions, 02#tbl-commission_entry (earned_at, reversed_at, status), R-13 step 6.
 - Answer (2026-10-02): user approved the accounting interpretation in chat. from..to are branch-local days. An entry whose earned_at is in range adds +1 job, +base, +amount; an entry with status reversed whose reversed_at is in range adds −1 job, −base, −amount (so earned and reversed in the same range nets to 0, and a later void shows as a deduction in the period of the void). `entries[]` lists every entry that contributed. No entries → `rows: []`.
+
+## Q-0031 · OccupancyReport: shape of `byRoomType[]`, percent rounding and range
+- Status: answered (implemented in T-0306; spec text update pending a spec-change PR)
+- Task: T-0306 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 05#dto-OccupancyReport lists `byRoomType[]` as `calc` with no item fields, and does not say how `percent` is rounded, which stays count, or how long from..to may be. 06#scr-C-25 only shows it as a table.
+- Evidence: 05#dto-OccupancyReport, 05#ep-reports.occupancy, 06#scr-C-25.
+- Answer (2026-10-02): user approved the proposal in chat. `byRoomType[]` = `{ roomTypeId, roomTypeName (room_type.name_th), occupiedNights, totalNights, percent }` for room types of the branch with an active unit or an occupied night, ordered by sort_order, name. A night d is occupied by a checked_in/checked_out stay with check_in_date ≤ d < check_out_date; `occupiedUnits` counts distinct room units. `totalUnits` = active room units of the session branch; `totalNights` = active units of the type × number of days. `percent` = whole number round(occupied × 100 / total), 0 when total = 0. from..to is inclusive, at most 93 days (same cap as staffMe.commissions).
