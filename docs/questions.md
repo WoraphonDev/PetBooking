@@ -225,3 +225,10 @@
 - Work: preparing the independently allowed Admin login screen and tests; navigation activation/test-fixture repair remains paused pending approval and prerequisite merge under AGENTS.md.
 
 - Answer (2026-10-02): user approved the proposed prerequisite scope change and explicit unimplemented-screen fixtures, retaining all existing assertions. Apply the test repair and enable AD-01 in T-0031 after the prerequisite merges.
+
+## Q-0026 · R-05 parseSlipQr: CRC mismatch — flag or reject?
+- Status: spec-changed (pending merge of `spec-change-q0026-slip-crc`)
+- Task: T-0150 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 04#R-05 declares `SlipQr = { bankCode; transRef; crcValid } | null` and step 3 says a CRC mismatch is still parsed with `crcValid = false`, but the reference implementation (`tools/spec-src/rules_impl.py` r05_parse_slip_qr) returns `null` on a CRC mismatch and never emits `crcValid`; vector 3 ("tampered CRC is flagged, still parsed") expects `null`. The vector runner uses `toStrictEqual`, so no implementation satisfies both.
+- Evidence: 04#R-05 signature + step 3; docs/spec/vectors/R-05.parseSlipQr.json cases 1–3; rules_impl.py.
+- Answer (2026-10-02): user approved following the 04 text in chat. The reference implementation now returns `{ bankCode, transRef, crcValid }` and parses a CRC mismatch with `crcValid = false` (bank CRC formats are only confirmed in SP-02; rejecting would lose duplicate detection for a whole bank). Regenerated R-05.parseSlipQr vectors and the 04 vector table; non-slip and garbage payloads still return `null`.
