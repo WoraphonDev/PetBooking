@@ -363,3 +363,9 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0315 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 06#scr-AD-06 shows `organization.name` but 05#dto-PilotAnalytics returns only `orgId`; 05#ep-admin.analytics requires `from`/`to` but the 06 table has no date inputs.
 - Answer (2026-10-03): user chose in chat. The screen also loads the existing `admin.orgs` list and maps orgId → name ("—" when missing); no API/DTO change. It requests the 7 Bangkok days ending today (to = today Asia/Bangkok, from = to − 6, inclusive per Q-0037) and shows that range under the title.
+
+## Q-0049 · bills.open: request combinations, idempotency, eligible bookings, unusable packages
+- Status: answered (implemented in T-0229)
+- Task: T-0229 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-bills.open marks both `bookingIds[]` and `customerId` optional and lists no error codes; it does not say what happens with mixed bookings, which booking statuses may be billed, or when a package item can no longer be redeemed (R-14).
+- Answer (2026-10-03): user chose in chat. bookingIds must belong to one customer (and one branch); a sent customerId must match → else VALIDATION_FAILED. customerId only → empty bill for that customer; neither → empty walk-in bill (customer null). Only `confirmed` bookings may be billed (else VALIDATION_FAILED). Idempotency: every booking already on the same open bill → that bill; a booking on a paid/void bill → BILL_NOT_OPEN; bookings spread over bills → VALIDATION_FAILED. A package item that fails R-14 canRedeemPackage (or belongs to another customer) is billed at its booked price. Lines per appointment: main services, add-ons, then surcharges (performer = groomer); stay/daycare lines are T-0270.
