@@ -12,6 +12,8 @@ import { tenantDb } from "../../repo/tenant.ts";
 export async function staffMeCommissions(ctx: RequestContext, input: StaffMeCommissionsRequest): Promise<StaffMeCommissionsResponse> {
   requireRole(ctx, "staffMe.commissions");
   if (!ctx.branchId) throw new AppError("NOT_FOUND");
+  const meId = ctx.actor.id;
+  if (!meId) throw new AppError("FORBIDDEN");
   const db = tenantDb(ctx, getDb());
   const [scopedBranch] = (await db.select(branch, eq(branch.id, ctx.branchId))) as (typeof branch.$inferSelect)[];
   if (!scopedBranch) throw new AppError("NOT_FOUND");
@@ -23,7 +25,7 @@ export async function staffMeCommissions(ctx: RequestContext, input: StaffMeComm
     commissionEntry,
     and(
       eq(commissionEntry.branchId, scopedBranch.id),
-      eq(commissionEntry.staffUserId, ctx.actor.id),
+      eq(commissionEntry.staffUserId, meId),
       or(inRange(commissionEntry.earnedAt), and(eq(commissionEntry.status, "reversed"), inRange(commissionEntry.reversedAt))),
     ),
   )) as (typeof commissionEntry.$inferSelect)[];
@@ -39,6 +41,6 @@ export async function staffMeCommissions(ctx: RequestContext, input: StaffMeComm
     row.amountSatang += sign * e.amountSatang;
     row.entries.push(e.id);
   }
-  const [me] = (await db.select(staffUser, eq(staffUser.id, ctx.actor.id))) as (typeof staffUser.$inferSelect)[];
-  return { from: input.from, to: input.to, rows: [{ staffUserId: ctx.actor.id, staffName: me?.displayName ?? "", ...row }] };
+  const [me] = (await db.select(staffUser, eq(staffUser.id, meId))) as (typeof staffUser.$inferSelect)[];
+  return { from: input.from, to: input.to, rows: [{ staffUserId: meId, staffName: me?.displayName ?? "", ...row }] };
 }
