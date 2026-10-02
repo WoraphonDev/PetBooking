@@ -312,6 +312,26 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: add a public endpoint, e.g. `auth.invitePreview` GET `/api/v1/auth/staff/invite?token=` → `{orgName, role, hasEmail}` with `TOKEN_INVALID`, as a spec change + its own API card; A-04 then loads it. Alternatively drop the two display rows and always show the optional email field.
 - Work: none on T-0074 until answered.
 
+## Q-0041 · exports.csv: columns per type, date filter, CSV response through withStaff
+- Status: answered (implemented in T-0307)
+- Task: T-0307 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 05#ep-exports.csv lists the types and the CSV format but no columns, no column for from/to, and the route `[type].csv` cannot be a Next.js dynamic segment while `withStaff` always answers JSON (`packages/server/src/http/respond.ts`, outside the card).
+- Answer (2026-10-02): user chose in chat. Each type exports its 02 table (customers→customer, pets→pet, bills→bill, bill_lines→bill_line, commissions→commission_entry, bookings→booking) with every column in schema order except organization_id; `*_satang` columns are output in baht with 2 decimals and named without the `_satang` suffix. Pets are the pets of the organization's customers' owner profiles. from/to are inclusive branch-local days on created_at (bills: closed_at, commissions: earned_at, bookings: first_service_at). The route reads `{type}` from the URL path, calls the `withStaff` handler and re-sends its JSON string as `text/csv; charset=utf-8` with `Content-Disposition: attachment`. A shared non-JSON response option in respond.ts would remove this adapter (follow-up, not in T-0307).
+
+## Q-0042 · bills.receipt / bills.sendReceipt: receiptUrl, logoUrl, bill status and resend number
+- Status: answered (implemented in T-0236)
+- Task: T-0236 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 07 `customer.receipt` needs `receiptUrl` and dedupe `receipt:{billId}:{n}` without defining either; 05#dto-Receipt `logoUrl` is a signed URL but object storage (T-0038) is not merged; 05 does not say which bill statuses bills.receipt / bills.sendReceipt accept.
+- Answer (2026-10-02): user chose in chat. `receiptUrl = APP_BASE_URL + /liff/{branch.booking_slug}/receipts/{billId}` (route of L-13). `logoUrl` is null until T-0038 lands (same approach as Q-0032). bills.receipt works for any status (receiptNo/closedAt null while open). bills.sendReceipt needs a paid bill: open → `BILL_HAS_DUE`; void → `BILL_NOT_OPEN`; a bill without customer → `NOT_FOUND`. `n` = number of `customer.receipt` rows already queued for the bill + 1. Implementation details: payments list posted rows only; cashierName = closed_by (else opened_by) display_name; packagesRemaining = the customer's active packages (CustomerPackageItem).
+
+## Q-0045 · P-02 legal documents: content files missing and outside allowed paths
+- Status: open (T-0317 blocked)
+- Task: T-0317 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 06#scr-P-02 renders `LEGAL_DOCS[doc].file` markdown at build time and 10#legal-docs points to `apps/web/content/legal/{privacy_notice,terms_of_service,dpa}.2026-10-01.md`, but those files do not exist, no `LEGAL_DOCS` constant exists, and no markdown renderer is a dependency. The card's allowed_paths cover only the page, `components/p-02/**`, the messages file and the test.
+- Evidence: 06#scr-P-02, 10-reference-data.md#legal-docs, `ls apps/web/content` → missing.
+- Proposed decision: a human (legal owner) supplies the three markdown files; the card gains `apps/web/content/legal/**` (or the files land first in a separate PR) and lists the markdown dependency (or the page renders plain paragraphs without one). `LEGAL_DOCS` can live in `components/p-02/`.
+- Work: none on T-0317 until the content exists.
+
 ## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
 - Status: answered for T-0147; spec follow-up open
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
