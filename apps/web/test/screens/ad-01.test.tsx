@@ -4,6 +4,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import { AdminLoginForm } from "../../src/components/ad-01/login-form";
 import { AdminLoginScreen } from "../../src/components/ad-01/login-screen";
+import { navigationItems } from "../../src/components/shell-admin/navigation";
+import { entry } from "../../src/components/shell-admin/navigation/AD-01";
 import messages from "../../src/i18n/messages/th/AD-01.json";
 import { ApiClientError } from "../../src/lib/api";
 
@@ -84,4 +86,9 @@ it("navigates to AD-02 after a successful login", () => {
   renderToStaticMarkup(<AdminLoginScreen />);
   (mock.options.onSuccess as () => void)();
   expect(mock.replace).toHaveBeenCalledWith("/admin/organizations");
+});
+
+it("activates the implemented AD-01 navigation entry", () => {
+  expect(entry.implemented).toBe(true);
+  expect(navigationItems().find((item) => item.id === "AD-01")?.href).toBe("/admin/login");
 });
