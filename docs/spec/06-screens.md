@@ -14,6 +14,15 @@
 - รูปทุกใบผ่าน signed URL; อัปโหลดผ่าน `*.uploadUrl` + presigned PUT (R-25)
 - ช่องเบอร์ใช้ `inputmode=tel`, เงิน `inputmode=decimal` (รับบาท แปลงเป็นสตางค์ก่อนส่ง), น้ำหนักรับ กก. 1 ตำแหน่ง แปลงเป็นกรัม
 
+### Admin shell (Q-0022)
+
+- AD-01 `/admin/login` เป็น public และอยู่นอก guard; parent layout จัด providers เท่านั้น
+- Guard + shell อยู่ที่ layout ของ `/admin/organizations` (รวม AD-02/AD-03), `/admin/feedback`, `/admin/data-requests`, `/admin/analytics`, `/admin/holidays`
+- Guard ใช้ `resolveAdmin` เดิมจาก `@app/server/http`: อ่าน `aid`, ตรวจ token hash/expiry และ platform_admin active; ไม่มี/หมดอายุ/disabled/subject ผิด → redirect `/admin/login`
+- Platform admin ไม่มีลำดับ role ย่อย: กติกา role ไม่ถึง → 403 ไม่ใช้กับ admin shell; ไม่เพิ่ม route 403 หรือ experimental authInterrupts
+- Guard เป็น request entry: ตั้ง now ครั้งเดียวให้ resolver สร้าง ctx; หลังจากนั้นเวลาใช้ ctx.now เท่านั้น
+- เมนู AD-* disabled จน screen task เปิด entry ใน `apps/web/src/components/shell-admin/navigation/<SCREEN-ID>.ts`; AD-03 ต้องมี orgId ปัจจุบันที่เป็นรูปธรรมจึงสร้างลิงก์ได้ (ไม่มี → disabled)
+
 ## สารบัญ
 
 | ID | App | Route | หน้า | สิทธิ์ | Stories |
@@ -90,7 +99,7 @@
 | [L-13](#scr-L-13) | liff | `/liff/[branchSlug]/receipts/[billId]` | ใบเสร็จ | customer | US-08-05 |
 | [L-14](#scr-L-14) | liff | `/liff/[branchSlug]/pay/[billId]` | จ่ายยอดคงเหลือ | customer | US-07-08 |
 | [L-15](#scr-L-15) | liff | `/liff/[branchSlug]/me` | โปรไฟล์ของฉัน | customer | US-11-01, US-03-12, US-13-08 |
-| [AD-01](#scr-AD-01) | admin | `/admin/login` | Admin login | admin | US-13-10 |
+| [AD-01](#scr-AD-01) | admin | `/admin/login` | Admin login | public | US-13-10 |
 | [AD-02](#scr-AD-02) | admin | `/admin/organizations` | ร้านทั้งหมด | admin | US-13-10, US-13-14 |
 | [AD-03](#scr-AD-03) | admin | `/admin/organizations/[orgId]` | ร้าน (admin) | admin | US-02-06, US-13-10, US-13-11 |
 | [AD-04](#scr-AD-04) | admin | `/admin/feedback` | Feedback | admin | US-13-13 |
@@ -2996,7 +3005,7 @@ Route: `/liff/[branchSlug]/me` · สิทธิ์: customer · Stories: US-11
 
 #### Admin login
 
-Route: `/admin/login` · สิทธิ์: admin · Stories: US-13-10  
+Route: `/admin/login` · สิทธิ์: public · Stories: US-13-10  
 จุดประสงค์: ทีมแพลตฟอร์มเข้าระบบ  
 โหลดข้อมูล: —
 

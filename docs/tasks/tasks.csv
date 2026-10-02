@@ -30,15 +30,15 @@ T-0319,API-admin-organizations,M0,6,api,agent,M,yes,"API admin.orgs, admin.updat
 T-0023,API-admin.createOrg,M0,7,api,agent,L,yes,API admin.createOrg,US-13-10 US-13-14,T-0007 T-0319,4
 T-0024,NTF-staff-M0-0,M0,6,notify,agent,M,,"Notification templates (staff, M0): password_reset",US-01-02,T-0010 T-0011,2
 T-0318,UI-THEME,M0,3,ui,agent,S,,ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006,US-13-01,T-0001,1
-T-0025,UI-SHELL-admin,M0,5,ui,agent,M,,Admin shell: layout + guard,US-13-01,T-0015 T-0016,4
+T-0025,UI-SHELL-admin,M0,6,ui,agent,M,,Admin shell: layout + guard,US-13-01,T-0015 T-0016 T-0007,10
 T-0026,UI-C-FORM,M0,5,ui,agent,M,,"Shared component: ฟอร์มพื้นฐาน: MoneyInput (บาท→สตางค์), PhoneInput (R-22), WeightInput (กก.→กรัม), ThaiDatePicker (พ.ศ.), TimeSelect, EnumSelect, zod form helper",US-13-03,T-0015 T-0014 T-0013,4
 T-0027,UI-C-TABLE,M0,5,ui,agent,M,,"Shared component: DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี tone ตาม ADR-006 §3 + ป้ายไทย)",US-13-03,T-0015 T-0318,4
 T-0028,SCR-A-01,M0,7,ui,agent,S,,Screen A-01 เข้าสู่ระบบ (ร้าน),US-01-02,T-0015 T-0019,4
 T-0029,SCR-A-02,M0,8,ui,agent,S,,Screen A-02 ลืมรหัสผ่าน,US-01-02,T-0015 T-0020,4
 T-0030,SCR-A-03,M0,7,ui,agent,S,,Screen A-03 ตั้งรหัสผ่านใหม่,US-01-02,T-0015 T-0021,4
-T-0031,SCR-AD-01,M0,7,ui,agent,S,,Screen AD-01 Admin login,US-13-10,T-0025 T-0022,4
-T-0032,SCR-AD-02,M0,8,ui,agent,M,,Screen AD-02 ร้านทั้งหมด,US-13-10 US-13-14,T-0025 T-0026 T-0027 T-0319 T-0023,4
-T-0033,SCR-AD-07,M0,6,ui,agent,S,,Screen AD-07 วันหยุดราชการ,US-13-03,T-0025 T-0026,4
+T-0031,SCR-AD-01,M0,7,ui,agent,S,,Screen AD-01 Admin login,US-13-10,T-0025 T-0022,5
+T-0032,SCR-AD-02,M0,8,ui,agent,M,,Screen AD-02 ร้านทั้งหมด,US-13-10 US-13-14,T-0025 T-0026 T-0027 T-0319 T-0023,5
+T-0033,SCR-AD-07,M0,7,ui,agent,S,,Screen AD-07 วันหยุดราชการ,US-13-03,T-0025 T-0026,5
 H-04,H-GATE-M0,M0,9,human,human,-,,Milestone review M0: demo + ตรวจคุณภาพ,,T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 T-0017 T-0018 T-0012 T-0005 T-0013 T-0019 T-0020 T-0021 T-0022 T-0319 T-0023 T-0024 T-0028 T-0029 T-0030 T-0031 T-0032 T-0033,0
 H-05,H-LEGAL,M1,1,human,human,-,,ร่าง Privacy Notice / Terms / DPA / ข้อความยินยอมรูป + ตรวจแม่แบบใบยินยอม,US-03-12 US-05-06 US-06-08 US-13-08,,0
 T-0036,INF-JOBS,M1,1,infra,agent,L,,Job runner + POST /api/cron/tick + stub handlers ทุก job_type,US-05-02 US-07-06 US-12-05,T-0007 T-0010,5
@@ -95,8 +95,8 @@ T-0085,SCR-C-37,M1,5,ui,agent,M,,Screen C-37 บริการและรา�
 T-0086,SCR-C-38,M1,3,ui,agent,S,,Screen C-38 ขนาดตามน้ำหนัก,US-04-02,T-0070 T-0057 T-0058,4
 T-0087,SCR-C-44,M1,5,ui,agent,S,,Screen C-44 นำเข้าข้อมูล CSV,US-02-08,T-0070 T-0027 T-0071 T-0063 T-0062 T-0064,4
 T-0088,SCR-C-45,M1,2,ui,agent,M,,Screen C-45 บัญชีของฉัน,US-01-03 US-01-05 US-13-05,T-0070 T-0020 T-0043,4
-T-0089,SCR-AD-05,M1,3,ui,agent,S,,Screen AD-05 คำขอ PDPA,US-13-08,T-0025 T-0026 T-0027 T-0066 T-0067,4
-T-0090,SCR-AD-07-ext-M1,M1,2,ui,agent,S,,Screen AD-07 วันหยุดราชการ (ext-M1),US-13-03,T-0025 T-0026 T-0066 T-0033,4
+T-0089,SCR-AD-05,M1,3,ui,agent,S,,Screen AD-05 คำขอ PDPA,US-13-08,T-0025 T-0026 T-0027 T-0066 T-0067,5
+T-0090,SCR-AD-07-ext-M1,M1,2,ui,agent,S,,Screen AD-07 วันหยุดราชการ (ext-M1),US-13-03,T-0025 T-0026 T-0066 T-0033,5
 H-06,H-GATE-M1,M1,6,human,human,-,,Milestone review M1: demo + ตรวจคุณภาพ,,T-0035 T-0010 T-0036 T-0038 T-0011 T-0015 T-0016 T-0070 T-0039 T-0026 T-0027 T-0071 T-0040 T-0041 T-0014 T-0037 T-0034 T-0042 T-0043 T-0044 T-0045 T-0046 T-0047 T-0048 T-0049 T-0050 T-0051 T-0052 T-0053 T-0054 T-0055 T-0056 T-0057 T-0058 T-0059 T-0060 T-0061 T-0062 T-0063 T-0064 T-0065 T-0066 T-0067 T-0068 T-0069 T-0074 T-0317 T-0075 T-0076 T-0077 T-0078 T-0079 T-0080 T-0081 T-0082 T-0083 T-0084 T-0085 T-0086 T-0087 T-0088 T-0089 T-0090 H-04,0
 H-07,H-LINE-PLATFORM,M2,1,human,human,-,,สร้าง LINE Login channel ของแพลตฟอร์ม (สำหรับพนักงาน) + OA/LIFF ทดสอบ,US-01-03 US-02-06,H-03,0
 H-08,H-SP02,M2,1,human,human,-,,SP-02 เก็บสลิปจริง ≥ 6 ธนาคาร → เพิ่ม vectors R-05,US-07-02,H-01,0
@@ -158,7 +158,7 @@ T-0143,SCR-C-46,M2,2,ui,agent,S,,Screen C-46 แจ้งปัญหา / ข�
 T-0144,SCR-S-01,M2,4,ui,agent,S,,Screen S-01 คิวของฉันวันนี้,US-09-03,T-0130 T-0071 T-0121,4
 T-0145,SCR-S-02,M2,4,ui,agent,M,,Screen S-02 Job card,US-05-07 US-09-03 US-13-04,T-0130 T-0071 T-0120 T-0119 T-0038 T-0056,4
 T-0146,SCR-S-07,M2,3,ui,agent,S,,Screen S-07 ฉัน,US-01-03 US-09-04,T-0130 T-0020 T-0105,4
-T-0147,SCR-AD-04,M2,3,ui,agent,S,,Screen AD-04 Feedback,US-13-13,T-0025 T-0026 T-0027 T-0125 T-0126,4
+T-0147,SCR-AD-04,M2,3,ui,agent,S,,Screen AD-04 Feedback,US-13-13,T-0025 T-0026 T-0027 T-0125 T-0126,5
 T-0148,E2E-M2,M2,5,e2e,agent,L,,E2E M2: หน้าร้านลงนัด …,,T-0039 T-0136 T-0134 T-0135 T-0138 T-0145 T-0144,2
 H-11,H-GATE-M2,M2,6,human,human,-,,Release A: UAT + ตัดสินใจปล่อยร้านนำร่อง (M2),,T-0091 T-0130 T-0131 T-0072 T-0092 T-0093 T-0094 T-0095 T-0096 T-0097 T-0098 T-0099 T-0100 T-0009 T-0101 T-0102 T-0103 T-0104 T-0105 T-0106 T-0107 T-0108 T-0109 T-0110 T-0111 T-0112 T-0113 T-0114 T-0115 T-0116 T-0117 T-0118 T-0119 T-0120 T-0121 T-0122 T-0123 T-0124 T-0125 T-0126 T-0127 T-0128 T-0129 T-0132 T-0133 T-0134 T-0135 T-0136 T-0137 T-0138 T-0139 T-0140 T-0141 T-0142 T-0143 T-0144 T-0145 T-0146 T-0147 T-0148 H-06,0
 T-0149,INF-LINE,M3,1,infra,agent,L,yes,"LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode",US-01-01 US-02-06 US-13-06,T-0010 H-03,5
@@ -229,7 +229,7 @@ T-0213,SCR-L-08,M3,3,ui,agent,S,,Screen L-08 นัดของฉัน,US-11-0
 T-0214,SCR-L-09,M3,4,ui,agent,M,,Screen L-09 รายละเอียดนัด,US-11-08 US-11-10,T-0195 T-0026 T-0174 T-0178 T-0175 T-0180 T-0179,4
 T-0215,SCR-L-14,M3,4,ui,agent,S,,Screen L-14 จ่ายยอดคงเหลือ,US-07-08,T-0195 T-0026 T-0196 T-0071 T-0178 T-0181,4
 T-0216,SCR-L-15,M3,3,ui,agent,S,,Screen L-15 โปรไฟล์ของฉัน,US-03-12 US-11-01 US-13-08,T-0195 T-0026 T-0071 T-0172 T-0181,4
-T-0217,SCR-AD-03,M3,3,ui,agent,M,,Screen AD-03 ร้าน (admin),US-02-06 US-13-10 US-13-11,T-0025 T-0026 T-0319 T-0184 T-0185 T-0125,4
+T-0217,SCR-AD-03,M3,3,ui,agent,M,,Screen AD-03 ร้าน (admin),US-02-06 US-13-10 US-13-11,T-0025 T-0026 T-0319 T-0184 T-0185 T-0125,5
 T-0218,E2E-M3,M3,5,e2e,agent,L,,E2E M3: ลูกค้าเปิด LIFF (fake LINE) …,,T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186,2
 H-12,H-GATE-M3,M3,6,human,human,-,,Milestone review M3: demo + ตรวจคุณภาพ,,T-0149 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 T-0153 T-0154 T-0155 T-0156 T-0157 T-0158 T-0159 T-0160 T-0161 T-0162 T-0163 T-0164 T-0165 T-0166 T-0167 T-0168 T-0169 T-0170 T-0171 T-0172 T-0173 T-0174 T-0175 T-0176 T-0177 T-0178 T-0179 T-0180 T-0181 T-0182 T-0183 T-0184 T-0185 T-0186 T-0187 T-0188 T-0189 T-0190 T-0191 T-0192 T-0193 T-0194 T-0197 T-0198 T-0199 T-0200 T-0201 T-0202 T-0203 T-0204 T-0205 T-0206 T-0207 T-0208 T-0209 T-0210 T-0211 T-0212 T-0213 T-0214 T-0215 T-0216 T-0217 T-0218 H-11,0
 H-13,H-SP05,M4,1,human,human,-,,SP-05 ทดสอบพิมพ์ใบเสร็จ 58/80 มม. จาก browser,US-08-05,,0
@@ -331,6 +331,6 @@ T-0311,SCR-C-01,M6,2,ui,agent,M,,Screen C-01 วันนี้ (Dashboard),US-1
 T-0312,SCR-C-23,M6,2,ui,agent,S,,Screen C-23 รายงานยอดขาย,US-12-02 US-12-06,T-0070 T-0073 T-0026 T-0027 T-0305 T-0307,4
 T-0313,SCR-C-24-ext-M6,M6,2,ui,agent,S,,Screen C-24 รายงานค่ามือ (ext-M6),US-12-03,T-0070 T-0026 T-0027 T-0307 T-0254,4
 T-0314,SCR-C-25,M6,2,ui,agent,S,,Screen C-25 Occupancy,US-12-04,T-0070 T-0073 T-0026 T-0027 T-0306,4
-T-0315,SCR-AD-06,M6,2,ui,agent,S,,Screen AD-06 Analytics นำร่อง,US-13-12,T-0025 T-0027 T-0308,4
+T-0315,SCR-AD-06,M6,2,ui,agent,S,,Screen AD-06 Analytics นำร่อง,US-13-12,T-0025 T-0027 T-0308,5
 T-0316,E2E-M6,M6,3,e2e,agent,L,,E2E M6: Dashboard + รายงานยอดขาย/ค่ามือ/occupancy ตรงกับข้อมูล seed + export CSV …,,T-0039 T-0311 T-0312 T-0254 T-0314,2
 H-16,H-GATE-M6,M6,4,human,human,-,,Release C: UAT + ตัดสินใจปล่อยร้านนำร่อง (M6),,T-0073 T-0304 T-0305 T-0306 T-0307 T-0308 T-0309 T-0310 T-0311 T-0312 T-0313 T-0314 T-0315 T-0316 H-15,0

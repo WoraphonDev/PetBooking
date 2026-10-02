@@ -37,7 +37,7 @@
 | [T-0023](T-0023.md) | 7 | api | L | ⚠️ | API admin.createOrg | T-0007 T-0319 |
 | [T-0024](T-0024.md) | 6 | notify | M |  | Notification templates (staff, M0): password_reset | T-0010 T-0011 |
 | [T-0318](T-0318.md) | 3 | ui | S |  | ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006 | T-0001 |
-| [T-0025](T-0025.md) | 5 | ui | M |  | Admin shell: layout + guard | T-0015 T-0016 |
+| [T-0025](T-0025.md) | 6 | ui | M |  | Admin shell: layout + guard | T-0015 T-0016 T-0007 |
 | [T-0026](T-0026.md) | 5 | ui | M |  | Shared component: ฟอร์มพื้นฐาน: MoneyInput (บาท→สตางค์), PhoneInput (R-22), WeightInput (กก.→กรัม), ThaiDatePicker (พ.ศ.), TimeSelect, EnumSelect, zod form helper | T-0015 T-0014 T-0013 |
 | [T-0027](T-0027.md) | 5 | ui | M |  | Shared component: DataTable (cursor pagination, ค้นหา, ตัวกรอง), EmptyState, StatusBadge (enum → สี tone ตาม ADR-006 §3 + ป้ายไทย) | T-0015 T-0318 |
 | [T-0028](T-0028.md) | 7 | ui | S |  | Screen A-01 เข้าสู่ระบบ (ร้าน) | T-0015 T-0019 |
@@ -45,7 +45,7 @@
 | [T-0030](T-0030.md) | 7 | ui | S |  | Screen A-03 ตั้งรหัสผ่านใหม่ | T-0015 T-0021 |
 | [T-0031](T-0031.md) | 7 | ui | S |  | Screen AD-01 Admin login | T-0025 T-0022 |
 | [T-0032](T-0032.md) | 8 | ui | M |  | Screen AD-02 ร้านทั้งหมด | T-0025 T-0026 T-0027 T-0319 T-0023 |
-| [T-0033](T-0033.md) | 6 | ui | S |  | Screen AD-07 วันหยุดราชการ | T-0025 T-0026 |
+| [T-0033](T-0033.md) | 7 | ui | S |  | Screen AD-07 วันหยุดราชการ | T-0025 T-0026 |
 | [H-04](H-04.md) | 9 | human | - |  | Milestone review M0: demo + ตรวจคุณภาพ | T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 … |
 
 ## M1 — ร้านใส่ข้อมูลได้ (58 tasks)
