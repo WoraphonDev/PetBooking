@@ -337,10 +337,20 @@ L = ["# 05 — API Contract (REST, field-level)\n",
      "| Support mode | session ที่มี `support_access_log_id` → ทุก method ที่ไม่ใช่ GET ตอบ `SUPPORT_READ_ONLY` |\n",
      "## 1. Error codes\n", "| code | HTTP | ข้อความ (th) | เมื่อไร |", "|---|---|---|---|"]
 for c, h, m, wh in ERRORS: L.append(f"| `{c}` | {h} | {md(m)} | {md(wh)} |")
+DTO_NOTES = {
+    "OrgListItem": """**กฎการเลือกแถว (Q-0017)**
+
+- สาขา (`branchName`, `bookingSlug`, `lineStatus`) = สาขาแรกของร้าน: `branch.created_at` น้อยสุด แล้ว `branch.id` น้อยสุด (MVP มี 1 สาขาต่อร้าน — นิยามเดียวกับ "สาขาแรกของร้าน" ใน 01 §4 Support mode)
+- `ownerEmail` = `staff_user.email` ของ owner (`role = owner`) ที่ `status ≠ disabled` (นับ `invited`) โดย `created_at` น้อยสุด แล้ว `id` น้อยสุด · ไม่มี owner ที่เข้าเงื่อนไข หรืออีเมลเป็น null → `null`
+- `lineStatus` = `line_channel.status` ของสาขาข้างบน · ยังไม่มีแถว line_channel → `null` (แยกจาก `pending` = กรอกแล้วยังไม่ verify)
+- `lastActivityAt` = max `booking.created_at` ของทั้ง organization · ยังไม่มี booking → `null`
+- ชนิดใน contract: `ownerEmail`, `lineStatus`, `lastActivityAt` เป็น `T | null`""",
+}
 L.append("\n## 2. Response DTOs\n\nแต่ละฟิลด์ระบุแหล่งข้อมูล — `table.column` = อ่านตรงจากคอลัมน์ (ชนิด/ความหมายตาม 02), `calc:` = คำนวณ, `dto:` = ซ้อน DTO อื่น · คอลัมน์ที่ 02 ระบุว่า null ได้ → ฟิลด์ใน DTO เป็น `T | null` (zod `.nullable()`) เสมอ\n")
 for name, d in DTOS.items():
     L.append(f"\n<a id=\"dto-{name}\"></a>\n\n### {name}\n\n{d['desc']}\n\n| field | source |\n|---|---|")
     for fn_, src in d["fields"]: L.append(f"| `{fn_}` | {md(src)} |")
+    if name in DTO_NOTES: L.append("\n" + DTO_NOTES[name])
 L.append("\n## 3. Endpoints\n")
 groups = collections.OrderedDict()
 for e in EP: groups.setdefault(e["key"].split(".")[0], []).append(e)

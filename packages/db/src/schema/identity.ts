@@ -18,6 +18,10 @@ export const platformAdmin = pgTable(
     passwordHash: text("password_hash").notNull(),
     displayName: text("display_name").notNull(),
     status: adminStatusEnum("status").notNull().default("active"),
+    /** R-24 (Q-0016) */
+    failedLoginCount: integer("failed_login_count").notNull().default(0),
+    /** R-24 (Q-0016) */
+    lockedUntil: timestamp("locked_until", { withTimezone: true, mode: "date" }),
     /** เวลาสร้าง (UTC) */
     createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
     /** เวลาแก้ไขล่าสุด (UTC) — อัปเดตโดย $onUpdate */

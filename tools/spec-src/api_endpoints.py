@@ -717,8 +717,11 @@ ep("health", "GET", "/api/health", "public", "", "US-13-09", "health check", res
 
 # =========================================================== ADMIN
 ep("admin.login", "POST", "/api/v1/auth/admin/login", "public", "", "US-13-10", "ทีมแพลตฟอร์มเข้าสู่ระบบ",
-   [F("email", "string", True, "platform_admin.email", ""), F("password", "string", True, "platform_admin.password_hash", "")], res="object {admin}",
-   rules="R-24", errors="INVALID_CREDENTIALS,ACCOUNT_LOCKED", effects=["session 12 ชม. cookie `aid`"])
+   [F("email", "string", True, "platform_admin.email", ""), F("password", "string", True, "platform_admin.password_hash", "")], res="object {admin: AdminMe}",
+   rules="R-24", errors="INVALID_CREDENTIALS,ACCOUNT_LOCKED",
+   effects=["session 12 ชม. cookie `aid`",
+            "email trim + lowercase ก่อนค้น; ไม่พบอีเมล หรือ platform_admin.status ≠ active → `INVALID_CREDENTIALS` (ยัง verify รหัสหลอกให้ใช้เวลาเท่ากัน — R-24 ข้อ 4)",
+            "อัปเดต platform_admin.failed_login_count/locked_until ตาม R-24 (loginAttempt จาก @app/domain) แล้ว commit ก่อนตอบ error"])
 ep("admin.orgs", "GET", f"{AD}/organizations", "admin", "", "US-13-10", "รายชื่อร้าน", res="OrgListItem[]")
 ep("admin.createOrg", "POST", f"{AD}/organizations", "admin", "", "US-13-10, US-13-14", "สร้างร้านใหม่",
    [F("name", "string", True, "organization.name", ""), F("slug", "string", True, "organization.slug", "^[a-z0-9-]{3,40}$"),
@@ -730,7 +733,9 @@ ep("admin.createOrg", "POST", f"{AD}/organizations", "admin", "", "US-13-10, US-
    effects=["transaction: organization(pilot) + branch + branch_policy default + branch_hours 7 วัน (09:00–18:00) + rate_plan default + size_tier มาตรฐาน (หมา XS–XL, แมว S/L) + groom_station 1 โต๊ะ + owner invite",
             "consent_record ฝั่งร้าน (dpa, terms_of_service) ทำตอน owner รับคำเชิญ"])
 ep("admin.updateOrg", "PATCH", f"{AD}/organizations/{{orgId}}", "admin", "", "US-13-10", "เปลี่ยนสถานะร้าน",
-   [F("status", "enum:org_status", True, "organization.status", "")], res="OrgListItem", effects=["suspended → ทุก session ของร้านถูกปฏิเสธ (403) ยกเว้น admin"])
+   [F("status", "enum:org_status", True, "organization.status", "")], res="OrgListItem", audit="organization.status_change",
+   effects=["suspended → ทุก session ของร้านถูกปฏิเสธ (403) ยกเว้น admin",
+            "audit: organization_id = ร้านนั้น, entity organization, before/after = {status} (เจ้าของร้านเห็นในหน้า audit log); สถานะเท่าเดิม → ไม่เขียน audit"])
 ep("admin.setLineChannel", "PUT", f"{AD}/branches/{{branchId}}/line-channel", "admin", "", "US-02-06", "ใส่ค่าการเชื่อม LINE OA ของร้าน",
    [F("providerId", "string", True, "line_channel.provider_id", "ตาม ADR-001"), F("messagingChannelId", "string", True, "line_channel.messaging_channel_id", ""),
     F("channelSecret", "string", True, "line_channel.channel_secret_enc", "เข้ารหัสก่อนเก็บ — ห้าม log"), F("channelAccessToken", "string", True, "line_channel.channel_access_token_enc", "เข้ารหัส"),

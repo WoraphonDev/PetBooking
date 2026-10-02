@@ -698,7 +698,7 @@ rule("R-24", "ล็อกบัญชีเมื่อใส่รหัสผ
  """export function loginAttempt(input: { now: string; failedLoginCount: number; lockedUntil: string | null; passwordCorrect: boolean }):
   { allowed: boolean; failedLoginCount: number; lockedUntil: string | null; error: "ACCOUNT_LOCKED" | "INVALID_CREDENTIALS" | null };
 export function checkPasswordPolicy(input: { password: string; email?: string | null }): { ok: boolean; error: string | null };""",
- "ใช้กับ `staff_user.failed_login_count`, `locked_until`",
+ "ใช้กับ `staff_user.failed_login_count`, `locked_until` (auth.staffLogin) และ `platform_admin.failed_login_count`, `locked_until` (admin.login — Q-0016)",
  ["ถูกล็อกอยู่ (now < lockedUntil) → ปฏิเสธโดยไม่ตรวจรหัส", "รหัสถูก → reset count = 0", "ผิดครั้งที่ 5 ติดกัน → ล็อก 15 นาที และ reset count = 0",
   "ข้อความ error ต่อผู้ใช้ไม่บอกว่าอีเมลมีอยู่หรือไม่ (`INVALID_CREDENTIALS` เหมือนกัน)", "รหัสผ่าน 8–128 ตัว, ห้ามเป็นตัวเลขล้วน, ห้ามเท่ากับส่วนหน้าของอีเมล",
   "hash: argon2id (memoryCost 19456 KiB, timeCost 2, parallelism 1) ผ่านแพ็กเกจ @node-rs/argon2"],
@@ -761,7 +761,7 @@ rule("R-27", "Audit log — การกระทำที่ต้องบั�
   "`slip.verify`, `slip.reject`, `deposit.waive`, `refund.create`, `credit.adjust`, `booking.cancel`, `booking.no_show`, `booking.price_override`, "
   "`stay.vaccine_override`, `customer.blacklist`, `customer.reliability_override`, `customer.merge_link_approve`, `staff.invite`, `staff.role_change`, "
   "`staff.disable`, `policy.update`, `promptpay.update`, `line_channel.update`, `commission_rule.update`, `data.export`, `pdpa.erase`, "
-  "`support.session_start`, `support.session_end`, `import.commit`",
+  "`support.session_start`, `support.session_end`, `import.commit`, `organization.status_change`",
   "ทุก action ที่มีคำว่า void/cancel/waive/override/adjust/blacklist ต้องมี reason (API บังคับ ≥ 3 ตัวอักษร)",
   "หน้าดู audit log: owner เท่านั้น (filter ตาม action/ช่วงวัน/ผู้ทำ)"],
  [], [])

@@ -52,7 +52,7 @@
 - คำตอบ: A (มนุษย์ตอบใน session T-0005) — `PASSWORD_TOO_LONG`; T-0005 implement แล้วพร้อม unit test · ต้องมี PR `spec-change` เพิ่มลงใน 04#R-24 (และ vector ถ้าต้องการ)
 
 ## Q-0006 · CSRF (Origin ไม่ตรง APP_BASE_URL) ตอบ error code อะไร
-- สถานะ: answered (spec-change PR `spec-change-q0006-0008`)
+- สถานะ: spec-changed (PR #13 merged)
 - Task: T-0007 · ผู้ถาม: agent (claude) · วันที่: 2026-10-01
 - คำถาม: 01 §4 ข้อ 5 กำหนดว่า method ≠ GET ต้องมี `Origin = APP_BASE_URL` แต่ไม่ระบุรหัส error เมื่อไม่ผ่าน และ 05 §1 ไม่มีรหัสเฉพาะ
 - สิ่งที่พบใน spec: `01-architecture.md` §4, §10 · `05-api.md` §1
@@ -60,7 +60,7 @@
 - คำตอบ: A — Origin ไม่ตรง/ไม่มี → `FORBIDDEN` (403) ไม่เพิ่มรหัสใหม่ (01 §4 ข้อ 5) · T-0007 ทำตามนี้แล้ว
 
 ## Q-0007 · support session ("staff-like") ยืนยันตัวตนผ่าน withStaff อย่างไร
-- สถานะ: answered (spec-change PR `spec-change-q0006-0008`)
+- สถานะ: spec-changed (PR #13 merged)
 - Task: T-0007 · ผู้ถาม: agent (claude) · วันที่: 2026-10-01
 - คำถาม: `admin.supportStart` สร้าง "session staff-like ที่ support_access_log_id มีค่า (60 นาที)" แต่ไม่ระบุ `session.subject_type`/`subject_id` (platform_admin ไม่ใช่ staff_user) และ role ที่ใช้กับ `requireRole` (ต้องอ่านหน้า owner-only ได้หรือไม่) — T-0007 รองรับเฉพาะ session `subject_type = staff` ที่มี `support_access_log_id` (→ `ctx.supportAccessLogId` + non-GET → `SUPPORT_READ_ONLY`)
 - สิ่งที่พบใน spec: `05-api.md#ep-admin.supportStart`, 05 §0 Support mode, `08-permissions.md` (platform admin ดูผ่าน support mode)
@@ -68,7 +68,7 @@
 - คำตอบ: A (01 §4 หัวข้อ Support mode) — `admin.supportStart` สร้าง session `subject_type = platform_admin`, `subject_id` = admin id, `organization_id` = ร้าน, `branch_id` = สาขาแรก, `support_access_log_id` มีค่า, 60 นาที, cookie `sid` · withStaff รับ session นี้ → `ctx.actor = {type:"admin", id, role:"owner"}` + `ctx.supportAccessLogId`; non-GET → `SUPPORT_READ_ONLY` (ตรวจก่อน requireRole) · supportEnd/หมดเวลา → ลบ session; audit ใช้ actor_type = platform_admin · T-0007 รองรับทั้ง staff และ platform_admin(+support_access_log_id) ผ่าน `sid` แล้ว
 
 ## Q-0008 · ไม่มี endpoint ไหนระบุ HTTP 201
-- สถานะ: answered (spec-change PR `spec-change-q0006-0008`)
+- สถานะ: spec-changed (PR #13 merged)
 - Task: T-0007 · ผู้ถาม: agent (claude) · วันที่: 2026-10-01
 - คำถาม: การ์ด T-0007 ข้อ 1 ระบุ status 200/201/204 แต่ 05 ไม่มี endpoint ใดระบุ 201 — wrappers ตอบ 204 เมื่อ service คืน `undefined` (endpoint ที่ response = `204`) และ 200 อย่างอื่นทั้งหมด; ต้องการ 201 สำหรับ POST ที่สร้างข้อมูลหรือไม่ (ถ้าใช่ endpoint ไหน)
 - สิ่งที่พบใน spec: `05-api.md` §0, §3 (`docs/spec/vectors/endpoints.json` response = DTO หรือ `"204"`)
@@ -139,18 +139,31 @@
 - Answer: user explicitly authorized a separate spec-change PR on 2026-10-02 to allow only this exact T-0018 health-test relocation. All other renames remain forbidden, and source/destination must still match the card scope. PR #33 merged on 2026-10-02. T-0018 implementation on t-0018-health-completion incorporates the merged guard change.
 
 ## Q-0016 · T-0022 admin login lockout storage and response contract
-- Status: open
+- Status: answered (spec-change PR `spec-change-q0016-0017`, awaiting merge)
 - Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: How should admin.login persist R-24 failed attempts and lock expiry, and which fields belong inside its `{ admin }` response?
 - Evidence: 05#ep-admin.login requires INVALID_CREDENTIALS and ACCOUNT_LOCKED under R-24. R-24 uses staff_user.failed_login_count/locked_until; 02#tbl-platform_admin and the merged identity schema have neither column. The endpoint says only `object {admin}`, with no admin DTO or field list.
 - Scope: T-0022 permits endpoint contracts/services/tests/routes, but no DB schema or migration. An in-memory lockout or an invented admin response would introduce unspecified auth behavior.
 - Proposed decision (awaiting human confirmation): add platform_admin.failed_login_count (integer, not null, default 0) and locked_until (nullable timestamptz); apply the same R-24 attempt/reset/15-minute lockout rules to admins; define the response as `{ admin: { id, email, displayName } }` using platform_admin columns. Publish a prerequisite spec-change and explicitly authorize identity schema/new migration paths in a task before implementation. Alternatively, explicitly revise the endpoint's lockout requirement. No proposal here is an approved contract.
 - Work: admin.login implementation is paused under AGENTS.md golden rules 2–3 and the stop-and-ask rule. No auth code, schema or migration has been changed.
+- Answer (human, 2026-10-02): proposal approved with additions. Delivered by spec-change PR `spec-change-q0016-0017` (schema + migration included, so T-0022 needs no DB paths):
+  - `platform_admin.failed_login_count` (integer, not null, default 0) + `locked_until` (nullable timestamptz) — 02#tbl-platform_admin, migration `0004_platform_admin_lockout.sql` (additive, defaults only).
+  - R-24 now states it applies to both staff_user (auth.staffLogin) and platform_admin (admin.login): same 5-failure / 15-minute rules via `loginAttempt` from `@app/domain`; counters are committed before the error is returned.
+  - Email trim + lowercase before lookup; unknown email or `platform_admin.status ≠ active` → `INVALID_CREDENTIALS` with a dummy argon2 verify (R-24 step 4), same as auth.staffLogin.
+  - Response `object {admin: AdminMe}`, new DTO 05#dto-AdminMe = `{ id, email, displayName }` from platform_admin; T-0022 owns `packages/contracts/src/dto/admin-me.ts`.
+  - Implement the platform_admin persistence inside `services/admin/login.ts` reusing `verifyPassword` / `verifyUnknownUserPassword` and domain `loginAttempt`; `auth/password.ts` (`verifyStaffLogin`) stays unchanged.
 
 ## Q-0017 · T-0022 organization summary selection, empty relations and status audit
-- Status: open
+- Status: answered (spec-change PR `spec-change-q0016-0017`, awaiting merge)
 - Task: T-0022 · Asked by: agent (codex) · Date: 2026-10-02
 - Question: Which owner's email should OrgListItem return when a shop has multiple owners; what should lineStatus return before any line_channel exists; what is lastActivityAt when there are no bookings; and which audit action records admin.updateOrg?
 - Evidence: 05#dto-OrgListItem specifies staff_user.email, line_channel.status and max booking.created_at without selection/empty-result rules. 05 §2 already makes ownerEmail nullable because staff_user.email is nullable; that rule does not select one of multiple owners or specify the absence of a non-null line_channel.status row. 02 allows multiple staff with owner role, and admin.createOrg does not create a line_channel. AGENTS.md requires audit for permission-sensitive actions, while R-27's action list has no organization status action and 05#ep-admin.updateOrg gives none.
 - Proposed decision (awaiting human confirmation): select the owner with the earliest created_at (id ascending as tie-breaker); return lineStatus = null when no line_channel exists and lastActivityAt = null when there are no bookings; add audit action `organization.status_change` with before/after status in the same transaction. Publish these decisions through spec-change and authorize any required audit contract/schema changes or a prerequisite task. No proposal here is an approved contract.
 - Work: admin.orgs and admin.updateOrg share this unresolved DTO; their implementation is paused. No fallback enum, owner selection, calculated-field type or audit action has been invented.
+- Answer (human, 2026-10-02): proposal approved with additions; rules are written under 05#dto-OrgListItem ("กฎการเลือกแถว"):
+  - Branch fields (`branchName`, `bookingSlug`, `lineStatus`) come from the shop's first branch: lowest `branch.created_at`, then lowest id (same meaning as "สาขาแรกของร้าน" in 01 §4 Support mode).
+  - `ownerEmail` = email of the owner with `status ≠ disabled` (invited counts), lowest created_at then id; none or null email → `null`.
+  - `lineStatus` = that branch's `line_channel.status`; no line_channel row → `null` (distinct from `pending`).
+  - `lastActivityAt` = max `booking.created_at` for the organization; no bookings → `null`. `ownerEmail`, `lineStatus`, `lastActivityAt` are `T | null` in the contract.
+  - New R-27 action `organization.status_change`; admin.updateOrg writes it in the same transaction with `organization_id` = the shop (visible to that shop's owner), entity `organization`, before/after `{status}`; unchanged status → no audit row. No reason required.
+  - Impact: admin.updateOrg now has an audit, so T-0022 depends on T-0035 (INF-AUDIT) and requires human review; the generator moves T-0034 (DOM-STATE) and T-0035 from M1 into M0. Other cards change wave numbers only.

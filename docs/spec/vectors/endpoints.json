@@ -3030,7 +3030,7 @@
     "password"
    ],
    "query": [],
-   "response": "object {admin}",
+   "response": "object {admin: AdminMe}",
    "errors": [
     "INVALID_CREDENTIALS",
     "ACCOUNT_LOCKED"
@@ -3222,6 +3222,7 @@
   }
  ],
  "dtos": [
+  "AdminMe",
   "AppointmentCard",
   "AuditLogItem",
   "BillDetail",

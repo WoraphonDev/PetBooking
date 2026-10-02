@@ -229,6 +229,8 @@ tbl("platform_admin", G, "ทีมแพลตฟอร์ม", "US-13-10, US-1
  ("password_hash", "text", False, None, None, "argon2id"),
  ("display_name", "text", False, None, None, ""),
  ("status", "e:admin_status", False, "active", None, ""),
+ ("failed_login_count", "int", False, 0, None, "R-24 (Q-0016)"),
+ ("locked_until", "ts", True, None, None, "R-24 (Q-0016)"),
 ], idx=[("unique", ["email"], None)])
 
 tbl("staff_user", G, "ผู้ใช้ฝั่งร้าน (เจ้าของ/หน้าร้าน/ช่าง)", "US-01-02, US-01-03, US-01-04", [

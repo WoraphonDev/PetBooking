@@ -459,6 +459,8 @@ dto("StayUpdates", "หน้าอัปเดตน้องระหว่า
  ("checkOutDate", "stay.check_out_date"), ("updates[]", "[]dto:PhotoItem"), ("doneTasks[].title", "care_task.title"),
  ("doneTasks[].doneAt", "care_task.done_at"), ("doneTasks[].note", "care_task.note")])
 # ---- admin
+dto("AdminMe", "ผู้ดูแลแพลตฟอร์มที่ล็อกอินอยู่ (Q-0016)", [("id", "platform_admin.id"), ("email", "platform_admin.email"),
+ ("displayName", "platform_admin.display_name")])
 dto("OrgListItem", "ร้านในระบบ", [("id", "organization.id"), ("name", "organization.name"), ("slug", "organization.slug"), ("status", "organization.status"),
  ("branchName", "branch.name"), ("bookingSlug", "branch.booking_slug"), ("ownerEmail", "staff_user.email"), ("lineStatus", "line_channel.status"),
  ("createdAt", "organization.created_at"), ("lastActivityAt", "calc: max booking.created_at")])

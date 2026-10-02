@@ -99,7 +99,7 @@
 | J | [`support_access_log`](#tbl-support_access_log) | การเข้าโหมดช่วยเหลือของทีมแพลตฟอร์ม | `compliance.ts` | US-13-11 |
 | J | [`import_job`](#tbl-import_job) | งานนำเข้า CSV (validate ก่อน commit) | `compliance.ts` | US-02-08 |
 
-รวม **72 ตาราง**, **936 คอลัมน์**, **72 enum**
+รวม **72 ตาราง**, **938 คอลัมน์**, **72 enum**
 
 
 ## 2. A. Platform & Tenancy
@@ -318,6 +318,8 @@ Stories: US-13-10, US-13-11 · PK: `id` · schema: `packages/db/src/schema/ident
 | password_hash | `text` | NO |  |  | argon2id |
 | display_name | `text` | NO |  |  |  |
 | status | `admin_status` | NO | 'active' |  |  |
+| failed_login_count | `integer` | NO | 0 |  | R-24 (Q-0016) |
+| locked_until | `timestamptz` | YES |  |  | R-24 (Q-0016) |
 | created_at | `timestamptz` | NO | now() |  | เวลาสร้าง (UTC) |
 | updated_at | `timestamptz` | NO | now() |  | เวลาแก้ไขล่าสุด (UTC) — อัปเดตโดย $onUpdate |
 

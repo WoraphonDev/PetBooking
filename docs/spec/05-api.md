@@ -1466,6 +1466,18 @@ Dashboard วันนี้
 | `doneTasks[].doneAt` | care_task.done_at |
 | `doneTasks[].note` | care_task.note |
 
+<a id="dto-AdminMe"></a>
+
+### AdminMe
+
+ผู้ดูแลแพลตฟอร์มที่ล็อกอินอยู่ (Q-0016)
+
+| field | source |
+|---|---|
+| `id` | platform_admin.id |
+| `email` | platform_admin.email |
+| `displayName` | platform_admin.display_name |
+
 <a id="dto-OrgListItem"></a>
 
 ### OrgListItem
@@ -1484,6 +1496,14 @@ Dashboard วันนี้
 | `lineStatus` | line_channel.status |
 | `createdAt` | organization.created_at |
 | `lastActivityAt` | calc: max booking.created_at |
+
+**กฎการเลือกแถว (Q-0017)**
+
+- สาขา (`branchName`, `bookingSlug`, `lineStatus`) = สาขาแรกของร้าน: `branch.created_at` น้อยสุด แล้ว `branch.id` น้อยสุด (MVP มี 1 สาขาต่อร้าน — นิยามเดียวกับ "สาขาแรกของร้าน" ใน 01 §4 Support mode)
+- `ownerEmail` = `staff_user.email` ของ owner (`role = owner`) ที่ `status ≠ disabled` (นับ `invited`) โดย `created_at` น้อยสุด แล้ว `id` น้อยสุด · ไม่มี owner ที่เข้าเงื่อนไข หรืออีเมลเป็น null → `null`
+- `lineStatus` = `line_channel.status` ของสาขาข้างบน · ยังไม่มีแถว line_channel → `null` (แยกจาก `pending` = กรอกแล้วยังไม่ verify)
+- `lastActivityAt` = max `booking.created_at` ของทั้ง organization · ยังไม่มี booking → `null`
+- ชนิดใน contract: `ownerEmail`, `lineStatus`, `lastActivityAt` เป็น `T | null`
 
 <a id="dto-FeedbackItem"></a>
 
@@ -5881,13 +5901,15 @@ Request body:
 | `email` | string | ✓ | platform_admin.email |  |
 | `password` | string | ✓ | platform_admin.password_hash |  |
 
-Response: `object {admin}`
+Response: `object {admin: AdminMe}`
   
 Errors: `INVALID_CREDENTIALS`, `ACCOUNT_LOCKED`
 
 
 ผลที่ต้องเกิด:
 - session 12 ชม. cookie `aid`
+- email trim + lowercase ก่อนค้น; ไม่พบอีเมล หรือ platform_admin.status ≠ active → `INVALID_CREDENTIALS` (ยัง verify รหัสหลอกให้ใช้เวลาเท่ากัน — R-24 ข้อ 4)
+- อัปเดต platform_admin.failed_login_count/locked_until ตาม R-24 (loginAttempt จาก @app/domain) แล้ว commit ก่อนตอบ error
 
 
 <a id="ep-admin.orgs"></a>
@@ -5945,10 +5967,13 @@ Request body:
 | `status` | enum:org_status | ✓ | organization.status |  |
 
 Response: `OrgListItem`
+  
+Audit: `organization.status_change`
 
 
 ผลที่ต้องเกิด:
 - suspended → ทุก session ของร้านถูกปฏิเสธ (403) ยกเว้น admin
+- audit: organization_id = ร้านนั้น, entity organization, before/after = {status} (เจ้าของร้านเห็นในหน้า audit log); สถานะเท่าเดิม → ไม่เขียน audit
 
 
 <a id="ep-admin.setLineChannel"></a>
