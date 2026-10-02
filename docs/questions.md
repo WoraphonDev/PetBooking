@@ -292,6 +292,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-customers.blacklist validation column; `packages/server/src/audit.ts` writeAudit reason check.
 - Work: T-0156 requires the reason in both directions (`REASON_REQUIRED`), so the audit trail always has a reason. If unblacklisting should be allowed without one, audit.ts (outside T-0156) needs an exception for `customer.blacklist` with `after.blacklisted = false`.
 
+## Q-0036 · T-0111 cancelSummary wording
+- Status: answered
+- Task: T-0111 · Asked by: agent (codex) · Date: 2026-10-02
+- Evidence: 05#dto-Quote defines cancelSummary only as a summary calculated from branch_policy free_cancel_hours/forfeit, without exact text.
+- Answer (2026-10-02): user approved this text in chat: ยกเลิกก่อนเริ่มบริการอย่างน้อย {hours} ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ {percent}% . Substitute freeCancelHours and lateCancelForfeitPercent respectively.
+
 ## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
 - Status: answered for T-0147; spec follow-up open
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
