@@ -318,6 +318,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bookings.balanceLink mentions "send=true" but has no request table, names no error for "ต้องมี bill open", and says only "url = LIFF /pay/{billId}".
 - Answer (2026-10-02): user chose in chat. Body `{ send?: boolean }` (default false = only return the link). No bill on the booking, or the bill is paid/void → `BILL_NOT_OPEN` (409). `amountSatang = bill.total_satang − bill.paid_satang`. `url = APP_BASE_URL + /liff/{branch.booking_slug}/pay/{billId}` (route of L-14; 01 §6 APP_BASE_URL is the base for links in messages). send=true enqueues `customer.balance_link` to booking.customer_id with `amount` formatted by R-31 formatTHB(always).
 
+## Q-0038 · T-0090 annual holidays editor and loader
+- Status: answered
+- Task: T-0090 · Asked by: agent (codex) · Date: 2026-10-02
+- Evidence: admin.holidays replaces the entire year, while AD-07 had one editable day and no read API. Saving that single row could remove existing holidays.
+- Answer: user approved expanding the spec to edit the full annual list and load existing rows before saving. Add admin.listHolidays GET on the same year path, returning date/nameTh rows sorted by date, and a year selector plus add/remove controls. T-0090 owns the loader, DTO and client mapping; existing merged dependencies are unchanged. Save is disabled until loading succeeds. Spec and implementation are separate small PRs; merge the spec prerequisite first.
+
 ## Q-0044 · A-04 shows shop name and role but no endpoint loads them
 - Status: open (T-0074 blocked)
 - Task: T-0074 · Asked by: agent (claude) · Date: 2026-10-02

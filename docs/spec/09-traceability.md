@@ -7,7 +7,7 @@
 | US-13-01 | โครงระบบและการ deploy | M0 |  |  |  |  |  |
 | US-13-02 | Data model หลัก (พร้อมรองรับ OTA) | M0 |  |  |  |  | organization, owner_profile, rate_plan, booking_event |
 | US-01-02 | พนักงานเข้าระบบด้วยอีเมล | M0 | A-01, A-02, A-03 | `auth.staffLogin`, `auth.staffLogout`, `auth.me`, `auth.resetRequest`, `auth.resetConfirm` | R-24 | staff.password_reset | staff_user, password_reset, session |
-| US-13-03 | ภาษาไทยและรูปแบบไทย | M0 | AD-07 | `closures.importHolidays`, `admin.holidays` | R-20, R-31 |  | public_holiday |
+| US-13-03 | ภาษาไทยและรูปแบบไทย | M0 | AD-07 | `closures.importHolidays`, `admin.holidays`, `admin.listHolidays` | R-20, R-31 |  | public_holiday |
 | US-13-09 | Monitoring และแจ้งเตือนระบบล่ม | M0 |  | `health` |  |  |  |
 | US-13-10 | ทีมสร้างและจัดการร้าน | M0 | AD-01, AD-02, AD-03 | `admin.login`, `admin.orgs`, `admin.createOrg`, `admin.updateOrg` |  |  | organization, platform_admin |
 | US-01-04 | เชิญพนักงานและกำหนดสิทธิ์ | M1 | A-04, C-36 | `auth.inviteAccept`, `staffUsers.list`, `staffUsers.invite`, `staffUsers.update`, `staffUsers.resendInvite` |  | staff.invite | staff_user, staff_invite |
