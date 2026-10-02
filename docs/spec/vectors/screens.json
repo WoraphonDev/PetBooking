@@ -6057,7 +6057,7 @@
    "app": "admin",
    "route": "/admin/login",
    "title": "Admin login",
-   "roles": "admin",
+   "roles": "public",
    "load": [],
    "fields": [
     {
