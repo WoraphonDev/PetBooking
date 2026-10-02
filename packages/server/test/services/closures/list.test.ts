@@ -39,14 +39,15 @@ const closure = (startsAt: string, endsAt: string, extra: Partial<typeof branchC
 });
 
 it.each(["owner", "front_desk", "staff"] as const)("lists every branch_closure column for %s, ordered by start", async (role) => {
-  await env.db.insert(branchClosure).values([
-    closure("2026-10-12T17:00:00.000Z", "2026-10-13T17:00:00.000Z", { scope: "grooming", source: "public_holiday" }),
-    closure("2026-10-06T02:00:00.000Z", "2026-10-06T05:00:00.000Z", { reason: "ปิดซ่อม", createdBy: env.base.staff.owner }),
-  ]);
+  await env.db
+    .insert(branchClosure)
+    .values([
+      closure("2026-10-12T17:00:00.000Z", "2026-10-13T17:00:00.000Z", { scope: "grooming", source: "public_holiday" }),
+      closure("2026-10-06T02:00:00.000Z", "2026-10-06T05:00:00.000Z", { reason: "ปิดซ่อม", createdBy: env.base.staff.owner }),
+    ]);
   const response = await get("", role);
   expect(response.status).toBe(200);
-  const body = await response.json();
-  expect(ClosuresListResponse.safeParse(body).success).toBe(true);
+  const body = ClosuresListResponse.parse(await response.json());
   const rows = await env.db.select().from(branchClosure).orderBy(branchClosure.startsAt);
   expect(body).toEqual(
     rows.map((r) => ({
@@ -62,18 +63,20 @@ it.each(["owner", "front_desk", "staff"] as const)("lists every branch_closure c
       updatedAt: r.updatedAt.toISOString(),
     })),
   );
-  expect(body.map((b: { scope: string }) => b.scope)).toEqual(["all", "grooming"]);
+  expect(body.map((b) => b.scope)).toEqual(["all", "grooming"]);
 });
 
 it("filters to closures overlapping the branch-local days from..to", async () => {
-  await env.db.insert(branchClosure).values([
-    closure("2026-10-04T10:00:00.000Z", "2026-10-04T17:00:00.000Z", { reason: "ends at local midnight before" }),
-    closure("2026-10-04T16:00:00.000Z", "2026-10-04T18:00:00.000Z", { reason: "spans into from" }),
-    closure("2026-10-06T03:00:00.000Z", "2026-10-06T04:00:00.000Z", { reason: "inside" }),
-    closure("2026-10-06T17:00:00.000Z", "2026-10-07T17:00:00.000Z", { reason: "starts after to" }),
-  ]);
-  const body = await (await get("?from=2026-10-05&to=2026-10-06")).json();
-  expect(body.map((b: { reason: string }) => b.reason)).toEqual(["spans into from", "inside"]);
+  await env.db
+    .insert(branchClosure)
+    .values([
+      closure("2026-10-04T10:00:00.000Z", "2026-10-04T17:00:00.000Z", { reason: "ends at local midnight before" }),
+      closure("2026-10-04T16:00:00.000Z", "2026-10-04T18:00:00.000Z", { reason: "spans into from" }),
+      closure("2026-10-06T03:00:00.000Z", "2026-10-06T04:00:00.000Z", { reason: "inside" }),
+      closure("2026-10-06T17:00:00.000Z", "2026-10-07T17:00:00.000Z", { reason: "starts after to" }),
+    ]);
+  const body = ClosuresListResponse.parse(await (await get("?from=2026-10-05&to=2026-10-06")).json());
+  expect(body.map((b) => b.reason)).toEqual(["spans into from", "inside"]);
   const onlyFrom = await closuresList(staffCtx(env.base, "owner"), { from: "2026-10-06" });
   expect(onlyFrom.map((b) => b.reason)).toEqual(["inside", "starts after to"]);
   const onlyTo = await closuresList(staffCtx(env.base, "owner"), { to: "2026-10-04" });
@@ -104,7 +107,9 @@ it("denies absent sessions and customer actors", async () => {
 
 it("returns NOT_FOUND for another organization's branch and never leaks its closures", async () => {
   const foreign = await otherOrg(env.db);
-  await env.db.insert(branchClosure).values(closure("2026-10-06T02:00:00.000Z", "2026-10-06T05:00:00.000Z", { branchId: foreign.branchId }));
+  await env.db
+    .insert(branchClosure)
+    .values(closure("2026-10-06T02:00:00.000Z", "2026-10-06T05:00:00.000Z", { branchId: foreign.branchId }));
   for (const branchId of [foreign.branchId, null]) {
     await expect(closuresList({ ...staffCtx(env.base, "owner"), branchId }, {})).rejects.toMatchObject({ code: "NOT_FOUND" });
   }
