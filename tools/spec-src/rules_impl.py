@@ -219,12 +219,12 @@ def r05_parse_slip_qr(inp):
     top = tlv_parse(p)
     if not top or "00" not in top or "91" not in top:
         return None
-    if crc16(p[:-4]) != top["91"].upper():
-        return None
+    # Q-0026: a CRC mismatch is flagged (crcValid = false), not rejected — bank CRC formats are confirmed in SP-02
+    crc_valid = crc16(p[:-4]) == top["91"].upper()
     sub = tlv_parse(top["00"])
     if not sub or "02" not in sub:
         return None
-    return {"bankCode": sub.get("01"), "transRef": sub["02"]}
+    return {"bankCode": sub.get("01"), "transRef": sub["02"], "crcValid": crc_valid}
 
 def r05_find_duplicate(inp):
     if not inp["transRef"]:
