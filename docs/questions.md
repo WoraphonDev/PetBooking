@@ -188,3 +188,10 @@
 - Question: 06#scr-A-03 requires "→ /login พร้อม toast 'ตั้งรหัสผ่านแล้ว'", and `src/lib/query.ts` (T-0016) reports failed queries/mutations with `toast.error`, but no layout renders sonner's `<Toaster />`, so no toast is ever visible. A toast that must survive navigation to another route also needs a Toaster above both routes. No task card owns the root or `(auth)` layout.
 - Options: (a) spec-change mounting the existing shadcn `<Toaster />` once in `apps/web/app/layout.tsx`; (b) mount it per route-group layout in later shell tasks.
 - Answer (2026-10-02): user approved option (a) in chat. Screens call `toast.success(...)` from `sonner` before navigating.
+
+## Q-0023 · Shop consent records when the owner accepts the invite
+- Status: answered
+- Task: T-0042 · Asked by: agent (claude) · Date: 2026-10-02
+- Question: 05#ep-admin.createOrg says "consent_record ฝั่งร้าน (dpa, terms_of_service) ทำตอน owner รับคำเชิญ", but 05#ep-auth.inviteAccept lists no consent effect and 06#scr-A-04 has no document acceptance UI. Should auth.inviteAccept write those records?
+- Evidence: 02#tbl-consent_record (subject_type organization, subject_id organization.id); legal document versions in 10 §5 / reference-data.json legalDocs.
+- Answer (2026-10-02): user approved in chat. When the accepted invite's staff_user.role is owner, auth.inviteAccept inserts consent_record ×2 (dpa, terms_of_service) in the same transaction: subject_type organization, subject_id = organization_id = the shop, version from reference-data legalDocs, accepted true, ip/user_agent from the request. A-04 should later show the document links (separate spec-change for the screen).
