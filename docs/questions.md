@@ -403,6 +403,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-AD-06 shows `organization.name` but 05#dto-PilotAnalytics returns only `orgId`; 05#ep-admin.analytics requires `from`/`to` but the 06 table has no date inputs.
 - Answer (2026-10-03): user chose in chat. The screen also loads the existing `admin.orgs` list and maps orgId → name ("—" when missing); no API/DTO change. It requests the 7 Bangkok days ending today (to = today Asia/Bangkok, from = to − 6, inclusive per Q-0037) and shows that range under the title.
 
+## Q-0062 · T-0086: enabling the C-38 console menu entry
+- Status: open (screen implementation proceeds within the card scope)
+- Task: T-0086 · Asked by: agent (codex) · Date: 2026-10-03
+- Question: may this card also change `apps/web/src/components/shell-console/navigation/C-38.ts` to set `implemented: true`? It is absent from allowed_paths. Q-0048 calls for a task-generator follow-up, which has not been applied to T-0086.
+- Pending user choice: expand the card scope for that single entry, or ship only the catalogued screen route. The navigation entry remains untouched until answered.
+
 ## Q-0048 · Console menu entries: C-* screen cards cannot enable their own menu item
 - Status: answered for T-0070; task-generator follow-up open
 - Task: T-0070 · Asked by: agent (claude) · Date: 2026-10-03
