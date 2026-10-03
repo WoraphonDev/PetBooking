@@ -6,6 +6,8 @@ import messages from "../../i18n/messages/th/shell-console.json";
 import { ConsoleShell } from "./console-shell";
 
 const mocks = vi.hoisted(() => ({ pathname: "/console/customers" }));
+vi.mock("./navigation/C-01", () => ({ entry: { id: "C-01", route: "/console", implemented: true } }));
+vi.mock("./navigation/C-02", () => ({ entry: { id: "C-02", route: "/console/calendar", implemented: false } }));
 vi.mock("./navigation/C-08", () => ({ entry: { id: "C-08", route: "/console/customers", implemented: true } }));
 vi.mock("next/navigation", () => ({ usePathname: () => mocks.pathname }));
 vi.mock("next-intl", () => ({
@@ -35,9 +37,17 @@ it("renders the role's menu with implemented links and disabled entries", () => 
   expect(html).toContain('href="/console/customers"');
   expect(html).toContain('aria-current="page"');
   expect(html).toContain(messages["C-23"]);
-  expect(html).toMatch(new RegExp(`disabled=""[^>]*>${messages["C-01"].replace(/[()]/g, "\\$&")}<`));
+  expect(html).toContain('href="/console"');
+  expect(html).toMatch(new RegExp(`disabled=""[^>]*>${messages["C-02"].replace(/[()]/g, "\\$&")}<`));
   expect(html).toContain("page content");
   expect(render("front_desk")).not.toContain(messages["C-23"]);
+});
+
+it("marks the dashboard link as the current page", () => {
+  mocks.pathname = "/console";
+  const html = render("owner");
+  const dashboardLink = html.match(/<a[^>]*href="\/console"[^>]*>/)?.[0];
+  expect(dashboardLink).toContain('aria-current="page"');
 });
 
 it("shows the 403 view instead of a page the role may not open", () => {
