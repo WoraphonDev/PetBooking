@@ -341,6 +341,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#dto-Quote defines cancelSummary only as a summary calculated from branch_policy free_cancel_hours/forfeit, without exact text.
 - Answer (2026-10-02): user approved this text in chat: ยกเลิกก่อนเริ่มบริการอย่างน้อย {hours} ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ {percent}% . Substitute freeCancelHours and lateCancelForfeitPercent respectively.
 
+## Q-0070 · T-0270 quotes.create stays/daycare: item shapes, bundle groom, approval and cancel window
+- Status: open (T-0270 ships these choices)
+- Task: T-0270 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-quotes.create types `stays[]` / `daycare[]` only as `object[]` (groom[] is "เหมือน bookings.create"), and 05#dto-Quote does not say where a stay's checkout-day `bundleGroom` appears, which `auto_confirm_*` decides `requiresApproval` for mixed quotes, or which free-cancel hours the Q-0036 `cancelSummary` uses.
+- Evidence: 05#ep-quotes.create, 05#ep-bookings.create, 05#dto-Quote, R-03, R-07 step 2, R-08 step 2, Q-0036.
+- Proposed decision (implemented): stays[] / daycare[] use the bookings.create item fields. Prices from the default rate plan: room_rate and daycare_rate for the pet's size tier, else the all-size row (as availability.hotel/daycare); hotel add-ons = active hotel-scope add-on services priced by R-02, per-day when `addon_per_day`. A `bundleGroom` is priced like a groom item for the stay's pet and appended to `groom[]` after the request's groom items. `requiresApproval` = any quoted module whose `auto_confirm_*` is false, or reliability 1 (R-08). `cancelSummary` keeps the Q-0036 wording with the largest free-cancel hours among the quoted modules (R-07 step 2). Eligibility errors (species/weight/in-heat) are left to bookings.create since quotes.create lists no errors.
+
 ## Q-0037 · T-0308 pilot analytics definitions
 - Status: answered
 - Task: T-0308 · Asked by: agent (codex) · Date: 2026-10-02
