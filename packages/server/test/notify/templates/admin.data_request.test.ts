@@ -5,10 +5,10 @@ import { render } from "../../../src/notify/templates/admin.data_request.ts";
 import { renderTemplate } from "../../../src/notify/templates/index.ts";
 
 it.each(["export", "delete"])("matches the specified PDPA text for %s", (type) => {
-  expect(render({ type })).toEqual({ text: `[PDPA] คำขอ ${type} ใหม่` });
+  expect(render({ type })).toEqual({ subject: "[PDPA] คำขอใหม่", text: `[PDPA] คำขอ ${type} ใหม่` });
 });
 it("keeps supplied request labels literal", () => {
-  expect(render({ type: "ส่งออก {type}" })).toEqual({ text: "[PDPA] คำขอ ส่งออก {type} ใหม่" });
+  expect(render({ type: "ส่งออก {type}" })).toEqual({ subject: "[PDPA] คำขอใหม่", text: "[PDPA] คำขอ ส่งออก {type} ใหม่" });
 });
 it("uses the dispatcher registry and only the specified email channel/variable", () => {
   expect(renderTemplate("admin.data_request", { type: "export" })).toEqual(render({ type: "export" }));

@@ -6,6 +6,7 @@ import { render } from "../../../src/notify/templates/staff.invite.ts";
 
 it("matches the Thai invite text and seven-day expiry exactly", () => {
   expect(render({ shopName: "ร้านน้องหมา", inviteUrl: "https://shop.test/invite/test-token" })).toEqual({
+    subject: "คำเชิญเข้าร่วมร้าน ร้านน้องหมา",
     text: "คุณได้รับเชิญเข้าร่วมร้าน ร้านน้องหมา — https://shop.test/invite/test-token (หมดอายุใน 7 วัน)",
   });
 });

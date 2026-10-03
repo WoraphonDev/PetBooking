@@ -1,4 +1,4 @@
-// Template registry: key → render(payload) → { text }.
+// Template registry: key → render(payload) → { text, subject?, url? } (Q-0060: subject for email, url for Web Push).
 import type { NotificationPayloads, TemplateKey } from "../keys.ts";
 import { render as t37 } from "./admin.data_request.ts";
 import { render as t36 } from "./admin.feedback.ts";
@@ -39,7 +39,10 @@ import { render as t25 } from "./staff.report_card_review.ts";
 import { render as t20 } from "./staff.slip_submitted.ts";
 import { render as t27 } from "./staff.vaccine_review.ts";
 
-const RENDERERS: { [K in TemplateKey]: (payload: NotificationPayloads[K]) => { text: string } } = {
+/** text = message body on every channel; subject = email subject; url = link a Web Push opens */
+export type Rendered = { text: string; subject?: string; url?: string };
+
+const RENDERERS: { [K in TemplateKey]: (payload: NotificationPayloads[K]) => Rendered } = {
   "customer.booking_received": t0,
   "customer.booking_confirmed": t1,
   "customer.booking_declined": t2,
@@ -80,6 +83,6 @@ const RENDERERS: { [K in TemplateKey]: (payload: NotificationPayloads[K]) => { t
   "admin.data_request": t37,
 };
 
-export function renderTemplate<K extends TemplateKey>(key: K, payload: NotificationPayloads[K]): { text: string } {
+export function renderTemplate<K extends TemplateKey>(key: K, payload: NotificationPayloads[K]): Rendered {
   return RENDERERS[key](payload);
 }

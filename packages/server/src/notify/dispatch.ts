@@ -10,7 +10,7 @@ import { tenantDb } from "../repo/tenant.ts";
 import { enqueueNotification, type NotificationRow } from "./enqueue.ts";
 import { type NotificationPayloads, TEMPLATES, type TemplateKey } from "./keys.ts";
 import type { NotifyDeps } from "./senders.ts";
-import { renderTemplate } from "./templates/index.ts";
+import { type Rendered, renderTemplate } from "./templates/index.ts";
 
 type Channel = NotificationRow["channel"];
 type SkipReason = NonNullable<NotificationRow["skipReason"]>;
@@ -65,14 +65,15 @@ async function deliver(deps: NotifyDeps, tx: Tx, ctx: RequestContext, row: Notif
   const key = row.templateKey as TemplateKey;
   const meta = TEMPLATES[key];
   if (!meta) return { status: "failed", channel: row.channel, error: `unknown template ${row.templateKey}` };
-  const { text } = renderTemplate(key, row.payload as NotificationPayloads[TemplateKey]);
+  const rendered = renderTemplate(key, row.payload as NotificationPayloads[TemplateKey]);
+  const { text } = rendered;
   const skip = (skipReason: SkipReason): Outcome => ({ status: "skipped", channel: row.channel, skipReason });
   // the channel being tried when an adapter throws
   const attempt: { channel: Channel } = { channel: row.channel };
   try {
     return row.recipientType === "customer"
       ? await deliverToCustomer(deps, tx, ctx, row, key, text, skip, attempt)
-      : await deliverToStaff(deps, tx, ctx, row, key, text, skip, attempt);
+      : await deliverToStaff(deps, tx, ctx, row, key, rendered, skip, attempt);
   } catch (e) {
     // adapter errors only carry API status/messages — never tokens (01 §10)
     return { status: "failed", channel: attempt.channel, error: (e instanceof Error ? e.message : String(e)).slice(0, 500) };
@@ -151,10 +152,11 @@ async function deliverToStaff(
   ctx: RequestContext,
   row: NotificationRow,
   key: TemplateKey,
-  text: string,
+  rendered: Rendered,
   skip: (r: SkipReason) => Outcome,
   attempt: { channel: Channel },
 ): Promise<Outcome> {
+  const { text, subject, url } = rendered;
   const meta = TEMPLATES[key];
   const allowed = meta.channels as readonly Channel[];
   const db = tenantDb(ctx, tx);
@@ -185,13 +187,13 @@ async function deliverToStaff(
   attempt.channel = channel;
 
   if (channel === "email") {
-    await deps.email.send({ to: staff.email as string, text });
+    await deps.email.send({ to: staff.email as string, subject, text });
     return { status: "sent", channel };
   }
   // web_push → every active device; 404/410 disables that subscription
   let delivered = 0;
   for (const s of subs) {
-    const r = await deps.webPush.send({ subscription: { id: s.id, endpoint: s.endpoint, p256dh: s.p256dh, auth: s.auth }, text });
+    const r = await deps.webPush.send({ subscription: { id: s.id, endpoint: s.endpoint, p256dh: s.p256dh, auth: s.auth }, text, url });
     if ("gone" in r) await db.update(webPushSubscription, { disabledAt: ctx.now }, eq(webPushSubscription.id, s.id));
     else {
       delivered++;
