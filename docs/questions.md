@@ -461,7 +461,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user chose option A in chat. Add `booking.cancel_is_late boolean` (null = not cancelled), written by bookings.cancel / liff.cancel from R-07 `isLate`; recompute_reliability counts bookings with `cancel_is_late = true` and `cancelled_at` in the last 12 months. Needs a spec change (02 + 05) and a migration in the card that owns it; T-0189 waits for it.
 
 ## Q-0088 · T-0193 staff templates: what `duplicateFlag` and `isLate` render as
-- Status: open
+- Status: answered (2026-10-05)
+- Answer (2026-10-05): user chose option A in chat. The caller passes the ready text: `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" when R-05 finds a duplicate, otherwise ""; `isLate` = "(ยกเลิกกระชั้น)" when R-07 `isLate`, otherwise "". The template substitutes it and drops the trailing space when empty (T-0193). liff.uploadSlip / liff.payUploadSlip / liff.cancel pass these strings; 07 §1 to be updated by spec change.
 - Task: T-0193 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 07 §1 `staff.slip_submitted` ends with `{duplicateFlag}` and `staff.booking_cancelled` ends with `{isLate}`, but 07 gives no wording; payload variables are `string | number` (no boolean), and 07 does not say what shows when the slip is not a duplicate / the cancel is not late.
 - Evidence: 07 §1 rows `staff.slip_submitted`, `staff.booking_cancelled`; R-05 step 4 UI badge "สลิปนี้เคยใช้แล้ว"; R-07 `isLate`; 06 C-09 label "ยกเลิกกระชั้น".

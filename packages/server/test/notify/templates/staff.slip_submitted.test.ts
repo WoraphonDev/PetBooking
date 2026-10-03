@@ -3,7 +3,7 @@ import { TEMPLATES } from "../../../src/notify/keys.ts";
 import { renderTemplate } from "../../../src/notify/templates/index.ts";
 import { render } from "../../../src/notify/templates/staff.slip_submitted.ts";
 
-it("matches the 07 text with a caller-supplied duplicate flag", () => {
+it("matches the 07 text with the Q-0088 duplicate flag", () => {
   expect(render({ bookingNo: "B-0042", amount: "฿300", duplicateFlag: "⚠️ สลิปนี้เคยใช้แล้ว" })).toEqual({
     text: "สลิปใหม่ B-0042 ฿300 ⚠️ สลิปนี้เคยใช้แล้ว",
   });
