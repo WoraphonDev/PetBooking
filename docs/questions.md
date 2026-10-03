@@ -346,7 +346,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
-## Q-0062 · T-0187 reminder_24h: "active", dateTime, service and reschedules
+## Q-0063 · T-0187 reminder_24h: "active", dateTime, service and reschedules
 - Status: open (T-0187 ships these choices)
 - Task: T-0187 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 07 §2 says "ตรวจว่ายัง active" without defining it, and 07 §1 `customer.reminder_24h` names `dateTime`, `service`, `bookingUrl` without formats. Its notification dedupe `reminder_24h:{entityId}` also means a visit rescheduled after its reminder was sent never gets a second reminder, although the job dedupe includes `{startsAt}`.
