@@ -300,6 +300,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed fix (outside T-0125 allowed_paths): let `requireRole` also accept `ctx.actor.type === "admin" && ctx.supportAccessLogId && roles.includes(ctx.actor.role)`. Writes are already blocked earlier by `SUPPORT_READ_ONLY`. That needs a small card that owns permissions.ts and adds a test.
 - Work: T-0125 implemented supportStart/End without touching permissions.ts.
 
+## Q-0069 · T-0224 customers.timeline: item title, type mapping and amounts
+- Status: open (T-0224 ships these choices)
+- Task: T-0224 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-customers.timeline lists the item fields `{at, type, title, petName, amountSatang, refId}` and the sources (booking_event, bill paid/void, report_card sent) but not how each source maps to `type`/`title`/`amountSatang`, nor where `note` items come from. Thai labels live only in apps/web (enum-labels copy).
+- Evidence: 05#ep-customers.timeline, 06#scr-C-09 ("ไอคอนตามประเภท + จำนวนเงิน"), enum-labels.th.json.
+- Proposed decision (implemented): booking_event → type by entity (booking/deposit → booking, groom_appointment → groom, stay, daycare_visit → daycare), at = created_at, title = "{bookingNo} · {to_status label}", petName from the child's pet, refId = entity id (booking id for deposit). Bill → one item at closed_at ("{receiptNo} · ชำระแล้ว") and, for a void bill, another at voided_at ("{receiptNo} · ยกเลิก"), amountSatang = total_satang. Report card sent → at sent_at, title = "ส่งแล้ว", petName. `note` has no source yet and is never returned. Status labels are copied from enum-labels.th.json into the service with a test that keeps them identical. Paging: 05 §0 `limit` + opaque cursor (at|key), newest first.
+
 ## Q-0034 · customers.blacklist: unblacklisting without a reason
 - Status: open
 - Task: T-0156 · Asked by: agent (claude) · Date: 2026-10-02
