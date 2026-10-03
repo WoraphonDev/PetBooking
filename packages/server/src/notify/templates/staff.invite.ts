@@ -1,9 +1,6 @@
-// staff.invite — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.invite: email-only. The email adapter uses this text as subject too (Q-0060).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "คุณได้รับเชิญเข้าร่วมร้าน {shopName} — {inviteUrl} (หมดอายุใน 7 วัน)";
 
 export function render(payload: NotificationPayloads["staff.invite"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `คุณได้รับเชิญเข้าร่วมร้าน ${payload.shopName ?? ""} — ${payload.inviteUrl ?? ""} (หมดอายุใน 7 วัน)` };
 }
