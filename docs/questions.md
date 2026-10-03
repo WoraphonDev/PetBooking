@@ -451,6 +451,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: add this test file to scope and exercise those existing assertions against an explicit unimplemented fixture, plus verify enabled and disabled entries and role filtering in a mixed fixture? Answer: user approved in chat; keep the baseline assertions on the unimplemented fixture and add mixed-menu coverage.
 - Related: Q-0048; user approved enabling each of the five screen-specific navigation entries in chat, 2026-10-03.
 
+- Implementation: scope changes must be generated in a separate spec-change PR; the shared fixture correction is included there. Screen task PRs inherit that base and change only their own page/component/messages/tests/navigation entry and Status log.
+
 ## Q-0048 · Console menu entries: C-* screen cards cannot enable their own menu item
 - Status: answered for T-0070; task-generator follow-up open
 - Task: T-0070 · Asked by: agent (claude) · Date: 2026-10-03
