@@ -419,6 +419,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1/§2 next_groom rows, R-17, Q-0040 (LIFF links = APP_BASE_URL + /liff/{booking_slug}/…), 06 L-04 `/liff/[branchSlug]/book/grooming`.
 - Proposed decision (implemented): branch and customer come from the pet's latest done/picked_up appointment in the organization (its branch, its booking's customer); `bookUrl = APP_BASE_URL + /liff/{booking_slug}/book/grooming` (L-04); `dueDate` = formatThaiDate; future appointment = one starting after now that is not cancelled/no_show.
 
+## Q-0072 · T-0231 bills.addLine: package lines without an appointment
+- Status: open (T-0231 ships these choices)
+- Task: T-0231 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-bills.addLine lists the fields and the R-14 error codes, but not how a package line is built when no appointment is involved: what a package_sale costs/says, who it belongs to, how many per line, and what a counter redemption checks (R-14 `canRedeemPackage` needs an appointment service/tier/pet). It also gives no code for a package that is not active for other reasons.
+- Evidence: 05#ep-bills.addLine, R-14, 03 customer_package (`∅ → active` on bills.close), Q-0055 (performer rule).
+- Proposed decision (implemented): quick_item = description + unit price (required), quantity 1–999 (default 1). package_sale = the branch's active package_template (price, `name_th`), quantity 1, ref = template; the bill must have a customer; single_pet needs `petId` of that customer; the customer_package is created by bills.close. package_redemption = a package of the bill's customer for one of its pets, checked with R-14 using the package's own service/tier (counter redemption), price 0, ref = customer_package, + package_redemption row, sessions_used + 1 (exhausted when full). A non-active package answers PACKAGE_EXHAUSTED / PACKAGE_EXPIRED by its status, other failures VALIDATION_FAILED. Fields that do not belong to the line type, or quantity ≠ 1 on package lines → VALIDATION_FAILED. performerId must be an active staff (as Q-0055). Totals are recomputed like bills.updateLine; no audit (none listed).
+
 ## Q-0045 · P-02 legal documents: content files missing and outside allowed paths
 - Status: open (T-0317 blocked)
 - Task: T-0317 · Asked by: agent (claude) · Date: 2026-10-02
