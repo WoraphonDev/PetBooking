@@ -561,6 +561,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
 
+## Q-0050 · T-0073: Recharts lockfile exceeds the small-PR budget
+- Status: answered (user approved size exception in chat, 2026-10-04)
+- Task: T-0073 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: the card explicitly names Recharts; installing it changes package/lockfile by 303 lines, before approximately 123 lines of chart components/tests.
+- Proposed decision: approve a size exception for this card; alternatively split dependency installation into a separately authorized card.
+- Answer (2026-10-04): user approved the approximately 437-line exception, including 302 generated dependency lockfile lines. Publish this single card with its named dependency.
+
 ## Q-0079 · T-0311: upcoming queue is absent from DashboardToday
 - Status: answered (user approved in chat, 2026-10-03)
 - Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
