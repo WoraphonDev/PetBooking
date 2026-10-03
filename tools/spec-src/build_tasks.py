@@ -593,7 +593,7 @@ for s in SCR:
             steps.append("เปิด entry ของหน้าจอนี้ใน shell-console/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว (Q-0048)")
         if not suf and s["id"] == "C-01":
             allowed.append("apps/web/public/sw.js")
-            steps.insert(1, "ขอบเขตรอบนี้: คิวถัดไปแยกเป็นงานต่อยอดหลังขยาย DashboardToday (Q-0076); refresh จาก web push ผ่าน service worker (Q-0078)")
+            steps.insert(1, "ขอบเขตรอบนี้: คิวถัดไปแยกเป็นงานต่อยอดหลังขยาย DashboardToday (Q-0079); refresh จาก web push ผ่าน service worker (Q-0081)")
         if s["app"] == "admin":
             allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
             if s["id"] == "AD-01":
