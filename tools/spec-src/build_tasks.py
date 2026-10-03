@@ -581,8 +581,8 @@ for s in SCR:
         size = "L" if n_fields + 2 * len(s["actions"]) > 30 else ("M" if n_fields + 2 * len(s["actions"]) > 12 else "S")
         slug = s["id"].lower()
         allowed = page_files(s) + [f"apps/web/src/components/{slug}/**", f"apps/web/src/i18n/messages/th/{s['id']}.json", f"apps/web/test/screens/{slug}.test.tsx"]
-        # User-approved Q-0048 follow-up for the five selected console screens.
-        enable_menu = not suf and s["id"] in {"C-43", "C-40", "C-08", "C-45", "C-19"}
+        # User-approved Q-0048 follow-up for the selected console screens.
+        enable_menu = not suf and s["id"] in {"C-43", "C-40", "C-08", "C-45", "C-19", "C-01", "C-22", "C-24", "C-26"}
         if enable_menu:
             allowed.append(f"apps/web/src/components/shell-console/navigation/{s['id']}.ts")
         steps = [f"หน้าจอ {s['id']} {s['title']}: {s['purpose']}",
@@ -591,6 +591,11 @@ for s in SCR:
                  "component test: render ด้วย mock API (msw หรือ mock ของ api.ts) — ตรวจว่าทุกป้ายฟิลด์ในตาราง 06 ปรากฏ และปุ่มเรียก endpoint ที่ถูกต้อง"]
         if enable_menu:
             steps.append("เปิด entry ของหน้าจอนี้ใน shell-console/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว (Q-0048)")
+        if not suf and s["id"] == "C-01":
+            allowed.append("apps/web/public/sw.js")
+            steps.insert(1, "ขอบเขตรอบนี้: คิวถัดไปแยกเป็นงานต่อยอดหลังขยาย DashboardToday (Q-0079); refresh จาก web push ผ่าน service worker (Q-0081)")
+        if not suf and s["id"] == "C-22":
+            steps.insert(1, "ขอบเขตรอบนี้: สถานะโหมดประหยัดแยกเป็นงานต่อยอดหลังมี API อ่าน policy (Q-0083); คงลิงก์ตั้งค่านโยบาย")
         if s["app"] == "admin":
             allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
             if s["id"] == "AD-01":
@@ -607,6 +612,8 @@ for s in SCR:
             allowed += [contract_file(loader), service_file(loader), service_test(loader), route_file(loader), dto_file("PublicHoliday"), "apps/web/src/lib/api.ts"]
             steps.insert(1, "เพิ่ม admin.listHolidays GET และ PublicHoliday DTO; withAdmin, อ่าน public_holiday ทั้งปีเรียง date; ใช้ API client/query เดิม; โหลดสำเร็จก่อนแก้และส่งรายการครบปี")
         deps = [shell] + comps + [endpoint_task(k, ms) for k in new_eps] + ([prev] if prev else [])
+        if not suf and s["id"] == "C-01":
+            deps.append("INF-WEBPUSH")
         task(tkey, f"Screen {s['id']} {s['title']}" + (f" ({suf})" if suf else ""), ms, "ui", size, s["stories"], allowed=allowed,
              read=[f"docs/spec/06-screens.md#scr-{s['id']}"] + [f"docs/spec/05-api.md#ep-{k}" for k in new_eps] + (["docs/spec/05-api.md#dto-PublicHoliday"] if tkey == "SCR-AD-07-ext-M1" else []),
              steps=steps, done=["pnpm --filter @app/web test -- screens/" + slug] + (["pnpm --filter @app/server exec vitest run test/services/admin/listHolidays.test.ts"] if tkey == "SCR-AD-07-ext-M1" else []) + [CONF, VERIFY], deps=list(dict.fromkeys(deps)),

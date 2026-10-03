@@ -85,7 +85,7 @@ T-0075,SCR-C-08,M1,3,ui,agent,M,,Screen C-08 ลูกค้า,US-03-01 US-03-1
 T-0076,SCR-C-09,M1,4,ui,agent,L,,Screen C-09 ลูกค้า,US-03-01 US-03-08 US-03-09 US-07-05 US-10-05,T-0070 T-0026 T-0027 T-0071 T-0051 T-0053,4
 T-0077,SCR-C-10,M1,4,ui,agent,M,,Screen C-10 ฟอร์มลูกค้า,US-03-01,T-0070 T-0026 T-0071 T-0051 T-0052,5
 T-0078,SCR-C-11,M1,5,ui,agent,L,,Screen C-11 น้อง,US-03-02 US-03-03 US-03-04 US-03-05 US-03-06 US-03-07 US-03-11,T-0070 T-0073 T-0026 T-0027 T-0071 T-0053 T-0056 T-0054 T-0055 T-0038,4
-T-0079,SCR-C-26,M1,2,ui,agent,S,,Screen C-26 Audit log,US-13-07,T-0070 T-0026 T-0027 T-0065,4
+T-0079,SCR-C-26,M1,2,ui,agent,S,,Screen C-26 Audit log,US-13-07,T-0070 T-0026 T-0027 T-0065,5
 T-0080,SCR-C-30,M1,4,ui,agent,M,,Screen C-30 ข้อมูลร้าน,US-02-01,T-0070 T-0026 T-0071 T-0044,4
 T-0081,SCR-C-31,M1,4,ui,agent,M,,Screen C-31 เวลาเปิด-ปิดและวันหยุด,US-02-01 US-02-05,T-0070 T-0026 T-0027 T-0044 T-0046 T-0047,4
 T-0082,SCR-C-32,M1,5,ui,agent,S,,Screen C-32 บริการที่เปิด,US-02-02,T-0070 T-0026 T-0044 T-0045,4
@@ -217,7 +217,7 @@ T-0201,SCR-C-07,M3,3,ui,agent,M,,Screen C-07 สลิปรอตรวจ,US-0
 T-0202,SCR-C-09-ext-M3,M3,2,ui,agent,L,,Screen C-09 ลูกค้า (ext-M3),US-03-01 US-03-08 US-03-09 US-07-05 US-10-05,T-0070 T-0026 T-0027 T-0071 T-0156 T-0168 T-0076,4
 T-0203,SCR-C-11-ext-M3,M3,2,ui,agent,L,,Screen C-11 น้อง (ext-M3),US-03-02 US-03-03 US-03-04 US-03-05 US-03-06 US-03-07 US-03-11,T-0070 T-0073 T-0026 T-0027 T-0071 T-0157 T-0078,4
 T-0204,SCR-C-12,M3,3,ui,agent,S,,Screen C-12 คำขอจับคู่บัญชี LINE,US-11-01,T-0070 T-0026 T-0071 T-0158 T-0159,4
-T-0205,SCR-C-22,M3,2,ui,agent,S,,Screen C-22 ข้อความที่ไม่ได้ส่ง,US-13-06,T-0070 T-0155,4
+T-0205,SCR-C-22,M3,2,ui,agent,S,,Screen C-22 ข้อความที่ไม่ได้ส่ง,US-13-06,T-0070 T-0155,5
 T-0206,SCR-C-34,M3,3,ui,agent,S,,Screen C-34 บัญชีรับเงิน PromptPay,US-02-03 US-07-01,T-0070 T-0196 T-0044 T-0154,4
 T-0207,SCR-C-35,M3,3,ui,agent,S,,Screen C-35 LINE OA และลิงก์จอง,US-02-06 US-02-07 US-13-06,T-0070 T-0196 T-0155,4
 T-0208,SCR-L-01,M3,4,ui,agent,S,,Screen L-01 ลงทะเบียน,US-01-01 US-03-12 US-11-01 US-13-08,T-0195 T-0026 T-0071 T-0170 T-0172 T-0171,4
@@ -268,7 +268,7 @@ T-0250,SCR-C-18,M4,4,ui,agent,L,,Screen C-18 บิล (คิดเงิน),U
 T-0251,SCR-C-19,M4,3,ui,agent,S,,Screen C-19 รายการบิล,US-08-01 US-08-06,T-0070 T-0026 T-0027 T-0230 T-0229,5
 T-0252,SCR-C-20,M4,2,ui,agent,M,,Screen C-20 ใบเสร็จ (พิมพ์),US-08-05,T-0070 T-0026 T-0236,4
 T-0253,SCR-C-21,M4,3,ui,agent,S,,Screen C-21 Report card รอตรวจ,US-10-01,T-0070 T-0026 T-0071 T-0237 T-0239,4
-T-0254,SCR-C-24,M4,4,ui,agent,S,,Screen C-24 รายงานค่ามือ,US-12-03,T-0070 T-0026 T-0027 T-0240,4
+T-0254,SCR-C-24,M4,4,ui,agent,S,,Screen C-24 รายงานค่ามือ,US-12-03,T-0070 T-0026 T-0027 T-0240,5
 T-0255,SCR-C-41,M4,3,ui,agent,S,,Screen C-41 แพ็กเกจ,US-10-05,T-0070 T-0026 T-0226 T-0059,4
 T-0256,SCR-C-42,M4,3,ui,agent,S,,Screen C-42 ค่ามือ,US-09-02,T-0070 T-0026 T-0027 T-0227 T-0059 T-0048,4
 T-0257,SCR-S-02-ext-M4,M4,3,ui,agent,M,,Screen S-02 Job card (ext-M4),US-05-07 US-09-03 US-13-04,T-0130 T-0071 T-0228 T-0145,4
@@ -327,7 +327,7 @@ T-0307,API-exports-0,M6,1,api,agent,S,,API exports.csv,US-12-06,T-0007 T-0035,4
 T-0308,API-admin-5,M6,1,api,agent,S,,API admin.analytics,US-13-12,T-0007,5
 T-0309,JOB-owner_daily_summary,M6,1,job,agent,M,,Job handler owner_daily_summary,US-12-05,T-0036 T-0010,2
 T-0310,NTF-owner-M6-0,M6,1,notify,agent,M,,"Notification templates (owner, M6): daily_summary",US-12-05,T-0010 T-0091 T-0011,2
-T-0311,SCR-C-01,M6,2,ui,agent,M,,Screen C-01 วันนี้ (Dashboard),US-12-01,T-0070 T-0026 T-0304,4
+T-0311,SCR-C-01,M6,2,ui,agent,M,,Screen C-01 วันนี้ (Dashboard),US-12-01,T-0070 T-0026 T-0304 T-0091,6
 T-0312,SCR-C-23,M6,2,ui,agent,S,,Screen C-23 รายงานยอดขาย,US-12-02 US-12-06,T-0070 T-0073 T-0026 T-0027 T-0305 T-0307,4
 T-0313,SCR-C-24-ext-M6,M6,2,ui,agent,S,,Screen C-24 รายงานค่ามือ (ext-M6),US-12-03,T-0070 T-0026 T-0027 T-0307 T-0254,4
 T-0314,SCR-C-25,M6,2,ui,agent,S,,Screen C-25 Occupancy,US-12-04,T-0070 T-0073 T-0026 T-0027 T-0306,4

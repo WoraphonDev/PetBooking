@@ -530,7 +530,41 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
 
 ## Q-0050 · T-0073: Recharts lockfile exceeds the small-PR budget
-- Status: open (awaiting user answer)
+- Status: answered (user approved size exception in chat, 2026-10-04)
 - Task: T-0073 · Asked by: agent (codex) · Date: 2026-10-03
 - Evidence: the card explicitly names Recharts; installing it changes package/lockfile by 303 lines, before approximately 123 lines of chart components/tests.
-- Proposed decision: approve a size exception for this card; alternatively split dependency installation into a separately authorized card. Implementation is preserved and publication awaits the answer, as AGENTS.md rule 8 requires.
+- Proposed decision: approve a size exception for this card; alternatively split dependency installation into a separately authorized card.
+- Answer (2026-10-04): user approved the approximately 437-line exception, including 302 generated dependency lockfile lines. Publish this single card with its named dependency.
+
+## Q-0079 · T-0311: upcoming queue is absent from DashboardToday
+- Status: answered (user approved in chat, 2026-10-03)
+- Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 06#scr-C-01 requires upcoming time/pet/temperament/groomer/status; 05#dto-DashboardToday and the merged contract/service have no upcoming queue fields.
+- Question: defer the upcoming queue to a follow-up after the API is specified, or expand the spec/API before implementing this section? No response fields are invented.
+
+## Q-0080 · New console screen menu scope
+- Status: answered (user approved in chat, 2026-10-03)
+- Tasks: T-0311, T-0079, T-0205, T-0254 · Asked by: agent (codex) · Date: 2026-10-03
+- Question: approve the same Q-0048 scope expansion for navigation/C-01.ts, C-26.ts, C-22.ts and C-24.ts? These files are absent from each card's allowed_paths. Scope changes must be generated in a separate spec-change PR, as in #148.
+
+## Q-0081 · T-0311: service worker does not relay push to the dashboard
+- Status: answered (user approved in chat, 2026-10-03)
+- Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 06#scr-C-01 requires refreshing on web push; apps/web/public/sw.js currently only shows notifications and opens their URL on click.
+- Question: approve extending scope to relay received push events to existing client windows, or defer push refresh to a follow-up? Polling every 60 seconds proceeds within the original card scope.
+
+- Answer (2026-10-03): user approved the proposed choices: defer the absent queue to a specified API follow-up, expand the selected menu scope and relay web push. Claude has merged T-0079 in #162 and T-0254 in #163. Their completed C-26/C-24 pages receive the approved menu scope and enabled entries here; Codex does not redo those cards. T-0311 depends on the already-merged T-0091 so its sw.js follow-up is ordered after the original owner.
+
+## Q-0082 · T-0311: shell test assumes C-01 stays disabled
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: console-shell.test.tsx asserts C-01 is disabled, conflicting with the approved implemented menu. The card web suite reports 236 passed and that one failed assertion.
+- Proposed decision: use explicit enabled C-01 and disabled C-02 fixtures, retain disabled-menu assertions, and verify the dashboard link/current-page behavior. Approve the shared test file in the separate scope PR; no business assertions are removed.
+
+## Q-0083 · T-0205: economy mode has no merged read API
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0205 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 06#scr-C-22 requires branch_policy.economy_mode, but the LineStatus contract lacks it and no merged read policy endpoint supplies it.
+- Question: implement quota/list/copy first and defer economy-mode status until the read API is specified, or expand the spec/API first? No status or response field is invented.
+
+- Answer (2026-10-04): user approved the explicit shared menu fixtures and dashboard current-page coverage (Q-0082), and deferred economy-mode status until the read API exists while retaining quota/list/copy and the policy settings link (Q-0083).

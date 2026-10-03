@@ -364,7 +364,7 @@
 | [T-0308](T-0308.md) | 1 | api | S |  | API admin.analytics | T-0007 |
 | [T-0309](T-0309.md) | 1 | job | M |  | Job handler owner_daily_summary | T-0036 T-0010 |
 | [T-0310](T-0310.md) | 1 | notify | M |  | Notification templates (owner, M6): daily_summary | T-0010 T-0091 T-0011 |
-| [T-0311](T-0311.md) | 2 | ui | M |  | Screen C-01 วันนี้ (Dashboard) | T-0070 T-0026 T-0304 |
+| [T-0311](T-0311.md) | 2 | ui | M |  | Screen C-01 วันนี้ (Dashboard) | T-0070 T-0026 T-0304 T-0091 |
 | [T-0312](T-0312.md) | 2 | ui | S |  | Screen C-23 รายงานยอดขาย | T-0070 T-0073 T-0026 T-0027 T-0305 T-0307 |
 | [T-0313](T-0313.md) | 2 | ui | S |  | Screen C-24 รายงานค่ามือ (ext-M6) | T-0070 T-0026 T-0027 T-0307 T-0254 |
 | [T-0314](T-0314.md) | 2 | ui | S |  | Screen C-25 Occupancy | T-0070 T-0073 T-0026 T-0027 T-0306 |
