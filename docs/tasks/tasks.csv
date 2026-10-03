@@ -15,7 +15,7 @@ T-0008,DOM-R-18,M0,2,domain,agent,S,,Rule R-18 โควตาข้อควา
 T-0009,DOM-R-19,M0,2,domain,agent,S,,Rule R-19 เลือกช่องทางส่งข้อความ,US-09-04 US-13-05 US-13-06,H-01,4
 T-0010,INF-NOTIFY,M0,4,infra,agent,L,,Notification outbox + dispatcher + stub templates ทุก key,US-13-05 US-13-06,T-0004 T-0008 T-0009,2
 T-0011,INF-EMAIL,M0,5,infra,agent,S,,Email adapter (SMTP/nodemailer) + templates invite/reset,US-01-02 US-01-04,T-0010 H-02,4
-T-0320,INF-NOTIFY-RENDER,M0,6,infra,agent,M,,Template render shape: email subject + push url (Q-0060),US-01-02 US-01-04 US-13-05,T-0010 T-0011,13
+T-0320,INF-NOTIFY-RENDER,M0,6,infra,agent,M,,Template render shape: email subject + push url (Q-0060),US-01-02 US-01-04 US-13-05,T-0010 T-0011,21
 T-0012,DOM-R-20,M0,2,domain,agent,M,,Rule R-20 เวลาและวันที่ท้องถิ่น,US-13-03,H-01,4
 T-0013,DOM-R-31,M0,3,domain,agent,M,,Rule R-31 รูปแบบการแสดงผลไทย (เงิน วันที่ เวลา น้ำหนัก),US-13-03,H-01 T-0012,4
 T-0014,DOM-R-22,M0,2,domain,agent,M,,Rule R-22 เบอร์โทร: normalize และแสดงผล,US-03-01 US-03-10 US-11-01,H-01,4
