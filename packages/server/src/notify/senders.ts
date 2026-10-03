@@ -10,11 +10,12 @@ export type LineSender = {
 export type WebPushSubscriptionTarget = { id: string; endpoint: string; p256dh: string; auth: string };
 export type WebPushSender = {
   /** `gone` = the push service answered 404/410 → the subscription gets `disabled_at` */
-  send(input: { subscription: WebPushSubscriptionTarget; text: string }): Promise<{ ok: true } | { gone: true }>;
+  send(input: { subscription: WebPushSubscriptionTarget; text: string; url?: string }): Promise<{ ok: true } | { gone: true }>;
 };
 
 export type EmailSender = {
-  send(input: { to: string; text: string }): Promise<void>;
+  /** subject: the template's email subject (Q-0060); without one the adapter uses the first line of text */
+  send(input: { to: string; subject?: string; text: string }): Promise<void>;
 };
 
 export type NotifyDeps = { line: LineSender; webPush: WebPushSender; email: EmailSender };

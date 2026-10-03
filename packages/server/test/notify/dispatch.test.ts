@@ -16,7 +16,7 @@ beforeAll(async () => {
 });
 afterAll(() => env.close());
 
-type Calls = { line: { lineUserId: string; text: string }[]; webPush: string[]; email: { to: string; text: string }[] };
+type Calls = { line: { lineUserId: string; text: string }[]; webPush: string[]; email: { to: string; subject?: string; text: string }[] };
 function fakes(opts: { failLine?: boolean; goneEndpoints?: string[] } = {}): { deps: NotifyDeps; calls: Calls } {
   const calls: Calls = { line: [], webPush: [], email: [] };
   return {
@@ -226,7 +226,11 @@ describe("staff (Web Push / email)", () => {
     await dispatch(deps);
     expect(await rowOf(pushOnly)).toMatchObject({ status: "skipped", skipReason: "no_recipient" });
     expect(await rowOf(withEmail)).toMatchObject({ status: "sent", channel: "email" });
-    expect(calls.email).toContainEqual({ to: `owner@n${n}.test`, text: "ทีมงานเข้าดูข้อมูลร้านเพื่อช่วยเหลือ: ตรวจบั๊ก" });
+    expect(calls.email).toContainEqual({
+      to: `owner@n${n}.test`,
+      subject: "ทีมงานเข้าดูข้อมูลร้านของคุณ",
+      text: "ทีมงานเข้าดูข้อมูลร้านเพื่อช่วยเหลือ: ตรวจบั๊ก",
+    });
   });
 
   it("email-only templates go to the mailbox even with devices; no email → no_recipient", async () => {
