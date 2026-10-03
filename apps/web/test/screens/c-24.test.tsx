@@ -16,7 +16,28 @@ const mock = vi.hoisted(() => ({
         jobs: 12,
         baseSatang: 612_345,
         amountSatang: 61_234,
-        entries: ["aaaaaaaa-1111-4111-8111-111111111111", "bbbbbbbb-1111-4111-8111-111111111111"],
+        entries: [
+          {
+            id: "aaaaaaaa-1111-4111-8111-111111111111",
+            at: "2026-10-04T17:30:00.000Z",
+            sign: 1,
+            receiptNo: "R69-00001",
+            serviceName: "อาบน้ำ",
+            baseSatang: 50_000,
+            ruleLabel: "10%",
+            amountSatang: 5_000,
+          },
+          {
+            id: "bbbbbbbb-1111-4111-8111-111111111111",
+            at: "2026-10-06T03:00:00.000Z",
+            sign: -1,
+            receiptNo: null,
+            serviceName: "ตัดขน",
+            baseSatang: 20_000,
+            ruleLabel: null,
+            amountSatang: 2_000,
+          },
+        ],
       },
     ],
   } as ReportsCommissionsResponse,
@@ -27,6 +48,7 @@ const mock = vi.hoisted(() => ({
   replace: vi.fn(),
 }));
 vi.mock("next-intl", () => ({
+  useTimeZone: () => "Asia/Bangkok",
   useTranslations: (namespace: string) => (key: string, values?: Record<string, unknown>) => {
     const text = String((namespace === "common" ? common : messages)[key as never]);
     return Object.entries(values ?? {}).reduce((s, [k, v]) => s.replace(`{${k}}`, String(v)), text);
@@ -64,7 +86,11 @@ it("shows staff name, job count, base money and bold commission per row with exp
   expect(html).toContain("<strong>฿612.34</strong>");
   expect(html).toContain("<details>");
   expect(html).toContain("2 รายการ");
-  expect(html).toContain("aaaaaaaa-1111-4111-8111-111111111111");
+  for (const key of ["entryDate", "entryReceipt", "entryService", "entryBase", "entryRule", "entryAmount"] as const)
+    expect(html).toContain(messages[key]);
+  // 17:30Z on 4 Oct is 5 Oct in Bangkok; a reversal shows negative money and the reversed marker
+  for (const text of ["5 ต.ค. 2569", "R69-00001", "อาบน้ำ", "฿500", "10%", "฿50", "6 ต.ค. 2569", "ตัดขน", "-฿200", "-฿20", messages.reversed])
+    expect(html).toContain(text);
 });
 
 it("loads reports.commissions for the URL range and exports commissions.csv for the same range", () => {

@@ -7,6 +7,7 @@ import type { RequestContext } from "../../context.ts";
 import { getDb } from "../../db.ts";
 import { AppError } from "../../errors.ts";
 import { tenantDb } from "../../repo/tenant.ts";
+import { entryEvents } from "../reports/commissions.ts";
 
 /** The current staff user's commissions in this branch for the local days from..to (Q-0030: earned +, reversed −). */
 export async function staffMeCommissions(ctx: RequestContext, input: StaffMeCommissionsRequest): Promise<StaffMeCommissionsResponse> {
@@ -31,7 +32,8 @@ export async function staffMeCommissions(ctx: RequestContext, input: StaffMeComm
   )) as (typeof commissionEntry.$inferSelect)[];
   if (entries.length === 0) return { from: input.from, to: input.to, rows: [] };
 
-  const row = { jobs: 0, baseSatang: 0, amountSatang: 0, entries: [] as string[] };
+  const events = await entryEvents(ctx, getDb(), entries, start, end);
+  const row = { jobs: 0, baseSatang: 0, amountSatang: 0, entries: [] as StaffMeCommissionsResponse["rows"][number]["entries"] };
   for (const e of [...entries].sort((a, b) => a.earnedAt.getTime() - b.earnedAt.getTime() || a.id.localeCompare(b.id))) {
     const earned = e.earnedAt >= start && e.earnedAt < end;
     const reversed = e.status === "reversed" && e.reversedAt !== null && e.reversedAt >= start && e.reversedAt < end;
@@ -39,7 +41,7 @@ export async function staffMeCommissions(ctx: RequestContext, input: StaffMeComm
     row.jobs += sign;
     row.baseSatang += sign * e.baseSatang;
     row.amountSatang += sign * e.amountSatang;
-    row.entries.push(e.id);
+    row.entries.push(...(events.get(e.id) ?? []));
   }
   const [me] = (await db.select(staffUser, eq(staffUser.id, meId))) as (typeof staffUser.$inferSelect)[];
   return { from: input.from, to: input.to, rows: [{ staffUserId: meId, staffName: me?.displayName ?? "", ...row }] };

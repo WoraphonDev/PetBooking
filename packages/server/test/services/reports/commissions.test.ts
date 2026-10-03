@@ -1,11 +1,14 @@
 import { ReportsCommissionsQuery, ReportsCommissionsResponse } from "@app/contracts/endpoints/reports.commissions";
-import { bill, billLine, branch, commissionEntry, staffUser } from "@app/db/schema";
+import { bill, billLine, branch, commissionEntry, commissionRule, staffUser } from "@app/db/schema";
 import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, beforeEach, expect, it, vi } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { resetRateLimits, withStaff } from "../../../src/http.ts";
 import { reportsCommissions } from "../../../src/services/reports/commissions.ts";
 import { customerCtx, otherOrg, type SeedOrg, setupTestDb, staffCtx, type TestEnv } from "../../helpers/setup.ts";
+
+/** entries as their ids (Q-0077 items carry details; these tests check which events are counted) */
+const asIds = <R extends { entries: { id: string }[] }>(rows: R[]) => rows.map((r) => ({ ...r, entries: r.entries.map((e) => e.id) }));
 
 let env: TestEnv;
 const GET = withStaff("reports.commissions", { query: ReportsCommissionsQuery }, reportsCommissions);
@@ -86,7 +89,8 @@ it("groups every staff member's entries with every CommissionReport field, order
   await entry(env.base, f, "2026-10-31T17:00:00.000Z", 9999, 9999); // 2026-11-01 Bangkok
   const response = await get(october);
   expect(response.status).toBe(200);
-  expect(ReportsCommissionsResponse.parse(await response.json())).toEqual({
+  const parsed = ReportsCommissionsResponse.parse(await response.json());
+  expect({ ...parsed, rows: asIds(parsed.rows) }).toEqual({
     from: "2026-10-01",
     to: "2026-10-31",
     rows: [
@@ -102,11 +106,18 @@ it("counts reversals in the period they happen: earned +, reversed −", async (
   const sameMonth = await entry(env.base, s, "2026-10-06T03:00:00.000Z", 2000, 20000, "2026-10-07T03:00:00.000Z");
   const lateVoid = await entry(env.base, s, "2026-09-20T03:00:00.000Z", 3000, 30000, "2026-10-08T03:00:00.000Z");
   const oct = ReportsCommissionsResponse.parse(await (await get(october)).json());
-  expect(oct.rows).toEqual([
-    { staffUserId: s, staffName: "ข้าวหอม", jobs: 0, baseSatang: -20000, amountSatang: -2000, entries: [lateVoid, kept, sameMonth] },
+  expect(asIds(oct.rows)).toEqual([
+    {
+      staffUserId: s,
+      staffName: "ข้าวหอม",
+      jobs: 0,
+      baseSatang: -20000,
+      amountSatang: -2000,
+      entries: [lateVoid, kept, sameMonth, sameMonth],
+    },
   ]);
   const sep = ReportsCommissionsResponse.parse(await (await get("?from=2026-09-01&to=2026-09-30")).json());
-  expect(sep.rows[0]).toMatchObject({ jobs: 1, baseSatang: 30000, amountSatang: 3000, entries: [lateVoid] });
+  expect(asIds(sep.rows)[0]).toMatchObject({ jobs: 1, baseSatang: 30000, amountSatang: 3000, entries: [lateVoid] });
 });
 
 it("returns no rows for an empty period and uses the branch timezone", async () => {
@@ -115,7 +126,7 @@ it("returns no rows for an empty period and uses the branch timezone", async () 
   const id = await entry(env.base, env.base.staff.staff, "2026-10-01T03:00:00.000Z", 1000, 10000); // 2026-09-30 23:00 New York
   const ctx = staffCtx(env.base, "owner");
   expect((await reportsCommissions(ctx, { from: "2026-10-01", to: "2026-10-01" })).rows).toEqual([]);
-  expect((await reportsCommissions(ctx, { from: "2026-09-30", to: "2026-09-30" })).rows[0]?.entries).toEqual([id]);
+  expect((await reportsCommissions(ctx, { from: "2026-09-30", to: "2026-09-30" })).rows[0]?.entries.map((e) => e.id)).toEqual([id]);
   await env.db.update(branch).set({ timezone: "Asia/Bangkok" }).where(eq(branch.id, env.base.branchId));
 });
 
@@ -158,4 +169,31 @@ it("returns NOT_FOUND for another organization's branch and never includes its e
     });
   }
   expect((await reportsCommissions(staffCtx(env.base, "owner"), { from: "2026-10-01", to: "2026-10-31" })).rows).toEqual([]);
+});
+
+it("details each counted event with time, sign, receipt, service, base, rule and amount (Q-0077)", async () => {
+  const s = env.base.staff.staff;
+  const id = await entry(env.base, s, "2026-10-06T03:00:00.000Z", 2000, 20000, "2026-10-07T03:00:00.000Z");
+  const [rule] = await env.db
+    .insert(commissionRule)
+    .values({ organizationId: env.base.orgId, branchId: env.base.branchId, type: "percent", value: 1000 })
+    .returning();
+  const [row] = await env.db.update(commissionEntry).set({ ruleId: rule?.id }).where(eq(commissionEntry.id, id)).returning();
+  await env.db
+    .update(bill)
+    .set({ receiptNo: "R69-00007" })
+    .where(eq(bill.id, row?.billId ?? ""));
+  const item = { id, receiptNo: "R69-00007", serviceName: "อาบน้ำ", baseSatang: 20000, ruleLabel: "10%", amountSatang: 2000 };
+  expect((await reportsCommissions(staffCtx(env.base, "owner"), { from: "2026-10-01", to: "2026-10-31" })).rows[0]?.entries).toEqual([
+    { ...item, at: "2026-10-06T03:00:00.000Z", sign: 1 },
+    { ...item, at: "2026-10-07T03:00:00.000Z", sign: -1 },
+  ]);
+  await env.db
+    .update(commissionRule)
+    .set({ type: "fixed", value: 5000 })
+    .where(eq(commissionRule.id, rule?.id ?? ""));
+  await env.db.update(commissionEntry).set({ status: "earned", reversedAt: null }).where(eq(commissionEntry.id, id));
+  expect((await reportsCommissions(staffCtx(env.base, "owner"), { from: "2026-10-01", to: "2026-10-31" })).rows[0]?.entries).toEqual([
+    { ...item, ruleLabel: "฿50", at: "2026-10-06T03:00:00.000Z", sign: 1 },
+  ]);
 });
