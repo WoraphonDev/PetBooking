@@ -398,6 +398,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bills.list says `date` is "closed_at หรือ opened_at ตามสถานะ" without the mapping or the order; 05#ep-bills.updateLine names DISCOUNT_LIMIT_EXCEEDED / REASON_REQUIRED without thresholds, limits quantity to quick_item without an error, and says "delete+insert" although package_redemption references bill_line.id.
 - Answer (2026-10-03): user chose in chat. bills.list: a paid bill is dated by closed_at, open/void by opened_at (also without a status filter); `date` = that branch-local day; newest first (ms precision) with the 05 §0 keyset cursor and limit; customerName = owner_profile.first_name (null for walk-in). bills.updateLine: discount > 0 needs a reason ≥ 3 chars (REASON_REQUIRED); discount ≤ qty × unit (LINE_DISCOUNT_TOO_LARGE); front_desk: all discounts on the bill (lines + bill discount) ≤ 20% of the gross Σ qty × unit (DISCOUNT_LIMIT_EXCEEDED; owner unlimited); quantity on a non-quick_item line or a performer that is not an active staff of the org → VALIDATION_FAILED; a subtotal below the bill discount → BILL_DISCOUNT_TOO_LARGE; audit `bill.discount` only when the discount/reason changes; the row is updated in place.
 
+## Q-0067 · T-0243 next_groom_reminder: bookUrl, recipient and visit branch
+- Status: open (T-0243 ships these choices)
+- Task: T-0243 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §1 `customer.next_groom_reminder` needs `{bookUrl}` and a `dueDate` format, and the job payload `{petId, organizationId}` names neither the customer nor the branch (timezone, branch_policy.next_groom_default_days, booking slug).
+- Evidence: 07 §1/§2 next_groom rows, R-17, Q-0040 (LIFF links = APP_BASE_URL + /liff/{booking_slug}/…), 06 L-04 `/liff/[branchSlug]/book/grooming`.
+- Proposed decision (implemented): branch and customer come from the pet's latest done/picked_up appointment in the organization (its branch, its booking's customer); `bookUrl = APP_BASE_URL + /liff/{booking_slug}/book/grooming` (L-04); `dueDate` = formatThaiDate; future appointment = one starting after now that is not cancelled/no_show.
+
 ## Q-0045 · P-02 legal documents: content files missing and outside allowed paths
 - Status: open (T-0317 blocked)
 - Task: T-0317 · Asked by: agent (claude) · Date: 2026-10-02
