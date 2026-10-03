@@ -13,9 +13,11 @@ const payload = {
   tomorrowCount: 9,
 };
 
-// Body text only: the email subject belongs to T-0320 (Q-0060).
 it("matches the 07 text with R-31 date/money as the job formats them", () => {
   expect(render(payload).text).toBe(`สรุป ${payload.date}: กรูม 12 ตัว, พัก 5, ยอดขาย ${payload.salesTotal}, no-show 1 | พรุ่งนี้ 9 นัด`);
+});
+it("uses the Q-0060 subject with the formatted date", () => {
+  expect(render(payload).subject).toBe(`สรุปประจำวัน ${payload.date}`);
 });
 it("renders zero counts as 0, not blank", () => {
   const zero = { ...payload, groomCount: 0, staysInHouse: 0, salesTotal: formatTHB({ satang: 0 }), noShows: 0, tomorrowCount: 0 };
