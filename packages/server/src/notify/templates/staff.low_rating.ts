@@ -1,9 +1,6 @@
-// staff.low_rating — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.low_rating: Web Push to owner for a rating of 3 stars or less.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "ลูกค้าให้ {rating} ดาว ({petName}): {feedback}";
 
 export function render(payload: NotificationPayloads["staff.low_rating"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `ลูกค้าให้ ${payload.rating ?? ""} ดาว (${payload.petName ?? ""}): ${payload.feedback ?? ""}` };
 }
