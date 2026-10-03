@@ -607,3 +607,9 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: implement quota/list/copy first and defer economy-mode status until the read API is specified, or expand the spec/API first? No status or response field is invented.
 
 - Answer (2026-10-04): user approved the explicit shared menu fixtures and dashboard current-page coverage (Q-0082), and deferred economy-mode status until the read API exists while retaining quota/list/copy and the policy settings link (Q-0083).
+
+## Q-0089 · T-0314: occupancy menu enablement is outside card scope
+- Status: open
+- Task: T-0314 · Asked by: agent (codex) · Date: 2026-10-04
+- Evidence: `apps/web/src/components/shell-console/navigation/C-25.ts` has `implemented: false` and assigns enablement to the screen task (Q-0048), but T-0314 does not allow this file. Q-0080 authorized other screens, not C-25.
+- Question: authorize `navigation/C-25.ts` in a separate spec-change PR, or defer menu enablement to a follow-up? The occupancy page proceeds at its specified URL; the menu file remains untouched pending approval.
