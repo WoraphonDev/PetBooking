@@ -81,7 +81,7 @@ T-0072,UI-C-SLOTS,M1,1,ui,agent,M,,Shared component: SlotPicker: แถบวั
 T-0073,UI-C-CHART,M1,1,ui,agent,M,,Shared component: BarChart/LineChart เบา ๆ (recharts) สำหรับรายงาน,US-13-03,T-0015,4
 T-0074,SCR-A-04,M1,2,ui,agent,S,,Screen A-04 รับคำเชิญเข้าร้าน,US-01-04,T-0015 T-0042,4
 T-0317,SCR-P-02,M1,1,ui,agent,S,,Screen P-02 เอกสารกฎหมาย,US-13-08,T-0015,4
-T-0075,SCR-C-08,M1,3,ui,agent,M,,Screen C-08 ลูกค้า,US-03-01 US-03-10,T-0070 T-0026 T-0027 T-0051,4
+T-0075,SCR-C-08,M1,3,ui,agent,M,,Screen C-08 ลูกค้า,US-03-01 US-03-10,T-0070 T-0026 T-0027 T-0051,5
 T-0076,SCR-C-09,M1,4,ui,agent,L,,Screen C-09 ลูกค้า,US-03-01 US-03-08 US-03-09 US-07-05 US-10-05,T-0070 T-0026 T-0027 T-0071 T-0051 T-0053,4
 T-0077,SCR-C-10,M1,4,ui,agent,M,,Screen C-10 ฟอร์มลูกค้า,US-03-01,T-0070 T-0026 T-0071 T-0051 T-0052,5
 T-0078,SCR-C-11,M1,5,ui,agent,L,,Screen C-11 น้อง,US-03-02 US-03-03 US-03-04 US-03-05 US-03-06 US-03-07 US-03-11,T-0070 T-0073 T-0026 T-0027 T-0071 T-0053 T-0056 T-0054 T-0055 T-0038,4
@@ -94,7 +94,7 @@ T-0084,SCR-C-36,M1,4,ui,agent,M,,Screen C-36 พนักงานและต�
 T-0085,SCR-C-37,M1,5,ui,agent,M,,Screen C-37 บริการและราคา,US-04-01 US-04-02 US-04-03 US-04-04 US-04-05 US-06-06,T-0070 T-0026 T-0027 T-0071 T-0059 T-0057 T-0060 T-0061,4
 T-0086,SCR-C-38,M1,3,ui,agent,S,,Screen C-38 ขนาดตามน้ำหนัก,US-04-02,T-0070 T-0057 T-0058,4
 T-0087,SCR-C-44,M1,5,ui,agent,S,,Screen C-44 นำเข้าข้อมูล CSV,US-02-08,T-0070 T-0027 T-0071 T-0063 T-0062 T-0064,4
-T-0088,SCR-C-45,M1,2,ui,agent,M,,Screen C-45 บัญชีของฉัน,US-01-03 US-01-05 US-13-05,T-0070 T-0020 T-0043,4
+T-0088,SCR-C-45,M1,2,ui,agent,M,,Screen C-45 บัญชีของฉัน,US-01-03 US-01-05 US-13-05,T-0070 T-0020 T-0043,5
 T-0089,SCR-AD-05,M1,3,ui,agent,S,,Screen AD-05 คำขอ PDPA,US-13-08,T-0025 T-0026 T-0027 T-0066 T-0067,5
 T-0090,SCR-AD-07-ext-M1,M1,2,ui,agent,S,,Screen AD-07 วันหยุดราชการ (ext-M1),US-13-03,T-0025 T-0026 T-0066 T-0033,11
 H-06,H-GATE-M1,M1,6,human,human,-,,Milestone review M1: demo + ตรวจคุณภาพ,,T-0035 T-0010 T-0036 T-0038 T-0011 T-0015 T-0016 T-0070 T-0039 T-0026 T-0027 T-0071 T-0040 T-0041 T-0014 T-0037 T-0034 T-0042 T-0043 T-0044 T-0045 T-0046 T-0047 T-0048 T-0049 T-0050 T-0051 T-0052 T-0053 T-0054 T-0055 T-0056 T-0057 T-0058 T-0059 T-0060 T-0061 T-0062 T-0063 T-0064 T-0065 T-0066 T-0067 T-0068 T-0069 T-0074 T-0317 T-0075 T-0076 T-0077 T-0078 T-0079 T-0080 T-0081 T-0082 T-0083 T-0084 T-0085 T-0086 T-0087 T-0088 T-0089 T-0090 H-04,0
@@ -152,7 +152,7 @@ T-0137,SCR-C-05,M2,4,ui,agent,L,,Screen C-05 รายละเอียดใ�
 T-0138,SCR-C-06,M2,4,ui,agent,M,,Screen C-06 เช็คอินกรูม,US-05-06,T-0070 T-0131 T-0120 T-0118 T-0117,3
 T-0139,SCR-C-36-ext-M2,M2,2,ui,agent,M,,Screen C-36 พนักงานและตารางงาน (ext-M2),US-01-04 US-09-01,T-0070 T-0026 T-0027 T-0071 T-0108 T-0107 T-0084,4
 T-0140,SCR-C-37-ext-M2,M2,2,ui,agent,M,,Screen C-37 บริการและราคา (ext-M2),US-04-01 US-04-02 US-04-03 US-04-04 US-04-05 US-06-06,T-0070 T-0026 T-0027 T-0071 T-0109 T-0085,4
-T-0141,SCR-C-43,M2,2,ui,agent,S,,Screen C-43 โต๊ะกรูม,US-05-01,T-0070 T-0106,4
+T-0141,SCR-C-43,M2,2,ui,agent,S,,Screen C-43 โต๊ะกรูม,US-05-01,T-0070 T-0106,5
 T-0142,SCR-C-45-ext-M2,M2,2,ui,agent,M,,Screen C-45 บัญชีของฉัน (ext-M2),US-01-03 US-01-05 US-13-05,T-0070 T-0105 T-0088,4
 T-0143,SCR-C-46,M2,2,ui,agent,S,,Screen C-46 แจ้งปัญหา / ขอ feature,US-13-13,T-0070 T-0124,3
 T-0144,SCR-S-01,M2,4,ui,agent,S,,Screen S-01 คิวของฉันวันนี้,US-09-03,T-0130 T-0071 T-0121,4
@@ -265,7 +265,7 @@ T-0247,SCR-C-02D-ext-M4,M4,3,ui,agent,L,,Screen C-02D รายละเอี�
 T-0248,SCR-C-05-ext-M4,M4,2,ui,agent,L,,Screen C-05 รายละเอียดใบจอง (ext-M4),US-05-04 US-05-08 US-07-02 US-07-03 US-07-04 US-07-05 US-07-08,T-0070 T-0026 T-0071 T-0229 T-0200,4
 T-0249,SCR-C-09-ext-M4,M4,2,ui,agent,L,,Screen C-09 ลูกค้า (ext-M4),US-03-01 US-03-08 US-03-09 US-07-05 US-10-05,T-0070 T-0026 T-0027 T-0071 T-0224 T-0225 T-0202,4
 T-0250,SCR-C-18,M4,4,ui,agent,L,,Screen C-18 บิล (คิดเงิน),US-07-01 US-08-01 US-08-02 US-08-03 US-08-04 US-10-05,T-0070 T-0026 T-0196 T-0230 T-0231 T-0232 T-0169 T-0233 T-0234 T-0235,4
-T-0251,SCR-C-19,M4,3,ui,agent,S,,Screen C-19 รายการบิล,US-08-01 US-08-06,T-0070 T-0026 T-0027 T-0230 T-0229,4
+T-0251,SCR-C-19,M4,3,ui,agent,S,,Screen C-19 รายการบิล,US-08-01 US-08-06,T-0070 T-0026 T-0027 T-0230 T-0229,5
 T-0252,SCR-C-20,M4,2,ui,agent,M,,Screen C-20 ใบเสร็จ (พิมพ์),US-08-05,T-0070 T-0026 T-0236,4
 T-0253,SCR-C-21,M4,3,ui,agent,S,,Screen C-21 Report card รอตรวจ,US-10-01,T-0070 T-0026 T-0071 T-0237 T-0239,4
 T-0254,SCR-C-24,M4,4,ui,agent,S,,Screen C-24 รายงานค่ามือ,US-12-03,T-0070 T-0026 T-0027 T-0240,4
@@ -312,7 +312,7 @@ T-0293,SCR-C-15,M5,3,ui,agent,L,,Screen C-15 การพัก,US-06-05 US-06-0
 T-0294,SCR-C-16,M5,3,ui,agent,S,,Screen C-16 งานดูแลรายวัน (มุมมองร้าน),US-06-09,T-0070 T-0026 T-0027 T-0281,4
 T-0295,SCR-C-17,M5,2,ui,agent,M,,Screen C-17 Daycare วันนี้,US-06-13,T-0070 T-0026 T-0071 T-0282 T-0165 T-0123,4
 T-0296,SCR-C-39,M5,2,ui,agent,M,,Screen C-39 ห้องพัก,US-06-01 US-06-02,T-0070 T-0026 T-0071 T-0265 T-0267 T-0057 T-0266,4
-T-0297,SCR-C-40,M5,2,ui,agent,S,,Screen C-40 Daycare,US-06-13,T-0070 T-0026 T-0268 T-0057,4
+T-0297,SCR-C-40,M5,2,ui,agent,S,,Screen C-40 Daycare,US-06-13,T-0070 T-0026 T-0268 T-0057,5
 T-0298,SCR-S-04,M5,3,ui,agent,S,,Screen S-04 งานดูแลวันนี้,US-06-09,T-0130 T-0071 T-0281,4
 T-0299,SCR-S-05,M5,3,ui,agent,S,,Screen S-05 ส่งอัปเดตน้อง,US-06-10,T-0130 T-0026 T-0071 T-0273 T-0278,4
 T-0300,SCR-L-05,M5,3,ui,agent,M,,Screen L-05 จองโรงแรม,US-11-04 US-11-06,T-0195 T-0026 T-0071 T-0173 T-0284 T-0285 T-0286,4

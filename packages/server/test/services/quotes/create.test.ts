@@ -1,14 +1,29 @@
 import { QuotesCreateRequest, QuotesCreateResponse } from "@app/contracts/endpoints/quotes.create";
-import { booking, branchPolicy, customer, groomStation, pet, ratePlan, service, servicePrice, sizeTier } from "@app/db/schema";
+import {
+  booking,
+  branchPolicy,
+  customer,
+  daycareRate,
+  daycareSessionType,
+  groomStation,
+  pet,
+  ratePlan,
+  roomRate,
+  roomType,
+  roomUnit,
+  service,
+  servicePrice,
+  sizeTier,
+} from "@app/db/schema";
 import { eq } from "drizzle-orm";
-import { afterAll, beforeAll, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { withStaff } from "../../../src/http.ts";
 import { quotesCreate } from "../../../src/services/quotes/create.ts";
 import { otherOrg, setupTestDb, staffCtx, type TestEnv } from "../../helpers/setup.ts";
 
 let env: TestEnv;
-let ids: { pet: string; service: string; addon: string; tier: string; station: string; missingPrice: string };
+let ids: { pet: string; service: string; addon: string; tier: string; station: string; missingPrice: string; plan: string };
 let foreignCustomer: string;
 const POST = withStaff("quotes.create", { body: QuotesCreateRequest }, quotesCreate);
 beforeAll(async () => {
@@ -63,6 +78,7 @@ beforeAll(async () => {
     tier: tier?.id ?? "",
     station: station?.id ?? "",
     missingPrice: noPrice?.id ?? "",
+    plan: plan?.id ?? "",
   };
   await env.db.insert(servicePrice).values([
     {
@@ -233,4 +249,155 @@ it("enforces level-two minimum deposit with policy none and rejects add-ons supp
   if (!groom) throw new Error("fixture");
   groom.serviceIds = [ids.addon];
   await expect(quotesCreate(staffCtx(env.base, "owner"), request)).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+});
+
+describe("hotel and daycare (T-0270)", () => {
+  const hd: Record<string, string> = {};
+  beforeAll(async () => {
+    await env.db.update(customer).set({ reliabilityLevel: 3 }).where(eq(customer.id, env.base.customerId));
+    await env.db.update(branchPolicy).set({ defaultDepositType: "percent" }).where(eq(branchPolicy.branchId, env.base.branchId));
+    const tenant = { organizationId: env.base.orgId, branchId: env.base.branchId };
+    const [type, unpriced] = await env.db
+      .insert(roomType)
+      .values([
+        { ...tenant, nameTh: "Standard" },
+        { ...tenant, nameTh: "Suite" },
+      ])
+      .returning();
+    const [unit] = await env.db
+      .insert(roomUnit)
+      .values({ ...tenant, roomTypeId: type?.id ?? "", code: "R1" })
+      .returning();
+    await env.db.insert(roomRate).values([
+      {
+        organizationId: env.base.orgId,
+        roomTypeId: type?.id ?? "",
+        ratePlanId: ids.plan,
+        sizeTierId: ids.tier,
+        nightlyPriceSatang: 80_000,
+      },
+      { organizationId: env.base.orgId, roomTypeId: type?.id ?? "", ratePlanId: ids.plan, sizeTierId: null, nightlyPriceSatang: 99_000 },
+    ]);
+    const [walk, groomAddon] = await env.db
+      .insert(service)
+      .values([
+        { ...tenant, nameTh: "Walk", category: "hotel_addon", scope: "hotel", isAddon: true, addonPerDay: true },
+        { ...tenant, nameTh: "Bow", category: "other", scope: "grooming", isAddon: true },
+      ])
+      .returning();
+    await env.db.insert(servicePrice).values({
+      organizationId: env.base.orgId,
+      serviceId: walk?.id ?? "",
+      ratePlanId: ids.plan,
+      sizeTierId: null,
+      coatGroup: "any",
+      priceSatang: 10_000,
+      durationMinutes: 0,
+    });
+    const [session, unpricedSession] = await env.db
+      .insert(daycareSessionType)
+      .values([
+        { ...tenant, session: "full_day", nameTh: "Day", startsAt: "09:00", endsAt: "18:00", capacity: 10 },
+        { ...tenant, session: "morning", nameTh: "Morning", startsAt: "09:00", endsAt: "12:00", capacity: 10 },
+      ])
+      .returning();
+    await env.db.insert(daycareRate).values({
+      organizationId: env.base.orgId,
+      sessionTypeId: session?.id ?? "",
+      ratePlanId: ids.plan,
+      sizeTierId: ids.tier,
+      priceSatang: 30_000,
+    });
+    Object.assign(hd, {
+      type: type?.id,
+      unpriced: unpriced?.id,
+      unit: unit?.id,
+      walk: walk?.id,
+      groomAddon: groomAddon?.id,
+      session: session?.id,
+      unpricedSession: unpricedSession?.id,
+    });
+  });
+  const request = (extra: Partial<QuotesCreateRequest> = {}) =>
+    QuotesCreateRequest.parse({
+      customerId: env.base.customerId,
+      stays: [
+        {
+          petId: ids.pet,
+          roomTypeId: hd.type,
+          roomUnitId: hd.unit,
+          checkInDate: "2026-10-06",
+          checkOutDate: "2026-10-08",
+          addonServiceIds: [hd.walk],
+          bundleGroom: {
+            serviceIds: [ids.service],
+            addonIds: [ids.addon],
+            startsAt: "2026-10-08T03:00:00.000Z",
+            groomerId: env.base.staff.staff,
+            stationId: ids.station,
+          },
+        },
+      ],
+      daycare: [{ petId: ids.pet, sessionTypeId: hd.session, visitDate: "2026-10-10" }],
+      ...extra,
+    });
+
+  it("prices nights by size tier, per-day add-ons, daycare sessions and the checkout bundle groom", async () => {
+    const result = await quotesCreate(staffCtx(env.base, "owner"), request());
+    expect(result).toEqual({
+      groom: [
+        { servicesTotalSatang: 17345, durationMinutes: 60, endsAt: "2026-10-08T04:00:00.000Z", blockedUntil: "2026-10-08T04:10:00.000Z" },
+      ],
+      stays: [{ nights: 2, roomTotalSatang: 160_000, addons: [{ quantity: 2, totalSatang: 20_000 }], addonsTotalSatang: 20_000 }],
+      daycareTotalSatang: 30_000,
+      estimatedTotalSatang: 227_345,
+      depositRequiredSatang: expect.any(Number),
+      depositReason: "policy_percent",
+      // auto_confirm_hotel defaults to false
+      requiresApproval: true,
+      policyText: "Policy",
+      // hotel (72 h) is the strictest window among grooming/hotel/daycare
+      cancelSummary: "ยกเลิกก่อนเริ่มบริการอย่างน้อย 72 ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ 75%",
+    });
+    expect(QuotesCreateResponse.parse(result)).toEqual(result);
+    expect(await env.db.select().from(booking)).toEqual([]);
+  });
+
+  it("needs approval only when a quoted module is not auto-confirmed", async () => {
+    const daycareOnly = request({ stays: [] });
+    expect(await quotesCreate(staffCtx(env.base, "owner"), daycareOnly)).toMatchObject({
+      groom: [],
+      stays: [],
+      daycareTotalSatang: 30_000,
+      estimatedTotalSatang: 30_000,
+      requiresApproval: false,
+      cancelSummary: "ยกเลิกก่อนเริ่มบริการอย่างน้อย 24 ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ 75%",
+    });
+    await env.db.update(branchPolicy).set({ autoConfirmHotel: true }).where(eq(branchPolicy.branchId, env.base.branchId));
+    expect((await quotesCreate(staffCtx(env.base, "owner"), request())).requiresApproval).toBe(false);
+    await env.db.update(branchPolicy).set({ autoConfirmHotel: false }).where(eq(branchPolicy.branchId, env.base.branchId));
+  });
+
+  it("reports PRICE_NOT_FOUND, INVALID_DATE_RANGE, NOT_FOUND and VALIDATION_FAILED for stays and daycare", async () => {
+    const ctx = staffCtx(env.base, "owner");
+    const stay = request().stays[0];
+    if (!stay) throw new Error("fixture");
+    const cases: [Partial<QuotesCreateRequest>, string][] = [
+      [{ stays: [{ ...stay, roomTypeId: hd.unpriced ?? "", roomUnitId: undefined }] }, "PRICE_NOT_FOUND"],
+      [{ stays: [], daycare: [{ petId: ids.pet, sessionTypeId: hd.unpricedSession ?? "", visitDate: "2026-10-10" }] }, "PRICE_NOT_FOUND"],
+      [{ stays: [{ ...stay, checkOutDate: "2026-10-06" }] }, "INVALID_DATE_RANGE"],
+      [{ stays: [{ ...stay, roomTypeId: crypto.randomUUID() }] }, "NOT_FOUND"],
+      [{ stays: [{ ...stay, roomUnitId: crypto.randomUUID() }] }, "NOT_FOUND"],
+      [{ stays: [{ ...stay, petId: crypto.randomUUID() }] }, "NOT_FOUND"],
+      [{ stays: [], daycare: [{ petId: ids.pet, sessionTypeId: crypto.randomUUID(), visitDate: "2026-10-10" }] }, "NOT_FOUND"],
+      [{ stays: [{ ...stay, addonServiceIds: [hd.groomAddon ?? ""] }] }, "VALIDATION_FAILED"],
+    ];
+    for (const [extra, code] of cases) await expect(quotesCreate(ctx, request(extra)), code).rejects.toMatchObject({ code });
+  });
+
+  it("answers NOT_FOUND for another organization's customer", async () => {
+    await expect(quotesCreate(staffCtx(env.base, "owner"), request({ customerId: foreignCustomer }))).rejects.toMatchObject({
+      code: "NOT_FOUND",
+    });
+  });
 });

@@ -9,7 +9,10 @@ import type { RequestContext } from "../../context.ts";
 import { getDb } from "../../db.ts";
 import { AppError } from "../../errors.ts";
 import { tenantDb } from "../../repo/tenant.ts";
-import { defaultPlanId, scopedBranch, shopPet } from "../availability/hotel.ts";
+import { defaultPlanId, scopedBranch } from "../availability/hotel.ts";
+import { customerPet, priceDaycare, priceStay } from "./create/hotel-daycare.ts";
+
+type GroomInput = Omit<QuotesCreateRequest["groom"][number], "groomerPreference">;
 
 /** Read-only estimate; catalog price snapshots are persisted by bookings.create, not quotes.create. */
 export async function quotesCreate(ctx: RequestContext, input: QuotesCreateRequest): Promise<QuotesCreateResponse> {
@@ -22,17 +25,18 @@ export async function quotesCreate(ctx: RequestContext, input: QuotesCreateReque
   const [policy] = await db.select().from(branchPolicy).where(eq(branchPolicy.branchId, b.id));
   if (!policy) throw new AppError("NOT_FOUND");
   const planId = await defaultPlanId(ctx, db, b.id);
-  const groom = [];
-  for (const item of input.groom) {
-    const subject = await shopPet(ctx, db, b.id, item.petId);
-    if (subject.row.ownerProfileId !== c.ownerProfileId) throw new AppError("NOT_FOUND");
+  const customerId = c.id;
+  const scope = { ctx, db, branchId: b.id, planId, ownerProfileId: c.ownerProfileId };
+
+  async function priceGroom(item: GroomInput, path: string) {
+    const subject = await customerPet(scope, item.petId);
     const [groomer] = await repo.select(staffUser, eq(staffUser.id, item.groomerId));
     const [station] = await repo.select(groomStation, and(eq(groomStation.id, item.stationId), eq(groomStation.branchId, b.id)));
     if (!groomer || !station) throw new AppError("NOT_FOUND");
     if (item.customerPackageId) {
       const [pack] = await repo.select(
         customerPackage,
-        and(eq(customerPackage.id, item.customerPackageId), eq(customerPackage.customerId, c.id)),
+        and(eq(customerPackage.id, item.customerPackageId), eq(customerPackage.customerId, customerId)),
       );
       if (!pack) throw new AppError("NOT_FOUND");
     }
@@ -48,7 +52,6 @@ export async function quotesCreate(ctx: RequestContext, input: QuotesCreateReque
       and(eq(service.branchId, b.id), inArray(service.id, ids)),
     )) as (typeof service.$inferSelect)[];
     if (services.length !== ids.length) throw new AppError("NOT_FOUND");
-    const fields: Record<string, string> = {};
     for (const s of services) {
       if (
         s.scope !== "grooming" ||
@@ -56,9 +59,8 @@ export async function quotesCreate(ctx: RequestContext, input: QuotesCreateReque
         (item.serviceIds.includes(s.id) && s.isAddon) ||
         (item.addonIds.includes(s.id) && !s.isAddon)
       )
-        fields[`groom.${input.groom.indexOf(item)}.serviceIds`] = "select active grooming services and add-ons";
+        throw new AppError("VALIDATION_FAILED", { fields: { [`${path}.serviceIds`]: "select active grooming services and add-ons" } });
     }
-    if (Object.keys(fields).length) throw new AppError("VALIDATION_FAILED", { fields });
     const prices = planId
       ? ((await repo.select(
           servicePrice,
@@ -75,9 +77,19 @@ export async function quotesCreate(ctx: RequestContext, input: QuotesCreateReque
       if (!price) throw new AppError("PRICE_NOT_FOUND");
       return price;
     });
-    groom.push({ startsAt: item.startsAt, items });
+    return { startsAt: item.startsAt, items };
   }
-  const quote = quoteBooking({ bufferMinutes: policy.bufferMinutes, groom });
+
+  const groom = [];
+  for (const [i, item] of input.groom.entries()) groom.push(await priceGroom(item, `groom.${i}`));
+  // Q-0070: a stay's checkout-day bundle groom is quoted as an extra groom entry after groom[]
+  for (const [i, item] of input.stays.entries())
+    if (item.bundleGroom) groom.push(await priceGroom({ ...item.bundleGroom, petId: item.petId }, `stays.${i}.bundleGroom`));
+  const stays = [];
+  for (const [i, item] of input.stays.entries()) stays.push(await priceStay(scope, item, i));
+  const daycare = [];
+  for (const item of input.daycare) daycare.push(await priceDaycare(scope, item));
+  const quote = quoteBooking({ bufferMinutes: policy.bufferMinutes, groom, stays, daycare });
   if ("error" in quote) throw new AppError(quote.error);
   const level = (c.reliabilityOverride ?? c.reliabilityLevel) as 1 | 2 | 3 | 4;
   const deposit = computeDeposit({
@@ -89,8 +101,20 @@ export async function quotesCreate(ctx: RequestContext, input: QuotesCreateReque
     ...quote,
     depositRequiredSatang: deposit.depositRequiredSatang,
     depositReason: deposit.reason,
-    requiresApproval: !policy.autoConfirmGrooming || level === 1,
+    // R-08: any quoted module without auto-confirm, or reliability 1
+    requiresApproval:
+      (groom.length > 0 && !policy.autoConfirmGrooming) ||
+      (stays.length > 0 && !policy.autoConfirmHotel) ||
+      (daycare.length > 0 && !policy.autoConfirmDaycare) ||
+      level === 1,
     policyText: policy.policyText,
-    cancelSummary: `ยกเลิกก่อนเริ่มบริการอย่างน้อย ${policy.groomingFreeCancelHours} ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ ${policy.lateCancelForfeitPercent}%`,
+    // Q-0036 wording; R-07 step 2: the strictest free-cancel window among the quoted modules
+    cancelSummary: `ยกเลิกก่อนเริ่มบริการอย่างน้อย ${Math.max(
+      ...[
+        groom.length || (!stays.length && !daycare.length) ? policy.groomingFreeCancelHours : 0,
+        stays.length ? policy.hotelFreeCancelHours : 0,
+        daycare.length ? policy.daycareFreeCancelHours : 0,
+      ],
+    )} ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ ${policy.lateCancelForfeitPercent}%`,
   };
 }

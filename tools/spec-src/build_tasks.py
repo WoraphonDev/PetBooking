@@ -581,10 +581,16 @@ for s in SCR:
         size = "L" if n_fields + 2 * len(s["actions"]) > 30 else ("M" if n_fields + 2 * len(s["actions"]) > 12 else "S")
         slug = s["id"].lower()
         allowed = page_files(s) + [f"apps/web/src/components/{slug}/**", f"apps/web/src/i18n/messages/th/{s['id']}.json", f"apps/web/test/screens/{slug}.test.tsx"]
+        # User-approved Q-0048 follow-up for the five selected console screens.
+        enable_menu = not suf and s["id"] in {"C-43", "C-40", "C-08", "C-45", "C-19"}
+        if enable_menu:
+            allowed.append(f"apps/web/src/components/shell-console/navigation/{s['id']}.ts")
         steps = [f"หน้าจอ {s['id']} {s['title']}: {s['purpose']}",
                  "สร้างทุก section/field ตามตาราง 06 ครบทุกแถว: โหมด (แสดง/กรอก/แก้), แหล่งข้อมูล table.column → ฟิลด์ใน DTO ของ endpoint ที่โหลด, UI/รูปแบบ, กติกา",
                  "ปุ่ม: แสดงตามเงื่อนไข 'แสดงเมื่อ' และทำตาม 'หลังสำเร็จ'", "ข้อความไทยใน messages/th/" + s["id"] + ".json; ป้าย enum ผ่าน enumLabel()",
                  "component test: render ด้วย mock API (msw หรือ mock ของ api.ts) — ตรวจว่าทุกป้ายฟิลด์ในตาราง 06 ปรากฏ และปุ่มเรียก endpoint ที่ถูกต้อง"]
+        if enable_menu:
+            steps.append("เปิด entry ของหน้าจอนี้ใน shell-console/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว (Q-0048)")
         if s["app"] == "admin":
             allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
             if s["id"] == "AD-01":
