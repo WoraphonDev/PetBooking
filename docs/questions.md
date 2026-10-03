@@ -467,6 +467,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
 - Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
 
+## Q-0076 · C-26 Audit log: Thai labels for actions/entities, links and the diff
+- Status: open (T-0079 ships proposed labels in C-26.json)
+- Task: T-0079 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 06#scr-C-26 asks for a "select ป้ายภาษาไทย" of `audit_log.action` and an entity link, but enum-labels.th.json has no audit action or entity type labels (R-27 lists the action codes only), 06 does not map entity types to pages, and "diff (after)" has no format. The menu entry `shell-console/navigation/C-26.ts` is outside the card's allowed paths (same follow-up as Q-0048).
+- Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
+- Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
+
 ## Q-0054 · C-20: when to show "ส่ง LINE อีกครั้ง", and choosing the paper size
 - Status: answered (implemented in T-0252); DTO follow-up open
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
