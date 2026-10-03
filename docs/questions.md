@@ -394,6 +394,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-exports.csv lists the types and the CSV format but no columns, no column for from/to, and the route `[type].csv` cannot be a Next.js dynamic segment while `withStaff` always answers JSON (`packages/server/src/http/respond.ts`, outside the card).
 - Answer (2026-10-02): user chose in chat. Each type exports its 02 table (customers→customer, pets→pet, bills→bill, bill_lines→bill_line, commissions→commission_entry, bookings→booking) with every column in schema order except organization_id; `*_satang` columns are output in baht with 2 decimals and named without the `_satang` suffix. Pets are the pets of the organization's customers' owner profiles. from/to are inclusive branch-local days on created_at (bills: closed_at, commissions: earned_at, bookings: first_service_at). The route reads `{type}` from the URL path, calls the `withStaff` handler and re-sends its JSON string as `text/csv; charset=utf-8` with `Content-Disposition: attachment`. A shared non-JSON response option in respond.ts would remove this adapter (follow-up, not in T-0307).
 
+## Q-0074 · T-0234 bills.close: redemption count, package value, reliability, booking close
+- Status: open (T-0234 ships these choices)
+- Task: T-0234 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-bills.close says "package_redemption → sessions_used + 1", but bills.open (T-0229) and bills.addLine (T-0231) already count the session when the line is added; doing it again at close would double count. It also does not say which price a sold package's unit value uses, how "completed visits" for R-09 are counted, or which child states end a booking.
+- Evidence: 05#ep-bills.close, R-09 note (recompute on bill close), R-13, R-14, R-16, 03 sm-booking/sm-bill, Q-0049, Q-0072.
+- Proposed decision (implemented): close does not touch redemption counts (already consumed when the line was added; removeLine/void give them back). package_sale → customer_package with packageTerms(price = the line total actually charged, template sessions/validity, purchased now in the branch timezone), pet only for single_pet. Commissions per R-13 with service from the booking item or the package template, redemption base = package unit value. Deposits: verified − applied deposit payments → credit_ledger `deposit_credit` (ref booking) and deposit_status → applied. Bookings close when every child is picked_up/checked_out/no_show/cancelled. Customer: visit_count + 1, first/last visit = now, reliability_level recomputed with completed visits = picked_up/checked_out children of this customer's paid bills closed in the last 12 months. customer.receipt dedupe `receipt:{billId}:1` (bills.sendReceipt continues the count); walk-in bills notify nobody.
+
 ## Q-0042 · bills.receipt / bills.sendReceipt: receiptUrl, logoUrl, bill status and resend number
 - Status: answered (implemented in T-0236)
 - Task: T-0236 · Asked by: agent (claude) · Date: 2026-10-02
@@ -500,3 +507,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: T-0070 must show not-yet-built console screens as disabled. Admin screen cards own `shell-admin/navigation/AD-xx.ts` to switch their entry on, but no C-* screen card has a `shell-console/**` path, so a later screen task cannot enable its menu item.
 - Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
+
+## Q-0076 · T-0311: upcoming queue is absent from DashboardToday
+- Status: answered (user approved in chat, 2026-10-03)
+- Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 06#scr-C-01 requires upcoming time/pet/temperament/groomer/status; 05#dto-DashboardToday and the merged contract/service have no upcoming queue fields.
+- Question: defer the upcoming queue to a follow-up after the API is specified, or expand the spec/API before implementing this section? No response fields are invented.
+
+## Q-0077 · New console screen menu scope
+- Status: answered (user approved in chat, 2026-10-03)
+- Tasks: T-0311, T-0079, T-0205, T-0254 · Asked by: agent (codex) · Date: 2026-10-03
+- Question: approve the same Q-0048 scope expansion for navigation/C-01.ts, C-26.ts, C-22.ts and C-24.ts? These files are absent from each card's allowed_paths. Scope changes must be generated in a separate spec-change PR, as in #148.
+
+## Q-0078 · T-0311: service worker does not relay push to the dashboard
+- Status: answered (user approved in chat, 2026-10-03)
+- Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 06#scr-C-01 requires refreshing on web push; apps/web/public/sw.js currently only shows notifications and opens their URL on click.
+- Question: approve extending scope to relay received push events to existing client windows, or defer push refresh to a follow-up? Polling every 60 seconds proceeds within the original card scope.
+
+- Answer (2026-10-03): user approved the proposed choices: defer the absent queue to a specified API follow-up, expand the selected menu scope and relay web push. C-26 scope is deferred here because Claude claimed T-0079 in #162; Codex will not implement that card. T-0311 depends on the already-merged T-0091 so its sw.js follow-up is ordered after the original owner.
