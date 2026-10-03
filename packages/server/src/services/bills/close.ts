@@ -125,7 +125,7 @@ async function createPackages(ctx: RequestContext, tx: Tx, b: BillRow, lines: Li
 }
 
 /** Unapplied verified deposits → credit (deposit_credit); deposit_status → applied (05#ep-bills.close). */
-async function settleDeposits(ctx: RequestContext, tx: Tx, b: BillRow, bookings: BookingRow[]) {
+async function settleDeposits(ctx: RequestContext, tx: Tx, bookings: BookingRow[]) {
   const db = tenantDb(ctx, tx);
   for (const bk of bookings.filter((x) => x.depositStatus === "verified")) {
     const applied = (
@@ -264,7 +264,7 @@ export async function billsClose(ctx: RequestContext, input: BillsCloseRequest &
     await createPackages(ctx, tx, row, lines, br.timezone);
     // Q-0074: package_redemption sessions were already counted when the line was added (bills.open / bills.addLine)
     const bookings = (await db.select(booking, eq(booking.billId, b.id))) as BookingRow[];
-    await settleDeposits(ctx, tx, row, bookings);
+    await settleDeposits(ctx, tx, bookings);
     await closeBookings(ctx, tx, bookings);
     if (row.customerId) await updateCustomer(ctx, tx, row.customerId);
     await writeAudit(tx, ctx, {
