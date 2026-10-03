@@ -1,9 +1,7 @@
-// staff.link_request — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.link_request: Web Push to front_desk+owner when a LINE user registers with a known phone.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "{lineName} ขอเชื่อม LINE กับลูกค้าเบอร์ {phone} — ตรวจสอบ";
-
-export function render(payload: NotificationPayloads["staff.link_request"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["staff.link_request"]): Rendered {
+  return { text: `${payload.lineName ?? ""} ขอเชื่อม LINE กับลูกค้าเบอร์ ${payload.phone ?? ""} — ตรวจสอบ` };
 }
