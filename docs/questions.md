@@ -307,6 +307,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-customers.blacklist validation column; `packages/server/src/audit.ts` writeAudit reason check.
 - Work: T-0156 requires the reason in both directions (`REASON_REQUIRED`), so the audit trail always has a reason. If unblacklisting should be allowed without one, audit.ts (outside T-0156) needs an exception for `customer.blacklist` with `after.blacklisted = false`.
 
+## Q-0065 · T-0287 care_task_overdue: "staff ทุกคนที่ active ในสาขา"
+- Status: open (T-0287 ships the fallback)
+- Task: T-0287 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §1 sends `staff.care_task_overdue` to "staff (ทุกคนที่ active ในสาขา)", but 02#tbl-staff_user has no branch column or staff↔branch table, so branch membership cannot be read.
+- Evidence: 02#tbl-staff_user, `packages/db/src/schema/identity.ts`.
+- Proposed decision (implemented): every `staff_user` with status `active` in the task's organization (all roles), one notification each (`care_overdue:{taskId}` dedupe). Revisit if multi-branch staff assignment is added.
+
 ## Q-0053 · T-0304 dashboard count definitions
 - Status: answered
 - Task: T-0304 · Asked by: agent (codex) · Date: 2026-10-03
@@ -346,6 +353,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
+## Q-0063 · T-0187 reminder_24h: "active", dateTime, service and reschedules
+- Status: open (T-0187 ships these choices)
+- Task: T-0187 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §2 says "ตรวจว่ายัง active" without defining it, and 07 §1 `customer.reminder_24h` names `dateTime`, `service`, `bookingUrl` without formats. Its notification dedupe `reminder_24h:{entityId}` also means a visit rescheduled after its reminder was sent never gets a second reminder, although the job dedupe includes `{startsAt}`.
+- Evidence: 07 §1/§2 reminder_24h rows; 03 booking/groom/stay/daycare states; enum-labels `service_scope`; R-31 formatThaiDate/formatTime.
+- Proposed decision (implemented): active = booking `confirmed` and the visit still `scheduled` (groom) / `reserved` (stay, daycare), and its start still equals job `run_at` + 24 h (otherwise the reschedule's own job sends). Start = groom `starts_at`; stay `check_in_date` + `expected_check_in_time` (date only when null); daycare `visit_date` + session `starts_at`. `dateTime` = `formatThaiDate` + " " + `formatTime` in the branch timezone ("6 ต.ค. 2569 10:00 น."), date only for a stay without a time. `service` = service_scope label (กรูม / โรงแรม / Daycare). `bookingUrl` = `APP_BASE_URL + /liff/{booking_slug}/bookings/{bookingId}` (L-09). A missing branch_policy row counts as enabled (column default). Spec owner: decide whether the notification dedupe should include `{startsAt}`.
+
 ## Q-0038 · T-0090 annual holidays editor and loader
 - Status: answered
 - Task: T-0090 · Asked by: agent (codex) · Date: 2026-10-02
@@ -384,6 +398,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bills.list says `date` is "closed_at หรือ opened_at ตามสถานะ" without the mapping or the order; 05#ep-bills.updateLine names DISCOUNT_LIMIT_EXCEEDED / REASON_REQUIRED without thresholds, limits quantity to quick_item without an error, and says "delete+insert" although package_redemption references bill_line.id.
 - Answer (2026-10-03): user chose in chat. bills.list: a paid bill is dated by closed_at, open/void by opened_at (also without a status filter); `date` = that branch-local day; newest first (ms precision) with the 05 §0 keyset cursor and limit; customerName = owner_profile.first_name (null for walk-in). bills.updateLine: discount > 0 needs a reason ≥ 3 chars (REASON_REQUIRED); discount ≤ qty × unit (LINE_DISCOUNT_TOO_LARGE); front_desk: all discounts on the bill (lines + bill discount) ≤ 20% of the gross Σ qty × unit (DISCOUNT_LIMIT_EXCEEDED; owner unlimited); quantity on a non-quick_item line or a performer that is not an active staff of the org → VALIDATION_FAILED; a subtotal below the bill discount → BILL_DISCOUNT_TOO_LARGE; audit `bill.discount` only when the discount/reason changes; the row is updated in place.
 
+## Q-0067 · T-0243 next_groom_reminder: bookUrl, recipient and visit branch
+- Status: open (T-0243 ships these choices)
+- Task: T-0243 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §1 `customer.next_groom_reminder` needs `{bookUrl}` and a `dueDate` format, and the job payload `{petId, organizationId}` names neither the customer nor the branch (timezone, branch_policy.next_groom_default_days, booking slug).
+- Evidence: 07 §1/§2 next_groom rows, R-17, Q-0040 (LIFF links = APP_BASE_URL + /liff/{booking_slug}/…), 06 L-04 `/liff/[branchSlug]/book/grooming`.
+- Proposed decision (implemented): branch and customer come from the pet's latest done/picked_up appointment in the organization (its branch, its booking's customer); `bookUrl = APP_BASE_URL + /liff/{booking_slug}/book/grooming` (L-04); `dueDate` = formatThaiDate; future appointment = one starting after now that is not cancelled/no_show.
+
 ## Q-0045 · P-02 legal documents: content files missing and outside allowed paths
 - Status: open (T-0317 blocked)
 - Task: T-0317 · Asked by: agent (claude) · Date: 2026-10-02
@@ -403,6 +424,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 06#scr-C-20 shows "ส่ง LINE อีกครั้ง" only when the customer has LINE, but 05#dto-Receipt has no LINE flag (bills.get is not implemented yet). The print button says "@page 58mm/80mm/A5 ตาม SP-05" without saying how the size is chosen (SP-05 = human printer test H-13).
 - Answer (2026-10-03): user chose in chat. The button shows for a paid bill with a customer (customerName set); bills.sendReceipt refuses other bills and the dispatcher skips customers without LINE. Follow-up: add a customer LINE flag to Receipt so the button can follow 06 exactly. Paper size: a 58 มม. / 80 มม. / A5 select next to "พิมพ์" (print option, not a data field), default 80 มม., remembered per browser (localStorage), driving the @page CSS. Dates use Asia/Bangkok because Receipt carries no branch timezone.
+
+## Q-0066 · T-0309 owner.daily_summary: noShows and tomorrowCount
+- Status: open (T-0309 ships these choices)
+- Task: T-0309 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §2 says the summary "รวมตัวเลข DashboardToday", but 05#dto-DashboardToday has no tomorrow count and only grooming no-shows (`groom.byStatus.no_show`); 07 §1 also gives no format for `date` / `salesTotal`.
+- Evidence: 07 §1/§2 owner_daily_summary rows, 05#dto-DashboardToday, Q-0053.
+- Proposed decision (implemented): numbers are for the job's `localDate` (not ctx.now, so a retry after midnight reports the right day) with the Q-0053 definitions: groomCount = groom.total, staysInHouse = hotel.inHouse, salesTotal = sales.paidTotalSatang via formatTHB auto, noShows = grooming no-shows of the day, tomorrowCount = next day's grooming appointments + hotel check-ins + daycare visits (cancelled excluded), date = formatThaiDate. Sent to every active owner.
 
 ## Q-0046 · AD-06: shop name and date range for admin.analytics
 - Status: answered (implemented in T-0315)
