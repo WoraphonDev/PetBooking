@@ -411,6 +411,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-C-20 shows "ส่ง LINE อีกครั้ง" only when the customer has LINE, but 05#dto-Receipt has no LINE flag (bills.get is not implemented yet). The print button says "@page 58mm/80mm/A5 ตาม SP-05" without saying how the size is chosen (SP-05 = human printer test H-13).
 - Answer (2026-10-03): user chose in chat. The button shows for a paid bill with a customer (customerName set); bills.sendReceipt refuses other bills and the dispatcher skips customers without LINE. Follow-up: add a customer LINE flag to Receipt so the button can follow 06 exactly. Paper size: a 58 มม. / 80 มม. / A5 select next to "พิมพ์" (print option, not a data field), default 80 มม., remembered per browser (localStorage), driving the @page CSS. Dates use Asia/Bangkok because Receipt carries no branch timezone.
 
+## Q-0066 · T-0309 owner.daily_summary: noShows and tomorrowCount
+- Status: open (T-0309 ships these choices)
+- Task: T-0309 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §2 says the summary "รวมตัวเลข DashboardToday", but 05#dto-DashboardToday has no tomorrow count and only grooming no-shows (`groom.byStatus.no_show`); 07 §1 also gives no format for `date` / `salesTotal`.
+- Evidence: 07 §1/§2 owner_daily_summary rows, 05#dto-DashboardToday, Q-0053.
+- Proposed decision (implemented): numbers are for the job's `localDate` (not ctx.now, so a retry after midnight reports the right day) with the Q-0053 definitions: groomCount = groom.total, staysInHouse = hotel.inHouse, salesTotal = sales.paidTotalSatang via formatTHB auto, noShows = grooming no-shows of the day, tomorrowCount = next day's grooming appointments + hotel check-ins + daycare visits (cancelled excluded), date = formatThaiDate. Sent to every active owner.
+
 ## Q-0046 · AD-06: shop name and date range for admin.analytics
 - Status: answered (implemented in T-0315)
 - Task: T-0315 · Asked by: agent (claude) · Date: 2026-10-03
