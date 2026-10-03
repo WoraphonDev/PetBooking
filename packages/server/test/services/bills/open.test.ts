@@ -5,6 +5,8 @@ import {
   billLine,
   booking,
   customerPackage,
+  daycareSessionType,
+  daycareVisit,
   groomAppointment,
   groomAppointmentItem,
   groomStation,
@@ -12,7 +14,11 @@ import {
   packageTemplate,
   payment,
   pet,
+  roomType,
+  roomUnit,
   service,
+  stay,
+  stayAddon,
 } from "@app/db/schema";
 import { asc, eq } from "drizzle-orm";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -308,4 +314,144 @@ it("answers NOT_FOUND for another organization's booking or customer", async () 
     expect(await code(response)).toBe("NOT_FOUND");
   }
   expect(await env.db.select().from(bill).where(eq(bill.status, "open"))).toEqual([]);
+});
+
+/** confirmed hotel+daycare booking: 2 nights × 800 + walk add-on 2 × 100, a daycare day 300; cancelled stay / no-show visit ignored */
+async function seedHotel(org: SeedOrg) {
+  const tenant = { organizationId: org.orgId, branchId: org.branchId };
+  const [b] = await env.db
+    .insert(booking)
+    .values({
+      ...tenant,
+      customerId: org.customerId,
+      channel: "walk_in",
+      bookingNo: "B-H",
+      createdByType: "staff",
+      policySnapshot: {},
+      status: "confirmed",
+      depositStatus: "not_required",
+    })
+    .returning();
+  const [lucky] = await env.db
+    .insert(pet)
+    .values({ ownerProfileId: org.ownerProfileId, createdInOrgId: org.orgId, name: "Lucky", species: "dog" })
+    .returning();
+  const [type] = await env.db
+    .insert(roomType)
+    .values({ ...tenant, nameTh: "ห้องมาตรฐาน" })
+    .returning();
+  const units = await env.db
+    .insert(roomUnit)
+    .values(["H1", "H2"].map((code) => ({ ...tenant, roomTypeId: type?.id ?? "", code })))
+    .returning();
+  const base = { ...tenant, bookingId: b?.id ?? "", petId: lucky?.id ?? "", roomTypeId: type?.id ?? "" };
+  const [kept] = await env.db
+    .insert(stay)
+    .values([
+      {
+        ...base,
+        roomUnitId: units[0]?.id ?? "",
+        checkInDate: "2026-10-05",
+        checkOutDate: "2026-10-07",
+        nights: 2,
+        nightlyPriceSatang: 80_000,
+        roomTotalSatang: 160_000,
+        status: "checked_in",
+      },
+      {
+        ...base,
+        roomUnitId: units[1]?.id ?? "",
+        checkInDate: "2026-10-05",
+        checkOutDate: "2026-10-06",
+        nights: 1,
+        nightlyPriceSatang: 80_000,
+        roomTotalSatang: 80_000,
+        status: "cancelled",
+      },
+    ])
+    .returning();
+  const [walk] = await env.db
+    .insert(service)
+    .values({ ...tenant, category: "hotel_addon", nameTh: "พาเดิน", scope: "hotel", isAddon: true, addonPerDay: true })
+    .returning();
+  await env.db.insert(stayAddon).values({
+    organizationId: org.orgId,
+    stayId: kept?.id ?? "",
+    serviceId: walk?.id ?? "",
+    nameSnapshot: "พาเดิน",
+    unitPriceSatang: 10_000,
+    quantity: 2,
+    totalSatang: 20_000,
+    addedByType: "staff",
+  });
+  const [day] = await env.db
+    .insert(daycareSessionType)
+    .values({ ...tenant, session: "full_day", nameTh: "เต็มวัน", startsAt: "09:00", endsAt: "18:00", capacity: 10 })
+    .returning();
+  await env.db.insert(daycareVisit).values([
+    { ...base, sessionTypeId: day?.id ?? "", visitDate: "2026-10-08", priceSatang: 30_000, status: "reserved" },
+    { ...base, sessionTypeId: day?.id ?? "", visitDate: "2026-10-09", priceSatang: 30_000, status: "no_show" },
+  ]);
+  return { bookingId: b?.id ?? "", stayId: kept?.id ?? "" };
+}
+
+it("adds stay_night (qty = nights), stay_addon and daycare lines, skipping cancelled and no-show children", async () => {
+  const hotel = await seedHotel(env.base);
+  const response = await post({ bookingIds: [hotel.bookingId] });
+  expect(response.status).toBe(200);
+  const detail = BillsOpenResponse.parse(await response.json());
+  expect(detail.lines.map(({ id: _id, ...l }) => l)).toEqual([
+    {
+      lineType: "stay_night",
+      description: "ห้องมาตรฐาน",
+      petName: "Lucky",
+      quantity: 2,
+      unitPriceSatang: 80_000,
+      lineDiscountSatang: 0,
+      lineDiscountReason: null,
+      lineTotalSatang: 160_000,
+      performerId: null,
+    },
+    {
+      lineType: "stay_addon",
+      description: "พาเดิน",
+      petName: "Lucky",
+      quantity: 2,
+      unitPriceSatang: 10_000,
+      lineDiscountSatang: 0,
+      lineDiscountReason: null,
+      lineTotalSatang: 20_000,
+      performerId: null,
+    },
+    {
+      lineType: "daycare",
+      description: "เต็มวัน",
+      petName: "Lucky",
+      quantity: 1,
+      unitPriceSatang: 30_000,
+      lineDiscountSatang: 0,
+      lineDiscountReason: null,
+      lineTotalSatang: 30_000,
+      performerId: null,
+    },
+  ]);
+  expect(detail).toMatchObject({ subtotalSatang: 210_000, totalSatang: 210_000, paidSatang: 0, dueSatang: 210_000 });
+  const rows = await env.db.select().from(billLine).where(eq(billLine.billId, detail.id)).orderBy(asc(billLine.sortOrder));
+  expect(rows.map((r) => [r.refType, r.sortOrder])).toEqual([
+    ["stay", 0],
+    ["stay_addon", 1],
+    ["daycare_visit", 2],
+  ]);
+  expect(rows[0]?.refId).toBe(hotel.stayId);
+});
+
+it("bills grooming and hotel bookings of one customer together, groom lines first", async () => {
+  const hotel = await seedHotel(env.base);
+  const response = await post({ bookingIds: [s.bookingId, hotel.bookingId] });
+  expect(response.status).toBe(200);
+  const detail = BillsOpenResponse.parse(await response.json());
+  const types = detail.lines.map((l) => l.lineType);
+  expect(types.slice(-3)).toEqual(["stay_night", "stay_addon", "daycare"]);
+  expect(types.indexOf("stay_night")).toBeGreaterThan(types.lastIndexOf("surcharge"));
+  expect(detail.subtotalSatang).toBe(detail.lines.reduce((sum, l) => sum + l.lineTotalSatang, 0));
 });

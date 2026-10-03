@@ -25,6 +25,7 @@ import { AppError } from "../../errors.ts";
 import { tenantDb } from "../../repo/tenant.ts";
 import { customerListItems } from "../customers/list.ts";
 import { customersPackages } from "../customers/packages.ts";
+import { stayDaycareLines } from "./open/stay-daycare.ts";
 
 type BillRow = typeof bill.$inferSelect;
 type BookingRow = typeof booking.$inferSelect;
@@ -121,7 +122,7 @@ export async function billDetail(ctx: RequestContext, tx: Executor, b: BillRow):
   };
 }
 
-/** Grooming lines of the bookings (05#ep-bills.open; stay/daycare lines belong to T-0270). */
+/** Grooming lines of the bookings (05#ep-bills.open; stay/daycare lines: open/stay-daycare.ts). */
 async function groomLines(ctx: RequestContext, tx: Tx, bookings: BookingRow[]): Promise<NewLine[]> {
   const db = tenantDb(ctx, tx);
   const appointments = (await db
@@ -260,9 +261,9 @@ export async function billsOpen(ctx: RequestContext, input: BillsOpenRequest): P
     const branchId = bookings[0]?.branchId ?? ctx.branchId;
     if (!branchId) throw new AppError("NOT_FOUND");
 
-    const lines = await groomLines(ctx, tx, bookings);
+    const lines: NewLine[] = [...(await groomLines(ctx, tx, bookings)), ...(await stayDaycareLines(ctx, tx, bookings))];
     const totals = computeBillTotals({
-      lines: lines.map((l) => ({ quantity: 1, unitPriceSatang: l.unitPriceSatang, lineDiscountSatang: 0 })),
+      lines: lines.map((l) => ({ quantity: l.quantity ?? 1, unitPriceSatang: l.unitPriceSatang, lineDiscountSatang: 0 })),
       billDiscountSatang: 0,
       payments: [],
     });
