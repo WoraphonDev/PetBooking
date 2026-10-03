@@ -263,6 +263,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#dto-CommissionReport, 05#ep-staffMe.commissions, 02#tbl-commission_entry (earned_at, reversed_at, status), R-13 step 6.
 - Answer (2026-10-02): user approved the accounting interpretation in chat. from..to are branch-local days. An entry whose earned_at is in range adds +1 job, +base, +amount; an entry with status reversed whose reversed_at is in range adds −1 job, −base, −amount (so earned and reversed in the same range nets to 0, and a later void shows as a deduction in the period of the void). `entries[]` lists every entry that contributed. No entries → `rows: []`.
 
+## Q-0077 · C-24 commission report: entry details have no data source
+- Status: open (T-0254 ships a partial expand)
+- Task: T-0254 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 06#scr-C-24 "รายละเอียด" expands each staff row into วันที่, ใบเสร็จ, บริการ, ฐาน, กติกา, ยอด per entry, but 05#dto-CommissionReport returns only `entries[]` (commission_entry ids) and no endpoint reads commission entries by id. 06 also gives no default range for the required from/to.
+- Evidence: 06#scr-C-24, 05#dto-CommissionReport, 05#ep-reports.commissions, Q-0030.
+- Proposed decision: extend CommissionReport `rows[].entries[]` to objects `{ id, at (earned/reversed), receiptNo, serviceName, baseSatang, ruleLabel, amountSatang }` (a T-0240 follow-up), then C-24 renders the six columns. Until then (implemented) the expand shows the entry count and ids. No default range: the screen asks to pick from/to (and the export link appears) once both are valid; Export CSV = `exports.csv` type commissions with the same range, saved as commissions.csv.
+
 ## Q-0031 · OccupancyReport: shape of `byRoomType[]`, percent rounding and range
 - Status: answered (implemented in T-0306; spec text update pending a spec-change PR)
 - Task: T-0306 · Asked by: agent (claude) · Date: 2026-10-02
