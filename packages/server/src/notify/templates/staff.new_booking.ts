@@ -1,9 +1,6 @@
-// staff.new_booking — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.new_booking: Web Push to front_desk+owner. `summary` arrives formatted by the caller (R-31).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "จองใหม่ {bookingNo} — {customerName}: {summary}";
 
 export function render(payload: NotificationPayloads["staff.new_booking"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `จองใหม่ ${payload.bookingNo ?? ""} — ${payload.customerName ?? ""}: ${payload.summary ?? ""}` };
 }

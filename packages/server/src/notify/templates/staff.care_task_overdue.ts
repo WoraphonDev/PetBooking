@@ -1,9 +1,6 @@
-// staff.care_task_overdue — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.care_task_overdue: Web Push to every active staff of the branch.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "⚠️ เลยเวลา: {title} — {petName} ห้อง {roomCode}";
 
 export function render(payload: NotificationPayloads["staff.care_task_overdue"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `⚠️ เลยเวลา: ${payload.title ?? ""} — ${payload.petName ?? ""} ห้อง ${payload.roomCode ?? ""}` };
 }
