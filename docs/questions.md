@@ -332,6 +332,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bookings.balanceLink mentions "send=true" but has no request table, names no error for "ต้องมี bill open", and says only "url = LIFF /pay/{billId}".
 - Answer (2026-10-02): user chose in chat. Body `{ send?: boolean }` (default false = only return the link). No bill on the booking, or the bill is paid/void → `BILL_NOT_OPEN` (409). `amountSatang = bill.total_satang − bill.paid_satang`. `url = APP_BASE_URL + /liff/{branch.booking_slug}/pay/{billId}` (route of L-14; 01 §6 APP_BASE_URL is the base for links in messages). send=true enqueues `customer.balance_link` to booking.customer_id with `amount` formatted by R-31 formatTHB(always).
 
+## Q-0061 · T-0186 expire_hold: bookAgainUrl
+- Status: open (T-0186 ships a fallback)
+- Task: T-0186 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §1 `customer.hold_expired` (and `customer.no_show`) needs `{bookAgainUrl}`, but neither 05 nor 07 says which URL that is.
+- Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
+- Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
+
 ## Q-0038 · T-0090 annual holidays editor and loader
 - Status: answered
 - Task: T-0090 · Asked by: agent (codex) · Date: 2026-10-02
