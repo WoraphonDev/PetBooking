@@ -346,6 +346,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
+## Q-0062 · T-0187 reminder_24h: "active", dateTime, service and reschedules
+- Status: open (T-0187 ships these choices)
+- Task: T-0187 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §2 says "ตรวจว่ายัง active" without defining it, and 07 §1 `customer.reminder_24h` names `dateTime`, `service`, `bookingUrl` without formats. Its notification dedupe `reminder_24h:{entityId}` also means a visit rescheduled after its reminder was sent never gets a second reminder, although the job dedupe includes `{startsAt}`.
+- Evidence: 07 §1/§2 reminder_24h rows; 03 booking/groom/stay/daycare states; enum-labels `service_scope`; R-31 formatThaiDate/formatTime.
+- Proposed decision (implemented): active = booking `confirmed` and the visit still `scheduled` (groom) / `reserved` (stay, daycare), and its start still equals job `run_at` + 24 h (otherwise the reschedule's own job sends). Start = groom `starts_at`; stay `check_in_date` + `expected_check_in_time` (date only when null); daycare `visit_date` + session `starts_at`. `dateTime` = `formatThaiDate` + " " + `formatTime` in the branch timezone ("6 ต.ค. 2569 10:00 น."), date only for a stay without a time. `service` = service_scope label (กรูม / โรงแรม / Daycare). `bookingUrl` = `APP_BASE_URL + /liff/{booking_slug}/bookings/{bookingId}` (L-09). A missing branch_policy row counts as enabled (column default). Spec owner: decide whether the notification dedupe should include `{startsAt}`.
+
 ## Q-0038 · T-0090 annual holidays editor and loader
 - Status: answered
 - Task: T-0090 · Asked by: agent (codex) · Date: 2026-10-02
