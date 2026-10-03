@@ -263,6 +263,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#dto-CommissionReport, 05#ep-staffMe.commissions, 02#tbl-commission_entry (earned_at, reversed_at, status), R-13 step 6.
 - Answer (2026-10-02): user approved the accounting interpretation in chat. from..to are branch-local days. An entry whose earned_at is in range adds +1 job, +base, +amount; an entry with status reversed whose reversed_at is in range adds −1 job, −base, −amount (so earned and reversed in the same range nets to 0, and a later void shows as a deduction in the period of the void). `entries[]` lists every entry that contributed. No entries → `rows: []`.
 
+## Q-0077 · C-24 commission report: entry details have no data source
+- Status: open (T-0254 ships a partial expand)
+- Task: T-0254 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 06#scr-C-24 "รายละเอียด" expands each staff row into วันที่, ใบเสร็จ, บริการ, ฐาน, กติกา, ยอด per entry, but 05#dto-CommissionReport returns only `entries[]` (commission_entry ids) and no endpoint reads commission entries by id. 06 also gives no default range for the required from/to.
+- Evidence: 06#scr-C-24, 05#dto-CommissionReport, 05#ep-reports.commissions, Q-0030.
+- Proposed decision: extend CommissionReport `rows[].entries[]` to objects `{ id, at (earned/reversed), receiptNo, serviceName, baseSatang, ruleLabel, amountSatang }` (a T-0240 follow-up), then C-24 renders the six columns. Until then (implemented) the expand shows the entry count and ids. No default range: the screen asks to pick from/to (and the export link appears) once both are valid; Export CSV = `exports.csv` type commissions with the same range, saved as commissions.csv.
+
 ## Q-0031 · OccupancyReport: shape of `byRoomType[]`, percent rounding and range
 - Status: answered (implemented in T-0306; spec text update pending a spec-change PR)
 - Task: T-0306 · Asked by: agent (claude) · Date: 2026-10-02
@@ -467,6 +474,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-AD-04 shows `feedback_report.status` as a select and screen cards say enum labels come from `enumLabel()`, but `docs/spec/enum-labels.th.json` has no `feedback_status` entry (02 lists `new`, `acknowledged`, `done`).
 - Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
 
+## Q-0076 · C-26 Audit log: Thai labels for actions/entities, links and the diff
+- Status: open (T-0079 ships proposed labels in C-26.json)
+- Task: T-0079 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 06#scr-C-26 asks for a "select ป้ายภาษาไทย" of `audit_log.action` and an entity link, but enum-labels.th.json has no audit action or entity type labels (R-27 lists the action codes only), 06 does not map entity types to pages, and "diff (after)" has no format. The menu entry `shell-console/navigation/C-26.ts` is outside the card's allowed paths (same follow-up as Q-0048).
+- Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
+- Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
+
 ## Q-0054 · C-20: when to show "ส่ง LINE อีกครั้ง", and choosing the paper size
 - Status: answered (implemented in T-0252); DTO follow-up open
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
@@ -479,6 +493,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 07 §2 says the summary "รวมตัวเลข DashboardToday", but 05#dto-DashboardToday has no tomorrow count and only grooming no-shows (`groom.byStatus.no_show`); 07 §1 also gives no format for `date` / `salesTotal`.
 - Evidence: 07 §1/§2 owner_daily_summary rows, 05#dto-DashboardToday, Q-0053.
 - Proposed decision (implemented): numbers are for the job's `localDate` (not ctx.now, so a retry after midnight reports the right day) with the Q-0053 definitions: groomCount = groom.total, staysInHouse = hotel.inHouse, salesTotal = sales.paidTotalSatang via formatTHB auto, noShows = grooming no-shows of the day, tomorrowCount = next day's grooming appointments + hotel check-ins + daycare visits (cancelled excluded), date = formatThaiDate. Sent to every active owner.
+
+## Q-0075 · T-0235 bills.void: open bills, earned credit, deposits and errors
+- Status: open (T-0235 ships these choices)
+- Task: T-0235 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-bills.void covers paid → void only and lists no error codes, while 03 sm-bill also has open → void (no posted payment). It says "credit ที่ใช้/ได้ในบิล → ย้อน" but the deposit credit written at close references the booking, not the bill; it does not say what happens to an applied deposit or to customer.visit_count, nor which code answers an already-void bill.
+- Evidence: 05#ep-bills.void, 03 sm-bill / sm-booking / sm-deposit (`applied → verified`), R-13 #6, R-14 #5, Q-0074.
+- Proposed decision (implemented): owner only; reason trimmed ≥ 3 (VALIDATION_FAILED). Open bill with posted payments → VALIDATION_FAILED (void the payments first); already void → BILL_NOT_OPEN. Paid → void: commissions reversed (reversed_at), counter/booking redemptions reversed with sessions back (exhausted → active if not expired), packages sold on the bill → void, credit payments returned and `deposit_credit` rows of the bill's bookings taken back — both as credit_ledger `void_reversal` (ref bill), the balance may go below zero; every posted payment → voided with the reason; bookings closed → confirmed, applied deposit → verified (so the next bill can apply it again), bill_id = null; receipt_no kept; audit `bill.void`. visit_count is not decreased.
 
 ## Q-0046 · AD-06: shop name and date range for admin.analytics
 - Status: answered (implemented in T-0315)
@@ -525,16 +546,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 06#scr-C-01 requires refreshing on web push; apps/web/public/sw.js currently only shows notifications and opens their URL on click.
 - Question: approve extending scope to relay received push events to existing client windows, or defer push refresh to a follow-up? Polling every 60 seconds proceeds within the original card scope.
 
-- Answer (2026-10-03): user approved the proposed choices: defer the absent queue to a specified API follow-up, expand the selected menu scope and relay web push. C-26 scope is deferred here because Claude claimed T-0079 in #162; Codex will not implement that card. T-0311 depends on the already-merged T-0091 so its sw.js follow-up is ordered after the original owner.
+- Answer (2026-10-03): user approved the proposed choices: defer the absent queue to a specified API follow-up, expand the selected menu scope and relay web push. Claude has merged T-0079 in #162 and T-0254 in #163. Their completed C-26/C-24 pages receive the approved menu scope and enabled entries here; Codex does not redo those cards. T-0311 depends on the already-merged T-0091 so its sw.js follow-up is ordered after the original owner.
 
 ## Q-0082 · T-0311: shell test assumes C-01 stays disabled
-- Status: open; shared test remains untouched pending approval
+- Status: answered (user approved in chat, 2026-10-04)
 - Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
 - Evidence: console-shell.test.tsx asserts C-01 is disabled, conflicting with the approved implemented menu. The card web suite reports 236 passed and that one failed assertion.
 - Proposed decision: use explicit enabled C-01 and disabled C-02 fixtures, retain disabled-menu assertions, and verify the dashboard link/current-page behavior. Approve the shared test file in the separate scope PR; no business assertions are removed.
 
 ## Q-0083 · T-0205: economy mode has no merged read API
-- Status: open; no screen implementation started
+- Status: answered (user approved in chat, 2026-10-04)
 - Task: T-0205 · Asked by: agent (codex) · Date: 2026-10-03
 - Evidence: 06#scr-C-22 requires branch_policy.economy_mode, but the LineStatus contract lacks it and no merged read policy endpoint supplies it.
 - Question: implement quota/list/copy first and defer economy-mode status until the read API is specified, or expand the spec/API first? No status or response field is invented.
+
+- Answer (2026-10-04): user approved the explicit shared menu fixtures and dashboard current-page coverage (Q-0082), and deferred economy-mode status until the read API exists while retaining quota/list/copy and the policy settings link (Q-0083).
