@@ -7,6 +7,9 @@ import { resetRateLimits, withStaff } from "../../../src/http.ts";
 import { staffMeCommissions } from "../../../src/services/staffMe/commissions.ts";
 import { customerCtx, otherOrg, type SeedOrg, setupTestDb, staffCtx, type TestEnv } from "../../helpers/setup.ts";
 
+/** entries as their ids (Q-0077 items carry details; these tests check which events are counted) */
+const asIds = <R extends { entries: { id: string }[] }>(rows: R[]) => rows.map((r) => ({ ...r, entries: r.entries.map((e) => e.id) }));
+
 let env: TestEnv;
 const GET = withStaff("staffMe.commissions", { query: StaffMeCommissionsQuery }, staffMeCommissions);
 beforeAll(async () => {
@@ -82,7 +85,7 @@ it("sums the current user's entries earned in the local-day range, with every Co
   const response = await get(october);
   expect(response.status).toBe(200);
   const body = StaffMeCommissionsResponse.parse(await response.json());
-  expect(body).toEqual({
+  expect({ ...body, rows: asIds(body.rows) }).toEqual({
     from: "2026-10-01",
     to: "2026-10-31",
     rows: [{ staffUserId: me, staffName: "staff", jobs: 2, baseSatang: 30000, amountSatang: 3500, entries: [a, b] }],
@@ -95,11 +98,18 @@ it("counts reversals in the period they happen (Q-0030): earned +, reversed −"
   const sameMonth = await entry(env.base, me, "2026-10-06T03:00:00.000Z", 2000, 20000, "2026-10-07T03:00:00.000Z");
   const lateVoid = await entry(env.base, me, "2026-09-20T03:00:00.000Z", 3000, 30000, "2026-10-08T03:00:00.000Z");
   const october = StaffMeCommissionsResponse.parse(await (await get("?from=2026-10-01&to=2026-10-31")).json());
-  expect(october.rows).toEqual([
-    { staffUserId: me, staffName: "staff", jobs: 0, baseSatang: -20000, amountSatang: -2000, entries: [lateVoid, kept, sameMonth] },
+  expect(asIds(october.rows)).toEqual([
+    {
+      staffUserId: me,
+      staffName: "staff",
+      jobs: 0,
+      baseSatang: -20000,
+      amountSatang: -2000,
+      entries: [lateVoid, kept, sameMonth, sameMonth],
+    },
   ]);
   const september = StaffMeCommissionsResponse.parse(await (await get("?from=2026-09-01&to=2026-09-30")).json());
-  expect(september.rows[0]).toMatchObject({ jobs: 1, baseSatang: 30000, amountSatang: 3000, entries: [lateVoid] });
+  expect(asIds(september.rows)[0]).toMatchObject({ jobs: 1, baseSatang: 30000, amountSatang: 3000, entries: [lateVoid] });
 });
 
 it("returns no rows when the user has nothing in range, for every role", async () => {
@@ -114,7 +124,7 @@ it("uses the branch timezone for the day bounds", async () => {
   const id = await entry(env.base, env.base.staff.staff, "2026-10-01T03:00:00.000Z", 1000, 10000); // 2026-09-30 23:00 New York
   const ctx = staffCtx(env.base, "staff");
   expect((await staffMeCommissions(ctx, { from: "2026-10-01", to: "2026-10-01" })).rows).toEqual([]);
-  expect((await staffMeCommissions(ctx, { from: "2026-09-30", to: "2026-09-30" })).rows[0]?.entries).toEqual([id]);
+  expect((await staffMeCommissions(ctx, { from: "2026-09-30", to: "2026-09-30" })).rows[0]?.entries.map((e) => e.id)).toEqual([id]);
   await env.db.update(branch).set({ timezone: "Asia/Bangkok" }).where(eq(branch.id, env.base.branchId));
 });
 

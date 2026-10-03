@@ -11,5 +11,12 @@
   "amount": "ค่ามือ",
   "details": "รายละเอียด",
   "entries": "{count} รายการ",
-  "export": "Export CSV"
+  "export": "Export CSV",
+  "entryDate": "วันที่",
+  "entryReceipt": "ใบเสร็จ",
+  "entryService": "บริการ",
+  "entryBase": "ฐาน",
+  "entryRule": "กติกา",
+  "entryAmount": "ยอด",
+  "reversed": "ยกเลิก"
 }

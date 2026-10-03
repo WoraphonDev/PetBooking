@@ -2,9 +2,9 @@
 import { ReportsCommissionsQuery, ReportsCommissionsResponse } from "@app/contracts/endpoints/reports.commissions";
 import { Download } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTimeZone, useTranslations } from "next-intl";
 import { buildUrl, errorMessage } from "../../lib/api";
-import { formatTHB } from "../../lib/format";
+import { formatTHB, formatThaiDate } from "../../lib/format";
 import { useApiQuery } from "../../lib/query";
 import { ThaiDatePicker } from "../shared/form";
 import { DataTable, type DataTableColumn } from "../shared/table";
@@ -14,6 +14,7 @@ type Row = ReportsCommissionsResponse["rows"][number];
 
 export function CommissionReportScreen() {
   const t = useTranslations("C-24");
+  const timezone = useTimeZone() ?? "Asia/Bangkok";
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -39,15 +40,36 @@ export function CommissionReportScreen() {
     {
       id: "details",
       header: t("details"),
-      // Q-0077: CommissionReport carries entry ids only — date/receipt/service/base/rule/amount need a detail source
+      // 06: expand → วันที่, ใบเสร็จ, บริการ, ฐาน, กติกา, ยอด per counted event (Q-0077; a reversal counts negative)
       cell: (row) => (
         <details>
           <summary className="min-h-11 cursor-pointer content-center">{t("entries", { count: row.entries.length })}</summary>
-          <ul className="grid gap-1 font-mono text-xs">
-            {row.entries.map((id) => (
-              <li key={id}>{id}</li>
-            ))}
-          </ul>
+          <table className="mt-2 w-full text-sm">
+            <thead>
+              <tr>
+                {(["entryDate", "entryReceipt", "entryService", "entryBase", "entryRule", "entryAmount"] as const).map((key) => (
+                  <th key={key} className="text-left font-medium">
+                    {t(key)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {row.entries.map((e) => (
+                <tr key={`${e.id}:${e.sign}`}>
+                  <td>{formatThaiDate({ date: new Intl.DateTimeFormat("en-CA", { timeZone: timezone }).format(new Date(e.at)) })}</td>
+                  <td className="font-mono">{e.receiptNo ?? "—"}</td>
+                  <td>
+                    {e.serviceName}
+                    {e.sign < 0 ? <span className="text-destructive"> · {t("reversed")}</span> : null}
+                  </td>
+                  <td>{formatTHB({ satang: e.sign * e.baseSatang })}</td>
+                  <td>{e.ruleLabel ?? "—"}</td>
+                  <td>{formatTHB({ satang: e.sign * e.amountSatang })}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </details>
       ),
     },
