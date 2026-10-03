@@ -264,7 +264,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user approved the accounting interpretation in chat. from..to are branch-local days. An entry whose earned_at is in range adds +1 job, +base, +amount; an entry with status reversed whose reversed_at is in range adds −1 job, −base, −amount (so earned and reversed in the same range nets to 0, and a later void shows as a deduction in the period of the void). `entries[]` lists every entry that contributed. No entries → `rows: []`.
 
 ## Q-0077 · C-24 commission report: entry details have no data source
-- Status: open (T-0254 ships a partial expand)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat; a follow-up card extends CommissionReport `rows[].entries[]` to `{ id, at, receiptNo, serviceName, baseSatang, ruleLabel, amountSatang }` and C-24 renders them.
 - Task: T-0254 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 06#scr-C-24 "รายละเอียด" expands each staff row into วันที่, ใบเสร็จ, บริการ, ฐาน, กติกา, ยอด per entry, but 05#dto-CommissionReport returns only `entries[]` (commission_entry ids) and no endpoint reads commission entries by id. 06 also gives no default range for the required from/to.
 - Evidence: 06#scr-C-24, 05#dto-CommissionReport, 05#ep-reports.commissions, Q-0030.
@@ -292,7 +293,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat (asked by claude while finishing T-0036). Ship the scheduled-job runner now: cron.tick = secret check → seed recurring jobs → run due jobs → `{processed, failed}`. Dispatching queued notifications from the tick (stale cutoff in notify/dispatch.ts + runtime adapter factory for LINE/SMTP/push) is deferred to a separate follow-up card; T-0036 does not touch notify/** or integrations/**.
 
 ## Q-0060 · T-0011 email subject line
-- Status: open (T-0011 ships a fallback)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): Option A: `render()` returns `{ text, subject?, title?, url? }`; dispatch passes `subject` to email and `title/url` to Web Push; LINE Flex moves to T-0149. Needs one card owning notify/dispatch.ts, notify/senders.ts and integrations/email. Subjects: staff.invite 'คำเชิญเข้าร่วมร้าน {shopName}', staff.password_reset 'ตั้งรหัสผ่านใหม่', owner.daily_summary 'สรุปประจำวัน {date}', owner.promptpay_changed '⚠️ บัญชีรับเงินของร้านถูกเปลี่ยน', owner.support_access 'ทีมงานเข้าดูข้อมูลร้านของคุณ', admin.feedback '[Feedback] {shopName}', admin.data_request '[PDPA] คำขอใหม่'. Unblocks the template cards' step 6.
 - Task: T-0011 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 07 §1 gives each email template (`staff.invite`, `staff.password_reset`, `owner.*`, `admin.*`) one 'ข้อความ' and no subject line; `EmailSender.send` (notify/senders.ts, outside T-0011 allowed paths) receives only `{ to, text }`, so the SMTP adapter cannot pick a per-template subject.
 - Evidence: 07 §1 table, `packages/server/src/notify/senders.ts`, ADR-003.
@@ -300,7 +302,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 
 ## Q-0033 · Support mode reads are refused by every service's `requireRole`
-- Status: open
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): Option A: `requireRole` also accepts a support actor (`ctx.actor.type === "admin"`, `ctx.supportAccessLogId` set, role in the allowed roles); writes stay blocked by SUPPORT_READ_ONLY. Needs a small card owning `packages/server/src/auth/permissions.ts` + test.
 - Task: found in T-0125 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 01 §4 / Q-0007 say a support session (actor `{type:"admin", role:"owner"}`) reads every page like an owner. `withStaff` lets that actor through (`requireRoleOrSupport`), but each service then calls `requireRole(ctx, key)` (`packages/server/src/auth/permissions.ts`), which accepts only `actor.type === "staff"` and answers `FORBIDDEN`. Only `auth.me` handles the support actor itself. So support mode can open the console, but every other read (audit.list, customers.get, …) fails.
 - Evidence: `packages/server/src/auth/permissions.ts` requireRole; `packages/server/src/http/wrap.ts` requireRoleOrSupport; `packages/server/src/services/auth/me.ts`; T-0125 test "lets the support session read like an owner…" (uses auth.me for that reason).
@@ -308,21 +311,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Work: T-0125 implemented supportStart/End without touching permissions.ts.
 
 ## Q-0069 · T-0224 customers.timeline: item title, type mapping and amounts
-- Status: open (T-0224 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0224 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 05#ep-customers.timeline lists the item fields `{at, type, title, petName, amountSatang, refId}` and the sources (booking_event, bill paid/void, report_card sent) but not how each source maps to `type`/`title`/`amountSatang`, nor where `note` items come from. Thai labels live only in apps/web (enum-labels copy).
 - Evidence: 05#ep-customers.timeline, 06#scr-C-09 ("ไอคอนตามประเภท + จำนวนเงิน"), enum-labels.th.json.
 - Proposed decision (implemented): booking_event → type by entity (booking/deposit → booking, groom_appointment → groom, stay, daycare_visit → daycare), at = created_at, title = "{bookingNo} · {to_status label}", petName from the child's pet, refId = entity id (booking id for deposit). Bill → one item at closed_at ("{receiptNo} · ชำระแล้ว") and, for a void bill, another at voided_at ("{receiptNo} · ยกเลิก"), amountSatang = total_satang. Report card sent → at sent_at, title = "ส่งแล้ว", petName. `note` has no source yet and is never returned. Status labels are copied from enum-labels.th.json into the service with a test that keeps them identical. Paging: 05 §0 `limit` + opaque cursor (at|key), newest first.
 
 ## Q-0034 · customers.blacklist: unblacklisting without a reason
-- Status: open
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): Option A: a reason (≥ 3 chars) is required both when blacklisting and when lifting it; update 05#ep-customers.blacklist (`reason` always required). No code change (writeAudit already enforces it).
 - Task: T-0156 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 05#ep-customers.blacklist makes `reason` required only when `blacklisted = true`, but R-27's `writeAudit` (`packages/server/src/audit.ts`) requires a reason of ≥ 3 chars for every action matching /blacklist/, so every `customer.blacklist` entry needs one, including lifting the block. Which rule wins?
 - Evidence: 05#ep-customers.blacklist validation column; `packages/server/src/audit.ts` writeAudit reason check.
 - Work: T-0156 requires the reason in both directions (`REASON_REQUIRED`), so the audit trail always has a reason. If unblacklisting should be allowed without one, audit.ts (outside T-0156) needs an exception for `customer.blacklist` with `after.blacklisted = false`.
 
 ## Q-0065 · T-0287 care_task_overdue: "staff ทุกคนที่ active ในสาขา"
-- Status: open (T-0287 ships the fallback)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0287 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 07 §1 sends `staff.care_task_overdue` to "staff (ทุกคนที่ active ในสาขา)", but 02#tbl-staff_user has no branch column or staff↔branch table, so branch membership cannot be read.
 - Evidence: 02#tbl-staff_user, `packages/db/src/schema/identity.ts`.
@@ -349,7 +355,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user approved this text in chat: ยกเลิกก่อนเริ่มบริการอย่างน้อย {hours} ชั่วโมง ไม่ริบมัดจำ; ยกเลิกภายหลัง ริบมัดจำ {percent}% . Substitute freeCancelHours and lateCancelForfeitPercent respectively.
 
 ## Q-0070 · T-0270 quotes.create stays/daycare: item shapes, bundle groom, approval and cancel window
-- Status: open (T-0270 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0270 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 05#ep-quotes.create types `stays[]` / `daycare[]` only as `object[]` (groom[] is "เหมือน bookings.create"), and 05#dto-Quote does not say where a stay's checkout-day `bundleGroom` appears, which `auto_confirm_*` decides `requiresApproval` for mixed quotes, or which free-cancel hours the Q-0036 `cancelSummary` uses.
 - Evidence: 05#ep-quotes.create, 05#ep-bookings.create, 05#dto-Quote, R-03, R-07 step 2, R-08 step 2, Q-0036.
@@ -368,7 +375,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user chose in chat. Body `{ send?: boolean }` (default false = only return the link). No bill on the booking, or the bill is paid/void → `BILL_NOT_OPEN` (409). `amountSatang = bill.total_satang − bill.paid_satang`. `url = APP_BASE_URL + /liff/{branch.booking_slug}/pay/{billId}` (route of L-14; 01 §6 APP_BASE_URL is the base for links in messages). send=true enqueues `customer.balance_link` to booking.customer_id with `amount` formatted by R-31 formatTHB(always).
 
 ## Q-0061 · T-0186 expire_hold: bookAgainUrl
-- Status: open (T-0186 ships a fallback)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0186 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 07 §1 `customer.hold_expired` (and `customer.no_show`) needs `{bookAgainUrl}`, but neither 05 nor 07 says which URL that is.
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
@@ -382,7 +390,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision (implemented): customers with a booking created or cancelled in the last 13 months, plus any customer whose stored counts are non-zero (so old counts decay to 0). Window = now − 12 calendar months. No-show counts on the child's date (groom starts_at, stay check_in_date, daycare visit_date); late cancel = booking.cancel_is_late = true with cancelled_at in the window; completed = picked_up / checked_out children of the customer's bills paid in the window (as bills.close). Writes no_show_count_12m, late_cancel_count_12m and reliability_level only when one of them changes.
 
 ## Q-0063 · T-0187 reminder_24h: "active", dateTime, service and reschedules
-- Status: open (T-0187 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0187 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 07 §2 says "ตรวจว่ายัง active" without defining it, and 07 §1 `customer.reminder_24h` names `dateTime`, `service`, `bookingUrl` without formats. Its notification dedupe `reminder_24h:{entityId}` also means a visit rescheduled after its reminder was sent never gets a second reminder, although the job dedupe includes `{startsAt}`.
 - Evidence: 07 §1/§2 reminder_24h rows; 03 booking/groom/stay/daycare states; enum-labels `service_scope`; R-31 formatThaiDate/formatTime.
@@ -395,7 +404,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer: user approved expanding the spec to edit the full annual list and load existing rows before saving. Add admin.listHolidays GET on the same year path, returning date/nameTh rows sorted by date, and a year selector plus add/remove controls. T-0090 owns the loader, DTO and client mapping; existing merged dependencies are unchanged. Save is disabled until loading succeeds. Spec and implementation are separate small PRs; merge the spec prerequisite first.
 
 ## Q-0044 · A-04 shows shop name and role but no endpoint loads them
-- Status: open (T-0074 blocked)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): Option A: add public `auth.invitePreview` GET `/api/v1/auth/staff/invite?token=` → `{ orgName, role, hasEmail }`, TOKEN_INVALID for an unknown/expired token (spec change + own API card); A-04 loads it. The 'ใช้ LINE แทนรหัสผ่าน' button stays hidden until T-0149.
 - Task: T-0074 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 06#scr-A-04 shows `organization.name` and `staff_user.role` and hides the email field unless the invite has none, but its "โหลดข้อมูล" is "—" and 05 has no public endpoint that reads an invite by token (only `auth.inviteAccept`, POST). The "ใช้ LINE แทนรหัสผ่าน" button also needs `staffMe.linkLine` (T-0105), which needs the LINE ID-token verifier (T-0149, blocked on H-03).
 - Evidence: 06#scr-A-04, 05#ep-auth.inviteAccept, 05 catalogue (no invite preview).
@@ -409,7 +419,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user chose in chat. Each type exports its 02 table (customers→customer, pets→pet, bills→bill, bill_lines→bill_line, commissions→commission_entry, bookings→booking) with every column in schema order except organization_id; `*_satang` columns are output in baht with 2 decimals and named without the `_satang` suffix. Pets are the pets of the organization's customers' owner profiles. from/to are inclusive branch-local days on created_at (bills: closed_at, commissions: earned_at, bookings: first_service_at). The route reads `{type}` from the URL path, calls the `withStaff` handler and re-sends its JSON string as `text/csv; charset=utf-8` with `Content-Disposition: attachment`. A shared non-JSON response option in respond.ts would remove this adapter (follow-up, not in T-0307).
 
 ## Q-0074 · T-0234 bills.close: redemption count, package value, reliability, booking close
-- Status: open (T-0234 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0234 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 05#ep-bills.close says "package_redemption → sessions_used + 1", but bills.open (T-0229) and bills.addLine (T-0231) already count the session when the line is added; doing it again at close would double count. It also does not say which price a sold package's unit value uses, how "completed visits" for R-09 are counted, or which child states end a booking.
 - Evidence: 05#ep-bills.close, R-09 note (recompute on bill close), R-13, R-14, R-16, 03 sm-booking/sm-bill, Q-0049, Q-0072.
@@ -428,18 +439,32 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. bookingIds must belong to one customer (and one branch); a sent customerId must match → else VALIDATION_FAILED. customerId only → empty bill for that customer; neither → empty walk-in bill (customer null). Only `confirmed` bookings may be billed (else VALIDATION_FAILED). Idempotency: every booking already on the same open bill → that bill; a booking on a paid/void bill → BILL_NOT_OPEN; bookings spread over bills → VALIDATION_FAILED. A package item that fails R-14 canRedeemPackage (or belongs to another customer) is billed at its booked price. Lines per appointment: main services, add-ons, then surcharges (performer = groomer); stay/daycare lines are T-0270.
 
 ## Q-0071 · T-0283 bills.open hotel/daycare lines: descriptions and order
-- Status: open (T-0283 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0283 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 05#ep-bills.open says to create lines from stay (stay_night qty = nights), stay_addon and daycare_visit, but stay and daycare_visit have no name snapshot for `bill_line.description`, and the line order across modules is not given.
 - Evidence: 05#ep-bills.open, 02#tbl-stay / #tbl-daycare_visit / #tbl-stay_addon, Q-0049.
 - Proposed decision (implemented): stay_night = room type `name_th`, qty = `stay.nights`, unit = `stay.nightly_price_satang`; stay_addon = `stay_addon.name_snapshot`, its quantity × unit price; daycare = session type `name_th`, qty 1, `daycare_visit.price_satang`; pet = the child's pet; no performer. Order: grooming lines (Q-0049) first, then per stay (by check-in) its night line and add-ons, then daycare visits by date. Cancelled/no-show children are skipped.
 
 ## Q-0073 · T-0232 bills.removeLine / setDiscount / voidPayment details
-- Status: open (T-0232 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0232 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 05 says booking lines cannot be removed but names no error; it does not say what removing a counter redemption does to the package, whether setDiscount/voidPayment need an open bill for codes other than those listed, how a payment voided twice or a deposit not on a bill is handled, or where the credit refund is linked.
 - Evidence: 05#ep-bills.removeLine / #ep-bills.setDiscount / #ep-bills.voidPayment, R-14 #5, R-15, Q-0055, Q-0072.
 - Proposed decision (implemented): removeLine works on bills.addLine lines only (quick_item, package_sale, counter package_redemption); a booking line → VALIDATION_FAILED. Removing a counter redemption deletes its package_redemption and gives the session back (sessions_used − 1, exhausted → active). All three need an open bill (BILL_NOT_OPEN) and recompute totals. setDiscount: reason ≥ 3 chars when > 0, front_desk limit as Q-0055 (line + bill discounts ≤ 20% of Σ qty × unit), audit `bill.discount` only when the discount/reason changes. voidPayment: reason ≥ 3 chars (REASON_REQUIRED, checked before lookup), only posted payments of a bill (a payment without a bill → NOT_FOUND; already voided → VALIDATION_FAILED), paid_satang reduced; a credit payment adds a `void_reversal` credit_ledger row (ref bill) and raises customer.credit_balance in the same transaction; audit `payment.void`.
+
+## Q-0084 · T-0189 recompute_reliability: late cancels cannot be counted afterwards
+- Status: answered (2026-10-04)
+- Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: R-09 recounts late cancels over 12 months, but bookings.cancel stores neither `kind` nor whether the cancel was late (only `cancelled_by_type`, which cannot tell a shop cancel from a cancel on the customer's behalf).
+- Answer (2026-10-04): user chose option A in chat. Add `booking.cancel_is_late boolean` (null = not cancelled), written by bookings.cancel / liff.cancel from R-07 `isLate`; recompute_reliability counts bookings with `cancel_is_late = true` and `cancelled_at` in the last 12 months. Needs a spec change (02 + 05) and a migration in the card that owns it; T-0189 waits for it.
+
+## Q-0085 · T-0305 reports.sales: gross/discount/net and grouping
+- Status: answered (2026-10-04)
+- Task: T-0305 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05#dto-SalesReport sets gross = Σ line_total and discount = bill + line discounts, but line_total is already net of the line discount (double count), and grouping by service/groomer/method is not defined.
+- Answer (2026-10-04): user chose option A in chat. gross = Σ qty × unit; discount = Σ line discounts + bill discount; net = gross − discount (= bill.total). Paid bills by branch-local closed_at day, void excluded. day = one row per day; service/groomer = per line with the bill discount spread like R-13 #1 (service = service or quick-item name; lines without performer → one "ไม่ระบุช่าง" row), billCount = distinct bills in the row; method = posted payments per method (net = amount, gross/discount 0). payments[] = Σ posted payments of those bills per method (deposit/credit included). totals = row shape without key. 05 text to be updated by spec change.
 
 ## Q-0055 · bills.list date/order and bills.updateLine rules
 - Status: answered (implemented in T-0230)
@@ -448,21 +473,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. bills.list: a paid bill is dated by closed_at, open/void by opened_at (also without a status filter); `date` = that branch-local day; newest first (ms precision) with the 05 §0 keyset cursor and limit; customerName = owner_profile.first_name (null for walk-in). bills.updateLine: discount > 0 needs a reason ≥ 3 chars (REASON_REQUIRED); discount ≤ qty × unit (LINE_DISCOUNT_TOO_LARGE); front_desk: all discounts on the bill (lines + bill discount) ≤ 20% of the gross Σ qty × unit (DISCOUNT_LIMIT_EXCEEDED; owner unlimited); quantity on a non-quick_item line or a performer that is not an active staff of the org → VALIDATION_FAILED; a subtotal below the bill discount → BILL_DISCOUNT_TOO_LARGE; audit `bill.discount` only when the discount/reason changes; the row is updated in place.
 
 ## Q-0067 · T-0243 next_groom_reminder: bookUrl, recipient and visit branch
-- Status: open (T-0243 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0243 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 07 §1 `customer.next_groom_reminder` needs `{bookUrl}` and a `dueDate` format, and the job payload `{petId, organizationId}` names neither the customer nor the branch (timezone, branch_policy.next_groom_default_days, booking slug).
 - Evidence: 07 §1/§2 next_groom rows, R-17, Q-0040 (LIFF links = APP_BASE_URL + /liff/{booking_slug}/…), 06 L-04 `/liff/[branchSlug]/book/grooming`.
 - Proposed decision (implemented): branch and customer come from the pet's latest done/picked_up appointment in the organization (its branch, its booking's customer); `bookUrl = APP_BASE_URL + /liff/{booking_slug}/book/grooming` (L-04); `dueDate` = formatThaiDate; future appointment = one starting after now that is not cancelled/no_show.
 
 ## Q-0072 · T-0231 bills.addLine: package lines without an appointment
-- Status: open (T-0231 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0231 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 05#ep-bills.addLine lists the fields and the R-14 error codes, but not how a package line is built when no appointment is involved: what a package_sale costs/says, who it belongs to, how many per line, and what a counter redemption checks (R-14 `canRedeemPackage` needs an appointment service/tier/pet). It also gives no code for a package that is not active for other reasons.
 - Evidence: 05#ep-bills.addLine, R-14, 03 customer_package (`∅ → active` on bills.close), Q-0055 (performer rule).
 - Proposed decision (implemented): quick_item = description + unit price (required), quantity 1–999 (default 1). package_sale = the branch's active package_template (price, `name_th`), quantity 1, ref = template; the bill must have a customer; single_pet needs `petId` of that customer; the customer_package is created by bills.close. package_redemption = a package of the bill's customer for one of its pets, checked with R-14 using the package's own service/tier (counter redemption), price 0, ref = customer_package, + package_redemption row, sessions_used + 1 (exhausted when full). A non-active package answers PACKAGE_EXHAUSTED / PACKAGE_EXPIRED by its status, other failures VALIDATION_FAILED. Fields that do not belong to the line type, or quantity ≠ 1 on package lines → VALIDATION_FAILED. performerId must be an active staff (as Q-0055). Totals are recomputed like bills.updateLine; no audit (none listed).
 
 ## Q-0045 · P-02 legal documents: content files missing and outside allowed paths
-- Status: open (T-0317 blocked)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): Option A + C: a human (legal owner) supplies the three markdown files in a separate PR first; T-0317 then renders plain paragraphs with `LEGAL_DOCS` in `components/p-02/`. Claude drafts a Thai outline (PDPA headings) for human/legal review after the quota reset; the draft is not published as-is. Required before the pilot (L-01 consent).
 - Task: T-0317 · Asked by: agent (claude) · Date: 2026-10-02
 - Question: 06#scr-P-02 renders `LEGAL_DOCS[doc].file` markdown at build time and 10#legal-docs points to `apps/web/content/legal/{privacy_notice,terms_of_service,dpa}.2026-10-01.md`, but those files do not exist, no `LEGAL_DOCS` constant exists, and no markdown renderer is a dependency. The card's allowed_paths cover only the page, `components/p-02/**`, the messages file and the test.
 - Evidence: 06#scr-P-02, 10-reference-data.md#legal-docs, `ls apps/web/content` → missing.
@@ -482,7 +510,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user chose in chat. AD-04 keeps screen-local labels in `messages/th/AD-04.json`: new = ใหม่, acknowledged = รับทราบแล้ว, done = เสร็จแล้ว. Follow-up for the spec owner: add `feedback_status` with these labels to enum-labels.th.json, then AD-04 switches to `enumLabel("feedback_status", …)`.
 
 ## Q-0076 · C-26 Audit log: Thai labels for actions/entities, links and the diff
-- Status: open (T-0079 ships proposed labels in C-26.json)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat; the proposed labels in C-26.json stay until `audit_action` labels are added to enum-labels.th.json.
 - Task: T-0079 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 06#scr-C-26 asks for a "select ป้ายภาษาไทย" of `audit_log.action` and an entity link, but enum-labels.th.json has no audit action or entity type labels (R-27 lists the action codes only), 06 does not map entity types to pages, and "diff (after)" has no format. The menu entry `shell-console/navigation/C-26.ts` is outside the card's allowed paths (same follow-up as Q-0048).
 - Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
@@ -495,14 +524,16 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. The button shows for a paid bill with a customer (customerName set); bills.sendReceipt refuses other bills and the dispatcher skips customers without LINE. Follow-up: add a customer LINE flag to Receipt so the button can follow 06 exactly. Paper size: a 58 มม. / 80 มม. / A5 select next to "พิมพ์" (print option, not a data field), default 80 มม., remembered per browser (localStorage), driving the @page CSS. Dates use Asia/Bangkok because Receipt carries no branch timezone.
 
 ## Q-0066 · T-0309 owner.daily_summary: noShows and tomorrowCount
-- Status: open (T-0309 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0309 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 07 §2 says the summary "รวมตัวเลข DashboardToday", but 05#dto-DashboardToday has no tomorrow count and only grooming no-shows (`groom.byStatus.no_show`); 07 §1 also gives no format for `date` / `salesTotal`.
 - Evidence: 07 §1/§2 owner_daily_summary rows, 05#dto-DashboardToday, Q-0053.
 - Proposed decision (implemented): numbers are for the job's `localDate` (not ctx.now, so a retry after midnight reports the right day) with the Q-0053 definitions: groomCount = groom.total, staysInHouse = hotel.inHouse, salesTotal = sales.paidTotalSatang via formatTHB auto, noShows = grooming no-shows of the day, tomorrowCount = next day's grooming appointments + hotel check-ins + daycare visits (cancelled excluded), date = formatThaiDate. Sent to every active owner.
 
 ## Q-0075 · T-0235 bills.void: open bills, earned credit, deposits and errors
-- Status: open (T-0235 ships these choices)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat; the credit balance may go negative after a void (shown on the customer page) rather than blocking the void.
 - Task: T-0235 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 05#ep-bills.void covers paid → void only and lists no error codes, while 03 sm-bill also has open → void (no posted payment). It says "credit ที่ใช้/ได้ในบิล → ย้อน" but the deposit credit written at close references the booking, not the bill; it does not say what happens to an applied deposit or to customer.visit_count, nor which code answers an already-void bill.
 - Evidence: 05#ep-bills.void, 03 sm-bill / sm-booking / sm-deposit (`applied → verified`), R-13 #6, R-14 #5, Q-0074.
@@ -515,7 +546,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. The screen also loads the existing `admin.orgs` list and maps orgId → name ("—" when missing); no API/DTO change. It requests the 7 Bangkok days ending today (to = today Asia/Bangkok, from = to − 6, inclusive per Q-0037) and shows that range under the title.
 
 ## Q-0062 · T-0086: enabling the C-38 console menu entry
-- Status: open (screen implementation proceeds within the card scope)
+- Status: answered (2026-10-04)
+- Answer (2026-10-04): user confirmed the implemented decision in chat.
 - Task: T-0086 · Asked by: agent (codex) · Date: 2026-10-03
 - Question: may this card also change `apps/web/src/components/shell-console/navigation/C-38.ts` to set `implemented: true`? It is absent from allowed_paths. Q-0048 calls for a task-generator follow-up, which has not been applied to T-0086.
 - Pending user choice: expand the card scope for that single entry, or ship only the catalogued screen route. The navigation entry remains untouched until answered.
@@ -536,6 +568,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
 
+## Q-0050 · T-0073: Recharts lockfile exceeds the small-PR budget
+- Status: answered (user approved size exception in chat, 2026-10-04)
+- Task: T-0073 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: the card explicitly names Recharts; installing it changes package/lockfile by 303 lines, before approximately 123 lines of chart components/tests.
+- Proposed decision: approve a size exception for this card; alternatively split dependency installation into a separately authorized card.
+- Answer (2026-10-04): user approved the approximately 437-line exception, including 302 generated dependency lockfile lines. Publish this single card with its named dependency.
+
 ## Q-0079 · T-0311: upcoming queue is absent from DashboardToday
 - Status: answered (user approved in chat, 2026-10-03)
 - Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
@@ -554,3 +593,17 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: approve extending scope to relay received push events to existing client windows, or defer push refresh to a follow-up? Polling every 60 seconds proceeds within the original card scope.
 
 - Answer (2026-10-03): user approved the proposed choices: defer the absent queue to a specified API follow-up, expand the selected menu scope and relay web push. Claude has merged T-0079 in #162 and T-0254 in #163. Their completed C-26/C-24 pages receive the approved menu scope and enabled entries here; Codex does not redo those cards. T-0311 depends on the already-merged T-0091 so its sw.js follow-up is ordered after the original owner.
+
+## Q-0082 · T-0311: shell test assumes C-01 stays disabled
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: console-shell.test.tsx asserts C-01 is disabled, conflicting with the approved implemented menu. The card web suite reports 236 passed and that one failed assertion.
+- Proposed decision: use explicit enabled C-01 and disabled C-02 fixtures, retain disabled-menu assertions, and verify the dashboard link/current-page behavior. Approve the shared test file in the separate scope PR; no business assertions are removed.
+
+## Q-0083 · T-0205: economy mode has no merged read API
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0205 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 06#scr-C-22 requires branch_policy.economy_mode, but the LineStatus contract lacks it and no merged read policy endpoint supplies it.
+- Question: implement quota/list/copy first and defer economy-mode status until the read API is specified, or expand the spec/API first? No status or response field is invented.
+
+- Answer (2026-10-04): user approved the explicit shared menu fixtures and dashboard current-page coverage (Q-0082), and deferred economy-mode status until the read API exists while retaining quota/list/copy and the policy settings link (Q-0083).

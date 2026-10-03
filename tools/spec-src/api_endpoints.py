@@ -170,7 +170,7 @@ ep("customers.update", "PATCH", f"{ST}/customers/{{customerId}}", "staff", OF, "
     F("internalNote", "string", False, "customer.internal_note", ""), F("depositExempt", "bool", False, "customer.deposit_exempt", "owner เท่านั้น"),
     F("photoConsent", "enum:photo_consent", False, "customer.photo_consent", "ตั้ง photo_consent_at = now")], res="CustomerDetail", rules="R-22")
 ep("customers.blacklist", "POST", f"{ST}/customers/{{customerId}}/blacklist", "staff", O, "US-03-09", "ตั้ง/ยกเลิก blacklist",
-   [F("blacklisted", "bool", True, "customer.blacklisted", ""), F("reason", "string", False, "customer.blacklist_reason", "บังคับเมื่อ true, ≥ 3 ตัว")],
+   [F("blacklisted", "bool", True, "customer.blacklisted", ""), F("reason", "string", True, "customer.blacklist_reason", "≥ 3 ตัว ทั้งตอนตั้งและยกเลิก (Q-0034)")],
    res="CustomerDetail", errors="REASON_REQUIRED", audit="customer.blacklist")
 ep("customers.reliabilityOverride", "PUT", f"{ST}/customers/{{customerId}}/reliability-override", "staff", O, "US-03-09", "กำหนดระดับความน่าเชื่อถือเอง",
    [F("level", "int", False, "customer.reliability_override", "1–4 หรือ null = ใช้ค่าคำนวณ"), F("reason", "string", True, "", "≥ 3 ตัว")],

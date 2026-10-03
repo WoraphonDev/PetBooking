@@ -625,6 +625,8 @@ for s in SCR:
         if not suf and s["id"] == "C-01":
             allowed.append("apps/web/public/sw.js")
             steps.insert(1, "ขอบเขตรอบนี้: คิวถัดไปแยกเป็นงานต่อยอดหลังขยาย DashboardToday (Q-0079); refresh จาก web push ผ่าน service worker (Q-0081)")
+        if not suf and s["id"] == "C-22":
+            steps.insert(1, "ขอบเขตรอบนี้: สถานะโหมดประหยัดแยกเป็นงานต่อยอดหลังมี API อ่าน policy (Q-0083); คงลิงก์ตั้งค่านโยบาย")
         if s["app"] == "admin":
             allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
             if s["id"] == "AD-01":
