@@ -413,6 +413,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: a human (legal owner) supplies the three markdown files; the card gains `apps/web/content/legal/**` (or the files land first in a separate PR) and lists the markdown dependency (or the page renders plain paragraphs without one). `LEGAL_DOCS` can live in `components/p-02/`.
 - Work: none on T-0317 until the content exists.
 
+## Q-0068 · T-0188 approval_overdue: refund by a system job, waitedMinutes
+- Status: answered (implemented in T-0188); spec follow-up open
+- Task: T-0188 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 03 says awaiting_approval → expired by job:approval_overdue applies R-07 shop_cancel (full refund of a verified deposit), but `refund.created_by` is NOT NULL → staff_user and a job has no staff actor. 07 also gives no basis for `waitedMinutes`, and `refund.mode` is cash/bank_transfer/credit while R-07 says "refund".
+- Answer (2026-10-03): user chose in chat: `created_by` = the organization's first active owner. Implemented with: refund `mode = bank_transfer` (R-07 "ร้านโอนคืนเอง"), `amount` = computeCancellation(shop_cancel).returnSatang, `reason = "job:approval_overdue"`, deposit_status verified → refunded, audit `refund.create` (actor system) — all in the job transaction; children → cancelled; no customer notification (03 names none). waitedMinutes = now − (approval_due_at − branch_policy.approval_timeout_minutes); the next round runs after approval_timeout_minutes but no later than first_service_at. Spec follow-up: allow a system creator on refund (nullable created_by or actor columns).
+
 ## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
 - Status: answered for T-0147; spec follow-up open
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
