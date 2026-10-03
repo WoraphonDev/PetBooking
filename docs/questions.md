@@ -284,6 +284,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: expand scope for dispatcher cutoff and adapter wiring; absent integration adapters leave their rows queued. Alternatively implement the independent scheduled-job runner and defer cron notification dispatch. No dependent code written before approval.
 - Answer (2026-10-03): user chose in chat (asked by claude while finishing T-0036). Ship the scheduled-job runner now: cron.tick = secret check → seed recurring jobs → run due jobs → `{processed, failed}`. Dispatching queued notifications from the tick (stale cutoff in notify/dispatch.ts + runtime adapter factory for LINE/SMTP/push) is deferred to a separate follow-up card; T-0036 does not touch notify/** or integrations/**.
 
+## Q-0060 · T-0011 email subject line
+- Status: open (T-0011 ships a fallback)
+- Task: T-0011 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §1 gives each email template (`staff.invite`, `staff.password_reset`, `owner.*`, `admin.*`) one 'ข้อความ' and no subject line; `EmailSender.send` (notify/senders.ts, outside T-0011 allowed paths) receives only `{ to, text }`, so the SMTP adapter cannot pick a per-template subject.
+- Evidence: 07 §1 table, `packages/server/src/notify/senders.ts`, ADR-003.
+- Proposed decision: add a subject column (Thai) to 07 for email-capable templates and pass `subject` through `EmailSender.send` in a follow-up card. Until then T-0011 sends the rendered text as both subject and body (no invented copy).
+
 
 ## Q-0033 · Support mode reads are refused by every service's `requireRole`
 - Status: open

@@ -180,6 +180,9 @@ importers:
       drizzle-orm:
         specifier: 0.45.3
         version: 0.45.3(@electric-sql/pglite@0.5.8)(postgres@3.4.9)
+      nodemailer:
+        specifier: ^7.0.13
+        version: 7.0.13
       web-push:
         specifier: ^3.6.7
         version: 3.6.7
@@ -187,6 +190,9 @@ importers:
       '@types/node':
         specifier: 22.20.4
         version: 22.20.4
+      '@types/nodemailer':
+        specifier: ^7.0.12
+        version: 7.0.12
       '@types/web-push':
         specifier: ^3.6.4
         version: 3.6.4
@@ -2348,6 +2354,9 @@ packages:
   '@types/node@22.20.4':
     resolution: {integrity: sha512-zJRE40jpHtKqE/C4fgHrAKQLJuSpzEnP9ff9Y7YtoR3Wd2pwqzlekDeEuUQXjRd+QCYnVnNwuJYmhdk9XV8gvA==}
 
+  '@types/nodemailer@7.0.12':
+    resolution: {integrity: sha512-80vKwiIsVSyFA1rRovH59jNPLBOuc6dRZIHEu40gXTkBkZnQv8vog1xSGEb9j5q/tdMAs5ivvDR2pLTU0hGHXA==}
+
   '@types/react-dom@19.3.0':
     resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
     peerDependencies:
@@ -3471,6 +3480,10 @@ packages:
   node-releases@2.0.57:
     resolution: {integrity: sha512-kQK9LGGFiHtrWiNhZtA7Qbw17AQz+dmsEKODRIVTXA9+e5MS/2gZEBhYJt13GrAz5/IOZKddH/0Z3TP/Zgo+yw==}
     engines: {node: '>=18'}
+
+  nodemailer@7.0.13:
+    resolution: {integrity: sha512-PNDFSJdP+KFgdsG3ZzMXCgquO7I6McjY2vlqILjtJd0hy8wEvtugS9xKRF2NWlPNGxvLCXlTNIae4serI7dinw==}
+    engines: {node: '>=6.0.0'}
 
   npm-run-path@4.0.1:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
@@ -5990,6 +6003,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/nodemailer@7.0.12':
+    dependencies:
+      '@types/node': 22.20.4
+
   '@types/react-dom@19.3.0(@types/react@19.3.0)':
     dependencies:
       '@types/react': 19.3.0
@@ -6947,6 +6964,8 @@ snapshots:
   node-addon-api@7.1.1: {}
 
   node-releases@2.0.57: {}
+
+  nodemailer@7.0.13: {}
 
   npm-run-path@4.0.1:
     dependencies:
