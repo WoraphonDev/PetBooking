@@ -79,6 +79,8 @@ export const booking = pgTable(
     cancelledAt: timestamp("cancelled_at", { withTimezone: true, mode: "date" }),
     cancelledByType: actorTypeEnum("cancelled_by_type"),
     cancelReason: text("cancel_reason"),
+    /** R-07 isLate ตอนยกเลิก (Q-0084); null = ไม่ได้ยกเลิก — R-09 นับ late cancel จากคอลัมน์นี้ */
+    cancelIsLate: boolean("cancel_is_late"),
     /** cache เวลาเริ่มบริการแรก (ใช้คำนวณยกเลิก) */
     firstServiceAt: timestamp("first_service_at", { withTimezone: true, mode: "date" }),
     /** บิลที่ปิดใบจองนี้ (FK ใส่ใน SQL custom) */

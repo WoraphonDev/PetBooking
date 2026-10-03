@@ -33,10 +33,10 @@ scr("A-03", "auth", "/reset-password?token=", "ตั้งรหัสผ่า
     [("ฟอร์ม", [W("รหัสผ่านใหม่", "staff_user.password_hash", "password + ตัวชี้ความแข็งแรง", "R-24"),
                 W("ยืนยันรหัสผ่าน", "calc: ต้องตรงกับช่องแรก (ไม่ส่ง server)", "password", "ตรงกัน")])],
     [("บันทึก", "auth.resetConfirm", "", "→ /login พร้อม toast 'ตั้งรหัสผ่านแล้ว'")])
-scr("A-04", "auth", "/invite/[token]", "รับคำเชิญเข้าร้าน", "public", "US-01-04", "พนักงานใหม่ตั้งชื่อ/รหัส หรือผูก LINE", [],
+scr("A-04", "auth", "/invite/[token]", "รับคำเชิญเข้าร้าน", "public", "US-01-04", "พนักงานใหม่ตั้งชื่อ/รหัส หรือผูก LINE", ["auth.invitePreview"],
     [("ข้อมูลร้าน", [R("ชื่อร้าน", "organization.name"), R("ตำแหน่ง", "staff_user.role", "enum")]),
      ("ฟอร์ม", [E("ชื่อเล่นที่ลูกค้าเห็น", "staff_user.display_name", "text", "1–40 บังคับ"),
-                W("อีเมล", "staff_user.email", "email", "แสดงเมื่อคำเชิญไม่มีอีเมล"),
+                W("อีเมล", "staff_user.email", "email", "แสดงเมื่อคำเชิญไม่มีอีเมล (InvitePreview.hasEmail = false)"),
                 W("รหัสผ่าน", "staff_user.password_hash", "password", "R-24; ไม่บังคับถ้ากดใช้ LINE")])],
     [("เริ่มใช้งาน", "auth.inviteAccept", "", "→ /console หรือ /staff ตาม role"),
      ("ใช้ LINE แทนรหัสผ่าน", "auth.inviteAccept + staffMe.linkLine", "", "→ /staff")],

@@ -100,7 +100,7 @@ JOBS = [
   "ยัง awaiting_approval: ถ้าเลย first_service_at → expired (R-07 shop_cancel) ไม่งั้น staff.approval_overdue แล้วตั้งรอบถัดไป", "approval_overdue:{bookingId}:{n}", "US-05-05"),
  ("care_task_overdue_scan", "cron.tick seed ทุก 15 นาที", "{}", "care_task pending ที่ due_at + 30 นาที < now และยังไม่เคยแจ้ง → staff.care_task_overdue",
   "care_task_overdue_scan:{yyyyMMddHHmm/15}", "US-06-09"),
- ("recompute_reliability", "cron.tick seed ทุกวัน 03:00 Asia/Bangkok", "{}", "นับ 12 เดือนใหม่ทุก customer ที่มีเหตุการณ์ใน 13 เดือน → R-09", "recompute_reliability:{localDate}", "US-03-09"),
+ ("recompute_reliability", "cron.tick seed ทุกวัน 03:00 Asia/Bangkok", "{}", "นับ 12 เดือนใหม่ทุก customer ที่มีเหตุการณ์ใน 13 เดือน → R-09 (late cancel = booking.cancel_is_late = true ที่ cancelled_at ในช่วง, Q-0084)", "recompute_reliability:{localDate}", "US-03-09"),
  ("package_expiry", "cron.tick seed ทุกวัน 00:10", "{}", "customer_package active ที่ expires_at < now → expired", "package_expiry:{localDate}", "US-10-05"),
  ("cleanup_uncommitted_files", "cron.tick seed ทุกวัน 04:00", "{}", "file_object committed_at null และ created_at < now − 24 ชม. → ลบ object + deleted_at", "cleanup_files:{localDate}", "US-13-04"),
 ]

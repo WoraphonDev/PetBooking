@@ -10,7 +10,7 @@
 | US-13-03 | ภาษาไทยและรูปแบบไทย | M0 | AD-07 | `closures.importHolidays`, `admin.holidays`, `admin.listHolidays` | R-20, R-31 |  | public_holiday |
 | US-13-09 | Monitoring และแจ้งเตือนระบบล่ม | M0 |  | `health` |  |  |  |
 | US-13-10 | ทีมสร้างและจัดการร้าน | M0 | AD-01, AD-02, AD-03 | `admin.login`, `admin.orgs`, `admin.createOrg`, `admin.updateOrg` |  |  | organization, platform_admin |
-| US-01-04 | เชิญพนักงานและกำหนดสิทธิ์ | M1 | A-04, C-36 | `auth.inviteAccept`, `staffUsers.list`, `staffUsers.invite`, `staffUsers.update`, `staffUsers.resendInvite` |  | staff.invite | staff_user, staff_invite |
+| US-01-04 | เชิญพนักงานและกำหนดสิทธิ์ | M1 | A-04, C-36 | `auth.invitePreview`, `auth.inviteAccept`, `staffUsers.list`, `staffUsers.invite`, `staffUsers.update`, `staffUsers.resendInvite` |  | staff.invite | staff_user, staff_invite |
 | US-01-05 | ใช้หลายเครื่องพร้อมกัน | M1 | C-45 | `staffMe.sessions`, `staffMe.revokeSession` |  |  |  |
 | US-02-01 | ข้อมูลร้าน | M1 | C-30, C-31 | `branch.get`, `branch.update`, `branch.setHours` |  |  | branch, branch_hours |
 | US-02-02 | เปิด/ปิดโมดูล | M1 | C-32 | `branch.setModules` |  |  | branch |

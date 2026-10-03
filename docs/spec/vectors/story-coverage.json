@@ -101,6 +101,7 @@
    "C-36"
   ],
   "api": [
+   "auth.invitePreview",
    "auth.inviteAccept",
    "staffUsers.list",
    "staffUsers.invite",

@@ -16,6 +16,7 @@
   "T-0009",
   "T-0010",
   "T-0011",
+  "T-0320",
   "T-0012",
   "T-0013",
   "T-0014",
@@ -45,9 +46,11 @@
   "T-0036",
   "T-0037",
   "T-0038",
+  "T-0321",
   "T-0039",
   "T-0040",
   "T-0041",
+  "T-0322",
   "T-0042",
   "T-0043",
   "T-0044",
@@ -326,11 +329,12 @@
   "T-0306",
   "T-0307",
   "T-0308",
+  "T-0313",
+  "T-0323",
   "T-0309",
   "T-0310",
   "T-0311",
   "T-0312",
-  "T-0313",
   "T-0314",
   "T-0315",
   "T-0316",
@@ -545,6 +549,20 @@
    "title": "Email adapter (SMTP/nodemailer) + templates invite/reset",
    "human_review": false
   },
+  "T-0320": {
+   "key": "INF-NOTIFY-RENDER",
+   "ms": "M0",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 6,
+   "deps": [
+    "T-0010",
+    "T-0011"
+   ],
+   "title": "Template render shape: email subject + push url (Q-0060)",
+   "human_review": false
+  },
   "T-0012": {
    "key": "DOM-R-20",
    "ms": "M0",
@@ -733,9 +751,10 @@
    "lane": "notify",
    "size": "M",
    "owner": "agent",
-   "wave": 6,
+   "wave": 7,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0011"
    ],
    "title": "Notification templates (staff, M0): password_reset",
@@ -976,6 +995,19 @@
    "title": "Object storage (presign) + upload-url endpoints + file commit + cleanup job",
    "human_review": true
   },
+  "T-0321": {
+   "key": "INF-SUPPORT-READ",
+   "ms": "M1",
+   "lane": "infra",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "Support mode อ่านได้ทุก endpoint ที่ owner อ่านได้ (Q-0033)",
+   "human_review": false
+  },
   "T-0039": {
    "key": "INF-E2E",
    "ms": "M1",
@@ -1015,6 +1047,19 @@
    ],
    "title": "Rule R-02 กลุ่มขนและการหาราคา/เวลาของบริการ",
    "human_review": false
+  },
+  "T-0322": {
+   "key": "API-auth.invitePreview",
+   "ms": "M1",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007"
+   ],
+   "title": "API auth.invitePreview",
+   "human_review": true
   },
   "T-0042": {
    "key": "API-auth-2",
@@ -1398,6 +1443,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0011"
    ],
    "title": "Notification templates (staff, M1): invite",
@@ -1412,6 +1458,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0011"
    ],
    "title": "Notification templates (admin, M1): data_request",
@@ -1480,6 +1527,7 @@
    "wave": 2,
    "deps": [
     "T-0015",
+    "T-0322",
     "T-0042"
    ],
    "title": "Screen A-04 รับคำเชิญเข้าร้าน",
@@ -1786,6 +1834,8 @@
     "T-0036",
     "T-0038",
     "T-0011",
+    "T-0321",
+    "T-0320",
     "T-0015",
     "T-0016",
     "T-0070",
@@ -1798,6 +1848,7 @@
     "T-0014",
     "T-0037",
     "T-0034",
+    "T-0322",
     "T-0042",
     "T-0043",
     "T-0044",
@@ -2457,6 +2508,7 @@
    "wave": 2,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0091"
    ],
    "title": "Notification templates (staff, M2): new_booking, groom_done, care_task_overdue",
@@ -2471,6 +2523,7 @@
    "wave": 2,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0091",
     "T-0011"
    ],
@@ -2486,6 +2539,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0011"
    ],
    "title": "Notification templates (admin, M2): feedback",
@@ -3563,7 +3617,8 @@
    "wave": 1,
    "deps": [
     "T-0036",
-    "T-0010"
+    "T-0010",
+    "T-0097"
    ],
    "title": "Job handler recompute_reliability",
    "human_review": false
@@ -3577,6 +3632,7 @@
    "wave": 2,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0149"
    ],
    "title": "Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed",
@@ -3591,6 +3647,7 @@
    "wave": 2,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0149"
    ],
    "title": "Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected",
@@ -3605,6 +3662,7 @@
    "wave": 2,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0149"
    ],
    "title": "Notification templates (customer, M3): link_approved",
@@ -3619,6 +3677,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0091"
    ],
    "title": "Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request",
@@ -3633,6 +3692,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0091",
     "T-0011"
    ],
@@ -4587,6 +4647,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0149"
    ],
    "title": "Notification templates (customer, M4): ready_for_pickup, report_card, receipt, next_groom_reminder",
@@ -4601,6 +4662,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0091"
    ],
    "title": "Notification templates (staff, M4): report_card_review, low_rating",
@@ -5390,6 +5452,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0149"
    ],
    "title": "Notification templates (customer, M5): stay_checked_in, stay_update",
@@ -5404,6 +5467,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0091"
    ],
    "title": "Notification templates (staff, M5): vaccine_review",
@@ -5783,6 +5847,39 @@
    "title": "API admin.analytics",
    "human_review": false
   },
+  "T-0313": {
+   "key": "SCR-C-24-ext-M6",
+   "ms": "M6",
+   "lane": "ui",
+   "size": "S",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0070",
+    "T-0026",
+    "T-0027",
+    "T-0307",
+    "T-0254"
+   ],
+   "title": "Screen C-24 รายงานค่ามือ (ext-M6)",
+   "human_review": false
+  },
+  "T-0323": {
+   "key": "API-commission-entries",
+   "ms": "M6",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0240",
+    "T-0223",
+    "T-0254",
+    "T-0313"
+   ],
+   "title": "CommissionReport entries[] เป็นรายละเอียดต่อรายการ + C-24 expand (Q-0077)",
+   "human_review": false
+  },
   "T-0309": {
    "key": "JOB-owner_daily_summary",
    "ms": "M6",
@@ -5806,6 +5903,7 @@
    "wave": 1,
    "deps": [
     "T-0010",
+    "T-0320",
     "T-0091",
     "T-0011"
    ],
@@ -5844,23 +5942,6 @@
     "T-0307"
    ],
    "title": "Screen C-23 รายงานยอดขาย",
-   "human_review": false
-  },
-  "T-0313": {
-   "key": "SCR-C-24-ext-M6",
-   "ms": "M6",
-   "lane": "ui",
-   "size": "S",
-   "owner": "agent",
-   "wave": 2,
-   "deps": [
-    "T-0070",
-    "T-0026",
-    "T-0027",
-    "T-0307",
-    "T-0254"
-   ],
-   "title": "Screen C-24 รายงานค่ามือ (ext-M6)",
    "human_review": false
   },
   "T-0314": {
@@ -5928,6 +6009,7 @@
     "T-0308",
     "T-0309",
     "T-0310",
+    "T-0323",
     "T-0311",
     "T-0312",
     "T-0313",

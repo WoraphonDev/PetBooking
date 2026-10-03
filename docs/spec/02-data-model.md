@@ -99,7 +99,7 @@
 | J | [`support_access_log`](#tbl-support_access_log) | การเข้าโหมดช่วยเหลือของทีมแพลตฟอร์ม | `compliance.ts` | US-13-11 |
 | J | [`import_job`](#tbl-import_job) | งานนำเข้า CSV (validate ก่อน commit) | `compliance.ts` | US-02-08 |
 
-รวม **72 ตาราง**, **938 คอลัมน์**, **72 enum**
+รวม **72 ตาราง**, **939 คอลัมน์**, **72 enum**
 
 
 ## 2. A. Platform & Tenancy
@@ -1204,6 +1204,7 @@ Stories: US-05-04, US-11-03, US-07-03, US-07-04 · PK: `id` · schema: `packages
 | cancelled_at | `timestamptz` | YES |  |  |  |
 | cancelled_by_type | `actor_type` | YES |  |  |  |
 | cancel_reason | `text` | YES |  |  |  |
+| cancel_is_late | `boolean` | YES |  |  | R-07 isLate ตอนยกเลิก (Q-0084); null = ไม่ได้ยกเลิก — R-09 นับ late cancel จากคอลัมน์นี้ |
 | first_service_at | `timestamptz` | YES |  |  | cache เวลาเริ่มบริการแรก (ใช้คำนวณยกเลิก) |
 | bill_id | `uuid` | YES |  | bill.id (set null) — ใน 0001_constraints.sql | บิลที่ปิดใบจองนี้ (FK ใส่ใน SQL custom) |
 | created_at | `timestamptz` | NO | now() |  | เวลาสร้าง (UTC) |

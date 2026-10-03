@@ -31,6 +31,9 @@ ep("auth.resetRequest", "POST", "/api/v1/auth/staff/password-reset/request", "pu
 ep("auth.resetConfirm", "POST", "/api/v1/auth/staff/password-reset/confirm", "public", "", "US-01-02", "ตั้งรหัสผ่านใหม่",
    [F("token", "string", True, "password_reset.token_hash", "token จากลิงก์ (DB เก็บ sha256)"), F("newPassword", "string", True, "staff_user.password_hash", "R-24 policy")],
    rules="R-24", errors="TOKEN_INVALID,PASSWORD_POLICY", effects=["ตั้ง password_reset.used_at, ลบ session เดิมทั้งหมดของผู้ใช้"])
+ep("auth.invitePreview", "GET", "/api/v1/auth/staff/invite", "public", "", "US-01-04", "ดูคำเชิญก่อนรับ (Q-0044)",
+   query=[F("token", "string", True, "staff_invite.token_hash", "token จากลิงก์")],
+   res="InvitePreview", errors="TOKEN_INVALID", effects=["token ไม่พบ/หมดอายุ/ใช้แล้ว → TOKEN_INVALID; ไม่สร้าง session"])
 ep("auth.inviteAccept", "POST", "/api/v1/auth/staff/invite/accept", "public", "", "US-01-04", "รับคำเชิญ ตั้งชื่อและรหัสผ่าน",
    [F("token", "string", True, "staff_invite.token_hash", "token จากลิงก์"), F("displayName", "string", True, "staff_user.display_name", "1–40 ตัว"),
     F("email", "string", False, "staff_user.email", "ต้องมีถ้าคำเชิญไม่มีอีเมล"), F("password", "string", False, "staff_user.password_hash", "R-24; ไม่ส่ง = ใช้ LINE login อย่างเดียว")],
@@ -373,7 +376,7 @@ ep("bookings.cancel", "POST", f"{ST}/bookings/{{bookingId}}/cancel", "staff", OF
    [F("kind", "enum", True, "", "customer_cancel | shop_cancel"), F("reason", "string", True, "booking.cancel_reason", "≥ 3"),
     F("customerChoice", "enum", False, "", "refund | credit")], res="BookingDetail", rules="R-07,R-09", audit="booking.cancel",
    transition="booking:*→cancelled", notify="customer.booking_cancelled",
-   effects=["children ทั้งหมด → cancelled", "เงินตาม R-07 (credit_ledger / refund pending / forfeited)", "late → customer.late_cancel_count_12m + 1 แล้ว R-09",
+   effects=["children ทั้งหมด → cancelled", "เงินตาม R-07 (credit_ledger / refund pending / forfeited)", "booking.cancel_is_late = R-07 isLate (Q-0084)", "late → customer.late_cancel_count_12m + 1 แล้ว R-09",
             "ยกเลิก scheduled_job ที่ dedupe_key อ้างใบจองนี้"])
 ep("bookings.recordDeposit", "POST", f"{ST}/bookings/{{bookingId}}/deposit", "staff", OF, "US-07-02, US-07-03", "บันทึกรับมัดจำ (เงินสด/โอนที่ร้านเห็นแล้ว)",
    [F("method", "enum:payment_method", True, "payment.method", "cash | promptpay | bank_transfer | card_edc"),
@@ -686,7 +689,8 @@ ep("liff.uploadSlip", "POST", f"{LF}/bookings/{{bookingId}}/slips", "customer", 
    notify="staff.slip_submitted", effects=["parse R-05 → trans_ref, duplicate_of_slip_id", "deposit_status submitted; ล้าง hold_expires_at"])
 ep("liff.cancel", "POST", f"{LF}/bookings/{{bookingId}}/cancel", "customer", "", "US-11-08", "ลูกค้ายกเลิกเอง",
    [F("customerChoice", "enum", False, "", "refund | credit (เมื่อ policy customer_choice)"), F("reason", "string", False, "booking.cancel_reason", "")],
-   res="MyBookingDetail", rules="R-07,R-21,R-09", errors="STATUS_NOT_ALLOWED", transition="booking:*→cancelled", notify="staff.booking_cancelled")
+   res="MyBookingDetail", rules="R-07,R-21,R-09", errors="STATUS_NOT_ALLOWED", transition="booking:*→cancelled", notify="staff.booking_cancelled",
+   effects=["booking.cancel_is_late = R-07 isLate (Q-0084)"])
 ep("liff.reschedule", "POST", f"{LF}/bookings/{{bookingId}}/reschedule", "customer", "", "US-11-08", "ลูกค้าเลื่อนนัดกรูมเอง",
    [F("appointmentId", "uuid", True, "groom_appointment.id", ""), F("startsAt", "datetime", True, "groom_appointment.starts_at", "R-04"),
     F("groomerId", "uuid", False, "groom_appointment.groomer_id", "")], res="MyBookingDetail", rules="R-04,R-21",
