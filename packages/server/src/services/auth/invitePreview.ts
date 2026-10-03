@@ -21,7 +21,7 @@ export async function authInvitePreview(ctx: RequestContext, input: AuthInvitePr
   const [invite] = (await scoped.select(staffInvite, eq(staffInvite.tokenHash, tokenHash))) as (typeof staffInvite.$inferSelect)[];
   if (!invite || invite.acceptedAt !== null || invite.expiresAt.getTime() <= ctx.now.getTime()) throw new AppError("TOKEN_INVALID");
   const [staff] = (await scoped.select(staffUser, eq(staffUser.id, invite.staffUserId))) as (typeof staffUser.$inferSelect)[];
-  if (!staff || staff.status !== "invited") throw new AppError("TOKEN_INVALID");
+  if (staff?.status !== "invited") throw new AppError("TOKEN_INVALID");
   // organization is the global registry row of this tenant
   const [org] = await db.select({ name: organization.name }).from(organization).where(eq(organization.id, identity.organizationId));
   if (!org) throw new AppError("TOKEN_INVALID");
