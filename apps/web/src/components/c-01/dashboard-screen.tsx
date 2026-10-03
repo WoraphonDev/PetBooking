@@ -4,6 +4,7 @@ import { DashboardTodayResponse } from "@app/contracts/endpoints/dashboard.today
 import type { GroomStatus } from "@app/contracts/enums";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 import { errorMessage } from "../../lib/api";
 import { formatTHB } from "../../lib/format";
 import { useApiQuery } from "../../lib/query";
@@ -20,11 +21,22 @@ const links = {
   pickupsWithoutBill: "/console/bills",
   linkRequests: "/console/link-requests",
 } as const;
+export function watchDashboardPush(
+  refetch: () => unknown,
+  worker: EventTarget | null = typeof navigator !== "undefined" ? (navigator.serviceWorker ?? null) : null,
+) {
+  const listener = (event: Event) => {
+    if ((event as MessageEvent).data?.type === "dashboard-refresh") void refetch();
+  };
+  worker?.addEventListener("message", listener);
+  return () => worker?.removeEventListener("message", listener);
+}
 export function DashboardScreen() {
   const t = useTranslations("C-01");
   const common = useTranslations("common");
   const me = useApiQuery("auth.me", { response: AuthMeResponse });
   const query = useApiQuery("dashboard.today", { response: DashboardTodayResponse }, { refetchInterval: 60_000 });
+  useEffect(() => watchDashboardPush(query.refetch), [query.refetch]);
   const data = query.data;
   return (
     <section className="grid gap-6">

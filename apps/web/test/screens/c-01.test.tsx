@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
-import { DashboardScreen } from "../../src/components/c-01/dashboard-screen";
+import { DashboardScreen, watchDashboardPush } from "../../src/components/c-01/dashboard-screen";
 import messages from "../../src/i18n/messages/th/C-01.json";
 import common from "../../src/i18n/messages/th/common.json";
 
@@ -108,4 +108,46 @@ it("shows a skeleton while loading and an API error with retry", () => {
   mock.loading = false;
   mock.failed = true;
   expect(renderToStaticMarkup(<DashboardScreen />)).toContain('role="alert"');
+});
+it("refreshes on push relay and removes its listener on unmount", () => {
+  const worker = new EventTarget();
+  const stop = watchDashboardPush(mock.refetch, worker);
+  worker.dispatchEvent(new MessageEvent("message", { data: { type: "unrelated" } }));
+  expect(mock.refetch).not.toHaveBeenCalled();
+  worker.dispatchEvent(new MessageEvent("message", { data: { type: "dashboard-refresh" } }));
+  expect(mock.refetch).toHaveBeenCalledTimes(1);
+  stop();
+  worker.dispatchEvent(new MessageEvent("message", { data: { type: "dashboard-refresh" } }));
+  expect(mock.refetch).toHaveBeenCalledTimes(1);
+});
+it("relays push from the real service worker to open client windows", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const { runInNewContext } = await import("node:vm");
+  const listeners = new Map<string, (event: unknown) => void>();
+  const postMessage = vi.fn();
+  const showNotification = vi.fn().mockResolvedValue(undefined);
+  const matchAll = vi.fn().mockResolvedValue([{ postMessage }]);
+  runInNewContext(await readFile(new URL("../../public/sw.js", import.meta.url), "utf8"), {
+    URL,
+    self: {
+      location: { origin: "https://shop.test" },
+      clients: { matchAll },
+      registration: { showNotification },
+      addEventListener: (key: string, fn: (event: unknown) => void) => listeners.set(key, fn),
+    },
+  });
+  let pending: Promise<unknown> | undefined;
+  listeners.get("push")?.({
+    data: { json: () => ({ text: "แจ้งเตือน", url: "/console" }) },
+    waitUntil: (value: Promise<unknown>) => {
+      pending = value;
+    },
+  });
+  await pending;
+  expect(matchAll).toHaveBeenCalledWith({ type: "window", includeUncontrolled: true });
+  expect(postMessage).toHaveBeenCalledExactlyOnceWith({ type: "dashboard-refresh" });
+  expect(showNotification).toHaveBeenCalledWith("PJ-8 Staff", expect.objectContaining({ body: "แจ้งเตือน" }));
+});
+it("enables the dashboard menu", async () => {
+  expect((await import("../../src/components/shell-console/navigation/C-01")).entry.implemented).toBe(true);
 });
