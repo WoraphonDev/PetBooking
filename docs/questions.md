@@ -526,3 +526,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: approve extending scope to relay received push events to existing client windows, or defer push refresh to a follow-up? Polling every 60 seconds proceeds within the original card scope.
 
 - Answer (2026-10-03): user approved the proposed choices: defer the absent queue to a specified API follow-up, expand the selected menu scope and relay web push. C-26 scope is deferred here because Claude claimed T-0079 in #162; Codex will not implement that card. T-0311 depends on the already-merged T-0091 so its sw.js follow-up is ordered after the original owner.
+
+## Q-0082 · T-0311: shell test assumes C-01 stays disabled
+- Status: open; shared test remains untouched pending approval
+- Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: console-shell.test.tsx asserts C-01 is disabled, conflicting with the approved implemented menu. The card web suite reports 236 passed and that one failed assertion.
+- Proposed decision: use explicit enabled C-01 and disabled C-02 fixtures, retain disabled-menu assertions, and verify the dashboard link/current-page behavior. Approve the shared test file in the separate scope PR; no business assertions are removed.
+
+## Q-0083 · T-0205: economy mode has no merged read API
+- Status: open; no screen implementation started
+- Task: T-0205 · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: 06#scr-C-22 requires branch_policy.economy_mode, but the LineStatus contract lacks it and no merged read policy endpoint supplies it.
+- Question: implement quota/list/copy first and defer economy-mode status until the read API is specified, or expand the spec/API first? No status or response field is invented.
