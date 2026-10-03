@@ -1,9 +1,6 @@
-// staff.vaccine_review — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.vaccine_review: Web Push to front_desk when a customer uploads vaccine proof.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "มีหลักฐานวัคซีนของ {petName} รอตรวจ";
 
 export function render(payload: NotificationPayloads["staff.vaccine_review"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `มีหลักฐานวัคซีนของ ${payload.petName ?? ""} รอตรวจ` };
 }
