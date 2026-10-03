@@ -416,6 +416,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: may this card also change `apps/web/src/components/shell-console/navigation/C-38.ts` to set `implemented: true`? It is absent from allowed_paths. Q-0048 calls for a task-generator follow-up, which has not been applied to T-0086.
 - Pending user choice: expand the card scope for that single entry, or ship only the catalogued screen route. The navigation entry remains untouched until answered.
 
+## Q-0064 · Console navigation tests assume every screen is unimplemented
+- Status: answered (user approved the shared test scope, 2026-10-03)
+- Task: T-0141 (also T-0297, T-0075, T-0088, T-0251) · Asked by: agent (codex) · Date: 2026-10-03
+- Evidence: `shell-console/navigation.test.ts` asserts every registry entry is disabled and every owner-menu href is null. Enabling C-43 as the user authorized fails both assertions.
+- Question: add this test file to scope and exercise those existing assertions against an explicit unimplemented fixture, plus verify enabled and disabled entries and role filtering in a mixed fixture? Answer: user approved in chat; keep the baseline assertions on the unimplemented fixture and add mixed-menu coverage.
+- Related: Q-0048; user approved enabling each of the five screen-specific navigation entries in chat, 2026-10-03.
+
 ## Q-0048 · Console menu entries: C-* screen cards cannot enable their own menu item
 - Status: answered for T-0070; task-generator follow-up open
 - Task: T-0070 · Asked by: agent (claude) · Date: 2026-10-03
