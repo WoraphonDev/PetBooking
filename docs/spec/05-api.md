@@ -1212,20 +1212,20 @@ Dashboard วันนี้
 
 ### SalesReport
 
-รายงานยอดขาย
+รายงานยอดขาย (Q-0085): บิล paid ตามวันท้องถิ่นของ closed_at, void ไม่นับ · groupBy service/groomer กระจายส่วนลดท้ายบิลลงบรรทัดแบบ R-13 ข้อ 1 · groomer: บรรทัดไม่มีช่างรวมเป็นแถว key = null · method: 1 แถวต่อวิธีจ่าย (net = Σ payment posted, gross/discount = 0)
 
 | field | source |
 |---|---|
 | `from` | calc: input |
 | `to` | calc: input |
-| `rows[].key` | calc: วัน/บริการ/ช่าง/วิธีจ่าย ตาม groupBy |
-| `rows[].billCount` | calc |
-| `rows[].grossSatang` | calc: Σ bill_line.line_total_satang |
-| `rows[].discountSatang` | calc: Σ bill_discount + line_discount |
-| `rows[].netSatang` | calc |
-| `totals` | calc |
+| `rows[].key` | calc: วัน (YYYY-MM-DD) / ชื่อบริการหรือสินค้า / ชื่อช่าง (null = ไม่ระบุช่าง) / payment.method ตาม groupBy |
+| `rows[].billCount` | calc: จำนวนบิลที่มีบรรทัดในแถวนี้ |
+| `rows[].grossSatang` | calc: Σ bill_line.quantity × unit_price_satang |
+| `rows[].discountSatang` | calc: Σ line_discount_satang + ส่วนลดท้ายบิล (กระจายตามแถว) |
+| `rows[].netSatang` | calc: gross − discount (รวมทุกแถว = Σ bill.total_satang) |
+| `totals` | calc: {billCount, grossSatang, discountSatang, netSatang} ของทั้งช่วง |
 | `payments[].method` | payment.method |
-| `payments[].amountSatang` | calc: Σ payment.amount_satang |
+| `payments[].amountSatang` | calc: Σ payment.amount_satang posted ของบิลในช่วง (รวม deposit/credit) |
 
 <a id="dto-CommissionReport"></a>
 
@@ -2671,7 +2671,7 @@ Request body:
 | field | type | req | maps to (table.column) | validation |
 |---|---|---|---|---|
 | `blacklisted` | bool | ✓ | customer.blacklisted |  |
-| `reason` | string |  | customer.blacklist_reason | บังคับเมื่อ true, ≥ 3 ตัว |
+| `reason` | string | ✓ | customer.blacklist_reason | ≥ 3 ตัว ทั้งตอนตั้งและยกเลิก (Q-0034) |
 
 Response: `CustomerDetail`
   
