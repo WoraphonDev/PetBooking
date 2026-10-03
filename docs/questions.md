@@ -413,6 +413,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-bills.open, 02#tbl-stay / #tbl-daycare_visit / #tbl-stay_addon, Q-0049.
 - Proposed decision (implemented): stay_night = room type `name_th`, qty = `stay.nights`, unit = `stay.nightly_price_satang`; stay_addon = `stay_addon.name_snapshot`, its quantity × unit price; daycare = session type `name_th`, qty 1, `daycare_visit.price_satang`; pet = the child's pet; no performer. Order: grooming lines (Q-0049) first, then per stay (by check-in) its night line and add-ons, then daycare visits by date. Cancelled/no-show children are skipped.
 
+## Q-0073 · T-0232 bills.removeLine / setDiscount / voidPayment details
+- Status: open (T-0232 ships these choices)
+- Task: T-0232 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05 says booking lines cannot be removed but names no error; it does not say what removing a counter redemption does to the package, whether setDiscount/voidPayment need an open bill for codes other than those listed, how a payment voided twice or a deposit not on a bill is handled, or where the credit refund is linked.
+- Evidence: 05#ep-bills.removeLine / #ep-bills.setDiscount / #ep-bills.voidPayment, R-14 #5, R-15, Q-0055, Q-0072.
+- Proposed decision (implemented): removeLine works on bills.addLine lines only (quick_item, package_sale, counter package_redemption); a booking line → VALIDATION_FAILED. Removing a counter redemption deletes its package_redemption and gives the session back (sessions_used − 1, exhausted → active). All three need an open bill (BILL_NOT_OPEN) and recompute totals. setDiscount: reason ≥ 3 chars when > 0, front_desk limit as Q-0055 (line + bill discounts ≤ 20% of Σ qty × unit), audit `bill.discount` only when the discount/reason changes. voidPayment: reason ≥ 3 chars (REASON_REQUIRED, checked before lookup), only posted payments of a bill (a payment without a bill → NOT_FOUND; already voided → VALIDATION_FAILED), paid_satang reduced; a credit payment adds a `void_reversal` credit_ledger row (ref bill) and raises customer.credit_balance in the same transaction; audit `payment.void`.
+
 ## Q-0055 · bills.list date/order and bills.updateLine rules
 - Status: answered (implemented in T-0230)
 - Task: T-0230 · Asked by: agent (claude) · Date: 2026-10-03
