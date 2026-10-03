@@ -1,9 +1,6 @@
-// staff.booking_rescheduled — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.booking_rescheduled: Web Push to front_desk+owner+groomer. `newDateTime` is caller-formatted (R-31).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "ลูกค้าเลื่อนนัด {petName} เป็น {newDateTime}";
 
 export function render(payload: NotificationPayloads["staff.booking_rescheduled"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `ลูกค้าเลื่อนนัด ${payload.petName ?? ""} เป็น ${payload.newDateTime ?? ""}` };
 }

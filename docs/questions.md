@@ -460,6 +460,14 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: R-09 recounts late cancels over 12 months, but bookings.cancel stores neither `kind` nor whether the cancel was late (only `cancelled_by_type`, which cannot tell a shop cancel from a cancel on the customer's behalf).
 - Answer (2026-10-04): user chose option A in chat. Add `booking.cancel_is_late boolean` (null = not cancelled), written by bookings.cancel / liff.cancel from R-07 `isLate`; recompute_reliability counts bookings with `cancel_is_late = true` and `cancelled_at` in the last 12 months. Needs a spec change (02 + 05) and a migration in the card that owns it; T-0189 waits for it.
 
+## Q-0088 · T-0193 staff templates: what `duplicateFlag` and `isLate` render as
+- Status: open
+- Task: T-0193 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 07 §1 `staff.slip_submitted` ends with `{duplicateFlag}` and `staff.booking_cancelled` ends with `{isLate}`, but 07 gives no wording; payload variables are `string | number` (no boolean), and 07 does not say what shows when the slip is not a duplicate / the cancel is not late.
+- Evidence: 07 §1 rows `staff.slip_submitted`, `staff.booking_cancelled`; R-04 step 4 UI badge "สลิปนี้เคยใช้แล้ว"; R-07 `isLate`; 06 C-xx label "ยกเลิกกระชั้น".
+- Options: A) caller passes the ready text — `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" or "", `isLate` = "(ยกเลิกกระชั้น)" or "" — and the template only substitutes; B) caller passes 1/0 and the template maps 1 → that wording, 0 → nothing.
+- Implemented for now (T-0193): option A shape without fixing the wording — the template substitutes whatever text the caller sends and trims the trailing space when it is empty. The liff.uploadSlip / liff.payUploadSlip / liff.cancel cards need the wording to pass.
+
 ## Q-0085 · T-0305 reports.sales: gross/discount/net and grouping
 - Status: answered (2026-10-04)
 - Task: T-0305 · Asked by: agent (claude) · Date: 2026-10-04

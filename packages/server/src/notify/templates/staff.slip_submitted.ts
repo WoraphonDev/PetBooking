@@ -1,9 +1,6 @@
-// staff.slip_submitted — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.slip_submitted: Web Push to front_desk+owner. `amount` is caller-formatted (R-31); `duplicateFlag` is caller-supplied text, empty when not a duplicate (Q-0088).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "สลิปใหม่ {bookingNo} {amount} {duplicateFlag}";
 
 export function render(payload: NotificationPayloads["staff.slip_submitted"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `สลิปใหม่ ${payload.bookingNo ?? ""} ${payload.amount ?? ""} ${payload.duplicateFlag ?? ""}`.trimEnd() };
 }
