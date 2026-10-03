@@ -307,6 +307,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-customers.blacklist validation column; `packages/server/src/audit.ts` writeAudit reason check.
 - Work: T-0156 requires the reason in both directions (`REASON_REQUIRED`), so the audit trail always has a reason. If unblacklisting should be allowed without one, audit.ts (outside T-0156) needs an exception for `customer.blacklist` with `after.blacklisted = false`.
 
+## Q-0065 · T-0287 care_task_overdue: "staff ทุกคนที่ active ในสาขา"
+- Status: open (T-0287 ships the fallback)
+- Task: T-0287 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 07 §1 sends `staff.care_task_overdue` to "staff (ทุกคนที่ active ในสาขา)", but 02#tbl-staff_user has no branch column or staff↔branch table, so branch membership cannot be read.
+- Evidence: 02#tbl-staff_user, `packages/db/src/schema/identity.ts`.
+- Proposed decision (implemented): every `staff_user` with status `active` in the task's organization (all roles), one notification each (`care_overdue:{taskId}` dedupe). Revisit if multi-branch staff assignment is added.
+
 ## Q-0053 · T-0304 dashboard count definitions
 - Status: answered
 - Task: T-0304 · Asked by: agent (codex) · Date: 2026-10-03
