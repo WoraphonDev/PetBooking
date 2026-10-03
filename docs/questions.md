@@ -374,6 +374,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
+## Q-0087 · T-0189 recompute_reliability: which customers, which dates
+- Status: open (T-0189 ships these choices)
+- Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 07 §2 says "นับ 12 เดือนใหม่ทุก customer ที่มีเหตุการณ์ใน 13 เดือน" without defining "เหตุการณ์", the date each no-show counts on, or "completed" for the job.
+- Evidence: 07 §2 recompute_reliability, R-09, Q-0074 (completed in bills.close), Q-0084 (cancel_is_late).
+- Proposed decision (implemented): customers with a booking created or cancelled in the last 13 months, plus any customer whose stored counts are non-zero (so old counts decay to 0). Window = now − 12 calendar months. No-show counts on the child's date (groom starts_at, stay check_in_date, daycare visit_date); late cancel = booking.cancel_is_late = true with cancelled_at in the window; completed = picked_up / checked_out children of the customer's bills paid in the window (as bills.close). Writes no_show_count_12m, late_cancel_count_12m and reliability_level only when one of them changes.
+
 ## Q-0063 · T-0187 reminder_24h: "active", dateTime, service and reschedules
 - Status: open (T-0187 ships these choices)
 - Task: T-0187 · Asked by: agent (claude) · Date: 2026-10-03
