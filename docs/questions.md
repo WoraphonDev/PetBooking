@@ -508,18 +508,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
 
-## Q-0076 · T-0311: upcoming queue is absent from DashboardToday
+## Q-0079 · T-0311: upcoming queue is absent from DashboardToday
 - Status: answered (user approved in chat, 2026-10-03)
 - Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
 - Evidence: 06#scr-C-01 requires upcoming time/pet/temperament/groomer/status; 05#dto-DashboardToday and the merged contract/service have no upcoming queue fields.
 - Question: defer the upcoming queue to a follow-up after the API is specified, or expand the spec/API before implementing this section? No response fields are invented.
 
-## Q-0077 · New console screen menu scope
+## Q-0080 · New console screen menu scope
 - Status: answered (user approved in chat, 2026-10-03)
 - Tasks: T-0311, T-0079, T-0205, T-0254 · Asked by: agent (codex) · Date: 2026-10-03
 - Question: approve the same Q-0048 scope expansion for navigation/C-01.ts, C-26.ts, C-22.ts and C-24.ts? These files are absent from each card's allowed_paths. Scope changes must be generated in a separate spec-change PR, as in #148.
 
-## Q-0078 · T-0311: service worker does not relay push to the dashboard
+## Q-0081 · T-0311: service worker does not relay push to the dashboard
 - Status: answered (user approved in chat, 2026-10-03)
 - Task: T-0311 · Asked by: agent (codex) · Date: 2026-10-03
 - Evidence: 06#scr-C-01 requires refreshing on web push; apps/web/public/sw.js currently only shows notifications and opens their URL on click.
