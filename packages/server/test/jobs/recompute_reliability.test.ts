@@ -83,15 +83,13 @@ it("recounts no-shows and late cancels over the last 12 months and resets stale 
     .set({ noShowCount12m: 2, lateCancelCount12m: 2, reliabilityLevel: 1 })
     .where(eq(customer.id, other.customerId));
 
-  await env.db
-    .insert(scheduledJob)
-    .values({
-      organizationId: null,
-      jobType: "recompute_reliability",
-      runAt: TEST_NOW,
-      payload: {},
-      dedupeKey: "recompute_reliability:2026-10-05",
-    });
+  await env.db.insert(scheduledJob).values({
+    organizationId: null,
+    jobType: "recompute_reliability",
+    runAt: TEST_NOW,
+    payload: {},
+    dedupeKey: "recompute_reliability:2026-10-05",
+  });
   expect(await runJobs(makeSystemCtx(null, TEST_NOW), { recompute_reliability: handler })).toEqual({ processed: 1, failed: 0 });
 
   expect(await customerOf(env.base)).toMatchObject({ noShowCount12m: 1, lateCancelCount12m: 1, reliabilityLevel: 2, updatedAt: TEST_NOW });
