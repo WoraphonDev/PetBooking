@@ -1,0 +1,19 @@
+{
+  "title": "วันนี้",
+  "add": "+ จองใหม่",
+  "groom": "กรูมวันนี้",
+  "arrivals": "เข้า",
+  "departures": "ออก",
+  "inHouse": "พักอยู่",
+  "occupancy": "Occupancy",
+  "daycare": "Daycare",
+  "sales": "ยอดรับเงินวันนี้",
+  "todo": "ต้องทำ",
+  "pendingSlips": "สลิปรอตรวจ",
+  "pendingApprovals": "รออนุมัติ",
+  "overdueCareTasks": "งานดูแลเลยเวลา",
+  "reportCardsToReview": "Report card รอตรวจ",
+  "unsentMessages": "ข้อความไม่ได้ส่ง",
+  "pickupsWithoutBill": "รับน้องแล้วยังไม่ปิดบิล",
+  "linkRequests": "คำขอจับคู่ LINE"
+}

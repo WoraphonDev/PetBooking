@@ -16,7 +16,17 @@ self.addEventListener("push", (event) => {
     return;
   }
   if (!payload || typeof payload.text !== "string") return;
-  event.waitUntil(self.registration.showNotification("PJ-8 Staff", { body: payload.text, data: { url: notificationUrl(payload.url) } }));
+  const refresh = self.clients.matchAll
+    ? self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+        for (const client of clients) client.postMessage({ type: "dashboard-refresh" });
+      })
+    : Promise.resolve();
+  event.waitUntil(
+    Promise.all([
+      self.registration.showNotification("PJ-8 Staff", { body: payload.text, data: { url: notificationUrl(payload.url) } }),
+      refresh,
+    ]),
+  );
 });
 
 self.addEventListener("notificationclick", (event) => {
