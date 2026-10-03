@@ -36,6 +36,7 @@ export function StationFields({ station, onChange }: { station: Station; onChang
       <Button
         type="button"
         role="switch"
+        variant={station.status === "active" ? "default" : "outline"}
         aria-checked={station.status === "active"}
         className="h-11 self-end"
         onClick={() => onChange({ ...station, status: station.status === "active" ? "archived" : "active" })}
@@ -116,7 +117,12 @@ export function StationEditor({ initialStations }: { initialStations: Station[] 
         type="button"
         disabled={mutation.isPending}
         className="h-11 justify-self-start"
-        onClick={() => setRows((previous) => [...previous, { name: "", status: "active", sortOrder: previous.length }])}
+        onClick={() =>
+          setRows((previous) => [
+            ...previous,
+            { name: "", status: "active", sortOrder: Math.max(-1, ...previous.map((station) => station.sortOrder)) + 1 },
+          ])
+        }
       >
         {t("add")}
       </Button>
