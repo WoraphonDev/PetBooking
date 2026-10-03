@@ -64,11 +64,7 @@ beforeAll(async () => {
   });
   const [lastSession, exhausted, expired] = await env.db
     .insert(customerPackage)
-    .values([
-      pkg({}),
-      pkg({ sessionsUsed: 5, status: "exhausted" }),
-      pkg({ sessionsUsed: 1, expiresAt: new Date(TEST_NOW.getTime() - 1) }),
-    ])
+    .values([pkg({}), pkg({ sessionsUsed: 5, status: "exhausted" }), pkg({ sessionsUsed: 1, expiresAt: new Date(TEST_NOW.getTime() - 1) })])
     .returning();
   const [foreignPet] = await env.db
     .insert(pet)
@@ -162,14 +158,37 @@ it("sells a package to the bill's customer as a package_sale line referencing th
 });
 
 it("redeems a package for a zero-price line, records package_redemption and exhausts the last session", async () => {
-  const detail = await add({ lineType: "package_redemption", customerPackageId: ids.lastSession, petId: ids.mochi, performerId: env.base.staff.staff });
-  expect(detail.lines.at(-1)).toMatchObject({ lineType: "package_redemption", description: "อาบ 5 ครั้ง", unitPriceSatang: 0, lineTotalSatang: 0, petName: "Mochi" });
+  const detail = await add({
+    lineType: "package_redemption",
+    customerPackageId: ids.lastSession,
+    petId: ids.mochi,
+    performerId: env.base.staff.staff,
+  });
+  expect(detail.lines.at(-1)).toMatchObject({
+    lineType: "package_redemption",
+    description: "อาบ 5 ครั้ง",
+    unitPriceSatang: 0,
+    lineTotalSatang: 0,
+    petName: "Mochi",
+  });
   const row = (await linesOf(ids.open ?? "")).at(-1);
   expect(row).toMatchObject({ refType: "customer_package", refId: ids.lastSession });
-  expect(await env.db.select().from(packageRedemption).where(eq(packageRedemption.billLineId, row?.id ?? ""))).toMatchObject([
+  expect(
+    await env.db
+      .select()
+      .from(packageRedemption)
+      .where(eq(packageRedemption.billLineId, row?.id ?? "")),
+  ).toMatchObject([
     { customerPackageId: ids.lastSession, petId: ids.mochi, performerId: env.base.staff.staff, redeemedAt: TEST_NOW, reversedAt: null },
   ]);
-  expect((await env.db.select().from(customerPackage).where(eq(customerPackage.id, ids.lastSession ?? "")))[0]).toMatchObject({
+  expect(
+    (
+      await env.db
+        .select()
+        .from(customerPackage)
+        .where(eq(customerPackage.id, ids.lastSession ?? ""))
+    )[0],
+  ).toMatchObject({
     sessionsUsed: 5,
     status: "exhausted",
   });

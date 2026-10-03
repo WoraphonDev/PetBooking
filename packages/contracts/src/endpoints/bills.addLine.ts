@@ -24,7 +24,11 @@ export const BillsAddLineRequest = z
       need("description", v.description !== undefined, "required for quick_item");
       need("unitPriceSatang", v.unitPriceSatang !== undefined, "required for quick_item");
     }
-    need("packageTemplateId", (v.packageTemplateId !== undefined) === (v.lineType === "package_sale"), "package_sale only, and required there");
+    need(
+      "packageTemplateId",
+      (v.packageTemplateId !== undefined) === (v.lineType === "package_sale"),
+      "package_sale only, and required there",
+    );
     need(
       "customerPackageId",
       (v.customerPackageId !== undefined) === (v.lineType === "package_redemption"),

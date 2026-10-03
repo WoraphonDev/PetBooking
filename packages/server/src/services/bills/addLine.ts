@@ -16,7 +16,11 @@ type TemplateRow = typeof packageTemplate.$inferSelect;
 type NewLine = Omit<typeof billLine.$inferInsert, "organizationId" | "billId" | "sortOrder">;
 const invalid = (field: string, message: string) => new AppError("VALIDATION_FAILED", { fields: { [field]: message } });
 /** R-14 reasons that have their own error code; the rest (not active, other service/tier) are not redeemable here */
-const REDEEM_ERRORS = { PACKAGE_EXHAUSTED: "PACKAGE_EXHAUSTED", PACKAGE_EXPIRED: "PACKAGE_EXPIRED", PACKAGE_PET_MISMATCH: "PACKAGE_PET_MISMATCH" } as const;
+const REDEEM_ERRORS = {
+  PACKAGE_EXHAUSTED: "PACKAGE_EXHAUSTED",
+  PACKAGE_EXPIRED: "PACKAGE_EXPIRED",
+  PACKAGE_PET_MISMATCH: "PACKAGE_PET_MISMATCH",
+} as const;
 
 /** a pet of the bill's customer (pet is a shared table; ownership is checked through the tenant-checked customer) */
 async function customerPet(tx: Tx, owner: typeof customer.$inferSelect, petId: string) {
@@ -134,7 +138,11 @@ export async function billsAddLine(ctx: RequestContext, input: BillsAddLineReque
       and(eq(payment.billId, b.id), eq(payment.status, "posted")),
     )) as (typeof payment.$inferSelect)[];
     const totals = computeBillTotals({
-      lines: lines.map((l) => ({ quantity: l.quantity, unitPriceSatang: l.unitPriceSatang, lineDiscountSatang: l.lineDiscountSatang ?? 0 })),
+      lines: lines.map((l) => ({
+        quantity: l.quantity,
+        unitPriceSatang: l.unitPriceSatang,
+        lineDiscountSatang: l.lineDiscountSatang ?? 0,
+      })),
       billDiscountSatang: b.billDiscountSatang,
       payments: posted.map((p) => ({ method: p.method, amountSatang: p.amountSatang, status: "posted" as const })),
     });
