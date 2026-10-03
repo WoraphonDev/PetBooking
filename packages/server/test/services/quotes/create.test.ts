@@ -301,15 +301,13 @@ describe("hotel and daycare (T-0270)", () => {
         { ...tenant, session: "morning", nameTh: "Morning", startsAt: "09:00", endsAt: "12:00", capacity: 10 },
       ])
       .returning();
-    await env.db
-      .insert(daycareRate)
-      .values({
-        organizationId: env.base.orgId,
-        sessionTypeId: session?.id ?? "",
-        ratePlanId: ids.plan,
-        sizeTierId: ids.tier,
-        priceSatang: 30_000,
-      });
+    await env.db.insert(daycareRate).values({
+      organizationId: env.base.orgId,
+      sessionTypeId: session?.id ?? "",
+      ratePlanId: ids.plan,
+      sizeTierId: ids.tier,
+      priceSatang: 30_000,
+    });
     Object.assign(hd, {
       type: type?.id,
       unpriced: unpriced?.id,
