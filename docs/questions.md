@@ -406,6 +406,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bills.open marks both `bookingIds[]` and `customerId` optional and lists no error codes; it does not say what happens with mixed bookings, which booking statuses may be billed, or when a package item can no longer be redeemed (R-14).
 - Answer (2026-10-03): user chose in chat. bookingIds must belong to one customer (and one branch); a sent customerId must match → else VALIDATION_FAILED. customerId only → empty bill for that customer; neither → empty walk-in bill (customer null). Only `confirmed` bookings may be billed (else VALIDATION_FAILED). Idempotency: every booking already on the same open bill → that bill; a booking on a paid/void bill → BILL_NOT_OPEN; bookings spread over bills → VALIDATION_FAILED. A package item that fails R-14 canRedeemPackage (or belongs to another customer) is billed at its booked price. Lines per appointment: main services, add-ons, then surcharges (performer = groomer); stay/daycare lines are T-0270.
 
+## Q-0071 · T-0283 bills.open hotel/daycare lines: descriptions and order
+- Status: open (T-0283 ships these choices)
+- Task: T-0283 · Asked by: agent (claude) · Date: 2026-10-03
+- Question: 05#ep-bills.open says to create lines from stay (stay_night qty = nights), stay_addon and daycare_visit, but stay and daycare_visit have no name snapshot for `bill_line.description`, and the line order across modules is not given.
+- Evidence: 05#ep-bills.open, 02#tbl-stay / #tbl-daycare_visit / #tbl-stay_addon, Q-0049.
+- Proposed decision (implemented): stay_night = room type `name_th`, qty = `stay.nights`, unit = `stay.nightly_price_satang`; stay_addon = `stay_addon.name_snapshot`, its quantity × unit price; daycare = session type `name_th`, qty 1, `daycare_visit.price_satang`; pet = the child's pet; no performer. Order: grooming lines (Q-0049) first, then per stay (by check-in) its night line and add-ons, then daycare visits by date. Cancelled/no-show children are skipped.
+
 ## Q-0055 · bills.list date/order and bills.updateLine rules
 - Status: answered (implemented in T-0230)
 - Task: T-0230 · Asked by: agent (claude) · Date: 2026-10-03
