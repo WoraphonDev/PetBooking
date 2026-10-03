@@ -3,9 +3,12 @@ import { TEMPLATES } from "../../../src/notify/keys.ts";
 import { render } from "../../../src/notify/templates/admin.feedback.ts";
 import { renderTemplate } from "../../../src/notify/templates/index.ts";
 
-// Body text only: the email subject belongs to T-0320 (Q-0060).
+// Q-0060: subject is the shop name line.
 it("matches the 07 text exactly", () => {
-  expect(render({ shopName: "ร้านน้องหมา", message: "อยากให้มีรายงานรายเดือน" }).text).toBe("[Feedback] ร้านน้องหมา: อยากให้มีรายงานรายเดือน");
+  expect(render({ shopName: "ร้านน้องหมา", message: "อยากให้มีรายงานรายเดือน" })).toEqual({
+    subject: "[Feedback] ร้านน้องหมา",
+    text: "[Feedback] ร้านน้องหมา: อยากให้มีรายงานรายเดือน",
+  });
 });
 it("keeps multi-line feedback and placeholders literal", () => {
   expect(render({ shopName: "A & B", message: "บรรทัด 1\nบรรทัด 2 {shopName}" }).text).toBe("[Feedback] A & B: บรรทัด 1\nบรรทัด 2 {shopName}");
