@@ -9,7 +9,7 @@ import type { JobHandler } from "../runner.ts";
 type Payload = { bookingId: string; entityType: "groom_appointment" | "stay" | "daycare_visit"; entityId: string };
 type Visit = { petId: string; bookingId: string; date: string; startsAt: string | null };
 const DAY_MS = 86_400_000;
-// Q-0062: enum-labels service_scope
+// Q-0063: enum-labels service_scope
 const SERVICE = { groom_appointment: "กรูม", stay: "โรงแรม", daycare_visit: "Daycare" } as const;
 
 /** 07 §2 reminder_24h: still-active visit + branch_policy.reminder_24h_enabled → customer.reminder_24h. */
