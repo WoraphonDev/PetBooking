@@ -464,7 +464,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Status: open
 - Task: T-0193 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 07 §1 `staff.slip_submitted` ends with `{duplicateFlag}` and `staff.booking_cancelled` ends with `{isLate}`, but 07 gives no wording; payload variables are `string | number` (no boolean), and 07 does not say what shows when the slip is not a duplicate / the cancel is not late.
-- Evidence: 07 §1 rows `staff.slip_submitted`, `staff.booking_cancelled`; R-04 step 4 UI badge "สลิปนี้เคยใช้แล้ว"; R-07 `isLate`; 06 C-xx label "ยกเลิกกระชั้น".
+- Evidence: 07 §1 rows `staff.slip_submitted`, `staff.booking_cancelled`; R-05 step 4 UI badge "สลิปนี้เคยใช้แล้ว"; R-07 `isLate`; 06 C-09 label "ยกเลิกกระชั้น".
 - Options: A) caller passes the ready text — `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" or "", `isLate` = "(ยกเลิกกระชั้น)" or "" — and the template only substitutes; B) caller passes 1/0 and the template maps 1 → that wording, 0 → nothing.
 - Implemented for now (T-0193): option A shape without fixing the wording — the template substitutes whatever text the caller sends and trims the trailing space when it is empty. The liff.uploadSlip / liff.payUploadSlip / liff.cancel cards need the wording to pass.
 
