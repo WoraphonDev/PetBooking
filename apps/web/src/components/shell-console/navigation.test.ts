@@ -2,17 +2,19 @@ import { describe, expect, it } from "vitest";
 import messages from "../../i18n/messages/th/shell-console.json";
 import { CONSOLE_ROUTES, canAccess, consoleNavigation, menuItems, routeForPath } from "./navigation";
 
+const unimplemented = consoleNavigation.map((entry) => ({ ...entry, implemented: false }));
+
 describe("console navigation", () => {
-  it("registers every routed C-* screen of 06 once, all disabled until their screen task", () => {
+  it("registers every routed C-* screen of 06 once, with an explicit unimplemented fixture", () => {
     expect(consoleNavigation.map((e) => e.id)).toEqual([...new Set(CONSOLE_ROUTES.map((r) => r.id))]);
     expect(consoleNavigation).toHaveLength(41);
-    expect(consoleNavigation.every((e) => e.implemented === false)).toBe(true);
+    expect(unimplemented.every((e) => e.implemented === false)).toBe(true);
     for (const e of consoleNavigation) expect(messages[e.id as keyof typeof messages], e.id).toBeTruthy();
     for (const id of ["C-02D", "C-06", "C-46"]) expect(CONSOLE_ROUTES.some((r) => r.id === id)).toBe(false);
   });
 
   it("menus only list pages of the role, disabled (href null) while unimplemented", () => {
-    const owner = menuItems("owner");
+    const owner = menuItems("owner", unimplemented);
     expect(owner.map((i) => i.id)).toContain("C-23");
     expect(owner.every((i) => i.href === null)).toBe(true);
     // detail / form routes are not menu items
@@ -24,6 +26,15 @@ describe("console navigation", () => {
   it("enables an entry once its screen task marks it implemented", () => {
     const entries = consoleNavigation.map((e) => (e.id === "C-08" ? { ...e, implemented: true } : e));
     expect(menuItems("front_desk", entries).find((i) => i.id === "C-08")).toEqual({ id: "C-08", href: "/console/customers" });
+  });
+
+  it("keeps enabled and disabled menu links and role filtering correct together", () => {
+    const mixed = unimplemented.map((entry) => ({ ...entry, implemented: ["C-08", "C-43"].includes(entry.id) }));
+    expect(menuItems("owner", mixed).find((entry) => entry.id === "C-43")?.href).toBe("/console/settings/stations");
+    expect(menuItems("owner", mixed).find((entry) => entry.id === "C-23")?.href).toBeNull();
+    expect(menuItems("front_desk", mixed).find((entry) => entry.id === "C-08")?.href).toBe("/console/customers");
+    expect(menuItems("front_desk", mixed).some((entry) => entry.id === "C-43")).toBe(false);
+    expect(menuItems("staff", mixed).some((entry) => entry.id === "C-08")).toBe(false);
   });
 
   it("matches paths to routes, preferring static segments", () => {
