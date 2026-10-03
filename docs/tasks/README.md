@@ -2,7 +2,7 @@
 
 > สร้างจาก `tools/spec-src/build_tasks.py` · การ์ดแต่ละใบ: `docs/tasks/<ID>.md` · **ห้ามเริ่ม task ที่ depends_on ยังไม่ merge**
 
-## M0 — รากฐาน (Walking skeleton) (41 tasks)
+## M0 — รากฐาน (Walking skeleton) (42 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
@@ -22,6 +22,7 @@
 | [T-0009](T-0009.md) | 2 | domain | S |  | Rule R-19 เลือกช่องทางส่งข้อความ | H-01 |
 | [T-0010](T-0010.md) | 4 | infra | L |  | Notification outbox + dispatcher + stub templates ทุก key | T-0004 T-0008 T-0009 |
 | [T-0011](T-0011.md) | 5 | infra | S |  | Email adapter (SMTP/nodemailer) + templates invite/reset | T-0010 H-02 |
+| [T-0320](T-0320.md) | 6 | infra | M |  | Template render shape: email subject + push url (Q-0060) | T-0010 T-0011 |
 | [T-0012](T-0012.md) | 2 | domain | M |  | Rule R-20 เวลาและวันที่ท้องถิ่น | H-01 |
 | [T-0013](T-0013.md) | 3 | domain | M |  | Rule R-31 รูปแบบการแสดงผลไทย (เงิน วันที่ เวลา น้ำหนัก) | H-01 T-0012 |
 | [T-0014](T-0014.md) | 2 | domain | M |  | Rule R-22 เบอร์โทร: normalize และแสดงผล | H-01 |
@@ -35,7 +36,7 @@
 | [T-0022](T-0022.md) | 6 | api | M | ⚠️ | API admin.login | T-0007 T-0005 |
 | [T-0319](T-0319.md) | 6 | api | M | ⚠️ | API admin.orgs, admin.updateOrg | T-0007 T-0035 |
 | [T-0023](T-0023.md) | 7 | api | L | ⚠️ | API admin.createOrg | T-0007 T-0319 |
-| [T-0024](T-0024.md) | 6 | notify | M |  | Notification templates (staff, M0): password_reset | T-0010 T-0011 |
+| [T-0024](T-0024.md) | 7 | notify | M |  | Notification templates (staff, M0): password_reset | T-0010 T-0320 T-0011 |
 | [T-0318](T-0318.md) | 3 | ui | S |  | ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006 | T-0001 |
 | [T-0025](T-0025.md) | 6 | ui | M |  | Admin shell: layout + guard | T-0015 T-0016 T-0007 |
 | [T-0026](T-0026.md) | 5 | ui | M |  | Shared component: ฟอร์มพื้นฐาน: MoneyInput (บาท→สตางค์), PhoneInput (R-22), WeightInput (กก.→กรัม), ThaiDatePicker (พ.ศ.), TimeSelect, EnumSelect, zod form helper | T-0015 T-0014 T-0013 |
@@ -48,7 +49,7 @@
 | [T-0033](T-0033.md) | 7 | ui | S |  | Screen AD-07 วันหยุดราชการ | T-0025 T-0026 |
 | [H-04](H-04.md) | 9 | human | - |  | Milestone review M0: demo + ตรวจคุณภาพ | T-0001 T-0002 T-0003 T-0004 T-0006 T-0007 T-0318 T-0025 … |
 
-## M1 — ร้านใส่ข้อมูลได้ (58 tasks)
+## M1 — ร้านใส่ข้อมูลได้ (60 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
@@ -56,9 +57,11 @@
 | [T-0036](T-0036.md) | 1 | infra | L |  | Job runner + POST /api/cron/tick + stub handlers ทุก job_type | T-0007 T-0010 |
 | [T-0037](T-0037.md) | 1 | domain | S |  | Rule R-25 ข้อจำกัดการอัปโหลดไฟล์ | H-01 |
 | [T-0038](T-0038.md) | 2 | infra | M | ⚠️ | Object storage (presign) + upload-url endpoints + file commit + cleanup job | T-0007 T-0037 T-0036 |
+| [T-0321](T-0321.md) | 1 | infra | S |  | Support mode อ่านได้ทุก endpoint ที่ owner อ่านได้ (Q-0033) | T-0007 |
 | [T-0039](T-0039.md) | 1 | infra | M |  | Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test | T-0001 T-0004 |
 | [T-0040](T-0040.md) | 1 | domain | S |  | Rule R-01 หาขนาด (size tier) จากน้ำหนัก | H-01 |
 | [T-0041](T-0041.md) | 1 | domain | M |  | Rule R-02 กลุ่มขนและการหาราคา/เวลาของบริการ | H-01 |
+| [T-0322](T-0322.md) | 1 | api | L | ⚠️ | API auth.invitePreview | T-0007 |
 | [T-0042](T-0042.md) | 1 | api | S |  | API auth.inviteAccept | T-0007 T-0035 T-0005 T-0019 |
 | [T-0043](T-0043.md) | 1 | api | M |  | API staffMe.sessions, staffMe.revokeSession | T-0007 |
 | [T-0044](T-0044.md) | 3 | api | M |  | API branch.get, branch.update, branch.setHours | T-0007 T-0038 |
@@ -85,13 +88,13 @@
 | [T-0065](T-0065.md) | 1 | api | S |  | API audit.list | T-0007 |
 | [T-0066](T-0066.md) | 1 | api | M |  | API admin.dataRequests, admin.holidays | T-0007 |
 | [T-0067](T-0067.md) | 2 | api | L | ⚠️ | API admin.resolveDataRequest | T-0007 T-0035 T-0066 |
-| [T-0068](T-0068.md) | 1 | notify | M |  | Notification templates (staff, M1): invite | T-0010 T-0011 |
-| [T-0069](T-0069.md) | 1 | notify | M |  | Notification templates (admin, M1): data_request | T-0010 T-0011 |
+| [T-0068](T-0068.md) | 1 | notify | M |  | Notification templates (staff, M1): invite | T-0010 T-0320 T-0011 |
+| [T-0069](T-0069.md) | 1 | notify | M |  | Notification templates (admin, M1): data_request | T-0010 T-0320 T-0011 |
 | [T-0070](T-0070.md) | 1 | ui | M |  | Console shell: layout + sidebar (ครบทุกเมนูใน 06) + auth guard | T-0015 T-0016 |
 | [T-0071](T-0071.md) | 3 | ui | M |  | Shared component: PhotoUploader: กล้อง/อัลบั้ม, ย่อรูป 1600px + ลบ EXIF (R-25), presigned PUT, progress, หลายไฟล์ | T-0015 T-0038 |
 | [T-0072](T-0072.md) | 1 | ui | M |  | Shared component: SlotPicker: แถบวัน + grid เวลา จาก SlotList (R-04) + แสดงชื่อช่าง + สถานะว่าง/เต็ม | T-0015 |
 | [T-0073](T-0073.md) | 1 | ui | M |  | Shared component: BarChart/LineChart เบา ๆ (recharts) สำหรับรายงาน | T-0015 |
-| [T-0074](T-0074.md) | 2 | ui | S |  | Screen A-04 รับคำเชิญเข้าร้าน | T-0015 T-0042 |
+| [T-0074](T-0074.md) | 2 | ui | S |  | Screen A-04 รับคำเชิญเข้าร้าน | T-0015 T-0322 T-0042 |
 | [T-0317](T-0317.md) | 1 | ui | S |  | Screen P-02 เอกสารกฎหมาย | T-0015 |
 | [T-0075](T-0075.md) | 3 | ui | M |  | Screen C-08 ลูกค้า | T-0070 T-0026 T-0027 T-0051 |
 | [T-0076](T-0076.md) | 4 | ui | L |  | Screen C-09 ลูกค้า | T-0070 T-0026 T-0027 T-0071 T-0051 T-0053 |
@@ -109,7 +112,7 @@
 | [T-0088](T-0088.md) | 2 | ui | M |  | Screen C-45 บัญชีของฉัน | T-0070 T-0020 T-0043 |
 | [T-0089](T-0089.md) | 3 | ui | S |  | Screen AD-05 คำขอ PDPA | T-0025 T-0026 T-0027 T-0066 T-0067 |
 | [T-0090](T-0090.md) | 2 | ui | S |  | Screen AD-07 วันหยุดราชการ (ext-M1) | T-0025 T-0026 T-0066 T-0033 |
-| [H-06](H-06.md) | 6 | human | - |  | Milestone review M1: demo + ตรวจคุณภาพ | T-0035 T-0010 T-0036 T-0038 T-0011 T-0015 T-0016 T-0070 … |
+| [H-06](H-06.md) | 6 | human | - |  | Milestone review M1: demo + ตรวจคุณภาพ | T-0035 T-0010 T-0036 T-0038 T-0011 T-0321 T-0320 T-0015 … |
 
 ## M2 — ลงคิวกรูมแทนสมุด (63 tasks)
 
@@ -155,9 +158,9 @@
 | [T-0124](T-0124.md) | 1 | api | S |  | API feedback.create | T-0007 T-0010 T-0038 |
 | [T-0125](T-0125.md) | 1 | api | M | ⚠️ | API admin.supportStart, admin.supportEnd, admin.feedback | T-0007 T-0035 T-0010 |
 | [T-0126](T-0126.md) | 2 | api | S |  | API admin.updateFeedback | T-0007 T-0125 |
-| [T-0127](T-0127.md) | 2 | notify | M |  | Notification templates (staff, M2): new_booking, groom_done, care_task_overdue | T-0010 T-0091 |
-| [T-0128](T-0128.md) | 2 | notify | M |  | Notification templates (owner, M2): support_access | T-0010 T-0091 T-0011 |
-| [T-0129](T-0129.md) | 1 | notify | M |  | Notification templates (admin, M2): feedback | T-0010 T-0011 |
+| [T-0127](T-0127.md) | 2 | notify | M |  | Notification templates (staff, M2): new_booking, groom_done, care_task_overdue | T-0010 T-0320 T-0091 |
+| [T-0128](T-0128.md) | 2 | notify | M |  | Notification templates (owner, M2): support_access | T-0010 T-0320 T-0091 T-0011 |
+| [T-0129](T-0129.md) | 1 | notify | M |  | Notification templates (admin, M2): feedback | T-0010 T-0320 T-0011 |
 | [T-0130](T-0130.md) | 2 | ui | M |  | Staff PWA shell: bottom nav + auth guard (role ใดก็ได้) | T-0015 T-0016 H-07 |
 | [T-0131](T-0131.md) | 1 | ui | M |  | Shared component: SignaturePad → PNG → อัปโหลด kind signature | T-0015 T-0071 |
 | [T-0132](T-0132.md) | 2 | ui | S |  | Screen A-01 เข้าสู่ระบบ (ร้าน) (ext-M2) | T-0015 T-0104 T-0028 |
@@ -223,12 +226,12 @@
 | [T-0186](T-0186.md) | 1 | job | M |  | Job handler expire_hold | T-0036 T-0010 |
 | [T-0187](T-0187.md) | 1 | job | M |  | Job handler reminder_24h | T-0036 T-0010 |
 | [T-0188](T-0188.md) | 1 | job | M |  | Job handler approval_overdue | T-0036 T-0010 T-0095 |
-| [T-0189](T-0189.md) | 1 | job | M |  | Job handler recompute_reliability | T-0036 T-0010 |
-| [T-0190](T-0190.md) | 2 | notify | M |  | Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed | T-0010 T-0149 |
-| [T-0191](T-0191.md) | 2 | notify | M |  | Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected | T-0010 T-0149 |
-| [T-0192](T-0192.md) | 2 | notify | M |  | Notification templates (customer, M3): link_approved | T-0010 T-0149 |
-| [T-0193](T-0193.md) | 1 | notify | M |  | Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request | T-0010 T-0091 |
-| [T-0194](T-0194.md) | 1 | notify | M |  | Notification templates (owner, M3): quota_warning, promptpay_changed | T-0010 T-0091 T-0011 |
+| [T-0189](T-0189.md) | 1 | job | M |  | Job handler recompute_reliability | T-0036 T-0010 T-0097 |
+| [T-0190](T-0190.md) | 2 | notify | M |  | Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed | T-0010 T-0320 T-0149 |
+| [T-0191](T-0191.md) | 2 | notify | M |  | Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected | T-0010 T-0320 T-0149 |
+| [T-0192](T-0192.md) | 2 | notify | M |  | Notification templates (customer, M3): link_approved | T-0010 T-0320 T-0149 |
+| [T-0193](T-0193.md) | 1 | notify | M |  | Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request | T-0010 T-0320 T-0091 |
+| [T-0194](T-0194.md) | 1 | notify | M |  | Notification templates (owner, M3): quota_warning, promptpay_changed | T-0010 T-0320 T-0091 T-0011 |
 | [T-0195](T-0195.md) | 2 | ui | M |  | LIFF shell: liff.init + session + header ร้าน | T-0015 T-0016 T-0149 |
 | [T-0196](T-0196.md) | 2 | ui | M |  | Shared component: PromptPayQR (R-30) + Countdown + SlipUploader (jsQR อ่าน QR บนสลิป → qrPayload) | T-0015 T-0071 T-0153 |
 | [T-0197](T-0197.md) | 4 | ui | M |  | Screen P-01 หน้าลิงก์จองของร้าน | T-0015 T-0026 T-0196 T-0027 T-0182 |
@@ -286,8 +289,8 @@
 | [T-0242](T-0242.md) | 2 | api | M |  | API liff.packages, liff.receipt | T-0007 T-0149 T-0051 T-0236 |
 | [T-0243](T-0243.md) | 2 | job | M |  | Job handler next_groom_reminder | T-0036 T-0010 T-0222 T-0222 |
 | [T-0244](T-0244.md) | 1 | job | M |  | Job handler package_expiry | T-0036 T-0010 |
-| [T-0245](T-0245.md) | 1 | notify | M |  | Notification templates (customer, M4): ready_for_pickup, report_card, receipt, next_groom_reminder | T-0010 T-0149 |
-| [T-0246](T-0246.md) | 1 | notify | M |  | Notification templates (staff, M4): report_card_review, low_rating | T-0010 T-0091 |
+| [T-0245](T-0245.md) | 1 | notify | M |  | Notification templates (customer, M4): ready_for_pickup, report_card, receipt, next_groom_reminder | T-0010 T-0320 T-0149 |
+| [T-0246](T-0246.md) | 1 | notify | M |  | Notification templates (staff, M4): report_card_review, low_rating | T-0010 T-0320 T-0091 |
 | [T-0247](T-0247.md) | 3 | ui | L |  | Screen C-02D รายละเอียดนัดกรูม (drawer) (ext-M4) | T-0070 T-0026 T-0027 T-0071 T-0228 T-0198 |
 | [T-0248](T-0248.md) | 2 | ui | L |  | Screen C-05 รายละเอียดใบจอง (ext-M4) | T-0070 T-0026 T-0071 T-0229 T-0200 |
 | [T-0249](T-0249.md) | 2 | ui | L |  | Screen C-09 ลูกค้า (ext-M4) | T-0070 T-0026 T-0027 T-0071 T-0224 T-0225 T-0202 |
@@ -335,8 +338,8 @@
 | [T-0285](T-0285.md) | 1 | api | L | ⚠️ | API liff.quote (hotel+daycare) | T-0007 T-0092 T-0094 T-0096 T-0099 T-0149 T-0176 T-0111 |
 | [T-0286](T-0286.md) | 1 | api | L | ⚠️ | API liff.createBooking (hotel+daycare) | T-0007 T-0010 T-0035 T-0092 T-0093 T-0094 T-0096 T-0097 … |
 | [T-0287](T-0287.md) | 1 | job | M |  | Job handler care_task_overdue_scan | T-0036 T-0010 |
-| [T-0288](T-0288.md) | 1 | notify | M |  | Notification templates (customer, M5): stay_checked_in, stay_update | T-0010 T-0149 |
-| [T-0289](T-0289.md) | 1 | notify | M |  | Notification templates (staff, M5): vaccine_review | T-0010 T-0091 |
+| [T-0288](T-0288.md) | 1 | notify | M |  | Notification templates (customer, M5): stay_checked_in, stay_update | T-0010 T-0320 T-0149 |
+| [T-0289](T-0289.md) | 1 | notify | M |  | Notification templates (staff, M5): vaccine_review | T-0010 T-0320 T-0091 |
 | [T-0290](T-0290.md) | 2 | ui | M |  | Screen C-03 สร้างใบจอง (หน้าร้าน) (hotel+daycare) | T-0070 T-0026 T-0072 T-0027 T-0050 T-0110 T-0269 T-0270 … |
 | [T-0291](T-0291.md) | 3 | ui | M |  | Screen C-13 Room map | T-0070 T-0026 T-0071 T-0280 T-0276 T-0267 |
 | [T-0292](T-0292.md) | 2 | ui | S |  | Screen C-14 เข้า-ออกวันนี้ | T-0070 T-0026 T-0273 |
@@ -353,7 +356,7 @@
 | [T-0303](T-0303.md) | 4 | e2e | L |  | E2E M5: จอง Hotel ใน LIFF … | T-0039 T-0300 T-0293 T-0298 T-0299 T-0302 T-0291 |
 | [H-15](H-15.md) | 5 | human | - |  | Milestone review M5: demo + ตรวจคุณภาพ | T-0264 T-0265 T-0266 T-0267 T-0268 T-0269 T-0270 T-0271 … |
 
-## M6 — รายงาน + พร้อมนำร่องเต็มรูปแบบ (14 tasks)
+## M6 — รายงาน + พร้อมนำร่องเต็มรูปแบบ (15 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
@@ -362,11 +365,12 @@
 | [T-0306](T-0306.md) | 1 | api | S |  | API reports.occupancy | T-0007 |
 | [T-0307](T-0307.md) | 1 | api | S |  | API exports.csv | T-0007 T-0035 |
 | [T-0308](T-0308.md) | 1 | api | S |  | API admin.analytics | T-0007 |
+| [T-0313](T-0313.md) | 2 | ui | S |  | Screen C-24 รายงานค่ามือ (ext-M6) | T-0070 T-0026 T-0027 T-0307 T-0254 |
+| [T-0323](T-0323.md) | 3 | api | M |  | CommissionReport entries[] เป็นรายละเอียดต่อรายการ + C-24 expand (Q-0077) | T-0240 T-0223 T-0254 T-0313 |
 | [T-0309](T-0309.md) | 1 | job | M |  | Job handler owner_daily_summary | T-0036 T-0010 |
-| [T-0310](T-0310.md) | 1 | notify | M |  | Notification templates (owner, M6): daily_summary | T-0010 T-0091 T-0011 |
+| [T-0310](T-0310.md) | 1 | notify | M |  | Notification templates (owner, M6): daily_summary | T-0010 T-0320 T-0091 T-0011 |
 | [T-0311](T-0311.md) | 2 | ui | M |  | Screen C-01 วันนี้ (Dashboard) | T-0070 T-0026 T-0304 T-0091 |
 | [T-0312](T-0312.md) | 2 | ui | S |  | Screen C-23 รายงานยอดขาย | T-0070 T-0073 T-0026 T-0027 T-0305 T-0307 |
-| [T-0313](T-0313.md) | 2 | ui | S |  | Screen C-24 รายงานค่ามือ (ext-M6) | T-0070 T-0026 T-0027 T-0307 T-0254 |
 | [T-0314](T-0314.md) | 2 | ui | S |  | Screen C-25 Occupancy | T-0070 T-0073 T-0026 T-0027 T-0306 |
 | [T-0315](T-0315.md) | 2 | ui | S |  | Screen AD-06 Analytics นำร่อง | T-0025 T-0027 T-0308 |
 | [T-0316](T-0316.md) | 3 | e2e | L |  | E2E M6: Dashboard + รายงานยอดขาย/ค่ามือ/occupancy ตรงกับข้อมูล seed + export CSV … | T-0039 T-0311 T-0312 T-0254 T-0314 |

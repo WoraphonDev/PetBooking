@@ -233,6 +233,27 @@ INF("INF-EMAIL", "Email adapter (SMTP/nodemailer) + templates invite/reset", "M1
     ["packages/server/src/integrations/email/**", "packages/server/test/integrations/email.test.ts", "packages/server/package.json", "pnpm-lock.yaml"],
     ["EmailSender จริงด้วย nodemailer (SMTP_URL, MAIL_FROM) + fake", "ต่อเข้ากับ dispatcher ช่องทาง email"], ["pnpm --filter @app/server test -- email"],
     deps=["INF-NOTIFY", "H-ADR-INFRA"], read=["docs/decisions/ADR-003-email.md"])
+INF("INF-SUPPORT-READ", "Support mode อ่านได้ทุก endpoint ที่ owner อ่านได้ (Q-0033)", "M1", "S", "US-13-11",
+    ["packages/server/src/auth/permissions.ts", "packages/server/test/auth/permissions-support.test.ts"],
+    ["`requireRole(ctx, key)` ยอมรับ actor `{type: \"admin\"}` ที่มี `ctx.supportAccessLogId` และ role (owner) อยู่ในสิทธิ์ของ endpoint",
+     "การเขียนยังถูกบล็อกก่อนหน้าด้วย SUPPORT_READ_ONLY — ไม่แก้ส่วนนั้น",
+     "test: support actor อ่าน endpoint ของ owner ได้, ไม่มี supportAccessLogId → FORBIDDEN, endpoint ที่ owner ไม่มีสิทธิ์ → FORBIDDEN"],
+    ["pnpm --filter @app/server test -- auth/permissions-support"], deps=["INF-HTTP"], read=["docs/spec/01-architecture.md", "docs/questions.md (Q-0007, Q-0033)"])
+INF("INF-NOTIFY-RENDER", "Template render shape: email subject + push url (Q-0060)", "M1", "M", "US-01-02, US-01-04, US-13-05",
+    ["packages/server/src/notify/dispatch.ts", "packages/server/src/notify/senders.ts", "packages/server/src/notify/templates/index.ts",
+     "packages/server/src/notify/templates/staff.invite.ts", "packages/server/src/notify/templates/staff.password_reset.ts",
+     "packages/server/src/notify/templates/owner.daily_summary.ts", "packages/server/src/notify/templates/owner.promptpay_changed.ts",
+     "packages/server/src/notify/templates/owner.support_access.ts", "packages/server/src/notify/templates/admin.feedback.ts",
+     "packages/server/src/notify/templates/admin.data_request.ts",
+     "packages/server/src/integrations/email/**",
+     "packages/server/test/notify/render.test.ts", "packages/server/test/notify/dispatch.test.ts", "packages/server/test/integrations/email.test.ts",
+     "packages/server/test/notify/templates/staff.invite.test.ts", "packages/server/test/notify/templates/staff.password_reset.test.ts", "packages/server/test/notify/templates/owner.daily_summary.test.ts", "packages/server/test/notify/templates/owner.promptpay_changed.test.ts", "packages/server/test/notify/templates/owner.support_access.test.ts", "packages/server/test/notify/templates/admin.feedback.test.ts", "packages/server/test/notify/templates/admin.data_request.test.ts"],
+    ["`render(payload)` คืน `{ text, subject?, url? }`; dispatch ส่ง `subject` ให้ EmailSender และ `url` ให้ WebPushSender (adapter รับ url อยู่แล้ว; text ยังเป็นเนื้อหาหลัก)",
+     "EmailSender.send รับ `{ to, subject, text }` (ไม่มี subject → ใช้บรรทัดแรกของ text)",
+     "หัวเรื่องอีเมล (Q-0060): staff.invite 'คำเชิญเข้าร่วมร้าน {shopName}', staff.password_reset 'ตั้งรหัสผ่านใหม่', owner.daily_summary 'สรุปประจำวัน {date}', owner.promptpay_changed '⚠️ บัญชีรับเงินของร้านถูกเปลี่ยน', owner.support_access 'ทีมงานเข้าดูข้อมูลร้านของคุณ', admin.feedback '[Feedback] {shopName}', admin.data_request '[PDPA] คำขอใหม่'",
+     "LINE Flex ไม่อยู่ในการ์ดนี้ (ทำพร้อม INF-LINE)"],
+    ["pnpm --filter @app/server test -- notify", "pnpm --filter @app/server test -- integrations"], deps=["INF-NOTIFY", "INF-EMAIL"],
+    read=["docs/spec/07-notifications-jobs.md §1", "docs/questions.md (Q-0060)"])
 INF("INF-WEBPUSH", "Web Push adapter + service worker + staff PWA manifest", "M2", "M", "US-13-05, US-09-04",
     ["packages/server/src/integrations/webpush/**", "packages/server/test/integrations/webpush.test.ts", "apps/web/public/sw.js", "apps/web/public/manifest.webmanifest",
      "apps/web/public/icons/**", "apps/web/src/lib/push.ts", "packages/server/package.json", "pnpm-lock.yaml"],
@@ -348,7 +369,7 @@ task("DOM-STATE", "State tables ทุก entity (03) + canTransition", "M1", "d
      done=["pnpm --filter @app/domain test", VERIFY], deps=["H-REPO"])
 
 # ================================================================= API tasks
-COMPLEX = {"bookings.create", "liff.createBooking", "bills.close", "bills.open", "bills.addPayment", "slips.verify", "availability.groomSlots", "liff.groomSlots",
+COMPLEX = {"auth.invitePreview", "bookings.create", "liff.createBooking", "bills.close", "bills.open", "bills.addPayment", "slips.verify", "availability.groomSlots", "liff.groomSlots",
            "groom.checkIn", "stays.checkIn", "stays.checkOut", "bookings.cancel", "liff.cancel", "liff.session", "liff.register", "auth.staffLogin", "admin.createOrg",
            "imports.create", "imports.commit", "webhook.line", "groom.reschedule", "liff.reschedule", "bills.void", "linkRequests.approve", "reportCards.submit",
            "stays.saveIntake", "calendar.day", "dashboard.today", "reports.sales", "quotes.create", "liff.quote", "stays.changeDates", "admin.verifyLine",
@@ -543,9 +564,19 @@ for (ms, aud), ns in NT_GROUPS.items():
              read=["docs/spec/07-notifications-jobs.md §1"], steps=[f"`{n['key']}`: ช่องทาง {n['channels']}, ตัวแปร {n['variables']}, ข้อความ: {n['text']}" for n in chunk] + [
                  "LINE: Flex Message แบบเรียบ (ข้อความ + ปุ่มลิงก์ LIFF) + altText = บรรทัดแรก; Web Push: title/body/url; email: subject + text",
                  "เงิน/วันที่ในข้อความใช้ R-31"],
-             done=["pnpm --filter @app/server test -- notify/templates", VERIFY], deps=["INF-NOTIFY"] + (["INF-LINE"] if any("line" in n["channels"] for n in chunk) else [])
+             done=["pnpm --filter @app/server test -- notify/templates", VERIFY], deps=["INF-NOTIFY", "INF-NOTIFY-RENDER"] + (["INF-LINE"] if any("line" in n["channels"] for n in chunk) else [])
                   + (["INF-WEBPUSH"] if any("web_push" in n["channels"] for n in chunk) else [])
                   + (["INF-EMAIL"] if any("email" in n["channels"] for n in chunk) else []))
+
+task("API-commission-entries", "CommissionReport entries[] เป็นรายละเอียดต่อรายการ + C-24 expand (Q-0077)", "M6", "api", "M", "US-12-03, US-09-05",
+     allowed=["packages/contracts/src/dto/commission-report.ts", "packages/server/src/services/reports/commissions.ts", "packages/server/src/services/staffMe/commissions.ts",
+              "packages/server/test/services/reports/commissions.test.ts", "packages/server/test/services/staffMe/commissions.test.ts",
+              "apps/web/src/components/c-24/**", "apps/web/src/i18n/messages/th/C-24.json", "apps/web/test/screens/c-24.test.tsx"],
+     read=["docs/spec/05-api.md#dto-CommissionReport", "docs/spec/06-screens.md#scr-C-24", "docs/spec/04-business-rules.md#R-13"],
+     steps=["DTO `rows[].entries[]` = `{ id, at, sign, receiptNo, serviceName, baseSatang, ruleLabel, amountSatang }` ตาม 05#dto-CommissionReport (ทั้ง reports.commissions และ staffMe.commissions)",
+            "C-24 รายละเอียด: expand แสดง วันที่, ใบเสร็จ, บริการ, ฐาน, กติกา, ยอด ต่อรายการ (ลบเมื่อ sign = -1)"],
+     done=["pnpm --filter @app/server test -- commissions", "pnpm --filter @app/web test -- screens/c-24", CONF, VERIFY],
+     deps=["API-reports-0", "API-staffMe-2", "SCR-C-24", "SCR-C-24-ext-M6"])
 
 # ================================================================= screens
 SCREEN_COMP = [("signature", "UI-C-SIGN"), ("กล้อง", "UI-C-UPLOAD"), ("upload", "UI-C-UPLOAD"), ("รูป", "UI-C-UPLOAD"), ("slot", "UI-C-SLOTS"), ("grid ปุ่มเวลา", "UI-C-SLOTS"),

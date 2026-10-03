@@ -666,6 +666,7 @@ tbl("booking", G, "ใบจอง (header) — 1 ใบมีได้หลา
  ("cancelled_at", "ts", True, None, None, ""),
  ("cancelled_by_type", "e:actor_type", True, None, None, ""),
  ("cancel_reason", "text", True, None, None, ""),
+ ("cancel_is_late", "bool", True, None, None, "R-07 isLate ตอนยกเลิก (Q-0084); null = ไม่ได้ยกเลิก — R-09 นับ late cancel จากคอลัมน์นี้"),
  ("first_service_at", "ts", True, None, None, "cache เวลาเริ่มบริการแรก (ใช้คำนวณยกเลิก)"),
  ("bill_id", "uuid", True, None, None, "บิลที่ปิดใบจองนี้ (FK ใส่ใน SQL custom)"),
 ], idx=[("unique", ["branch_id", "booking_no"], None), ("index", ["organization_id", "customer_id"], None),

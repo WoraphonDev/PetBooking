@@ -174,5 +174,7 @@ export function requireRole(ctx: RequestContext, key: PermissionKey): void {
   const roles: readonly StaffRole[] | undefined = PERMISSIONS[key];
   if (!roles) throw new Error(`requireRole: unknown endpoint key ${key}`);
   const { type, role } = ctx.actor;
-  if (type !== "staff" || !role || !roles.includes(role)) throw new AppError("FORBIDDEN");
+  // Q-0033: a support session (admin acting as owner, Q-0007) reads like that role; writes are refused earlier (SUPPORT_READ_ONLY)
+  const support = type === "admin" && ctx.supportAccessLogId !== null;
+  if ((type !== "staff" && !support) || !role || !roles.includes(role)) throw new AppError("FORBIDDEN");
 }

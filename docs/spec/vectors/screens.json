@@ -93,7 +93,9 @@
    "route": "/invite/[token]",
    "title": "รับคำเชิญเข้าร้าน",
    "roles": "public",
-   "load": [],
+   "load": [
+    "auth.invitePreview"
+   ],
    "fields": [
     {
      "section": "ข้อมูลร้าน",

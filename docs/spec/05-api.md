@@ -1208,6 +1208,18 @@ Dashboard วันนี้
 | `todo.pickupsWithoutBill` | calc: groom_appointment picked_up วันนี้ ที่ booking.bill_id null |
 | `todo.linkRequests` | calc: customer_link_request pending |
 
+<a id="dto-InvitePreview"></a>
+
+### InvitePreview
+
+ข้อมูลคำเชิญก่อนรับ (Q-0044)
+
+| field | source |
+|---|---|
+| `orgName` | organization.name |
+| `role` | staff_user.role |
+| `hasEmail` | calc: staff_user.email is not null (record ของคำเชิญ) |
+
 <a id="dto-SalesReport"></a>
 
 ### SalesReport
@@ -1242,7 +1254,14 @@ Dashboard วันนี้
 | `rows[].jobs` | calc: count earned_at ในช่วง − count reversed_at ในช่วง |
 | `rows[].baseSatang` | calc: Σ commission_entry.base_satang (earned_at ในช่วง) − Σ (reversed_at ในช่วง) |
 | `rows[].amountSatang` | calc: Σ commission_entry.amount_satang (earned_at ในช่วง) − Σ (reversed_at ในช่วง) |
-| `rows[].entries[]` | calc: commission_entry.id ทุกแถวที่นับ (บวกหรือลบ) |
+| `rows[].entries[].id` | commission_entry.id |
+| `rows[].entries[].at` | calc: earned_at (บวก) หรือ reversed_at (ลบ) |
+| `rows[].entries[].sign` | calc: 1 \| -1 |
+| `rows[].entries[].receiptNo` | bill.receipt_no |
+| `rows[].entries[].serviceName` | calc: bill_line.description |
+| `rows[].entries[].baseSatang` | commission_entry.base_satang |
+| `rows[].entries[].ruleLabel` | calc: กติกา percent x% / fixed ฿ (null = ไม่มีกติกา) |
+| `rows[].entries[].amountSatang` | commission_entry.amount_satang |
 
 <a id="dto-OccupancyReport"></a>
 
@@ -1573,6 +1592,7 @@ Dashboard วันนี้
 | [`auth.me`](#ep-auth.me) | GET | `/api/v1/auth/staff/me` | owner, front_desk, staff | US-01-02 |
 | [`auth.resetRequest`](#ep-auth.resetRequest) | POST | `/api/v1/auth/staff/password-reset/request` | ไม่ต้องล็อกอิน | US-01-02 |
 | [`auth.resetConfirm`](#ep-auth.resetConfirm) | POST | `/api/v1/auth/staff/password-reset/confirm` | ไม่ต้องล็อกอิน | US-01-02 |
+| [`auth.invitePreview`](#ep-auth.invitePreview) | GET | `/api/v1/auth/staff/invite` | ไม่ต้องล็อกอิน | US-01-04 |
 | [`auth.inviteAccept`](#ep-auth.inviteAccept) | POST | `/api/v1/auth/staff/invite/accept` | ไม่ต้องล็อกอิน | US-01-04 |
 | [`auth.staffLine`](#ep-auth.staffLine) | POST | `/api/v1/auth/staff/line` | ไม่ต้องล็อกอิน | US-01-03 |
 | [`staffMe.linkLine`](#ep-staffMe.linkLine) | POST | `/api/v1/staff/me/line-link` | owner, front_desk, staff | US-01-03 |
@@ -1882,6 +1902,28 @@ Errors: `TOKEN_INVALID`, `PASSWORD_POLICY`
 
 ผลที่ต้องเกิด:
 - ตั้ง password_reset.used_at, ลบ session เดิมทั้งหมดของผู้ใช้
+
+
+<a id="ep-auth.invitePreview"></a>
+
+#### auth.invitePreview
+
+**GET `/api/v1/auth/staff/invite`** — ดูคำเชิญก่อนรับ (Q-0044)  
+สิทธิ์: ไม่ต้องล็อกอิน · Stories: US-01-04
+
+Query:
+
+| param | type | req | maps to | validation |
+|---|---|---|---|---|
+| `token` | string | ✓ | staff_invite.token_hash | token จากลิงก์ |
+
+Response: `InvitePreview`
+  
+Errors: `TOKEN_INVALID`
+
+
+ผลที่ต้องเกิด:
+- token ไม่พบ/หมดอายุ/ใช้แล้ว → TOKEN_INVALID; ไม่สร้าง session
 
 
 <a id="ep-auth.inviteAccept"></a>
@@ -3798,6 +3840,7 @@ Notify: `customer.booking_cancelled`
 ผลที่ต้องเกิด:
 - children ทั้งหมด → cancelled
 - เงินตาม R-07 (credit_ledger / refund pending / forfeited)
+- booking.cancel_is_late = R-07 isLate (Q-0084)
 - late → customer.late_cancel_count_12m + 1 แล้ว R-09
 - ยกเลิก scheduled_job ที่ dedupe_key อ้างใบจองนี้
 
@@ -5642,6 +5685,10 @@ Errors: `STATUS_NOT_ALLOWED`
 State: `booking:*→cancelled`
   
 Notify: `staff.booking_cancelled`
+
+
+ผลที่ต้องเกิด:
+- booking.cancel_is_late = R-07 isLate (Q-0084)
 
 
 <a id="ep-liff.reschedule"></a>

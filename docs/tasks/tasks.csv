@@ -15,6 +15,7 @@ T-0008,DOM-R-18,M0,2,domain,agent,S,,Rule R-18 โควตาข้อควา
 T-0009,DOM-R-19,M0,2,domain,agent,S,,Rule R-19 เลือกช่องทางส่งข้อความ,US-09-04 US-13-05 US-13-06,H-01,4
 T-0010,INF-NOTIFY,M0,4,infra,agent,L,,Notification outbox + dispatcher + stub templates ทุก key,US-13-05 US-13-06,T-0004 T-0008 T-0009,2
 T-0011,INF-EMAIL,M0,5,infra,agent,S,,Email adapter (SMTP/nodemailer) + templates invite/reset,US-01-02 US-01-04,T-0010 H-02,4
+T-0320,INF-NOTIFY-RENDER,M0,6,infra,agent,M,,Template render shape: email subject + push url (Q-0060),US-01-02 US-01-04 US-13-05,T-0010 T-0011,21
 T-0012,DOM-R-20,M0,2,domain,agent,M,,Rule R-20 เวลาและวันที่ท้องถิ่น,US-13-03,H-01,4
 T-0013,DOM-R-31,M0,3,domain,agent,M,,Rule R-31 รูปแบบการแสดงผลไทย (เงิน วันที่ เวลา น้ำหนัก),US-13-03,H-01 T-0012,4
 T-0014,DOM-R-22,M0,2,domain,agent,M,,Rule R-22 เบอร์โทร: normalize และแสดงผล,US-03-01 US-03-10 US-11-01,H-01,4
@@ -28,7 +29,7 @@ T-0021,API-auth-1,M0,6,api,agent,S,,API auth.resetConfirm,US-01-02,T-0007 T-0005
 T-0022,API-admin-0,M0,6,api,agent,M,yes,API admin.login,US-13-10,T-0007 T-0005,6
 T-0319,API-admin-organizations,M0,6,api,agent,M,yes,"API admin.orgs, admin.updateOrg",US-13-10,T-0007 T-0035,9
 T-0023,API-admin.createOrg,M0,7,api,agent,L,yes,API admin.createOrg,US-13-10 US-13-14,T-0007 T-0319,4
-T-0024,NTF-staff-M0-0,M0,6,notify,agent,M,,"Notification templates (staff, M0): password_reset",US-01-02,T-0010 T-0011,2
+T-0024,NTF-staff-M0-0,M0,7,notify,agent,M,,"Notification templates (staff, M0): password_reset",US-01-02,T-0010 T-0320 T-0011,2
 T-0318,UI-THEME,M0,3,ui,agent,S,,ธีมหน้าตา: design tokens ใน globals.css ตาม ADR-006,US-13-01,T-0001,1
 T-0025,UI-SHELL-admin,M0,6,ui,agent,M,,Admin shell: layout + guard,US-13-01,T-0015 T-0016 T-0007,10
 T-0026,UI-C-FORM,M0,5,ui,agent,M,,"Shared component: ฟอร์มพื้นฐาน: MoneyInput (บาท→สตางค์), PhoneInput (R-22), WeightInput (กก.→กรัม), ThaiDatePicker (พ.ศ.), TimeSelect, EnumSelect, zod form helper",US-13-03,T-0015 T-0014 T-0013,4
@@ -44,9 +45,11 @@ H-05,H-LEGAL,M1,1,human,human,-,,ร่าง Privacy Notice / Terms / DPA / ข
 T-0036,INF-JOBS,M1,1,infra,agent,L,,Job runner + POST /api/cron/tick + stub handlers ทุก job_type,US-05-02 US-07-06 US-12-05,T-0007 T-0010,5
 T-0037,DOM-R-25,M1,1,domain,agent,S,,Rule R-25 ข้อจำกัดการอัปโหลดไฟล์,US-03-06 US-07-02 US-13-04,H-01,4
 T-0038,INF-STORAGE,M1,2,infra,agent,M,yes,Object storage (presign) + upload-url endpoints + file commit + cleanup job,US-13-04,T-0007 T-0037 T-0036,15
+T-0321,INF-SUPPORT-READ,M1,1,infra,agent,S,,Support mode อ่านได้ทุก endpoint ที่ owner อ่านได้ (Q-0033),US-13-11,T-0007,2
 T-0039,INF-E2E,M1,1,infra,agent,M,,Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test,US-13-14,T-0001 T-0004,4
 T-0040,DOM-R-01,M1,1,domain,agent,S,,Rule R-01 หาขนาด (size tier) จากน้ำหนัก,US-04-02 US-11-03,H-01,4
 T-0041,DOM-R-02,M1,1,domain,agent,M,,Rule R-02 กลุ่มขนและการหาราคา/เวลาของบริการ,US-04-02 US-04-03,H-01,4
+T-0322,API-auth.invitePreview,M1,1,api,agent,L,yes,API auth.invitePreview,US-01-04,T-0007,5
 T-0042,API-auth-2,M1,1,api,agent,S,,API auth.inviteAccept,US-01-04,T-0007 T-0035 T-0005 T-0019,4
 T-0043,API-staffMe-1,M1,1,api,agent,M,,"API staffMe.sessions, staffMe.revokeSession",US-01-05,T-0007,8
 T-0044,API-branch-0,M1,3,api,agent,M,,"API branch.get, branch.update, branch.setHours",US-02-01,T-0007 T-0038,13
@@ -73,13 +76,13 @@ T-0064,API-imports.commit,M1,4,api,agent,L,,API imports.commit,US-02-08,T-0007 T
 T-0065,API-audit-0,M1,1,api,agent,S,,API audit.list,US-13-07,T-0007,5
 T-0066,API-admin-4,M1,1,api,agent,M,,"API admin.dataRequests, admin.holidays",US-13-03 US-13-08,T-0007,9
 T-0067,API-admin.resolveDataRequest,M1,2,api,agent,L,yes,API admin.resolveDataRequest,US-13-08,T-0007 T-0035 T-0066,4
-T-0068,NTF-staff-M1-0,M1,1,notify,agent,M,,"Notification templates (staff, M1): invite",US-01-04,T-0010 T-0011,2
-T-0069,NTF-admin-M1-0,M1,1,notify,agent,M,,"Notification templates (admin, M1): data_request",US-13-08,T-0010 T-0011,2
+T-0068,NTF-staff-M1-0,M1,1,notify,agent,M,,"Notification templates (staff, M1): invite",US-01-04,T-0010 T-0320 T-0011,2
+T-0069,NTF-admin-M1-0,M1,1,notify,agent,M,,"Notification templates (admin, M1): data_request",US-13-08,T-0010 T-0320 T-0011,2
 T-0070,UI-SHELL-console,M1,1,ui,agent,M,,Console shell: layout + sidebar (ครบทุกเมนูใน 06) + auth guard,US-13-01,T-0015 T-0016,4
 T-0071,UI-C-UPLOAD,M1,3,ui,agent,M,,"Shared component: PhotoUploader: กล้อง/อัลบั้ม, ย่อรูป 1600px + ลบ EXIF (R-25), presigned PUT, progress, หลายไฟล์",US-13-03,T-0015 T-0038,4
 T-0072,UI-C-SLOTS,M1,1,ui,agent,M,,Shared component: SlotPicker: แถบวัน + grid เวลา จาก SlotList (R-04) + แสดงชื่อช่าง + สถานะว่าง/เต็ม,US-13-03,T-0015,4
 T-0073,UI-C-CHART,M1,1,ui,agent,M,,Shared component: BarChart/LineChart เบา ๆ (recharts) สำหรับรายงาน,US-13-03,T-0015,4
-T-0074,SCR-A-04,M1,2,ui,agent,S,,Screen A-04 รับคำเชิญเข้าร้าน,US-01-04,T-0015 T-0042,4
+T-0074,SCR-A-04,M1,2,ui,agent,S,,Screen A-04 รับคำเชิญเข้าร้าน,US-01-04,T-0015 T-0322 T-0042,4
 T-0317,SCR-P-02,M1,1,ui,agent,S,,Screen P-02 เอกสารกฎหมาย,US-13-08,T-0015,4
 T-0075,SCR-C-08,M1,3,ui,agent,M,,Screen C-08 ลูกค้า,US-03-01 US-03-10,T-0070 T-0026 T-0027 T-0051,5
 T-0076,SCR-C-09,M1,4,ui,agent,L,,Screen C-09 ลูกค้า,US-03-01 US-03-08 US-03-09 US-07-05 US-10-05,T-0070 T-0026 T-0027 T-0071 T-0051 T-0053,4
@@ -97,7 +100,7 @@ T-0087,SCR-C-44,M1,5,ui,agent,S,,Screen C-44 นำเข้าข้อมู�
 T-0088,SCR-C-45,M1,2,ui,agent,M,,Screen C-45 บัญชีของฉัน,US-01-03 US-01-05 US-13-05,T-0070 T-0020 T-0043,5
 T-0089,SCR-AD-05,M1,3,ui,agent,S,,Screen AD-05 คำขอ PDPA,US-13-08,T-0025 T-0026 T-0027 T-0066 T-0067,5
 T-0090,SCR-AD-07-ext-M1,M1,2,ui,agent,S,,Screen AD-07 วันหยุดราชการ (ext-M1),US-13-03,T-0025 T-0026 T-0066 T-0033,11
-H-06,H-GATE-M1,M1,6,human,human,-,,Milestone review M1: demo + ตรวจคุณภาพ,,T-0035 T-0010 T-0036 T-0038 T-0011 T-0015 T-0016 T-0070 T-0039 T-0026 T-0027 T-0071 T-0040 T-0041 T-0014 T-0037 T-0034 T-0042 T-0043 T-0044 T-0045 T-0046 T-0047 T-0048 T-0049 T-0050 T-0051 T-0052 T-0053 T-0054 T-0055 T-0056 T-0057 T-0058 T-0059 T-0060 T-0061 T-0062 T-0063 T-0064 T-0065 T-0066 T-0067 T-0068 T-0069 T-0074 T-0317 T-0075 T-0076 T-0077 T-0078 T-0079 T-0080 T-0081 T-0082 T-0083 T-0084 T-0085 T-0086 T-0087 T-0088 T-0089 T-0090 H-04,0
+H-06,H-GATE-M1,M1,6,human,human,-,,Milestone review M1: demo + ตรวจคุณภาพ,,T-0035 T-0010 T-0036 T-0038 T-0011 T-0321 T-0320 T-0015 T-0016 T-0070 T-0039 T-0026 T-0027 T-0071 T-0040 T-0041 T-0014 T-0037 T-0034 T-0322 T-0042 T-0043 T-0044 T-0045 T-0046 T-0047 T-0048 T-0049 T-0050 T-0051 T-0052 T-0053 T-0054 T-0055 T-0056 T-0057 T-0058 T-0059 T-0060 T-0061 T-0062 T-0063 T-0064 T-0065 T-0066 T-0067 T-0068 T-0069 T-0074 T-0317 T-0075 T-0076 T-0077 T-0078 T-0079 T-0080 T-0081 T-0082 T-0083 T-0084 T-0085 T-0086 T-0087 T-0088 T-0089 T-0090 H-04,0
 H-07,H-LINE-PLATFORM,M2,1,human,human,-,,สร้าง LINE Login channel ของแพลตฟอร์ม (สำหรับพนักงาน) + OA/LIFF ทดสอบ,US-01-03 US-02-06,H-03,0
 H-08,H-SP02,M2,1,human,human,-,,SP-02 เก็บสลิปจริง ≥ 6 ธนาคาร → เพิ่ม vectors R-05,US-07-02,H-01,0
 H-09,H-SP04,M2,1,human,human,-,,SP-04 ทดสอบ Web Push บนอุปกรณ์ร้านนำร่อง,US-09-04 US-13-05,,0
@@ -138,9 +141,9 @@ T-0123,API-daycare-2,M2,3,api,agent,S,,API daycare.cancel,US-05-08,T-0007 T-0035
 T-0124,API-feedback-0,M2,1,api,agent,S,,API feedback.create,US-13-13,T-0007 T-0010 T-0038,4
 T-0125,API-admin-2,M2,1,api,agent,M,yes,"API admin.supportStart, admin.supportEnd, admin.feedback",US-13-11 US-13-13,T-0007 T-0035 T-0010,13
 T-0126,API-admin-3,M2,2,api,agent,S,,API admin.updateFeedback,US-13-13,T-0007 T-0125,4
-T-0127,NTF-staff-M2-0,M2,2,notify,agent,M,,"Notification templates (staff, M2): new_booking, groom_done, care_task_overdue",US-05-09 US-06-09 US-09-04 US-13-05,T-0010 T-0091,6
-T-0128,NTF-owner-M2-0,M2,2,notify,agent,M,,"Notification templates (owner, M2): support_access",US-13-11,T-0010 T-0091 T-0011,2
-T-0129,NTF-admin-M2-0,M2,1,notify,agent,M,,"Notification templates (admin, M2): feedback",US-13-13,T-0010 T-0011,2
+T-0127,NTF-staff-M2-0,M2,2,notify,agent,M,,"Notification templates (staff, M2): new_booking, groom_done, care_task_overdue",US-05-09 US-06-09 US-09-04 US-13-05,T-0010 T-0320 T-0091,6
+T-0128,NTF-owner-M2-0,M2,2,notify,agent,M,,"Notification templates (owner, M2): support_access",US-13-11,T-0010 T-0320 T-0091 T-0011,2
+T-0129,NTF-admin-M2-0,M2,1,notify,agent,M,,"Notification templates (admin, M2): feedback",US-13-13,T-0010 T-0320 T-0011,2
 T-0130,UI-SHELL-staff,M2,2,ui,agent,M,,Staff PWA shell: bottom nav + auth guard (role ใดก็ได้),US-13-01,T-0015 T-0016 H-07,4
 T-0131,UI-C-SIGN,M2,1,ui,agent,M,,Shared component: SignaturePad → PNG → อัปโหลด kind signature,US-13-03,T-0015 T-0071,4
 T-0132,SCR-A-01-ext-M2,M2,2,ui,agent,S,,Screen A-01 เข้าสู่ระบบ (ร้าน) (ext-M2),US-01-02,T-0015 T-0104 T-0028,4
@@ -201,12 +204,12 @@ T-0185,API-admin.verifyLine,M3,2,api,agent,L,yes,API admin.verifyLine,US-02-06,T
 T-0186,JOB-expire_hold,M3,1,job,agent,M,,Job handler expire_hold,US-05-02,T-0036 T-0010,2
 T-0187,JOB-reminder_24h,M3,1,job,agent,M,,Job handler reminder_24h,US-07-06,T-0036 T-0010,2
 T-0188,JOB-approval_overdue,M3,1,job,agent,M,,Job handler approval_overdue,US-05-05,T-0036 T-0010 T-0095,2
-T-0189,JOB-recompute_reliability,M3,1,job,agent,M,,Job handler recompute_reliability,US-03-09,T-0036 T-0010,2
-T-0190,NTF-customer-M3-0,M3,2,notify,agent,M,,"Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed",US-05-04 US-05-05 US-05-08 US-07-02 US-07-04 US-11-03 US-11-07,T-0010 T-0149,12
-T-0191,NTF-customer-M3-1,M3,2,notify,agent,M,,"Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected",US-03-05 US-05-02 US-07-02 US-07-06 US-07-07 US-07-08,T-0010 T-0149,12
-T-0192,NTF-customer-M3-2,M3,2,notify,agent,M,,"Notification templates (customer, M3): link_approved",US-11-01,T-0010 T-0149,2
-T-0193,NTF-staff-M3-0,M3,1,notify,agent,M,,"Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request",US-05-05 US-07-02 US-11-01 US-11-08,T-0010 T-0091,10
-T-0194,NTF-owner-M3-0,M3,1,notify,agent,M,,"Notification templates (owner, M3): quota_warning, promptpay_changed",US-02-03 US-13-06,T-0010 T-0091 T-0011,4
+T-0189,JOB-recompute_reliability,M3,1,job,agent,M,,Job handler recompute_reliability,US-03-09,T-0036 T-0010 T-0097,2
+T-0190,NTF-customer-M3-0,M3,2,notify,agent,M,,"Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed",US-05-04 US-05-05 US-05-08 US-07-02 US-07-04 US-11-03 US-11-07,T-0010 T-0320 T-0149,12
+T-0191,NTF-customer-M3-1,M3,2,notify,agent,M,,"Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected",US-03-05 US-05-02 US-07-02 US-07-06 US-07-07 US-07-08,T-0010 T-0320 T-0149,12
+T-0192,NTF-customer-M3-2,M3,2,notify,agent,M,,"Notification templates (customer, M3): link_approved",US-11-01,T-0010 T-0320 T-0149,2
+T-0193,NTF-staff-M3-0,M3,1,notify,agent,M,,"Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request",US-05-05 US-07-02 US-11-01 US-11-08,T-0010 T-0320 T-0091,10
+T-0194,NTF-owner-M3-0,M3,1,notify,agent,M,,"Notification templates (owner, M3): quota_warning, promptpay_changed",US-02-03 US-13-06,T-0010 T-0320 T-0091 T-0011,4
 T-0195,UI-SHELL-liff,M3,2,ui,agent,M,,LIFF shell: liff.init + session + header ร้าน,US-13-01,T-0015 T-0016 T-0149,8
 T-0196,UI-C-PAY,M3,2,ui,agent,M,,Shared component: PromptPayQR (R-30) + Countdown + SlipUploader (jsQR อ่าน QR บนสลิป → qrPayload),US-13-03,T-0015 T-0071 T-0153,4
 T-0197,SCR-P-01,M3,4,ui,agent,M,,Screen P-01 หน้าลิงก์จองของร้าน,US-02-07,T-0015 T-0026 T-0196 T-0027 T-0182,4
@@ -259,8 +262,8 @@ T-0241,API-liff-5,M4,2,api,agent,M,,"API liff.reportCard, liff.rate, liff.review
 T-0242,API-liff-6,M4,2,api,agent,M,,"API liff.packages, liff.receipt",US-08-05 US-10-06,T-0007 T-0149 T-0051 T-0236,8
 T-0243,JOB-next_groom_reminder,M4,2,job,agent,M,,Job handler next_groom_reminder,US-10-04,T-0036 T-0010 T-0222 T-0222,2
 T-0244,JOB-package_expiry,M4,1,job,agent,M,,Job handler package_expiry,US-10-05,T-0036 T-0010,2
-T-0245,NTF-customer-M4-0,M4,1,notify,agent,M,,"Notification templates (customer, M4): ready_for_pickup, report_card, receipt, next_groom_reminder",US-05-09 US-08-05 US-10-01 US-10-02 US-10-04,T-0010 T-0149,8
-T-0246,NTF-staff-M4-0,M4,1,notify,agent,M,,"Notification templates (staff, M4): report_card_review, low_rating",US-10-01 US-10-03,T-0010 T-0091,4
+T-0245,NTF-customer-M4-0,M4,1,notify,agent,M,,"Notification templates (customer, M4): ready_for_pickup, report_card, receipt, next_groom_reminder",US-05-09 US-08-05 US-10-01 US-10-02 US-10-04,T-0010 T-0320 T-0149,8
+T-0246,NTF-staff-M4-0,M4,1,notify,agent,M,,"Notification templates (staff, M4): report_card_review, low_rating",US-10-01 US-10-03,T-0010 T-0320 T-0091,4
 T-0247,SCR-C-02D-ext-M4,M4,3,ui,agent,L,,Screen C-02D รายละเอียดนัดกรูม (drawer) (ext-M4),US-04-05 US-05-03 US-05-08 US-05-09 US-07-07,T-0070 T-0026 T-0027 T-0071 T-0228 T-0198,3
 T-0248,SCR-C-05-ext-M4,M4,2,ui,agent,L,,Screen C-05 รายละเอียดใบจอง (ext-M4),US-05-04 US-05-08 US-07-02 US-07-03 US-07-04 US-07-05 US-07-08,T-0070 T-0026 T-0071 T-0229 T-0200,4
 T-0249,SCR-C-09-ext-M4,M4,2,ui,agent,L,,Screen C-09 ลูกค้า (ext-M4),US-03-01 US-03-08 US-03-09 US-07-05 US-10-05,T-0070 T-0026 T-0027 T-0071 T-0224 T-0225 T-0202,4
@@ -303,8 +306,8 @@ T-0284,API-liff-3,M5,2,api,agent,M,,"API liff.hotelAvailability, liff.daycareAva
 T-0285,API-liff.quote-hotel+daycare,M5,1,api,agent,L,yes,API liff.quote (hotel+daycare),US-11-03 US-11-04 US-11-05,T-0007 T-0092 T-0094 T-0096 T-0099 T-0149 T-0176 T-0111,4
 T-0286,API-liff.createBooking-hotel+daycare,M5,1,api,agent,L,yes,API liff.createBooking (hotel+daycare),US-05-02 US-11-03 US-11-04 US-11-05 US-11-06,T-0007 T-0010 T-0035 T-0092 T-0093 T-0094 T-0096 T-0097 T-0098 T-0099 T-0100 T-0101 T-0102 T-0103 T-0153 T-0149 T-0112 T-0177,4
 T-0287,JOB-care_task_overdue_scan,M5,1,job,agent,M,,Job handler care_task_overdue_scan,US-06-09,T-0036 T-0010,2
-T-0288,NTF-customer-M5-0,M5,1,notify,agent,M,,"Notification templates (customer, M5): stay_checked_in, stay_update",US-06-10,T-0010 T-0149,4
-T-0289,NTF-staff-M5-0,M5,1,notify,agent,M,,"Notification templates (staff, M5): vaccine_review",US-06-05,T-0010 T-0091,2
+T-0288,NTF-customer-M5-0,M5,1,notify,agent,M,,"Notification templates (customer, M5): stay_checked_in, stay_update",US-06-10,T-0010 T-0320 T-0149,4
+T-0289,NTF-staff-M5-0,M5,1,notify,agent,M,,"Notification templates (staff, M5): vaccine_review",US-06-05,T-0010 T-0320 T-0091,2
 T-0290,SCR-C-03-hotel+daycare,M5,2,ui,agent,M,,Screen C-03 สร้างใบจอง (หน้าร้าน) (hotel+daycare),US-05-04 US-06-03 US-06-07 US-06-13,T-0070 T-0026 T-0072 T-0027 T-0050 T-0110 T-0269 T-0270 T-0271 T-0136,4
 T-0291,SCR-C-13,M5,3,ui,agent,M,,Screen C-13 Room map,US-06-04,T-0070 T-0026 T-0071 T-0280 T-0276 T-0267,4
 T-0292,SCR-C-14,M5,2,ui,agent,S,,Screen C-14 เข้า-ออกวันนี้,US-06-12,T-0070 T-0026 T-0273,4
@@ -325,12 +328,13 @@ T-0305,API-reports.sales,M6,1,api,agent,L,,API reports.sales,US-12-02,T-0007 T-0
 T-0306,API-reports-1,M6,1,api,agent,S,,API reports.occupancy,US-12-04,T-0007,5
 T-0307,API-exports-0,M6,1,api,agent,S,,API exports.csv,US-12-06,T-0007 T-0035,4
 T-0308,API-admin-5,M6,1,api,agent,S,,API admin.analytics,US-13-12,T-0007,5
+T-0313,SCR-C-24-ext-M6,M6,2,ui,agent,S,,Screen C-24 รายงานค่ามือ (ext-M6),US-12-03,T-0070 T-0026 T-0027 T-0307 T-0254,4
+T-0323,API-commission-entries,M6,3,api,agent,M,,CommissionReport entries[] เป็นรายละเอียดต่อรายการ + C-24 expand (Q-0077),US-09-05 US-12-03,T-0240 T-0223 T-0254 T-0313,8
 T-0309,JOB-owner_daily_summary,M6,1,job,agent,M,,Job handler owner_daily_summary,US-12-05,T-0036 T-0010,2
-T-0310,NTF-owner-M6-0,M6,1,notify,agent,M,,"Notification templates (owner, M6): daily_summary",US-12-05,T-0010 T-0091 T-0011,2
+T-0310,NTF-owner-M6-0,M6,1,notify,agent,M,,"Notification templates (owner, M6): daily_summary",US-12-05,T-0010 T-0320 T-0091 T-0011,2
 T-0311,SCR-C-01,M6,2,ui,agent,M,,Screen C-01 วันนี้ (Dashboard),US-12-01,T-0070 T-0026 T-0304 T-0091,6
 T-0312,SCR-C-23,M6,2,ui,agent,S,,Screen C-23 รายงานยอดขาย,US-12-02 US-12-06,T-0070 T-0073 T-0026 T-0027 T-0305 T-0307,4
-T-0313,SCR-C-24-ext-M6,M6,2,ui,agent,S,,Screen C-24 รายงานค่ามือ (ext-M6),US-12-03,T-0070 T-0026 T-0027 T-0307 T-0254,4
 T-0314,SCR-C-25,M6,2,ui,agent,S,,Screen C-25 Occupancy,US-12-04,T-0070 T-0073 T-0026 T-0027 T-0306,4
 T-0315,SCR-AD-06,M6,2,ui,agent,S,,Screen AD-06 Analytics นำร่อง,US-13-12,T-0025 T-0027 T-0308,5
 T-0316,E2E-M6,M6,3,e2e,agent,L,,E2E M6: Dashboard + รายงานยอดขาย/ค่ามือ/occupancy ตรงกับข้อมูล seed + export CSV …,,T-0039 T-0311 T-0312 T-0254 T-0314,2
-H-16,H-GATE-M6,M6,4,human,human,-,,Release C: UAT + ตัดสินใจปล่อยร้านนำร่อง (M6),,T-0073 T-0304 T-0305 T-0306 T-0307 T-0308 T-0309 T-0310 T-0311 T-0312 T-0313 T-0314 T-0315 T-0316 H-15,0
+H-16,H-GATE-M6,M6,4,human,human,-,,Release C: UAT + ตัดสินใจปล่อยร้านนำร่อง (M6),,T-0073 T-0304 T-0305 T-0306 T-0307 T-0308 T-0309 T-0310 T-0323 T-0311 T-0312 T-0313 T-0314 T-0315 T-0316 H-15,0

@@ -13,6 +13,7 @@ export const ENDPOINTS = {
   "auth.me": ["GET", "/api/v1/auth/staff/me"],
   "auth.resetRequest": ["POST", "/api/v1/auth/staff/password-reset/request"],
   "auth.resetConfirm": ["POST", "/api/v1/auth/staff/password-reset/confirm"],
+  "auth.invitePreview": ["GET", "/api/v1/auth/staff/invite"],
   "auth.inviteAccept": ["POST", "/api/v1/auth/staff/invite/accept"],
   "auth.staffLine": ["POST", "/api/v1/auth/staff/line"],
   "staffMe.linkLine": ["POST", "/api/v1/staff/me/line-link"],

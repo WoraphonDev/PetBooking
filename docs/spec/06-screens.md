@@ -192,7 +192,7 @@ Route: `/reset-password?token=` · สิทธิ์: public · Stories: US-01-
 
 Route: `/invite/[token]` · สิทธิ์: public · Stories: US-01-04  
 จุดประสงค์: พนักงานใหม่ตั้งชื่อ/รหัส หรือผูก LINE  
-โหลดข้อมูล: —
+โหลดข้อมูล: `auth.invitePreview`
 
 **ข้อมูลร้าน**
 
@@ -206,7 +206,7 @@ Route: `/invite/[token]` · สิทธิ์: public · Stories: US-01-04
 | โหมด | ป้าย | แหล่งข้อมูล / บันทึกที่ | UI / รูปแบบ | กติกา |
 |---|---|---|---|---|
 | แสดง+แก้ | ชื่อเล่นที่ลูกค้าเห็น | `staff_user.display_name` | text | 1–40 บังคับ |
-| กรอก | อีเมล | `staff_user.email` | email | แสดงเมื่อคำเชิญไม่มีอีเมล |
+| กรอก | อีเมล | `staff_user.email` | email | แสดงเมื่อคำเชิญไม่มีอีเมล (InvitePreview.hasEmail = false) |
 | กรอก | รหัสผ่าน | `staff_user.password_hash` | password | R-24; ไม่บังคับถ้ากดใช้ LINE |
 
 **ปุ่ม/การกระทำ**
