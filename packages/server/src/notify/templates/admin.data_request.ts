@@ -1,9 +1,6 @@
-// admin.data_request — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 admin.data_request: email-only; subject is the same text via the existing adapter (Q-0060).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
-
-const TEXT = "[PDPA] คำขอ {type} ใหม่";
 
 export function render(payload: NotificationPayloads["admin.data_request"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+  return { text: `[PDPA] คำขอ ${payload.type ?? ""} ใหม่` };
 }

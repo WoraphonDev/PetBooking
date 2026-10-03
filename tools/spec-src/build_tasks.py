@@ -582,7 +582,7 @@ for s in SCR:
         slug = s["id"].lower()
         allowed = page_files(s) + [f"apps/web/src/components/{slug}/**", f"apps/web/src/i18n/messages/th/{s['id']}.json", f"apps/web/test/screens/{slug}.test.tsx"]
         # User-approved Q-0048 follow-up for the selected console screens.
-        enable_menu = not suf and s["id"] in {"C-43", "C-40", "C-08", "C-45", "C-19", "C-01", "C-22", "C-24"}
+        enable_menu = not suf and s["id"] in {"C-43", "C-40", "C-08", "C-45", "C-19", "C-01", "C-22", "C-24", "C-26"}
         if enable_menu:
             allowed.append(f"apps/web/src/components/shell-console/navigation/{s['id']}.ts")
         steps = [f"หน้าจอ {s['id']} {s['title']}: {s['purpose']}",
@@ -594,6 +594,8 @@ for s in SCR:
         if not suf and s["id"] == "C-01":
             allowed.append("apps/web/public/sw.js")
             steps.insert(1, "ขอบเขตรอบนี้: คิวถัดไปแยกเป็นงานต่อยอดหลังขยาย DashboardToday (Q-0079); refresh จาก web push ผ่าน service worker (Q-0081)")
+        if not suf and s["id"] == "C-22":
+            steps.insert(1, "ขอบเขตรอบนี้: สถานะโหมดประหยัดแยกเป็นงานต่อยอดหลังมี API อ่าน policy (Q-0083); คงลิงก์ตั้งค่านโยบาย")
         if s["app"] == "admin":
             allowed.append(f"apps/web/src/components/shell-admin/navigation/{s['id']}.ts")
             if s["id"] == "AD-01":
