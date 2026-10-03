@@ -3,9 +3,9 @@ import { TEMPLATES } from "../../../src/notify/keys.ts";
 import { renderTemplate } from "../../../src/notify/templates/index.ts";
 import { render } from "../../../src/notify/templates/staff.booking_cancelled.ts";
 
-it("matches the 07 text with a caller-supplied late marker", () => {
-  expect(render({ bookingNo: "B-0042", customerName: "คุณมะลิ", isLate: "ยกเลิกกระชั้น" })).toEqual({
-    text: "ลูกค้ายกเลิก B-0042 (คุณมะลิ) ยกเลิกกระชั้น",
+it("matches the 07 text with the Q-0088 late marker", () => {
+  expect(render({ bookingNo: "B-0042", customerName: "คุณมะลิ", isLate: "(ยกเลิกกระชั้น)" })).toEqual({
+    text: "ลูกค้ายกเลิก B-0042 (คุณมะลิ) (ยกเลิกกระชั้น)",
   });
 });
 it("drops the trailing space when the cancel is not late (Q-0088)", () => {
