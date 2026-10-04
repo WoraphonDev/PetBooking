@@ -502,6 +502,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bills.list says `date` is "closed_at หรือ opened_at ตามสถานะ" without the mapping or the order; 05#ep-bills.updateLine names DISCOUNT_LIMIT_EXCEEDED / REASON_REQUIRED without thresholds, limits quantity to quick_item without an error, and says "delete+insert" although package_redemption references bill_line.id.
 - Answer (2026-10-03): user chose in chat. bills.list: a paid bill is dated by closed_at, open/void by opened_at (also without a status filter); `date` = that branch-local day; newest first (ms precision) with the 05 §0 keyset cursor and limit; customerName = owner_profile.first_name (null for walk-in). bills.updateLine: discount > 0 needs a reason ≥ 3 chars (REASON_REQUIRED); discount ≤ qty × unit (LINE_DISCOUNT_TOO_LARGE); front_desk: all discounts on the bill (lines + bill discount) ≤ 20% of the gross Σ qty × unit (DISCOUNT_LIMIT_EXCEEDED; owner unlimited); quantity on a non-quick_item line or a performer that is not an active staff of the org → VALIDATION_FAILED; a subtotal below the bill discount → BILL_DISCOUNT_TOO_LARGE; audit `bill.discount` only when the discount/reason changes; the row is updated in place.
 
+## Q-0103 · T-0114 bookings.cancel: the customer.booking_cancelled money line
+- Status: answered (user chose in chat, 2026-10-04)
+- Task: T-0114 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 07 `customer.booking_cancelled` has `{moneyLine}` without wording.
+- Answer (2026-10-04): from the R-07 result (R-31 money), parts joined with " · ": forfeit > 0 → "ริบมัดจำ ฿{forfeit} ตามนโยบายร้าน"; return as credit → "คืนเป็นเครดิต ฿{return} ใช้ได้ครั้งหน้า"; return as refund → "ร้านจะคืนเงิน ฿{return}"; no deposit → "".
+
 ## Q-0067 · T-0243 next_groom_reminder: bookUrl, recipient and visit branch
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat.
