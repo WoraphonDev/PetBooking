@@ -632,9 +632,11 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Follow-up (2026-10-04): the user supplied the one-line C-25 generator edit personally. Its exact patch was packaged on isolated `spec-change-q0089-occupancy-menu`, with only T-0314 and its CSV path count regenerated; drift check passed. The original user edit remains untouched in the implementation worktree. Awaiting full verification and human merge of the separate scope PR before changing navigation.
 - Resolution (2026-10-04): human merged #192. T-0314 inherited the generated scope from main, enabled C-25 for owners and added menu/route denial assertions for front_desk and staff. The original user-authored generator edit is retained in a named stash and the merged scope commit; no agent-authored generator edits are included in the implementation PR.
 
-## Q-0092 · Card test commands select the entire server suite under Vitest 5
-- Status: open
+## Q-0096 · Card test commands select the entire server suite under Vitest 5
+- Status: answered (user approved in chat, 2026-10-04)
 - Task: T-0056 (also affects subsequent service cards) · Asked by: agent (codex) · Date: 2026-10-04
 - Evidence: `pnpm --filter @app/server test -- services/photos/list` invokes `vitest run -- services/photos/list` and runs 135 files / 913 tests, rather than the requested endpoint file. Focused `pnpm --filter @app/server exec vitest run test/services/photos` runs exactly the two intended files / 13 tests. Full pnpm verify has already passed all 1,826 tests.
 - Proposed execution-only exception: for subsequent cards run each listed endpoint via `pnpm --filter @app/server exec vitest run test/services/<group>/<action>.test.ts`, plus unchanged full `pnpm verify`, conformance and scope checks. No assertions, tests, task definitions, scripts or dependencies are changed.
 - Work: T-0056 continues running both literal card commands; ask the user before applying this exception to subsequent cards.
+
+- Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-0096 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
