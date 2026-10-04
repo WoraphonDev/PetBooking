@@ -657,3 +657,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user selected option 1, authorize the screen-specific menu path in a separate spec-change PR before enabling the menu in T-0314. The task generator `tools/spec-src/build_tasks.py` is read-only for agents under the repository scope guard; a human must add C-25 to its existing enable_menu screen set and regenerate task outputs, preserving status logs. T-0314 remains draft until that scope PR is merged; no menu or generator file is modified here.
 - Follow-up (2026-10-04): the user supplied the one-line C-25 generator edit personally. Its exact patch was packaged on isolated `spec-change-q0089-occupancy-menu`, with only T-0314 and its CSV path count regenerated; drift check passed. The original user edit remains untouched in the implementation worktree. Awaiting full verification and human merge of the separate scope PR before changing navigation.
 - Resolution (2026-10-04): human merged #192. T-0314 inherited the generated scope from main, enabled C-25 for owners and added menu/route denial assertions for front_desk and staff. The original user-authored generator edit is retained in a named stash and the merged scope commit; no agent-authored generator edits are included in the implementation PR.
+
+## Q-1004 · T-0044: affected-appointment warning is unspecified
+- Status: open
+- Task: T-0044 · Asked by: codex · Date: 2026-10-04
+- Evidence: 05#ep-branch.setHours promises warnings[] listing affected appointments, while its response is BranchSettings, whose DTO contains no warnings. Section 0 defines only generic {code, message, data}; no warning code, data fields or affected-status/time criteria are specified. 06 C-12 requires a dialog showing the list, without defining its API data.
+- Question: define the warning code/message/data and whether affected appointments include only future non-terminal appointments with startsAt >= ctx.now, using the branch timezone and the full startsAt..endsAt interval. No new warning identifier or payload is invented. The setHours implementation is paused; branch.get/update can proceed.
+
+- Additional contradiction: 05#dto-BranchSettings says promptpay.idMasked reveals the last three characters, but its example ***-***-5678 reveals four. Please confirm the revealed suffix length; the masked-ID serializer is paused.
+
+- Answer (2026-10-04): user chose to continue branch.get/update and defer setHours and PromptPay display. The partial implementation must remain a draft until the deferred response behavior is specified; no warning code or masking rule is invented.
