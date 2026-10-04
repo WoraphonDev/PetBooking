@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Money, Uuid, Warning } from "../common.ts";
+import { Money, Warning } from "../common.ts";
 import { BookingDetail } from "../dto/booking-detail.ts";
 import { QuotesCreateRequest } from "./quotes.create.ts";
 
