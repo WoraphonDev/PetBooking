@@ -547,6 +547,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
 - Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
 
+## Q-0097 · T-0163 groom.noShow: too early, and the customer.no_show money line
+- Status: answered (user chose in chat, 2026-10-04)
+- Task: T-0163 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05 says no-show is allowed once now ≥ starts_at + no_show_grace_minutes but names no error for earlier; 07 `customer.no_show` has `{moneyLine}` with no wording.
+- Answer (2026-10-04): earlier → `STATUS_NOT_ALLOWED` with details `{ allowedFrom }` (ISO). moneyLine = "มัดจำ ฿{forfeit} ถูกริบตามนโยบายร้าน" (R-31 money) when the booking closes and R-07 forfeits a verified deposit > 0; otherwise "".
+
 ## Q-1004 · T-0044: affected-appointment warning is unspecified
 - Status: open
 - Task: T-0044 · Asked by: codex · Date: 2026-10-04
@@ -562,6 +568,16 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
 - Question: 06#scr-C-20 shows "ส่ง LINE อีกครั้ง" only when the customer has LINE, but 05#dto-Receipt has no LINE flag (bills.get is not implemented yet). The print button says "@page 58mm/80mm/A5 ตาม SP-05" without saying how the size is chosen (SP-05 = human printer test H-13).
 - Answer (2026-10-03): user chose in chat. The button shows for a paid bill with a customer (customerName set); bills.sendReceipt refuses other bills and the dispatcher skips customers without LINE. Follow-up: add a customer LINE flag to Receipt so the button can follow 06 exactly. Paper size: a 58 มม. / 80 มม. / A5 select next to "พิมพ์" (print option, not a data field), default 80 มม., remembered per browser (localStorage), driving the @page CSS. Dates use Asia/Bangkok because Receipt carries no branch timezone.
+
+## Q-1005 · T-0053 exceeds the small-PR target
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0053 · Asked by: codex · Date: 2026-10-04
+- Evidence: the three endpoints, four owned DTOs and 13 passing PGlite tests add 512 code lines after formatting. Required scoped reads and transactional writes are present; signed-file/error/rollback and HTTP validation coverage must still be completed before claiming done.
+- Proposed split: pets.get + four DTOs first, then pets.create/update depending on the merged read/DTO task. Humans must regenerate split cards/allowed_paths because those generators are read-only.
+- Question: approve one larger PR preserving all tests for the existing card, or pause until split cards are available? Implementation is frozen pending the decision; current-snapshot verification can continue.
+- Testing: explicit-file Vitest commands plus unchanged full pnpm verify were approved in chat (Q-1002).
+
+- Answer (2026-10-04): user approved one larger original T-0053 PR with all tests retained. Complete signed-file/rollback/HTTP coverage before the final verification and PR.
 
 ## Q-0066 · T-0309 owner.daily_summary: noShows and tomorrowCount
 - Status: answered (2026-10-04)
@@ -689,4 +705,16 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed execution-only exception: for subsequent cards run each listed endpoint via `pnpm --filter @app/server exec vitest run test/services/<group>/<action>.test.ts`, plus unchanged full `pnpm verify`, conformance and scope checks. No assertions, tests, task definitions, scripts or dependencies are changed.
 - Work: T-0056 continues running both literal card commands; ask the user before applying this exception to subsequent cards.
 
-- Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-0096 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
+- Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-1002 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
+
+## Q-1003 · T-0059 exceeds the small-PR target
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0059 · Asked by: codex · Date: 2026-10-04
+- Evidence: the three endpoints, owned DTO/contracts/routes and 16 passing integration tests currently add 436 code lines, before the status log and remaining signed-photo/transaction checks. No unrelated files are included.
+- Proposed split: first services.list + ServiceItem, then services.create/update depending on the merged read/DTO task. A human must create/regenerate the split cards and allowed_paths because task/spec generators are read-only.
+- Question: approve one larger PR for the existing three-endpoint card, preserving all tests, or pause T-0059 until split cards are available? Implementation is frozen pending that decision; independent reserved tasks can continue.
+- Execution decision: the user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059/T-0044/T-0053 (Q-1002), 2026-10-04.
+
+- Answer (2026-10-04): user approved one larger T-0059 PR with all tests retained. The earlier chat called this question Q-0093; it was renumbered Q-1003 to avoid the independently merged Claude record.
+
+- Coordination correction (2026-10-04): reserve Codex Q-1001 through Q-1005 in #195; restore Claude T-0112 size question to Q-0092 and leave Claude T-0067 Q-0096 intact. User decisions remain unchanged.
