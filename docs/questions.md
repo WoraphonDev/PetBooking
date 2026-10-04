@@ -563,6 +563,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 - Answer (2026-10-04): user chose to continue branch.get/update and defer setHours and PromptPay display. The partial implementation must remain a draft until the deferred response behavior is specified; no warning code or masking rule is invented.
 
+
+- Proposed resolution (2026-10-04; pending user/spec-owner approval):
+  1. PromptPay reveals exactly the final three characters, replacing every earlier character with `*` and adding no separators. Unconfigured values remain null. This follows the written suffix length; the contradictory four-character example needs human correction in the read-only spec.
+  2. Only branch.setHours adds `warnings` alongside BranchSettings, always an array. When affected items exist, return one warning with proposed code `BRANCH_HOURS_AFFECTED`, message `มีรายการจองอยู่นอกเวลาเปิดทำการใหม่`, and data `{ items: AffectedServiceItem[] }`; otherwise return an empty array. Reuse the existing DTO and common Warning shape, without changing the shared common.ts file.
+  3. Proposed affected-item criteria: tenant-checked items in the current branch, evaluated using ctx.now and branch.timezone. Grooming: scheduled/checked_in/in_progress with endsAt > ctx.now whose full startsAt..endsAt interval is outside the new opening window or crosses a closed local day. Daycare: reserved/checked_in on today or later where the new weekday is closed. Hotel: reserved/checked_in where any occupied local day from max(today, checkInDate) through the exclusive checkOutDate falls on a newly configured closed weekday. Date-only hotel/daycare records cannot be evaluated against clock times; this limitation must be explicitly accepted. No appointment, booking status, event or charge is changed automatically.
+  4. Replace all seven weekday rows in one transaction after owner permission and tenant parent checks. Validate unique weekdays 0..6, actual HH:MM values, required times on open days, and closesAt > opensAt. Return the updated settings and affected items from that transaction. Tests cover these rules, all denied roles, foreign tenants, interval boundaries, local weekday/time conversion, unchanged bookings and rollback.
+  5. Completing the existing card will exceed the 400-line target. Proposed split: keep get/update in T-0044 and ask a human to create a follow-up card for setHours plus its warning response; alternatively explicitly approve a larger PR #202 while retaining all tests. The agent will not edit read-only spec files or create an unapproved task identifier.
+- Implementation remains paused for the proposed fields/rules and PR size exception until approved. This proposal does not resolve Q-1004 by itself.
+
 ## Q-0054 · C-20: when to show "ส่ง LINE อีกครั้ง", and choosing the paper size
 - Status: answered (implemented in T-0252); DTO follow-up open
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
