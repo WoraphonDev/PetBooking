@@ -547,6 +547,16 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
 - Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
 
+## Q-1004 · T-0044: affected-appointment warning is unspecified
+- Status: open
+- Task: T-0044 · Asked by: codex · Date: 2026-10-04
+- Evidence: 05#ep-branch.setHours promises warnings[] listing affected appointments, while its response is BranchSettings, whose DTO contains no warnings. Section 0 defines only generic {code, message, data}; no warning code, data fields or affected-status/time criteria are specified. 06 C-12 requires a dialog showing the list, without defining its API data.
+- Question: define the warning code/message/data and whether affected appointments include only future non-terminal appointments with startsAt >= ctx.now, using the branch timezone and the full startsAt..endsAt interval. No new warning identifier or payload is invented. The setHours implementation is paused; branch.get/update can proceed.
+
+- Additional contradiction: 05#dto-BranchSettings says promptpay.idMasked reveals the last three characters, but its example ***-***-5678 reveals four. Please confirm the revealed suffix length; the masked-ID serializer is paused.
+
+- Answer (2026-10-04): user chose to continue branch.get/update and defer setHours and PromptPay display. The partial implementation must remain a draft until the deferred response behavior is specified; no warning code or masking rule is invented.
+
 ## Q-0054 · C-20: when to show "ส่ง LINE อีกครั้ง", and choosing the paper size
 - Status: answered (implemented in T-0252); DTO follow-up open
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
@@ -680,13 +690,3 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Work: T-0056 continues running both literal card commands; ask the user before applying this exception to subsequent cards.
 
 - Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-0096 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
-
-## Q-1004 · T-0044: affected-appointment warning is unspecified
-- Status: open
-- Task: T-0044 · Asked by: codex · Date: 2026-10-04
-- Evidence: 05#ep-branch.setHours promises warnings[] listing affected appointments, while its response is BranchSettings, whose DTO contains no warnings. Section 0 defines only generic {code, message, data}; no warning code, data fields or affected-status/time criteria are specified. 06 C-12 requires a dialog showing the list, without defining its API data.
-- Question: define the warning code/message/data and whether affected appointments include only future non-terminal appointments with startsAt >= ctx.now, using the branch timezone and the full startsAt..endsAt interval. No new warning identifier or payload is invented. The setHours implementation is paused; branch.get/update can proceed.
-
-- Additional contradiction: 05#dto-BranchSettings says promptpay.idMasked reveals the last three characters, but its example ***-***-5678 reveals four. Please confirm the revealed suffix length; the masked-ID serializer is paused.
-
-- Answer (2026-10-04): user chose to continue branch.get/update and defer setHours and PromptPay display. The partial implementation must remain a draft until the deferred response behavior is specified; no warning code or masking rule is invented.
