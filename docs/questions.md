@@ -469,6 +469,20 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Options: A) caller passes the ready text — `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" or "", `isLate` = "(ยกเลิกกระชั้น)" or "" — and the template only substitutes; B) caller passes 1/0 and the template maps 1 → that wording, 0 → nothing.
 - Implemented for now (T-0193): option A shape without fixing the wording — the template substitutes whatever text the caller sends and trims the trailing space when it is empty. The liff.uploadSlip / liff.payUploadSlip / liff.cancel cards need the wording to pass.
 
+## Q-0091 · T-0112 bookings.create: booking_confirmed wording and package-paid items
+- Status: open (T-0112 ships the interim choices below; human review)
+- Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: (1) 07 §1 `customer.booking_confirmed` needs `mapUrl`, but no table has a map link for the branch; `summary` / `dateTime` have no format. (2) A groom item paid by a customer package (`groom[].customerPackageId`, R-14): should its price snapshot still count in `estimated_total_satang` and the R-06 deposit?
+- Evidence: 07 §1 row `customer.booking_confirmed`; 02 `branch` (no map column); 05#dto-MyBookingItem `summary` = "ชื่อบริการ/ประเภทห้อง"; R-03, R-06, R-14.
+- Implemented for now: (1) `mapUrl` = "" (the line renders empty); `summary` = "{petName}: {service names joined ', '}" joined " / "; `dateTime` = R-31 date + time of the first appointment. (2) The item keeps its catalog price snapshot with `customer_package_id` set (the bill redeems it at 0 later), so it counts in the estimate and the deposit.
+- Options: (1) A add `branch.map_url` (spec change + migration) / B drop the map line from the template. (2) A as implemented / B price 0 for package-paid items at booking time.
+
+## Q-0092 · T-0112: bookings.create PR exceeds the small-PR budget
+- Status: answered (user approved size exception in chat, 2026-10-04)
+- Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: T-0112 (size L) changes ~1,180 lines: service ~525, integration tests ~410, and the seven DTOs it owns + contract ~230. Ship as one PR or split?
+- Answer (2026-10-04): user approved the exception, as for Q-0050 / Q-0090. Ship the card as one PR.
+
 ## Q-0085 · T-0305 reports.sales: gross/discount/net and grouping
 - Status: answered (2026-10-04)
 - Task: T-0305 · Asked by: agent (claude) · Date: 2026-10-04
@@ -540,6 +554,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1/§2 owner_daily_summary rows, 05#dto-DashboardToday, Q-0053.
 - Proposed decision (implemented): numbers are for the job's `localDate` (not ctx.now, so a retry after midnight reports the right day) with the Q-0053 definitions: groomCount = groom.total, staysInHouse = hotel.inHouse, salesTotal = sales.paidTotalSatang via formatTHB auto, noShows = grooming no-shows of the day, tomorrowCount = next day's grooming appointments + hotel check-ins + daycare visits (cancelled excluded), date = formatThaiDate. Sent to every active owner.
 
+## Q-0094 · T-0168 refunds.create: credit reason and deposit status
+- Status: answered (user chose in chat, 2026-10-04)
+- Task: T-0168 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05#ep-refunds.create says mode credit → credit_ledger + balance and booking.deposit_status refunded/credited, but names no credit_reason, and 03 lists no refunds.create transition for deposit_status.
+- Answer (2026-10-04): credit_ledger reason `cancellation_credit` (as R-07), ref_type `refund`. With a bookingId, only a `verified` deposit moves (→ refunded for cash/bank_transfer, → credited for credit, booking_event entity `deposit`); any other deposit status is left as it is and the refund is still recorded.
+
 ## Q-0075 · T-0235 bills.void: open bills, earned credit, deposits and errors
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat; the credit balance may go negative after a void (shown on the customer page) rather than blocking the void.
@@ -576,6 +596,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: T-0070 must show not-yet-built console screens as disabled. Admin screen cards own `shell-admin/navigation/AD-xx.ts` to switch their entry on, but no C-* screen card has a `shell-console/**` path, so a later screen task cannot enable its menu item.
 - Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
+
+## Q-0093 · T-0312: sales report menu enablement is outside card scope
+- Status: open
+- Task: T-0312 · Asked by: agent (claude) · Date: 2026-10-04
+- Evidence: `apps/web/src/components/shell-console/navigation/C-23.ts` has `implemented: false` and leaves enablement to the screen task (Q-0048), but T-0312's allowed_paths do not include it (same situation as Q-0089 for C-25).
+- Question: add C-23 to the generator's enable_menu screen set (human edit of `tools/spec-src/build_tasks.py` + regeneration, as in #192) so a follow-up can switch the menu on? The page works at `/console/reports/sales` meanwhile; the menu file is untouched.
 
 ## Q-0090 · T-0038: object storage PR exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-05)
