@@ -471,11 +471,17 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 ## Q-0091 · T-0112 bookings.create: booking_confirmed wording and package-paid items
 - Status: open (T-0112 ships the interim choices below; human review)
-- Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-05
+- Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
 - Question: (1) 07 §1 `customer.booking_confirmed` needs `mapUrl`, but no table has a map link for the branch; `summary` / `dateTime` have no format. (2) A groom item paid by a customer package (`groom[].customerPackageId`, R-14): should its price snapshot still count in `estimated_total_satang` and the R-06 deposit?
 - Evidence: 07 §1 row `customer.booking_confirmed`; 02 `branch` (no map column); 05#dto-MyBookingItem `summary` = "ชื่อบริการ/ประเภทห้อง"; R-03, R-06, R-14.
 - Implemented for now: (1) `mapUrl` = "" (the line renders empty); `summary` = "{petName}: {service names joined ', '}" joined " / "; `dateTime` = R-31 date + time of the first appointment. (2) The item keeps its catalog price snapshot with `customer_package_id` set (the bill redeems it at 0 later), so it counts in the estimate and the deposit.
 - Options: (1) A add `branch.map_url` (spec change + migration) / B drop the map line from the template. (2) A as implemented / B price 0 for package-paid items at booking time.
+
+## Q-0092 · T-0112: bookings.create PR exceeds the small-PR budget
+- Status: answered (user approved size exception in chat, 2026-10-04)
+- Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: T-0112 (size L) changes ~1,180 lines: service ~525, integration tests ~410, and the seven DTOs it owns + contract ~230. Ship as one PR or split?
+- Answer (2026-10-04): user approved the exception, as for Q-0050 / Q-0090. Ship the card as one PR.
 
 ## Q-0085 · T-0305 reports.sales: gross/discount/net and grouping
 - Status: answered (2026-10-04)
