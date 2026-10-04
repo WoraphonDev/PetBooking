@@ -553,6 +553,25 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05 says no-show is allowed once now ≥ starts_at + no_show_grace_minutes but names no error for earlier; 07 `customer.no_show` has `{moneyLine}` with no wording.
 - Answer (2026-10-04): earlier → `STATUS_NOT_ALLOWED` with details `{ allowedFrom }` (ISO). moneyLine = "มัดจำ ฿{forfeit} ถูกริบตามนโยบายร้าน" (R-31 money) when the booking closes and R-07 forfeits a verified deposit > 0; otherwise "".
 
+## Q-1004 · T-0044: affected-appointment warning is unspecified
+- Status: answered — user-approved implementation; human spec corrections pending
+- Task: T-0044 · Asked by: codex · Date: 2026-10-04
+- Evidence: 05#ep-branch.setHours promises warnings[] listing affected appointments, while its response is BranchSettings, whose DTO contains no warnings. Section 0 defines only generic {code, message, data}; no warning code, data fields or affected-status/time criteria are specified. 06 C-12 requires a dialog showing the list, without defining its API data.
+- Question: define the warning code/message/data and whether affected appointments include only future non-terminal appointments with startsAt >= ctx.now, using the branch timezone and the full startsAt..endsAt interval. No new warning identifier or payload is invented. The setHours implementation is paused; branch.get/update can proceed.
+
+- Additional contradiction: 05#dto-BranchSettings says promptpay.idMasked reveals the last three characters, but its example ***-***-5678 reveals four. Please confirm the revealed suffix length; the masked-ID serializer is paused.
+
+- Answer (2026-10-04): user chose to continue branch.get/update and defer setHours and PromptPay display. The partial implementation must remain a draft until the deferred response behavior is specified; no warning code or masking rule is invented.
+
+
+- Proposed resolution (2026-10-04; pending user/spec-owner approval):
+  1. PromptPay reveals exactly the final three characters, replacing every earlier character with `*` and adding no separators. Unconfigured values remain null. This follows the written suffix length; the contradictory four-character example needs human correction in the read-only spec.
+  2. Only branch.setHours adds `warnings` alongside BranchSettings, always an array. When affected items exist, return one warning with proposed code `BRANCH_HOURS_AFFECTED`, message `มีรายการจองอยู่นอกเวลาเปิดทำการใหม่`, and data `{ items: AffectedServiceItem[] }`; otherwise return an empty array. Reuse the existing DTO and common Warning shape, without changing the shared common.ts file.
+  3. Proposed affected-item criteria: tenant-checked items in the current branch, evaluated using ctx.now and branch.timezone. Grooming: scheduled/checked_in/in_progress with endsAt > ctx.now whose full startsAt..endsAt interval is outside the new opening window or crosses a closed local day. Daycare: reserved/checked_in on today or later where the new weekday is closed. Hotel: reserved/checked_in where any occupied local day from max(today, checkInDate) through the exclusive checkOutDate falls on a newly configured closed weekday. Date-only hotel/daycare records cannot be evaluated against clock times; this limitation must be explicitly accepted. No appointment, booking status, event or charge is changed automatically.
+  4. Replace all seven weekday rows in one transaction after owner permission and tenant parent checks. Validate unique weekdays 0..6, actual HH:MM values, required times on open days, and closesAt > opensAt. Return the updated settings and affected items from that transaction. Tests cover these rules, all denied roles, foreign tenants, interval boundaries, local weekday/time conversion, unchanged bookings and rollback.
+  5. Completing the existing card will exceed the 400-line target. Proposed split: keep get/update in T-0044 and ask a human to create a follow-up card for setHours plus its warning response; alternatively explicitly approve a larger PR #202 while retaining all tests. The agent will not edit read-only spec files or create an unapproved task identifier.
+- Answer (2026-10-04): user explicitly approved the complete proposal above, including the larger PR with all tests retained. Implementing these approved decisions within T-0044 allowed paths; read-only spec files remain for human correction.
+
 ## Q-0054 · C-20: when to show "ส่ง LINE อีกครั้ง", and choosing the paper size
 - Status: answered (implemented in T-0252); DTO follow-up open
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
