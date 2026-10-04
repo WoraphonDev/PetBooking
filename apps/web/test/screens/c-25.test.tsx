@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import { OccupancyChart } from "../../src/components/c-25/occupancy-chart";
 import { OccupancyScreen } from "../../src/components/c-25/occupancy-screen";
+import { canAccess, menuItems } from "../../src/components/shell-console/navigation";
 import messages from "../../src/i18n/messages/th/C-25.json";
 import common from "../../src/i18n/messages/th/common.json";
 import { ApiClientError } from "../../src/lib/api";
@@ -61,6 +62,15 @@ it("loads reports.occupancy with the selected inclusive local date range", () =>
     expect.objectContaining({ query: { from: "2026-10-01", to: "2026-10-02" } }),
     { enabled: true },
   );
+});
+
+it("enables the occupancy menu only for owners and keeps the existing route permission guard", () => {
+  expect(menuItems("owner").find((entry) => entry.id === "C-25")).toEqual({ id: "C-25", href: "/console/reports/occupancy" });
+  expect(canAccess("owner", "/console/reports/occupancy")).toBe(true);
+  for (const role of ["front_desk", "staff"] as const) {
+    expect(menuItems(role).some((entry) => entry.id === "C-25")).toBe(false);
+    expect(canAccess(role, "/console/reports/occupancy")).toBe(false);
+  }
 });
 
 it("asks for both dates before requesting data and hides stale report data", () => {

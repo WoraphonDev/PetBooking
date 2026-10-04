@@ -618,9 +618,10 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user approved the explicit shared menu fixtures and dashboard current-page coverage (Q-0082), and deferred economy-mode status until the read API exists while retaining quota/list/copy and the policy settings link (Q-0083).
 
 ## Q-0089 · T-0314: occupancy menu enablement is outside card scope
-- Status: answered (user approved option 1; human spec-change PR pending)
+- Status: answered (scope merged in #192; implemented in T-0314)
 - Task: T-0314 · Asked by: agent (codex) · Date: 2026-10-04
 - Evidence: `apps/web/src/components/shell-console/navigation/C-25.ts` has `implemented: false` and assigns enablement to the screen task (Q-0048), but T-0314 does not allow this file. Q-0080 authorized other screens, not C-25.
 - Question: authorize `navigation/C-25.ts` in a separate spec-change PR, or defer menu enablement to a follow-up? The occupancy page proceeds at its specified URL; the menu file remains untouched pending approval.
 - Answer (2026-10-04): user selected option 1, authorize the screen-specific menu path in a separate spec-change PR before enabling the menu in T-0314. The task generator `tools/spec-src/build_tasks.py` is read-only for agents under the repository scope guard; a human must add C-25 to its existing enable_menu screen set and regenerate task outputs, preserving status logs. T-0314 remains draft until that scope PR is merged; no menu or generator file is modified here.
 - Follow-up (2026-10-04): the user supplied the one-line C-25 generator edit personally. Its exact patch was packaged on isolated `spec-change-q0089-occupancy-menu`, with only T-0314 and its CSV path count regenerated; drift check passed. The original user edit remains untouched in the implementation worktree. Awaiting full verification and human merge of the separate scope PR before changing navigation.
+- Resolution (2026-10-04): human merged #192. T-0314 inherited the generated scope from main, enabled C-25 for owners and added menu/route denial assertions for front_desk and staff. The original user-authored generator edit is retained in a named stash and the merged scope commit; no agent-authored generator edits are included in the implementation PR.
