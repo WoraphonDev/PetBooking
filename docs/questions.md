@@ -540,6 +540,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1/§2 owner_daily_summary rows, 05#dto-DashboardToday, Q-0053.
 - Proposed decision (implemented): numbers are for the job's `localDate` (not ctx.now, so a retry after midnight reports the right day) with the Q-0053 definitions: groomCount = groom.total, staysInHouse = hotel.inHouse, salesTotal = sales.paidTotalSatang via formatTHB auto, noShows = grooming no-shows of the day, tomorrowCount = next day's grooming appointments + hotel check-ins + daycare visits (cancelled excluded), date = formatThaiDate. Sent to every active owner.
 
+## Q-0094 · T-0168 refunds.create: credit reason and deposit status
+- Status: answered (user chose in chat, 2026-10-04)
+- Task: T-0168 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05#ep-refunds.create says mode credit → credit_ledger + balance and booking.deposit_status refunded/credited, but names no credit_reason, and 03 lists no refunds.create transition for deposit_status.
+- Answer (2026-10-04): credit_ledger reason `cancellation_credit` (as R-07), ref_type `refund`. With a bookingId, only a `verified` deposit moves (→ refunded for cash/bank_transfer, → credited for credit, booking_event entity `deposit`); any other deposit status is left as it is and the refund is still recorded.
+
 ## Q-0075 · T-0235 bills.void: open bills, earned credit, deposits and errors
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat; the credit balance may go negative after a void (shown on the customer page) rather than blocking the void.
