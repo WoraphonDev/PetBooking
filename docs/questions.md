@@ -559,6 +559,16 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-C-20 shows "ส่ง LINE อีกครั้ง" only when the customer has LINE, but 05#dto-Receipt has no LINE flag (bills.get is not implemented yet). The print button says "@page 58mm/80mm/A5 ตาม SP-05" without saying how the size is chosen (SP-05 = human printer test H-13).
 - Answer (2026-10-03): user chose in chat. The button shows for a paid bill with a customer (customerName set); bills.sendReceipt refuses other bills and the dispatcher skips customers without LINE. Follow-up: add a customer LINE flag to Receipt so the button can follow 06 exactly. Paper size: a 58 มม. / 80 มม. / A5 select next to "พิมพ์" (print option, not a data field), default 80 มม., remembered per browser (localStorage), driving the @page CSS. Dates use Asia/Bangkok because Receipt carries no branch timezone.
 
+## Q-1005 · T-0053 exceeds the small-PR target
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0053 · Asked by: codex · Date: 2026-10-04
+- Evidence: the three endpoints, four owned DTOs and 13 passing PGlite tests add 512 code lines after formatting. Required scoped reads and transactional writes are present; signed-file/error/rollback and HTTP validation coverage must still be completed before claiming done.
+- Proposed split: pets.get + four DTOs first, then pets.create/update depending on the merged read/DTO task. Humans must regenerate split cards/allowed_paths because those generators are read-only.
+- Question: approve one larger PR preserving all tests for the existing card, or pause until split cards are available? Implementation is frozen pending the decision; current-snapshot verification can continue.
+- Testing: explicit-file Vitest commands plus unchanged full pnpm verify were approved in chat (Q-1002).
+
+- Answer (2026-10-04): user approved one larger original T-0053 PR with all tests retained. Complete signed-file/rollback/HTTP coverage before the final verification and PR.
+
 ## Q-0066 · T-0309 owner.daily_summary: noShows and tomorrowCount
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat.
