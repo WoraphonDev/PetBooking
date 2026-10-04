@@ -676,6 +676,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: T-0038 changes ~1,030 lines: 318 generated `pnpm-lock.yaml` lines for the card's named `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner`, ~290 source lines (adapter, files.ts, two endpoints, cleanup job) and ~420 test lines. Ship as one PR or split?
 - Answer (2026-10-05): user approved the exception, as for Q-0050. Ship the card as one PR.
 
+## Q-0101 · Multi-endpoint API cards exceed the small-PR budget
+- Status: answered (user approved in chat, 2026-10-04)
+- Tasks: T-0160 (merged, ~1,030 lines), T-0120 (~920) and the multi-endpoint cards of the same batch · Asked by: agent (claude) · Date: 2026-10-04
+- Question: cards with two or three endpoints (contract + service + route + integration tests each, plus owned DTOs) land well above 400 changed lines. Split or ship as one PR?
+- Answer (2026-10-04): ship each card as one PR, stating the size in the PR description (covers T-0160 retroactively).
+
 ## Q-0050 · T-0073: Recharts lockfile exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-04)
 - Task: T-0073 · Asked by: agent (codex) · Date: 2026-10-03
