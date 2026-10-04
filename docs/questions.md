@@ -489,6 +489,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#dto-SalesReport sets gross = Σ line_total and discount = bill + line discounts, but line_total is already net of the line discount (double count), and grouping by service/groomer/method is not defined.
 - Answer (2026-10-04): user chose option A in chat. gross = Σ qty × unit; discount = Σ line discounts + bill discount; net = gross − discount (= bill.total). Paid bills by branch-local closed_at day, void excluded. day = one row per day; service/groomer = per line with the bill discount spread like R-13 #1 (service = service or quick-item name; lines without performer → one "ไม่ระบุช่าง" row), billCount = distinct bills in the row; method = posted payments per method (net = amount, gross/discount 0). payments[] = Σ posted payments of those bills per method (deposit/credit included). totals = row shape without key. 05 text to be updated by spec change.
 
+## Q-0095 · T-0233 bills.addPayment: change_satang and a fully paid bill
+- Status: open (T-0233 ships the interim choice; human review)
+- Task: T-0233 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: (1) 05 says "bill.paid_satang/change_satang อัปเดต" but not whether change_satang is the last payment's change or the total over the bill's cash payments. (2) R-15 `applyPayment` returns `BILL_ALREADY_PAID` when due = 0, which is not in the endpoint's error list.
+- Evidence: 05#ep-bills.addPayment, R-15 step 5, 02 bill.change_satang.
+- Implemented for now: (1) change_satang accumulates (+ change of each cash payment); bills.voidPayment does not touch it. (2) due = 0 answers `BILL_ALREADY_PAID` (409, defined in 05 §1).
+
 ## Q-0055 · bills.list date/order and bills.updateLine rules
 - Status: answered (implemented in T-0230)
 - Task: T-0230 · Asked by: agent (claude) · Date: 2026-10-03
@@ -567,6 +574,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bills.void covers paid → void only and lists no error codes, while 03 sm-bill also has open → void (no posted payment). It says "credit ที่ใช้/ได้ในบิล → ย้อน" but the deposit credit written at close references the booking, not the bill; it does not say what happens to an applied deposit or to customer.visit_count, nor which code answers an already-void bill.
 - Evidence: 05#ep-bills.void, 03 sm-bill / sm-booking / sm-deposit (`applied → verified`), R-13 #6, R-14 #5, Q-0074.
 - Proposed decision (implemented): owner only; reason trimmed ≥ 3 (VALIDATION_FAILED). Open bill with posted payments → VALIDATION_FAILED (void the payments first); already void → BILL_NOT_OPEN. Paid → void: commissions reversed (reversed_at), counter/booking redemptions reversed with sessions back (exhausted → active if not expired), packages sold on the bill → void, credit payments returned and `deposit_credit` rows of the bill's bookings taken back — both as credit_ledger `void_reversal` (ref bill), the balance may go below zero; every posted payment → voided with the reason; bookings closed → confirmed, applied deposit → verified (so the next bill can apply it again), bill_id = null; receipt_no kept; audit `bill.void`. visit_count is not decreased.
+
+## Q-0096 · T-0067 admin.resolveDataRequest: the access export
+- Status: open (user chose in chat, 2026-10-04: T-0067 records the resolution only)
+- Task: T-0067 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05 says `access` → "สร้างไฟล์ JSON ข้อมูลของคนนั้นส่งทาง LINE/อีเมล", but no file_kind, notification template (07 §1) or storage/link rule exists for it, LINE text messages cannot carry a file, and customers have no email of record by default. What goes in the JSON (owner_profile only, or customers/pets/bookings/bills of every shop), where is it stored, and how is it delivered?
+- Implemented for now (T-0067): access + done / rejected only sets status, note, resolved_by, resolved_at. delete + done erases owner_profile as 05 says (also last name and nickname as part of the name) + audit `pdpa.erase`; any resolved request → `INVALID_TRANSITION` (data_request has no state machine in 03).
+- Needs: a spec change (file_kind / template / delivery) and a follow-up card for the export.
 
 ## Q-0046 · AD-06: shop name and date range for admin.analytics
 - Status: answered (implemented in T-0315)
@@ -657,6 +671,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user selected option 1, authorize the screen-specific menu path in a separate spec-change PR before enabling the menu in T-0314. The task generator `tools/spec-src/build_tasks.py` is read-only for agents under the repository scope guard; a human must add C-25 to its existing enable_menu screen set and regenerate task outputs, preserving status logs. T-0314 remains draft until that scope PR is merged; no menu or generator file is modified here.
 - Follow-up (2026-10-04): the user supplied the one-line C-25 generator edit personally. Its exact patch was packaged on isolated `spec-change-q0089-occupancy-menu`, with only T-0314 and its CSV path count regenerated; drift check passed. The original user edit remains untouched in the implementation worktree. Awaiting full verification and human merge of the separate scope PR before changing navigation.
 - Resolution (2026-10-04): human merged #192. T-0314 inherited the generated scope from main, enabled C-25 for owners and added menu/route denial assertions for front_desk and staff. The original user-authored generator edit is retained in a named stash and the merged scope commit; no agent-authored generator edits are included in the implementation PR.
+
+## Q-1002 · Card test commands select the entire server suite under Vitest 5
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0056 (also affects subsequent service cards) · Asked by: agent (codex) · Date: 2026-10-04
+- Evidence: `pnpm --filter @app/server test -- services/photos/list` invokes `vitest run -- services/photos/list` and runs 135 files / 913 tests, rather than the requested endpoint file. Focused `pnpm --filter @app/server exec vitest run test/services/photos` runs exactly the two intended files / 13 tests. Full pnpm verify has already passed all 1,826 tests.
+- Proposed execution-only exception: for subsequent cards run each listed endpoint via `pnpm --filter @app/server exec vitest run test/services/<group>/<action>.test.ts`, plus unchanged full `pnpm verify`, conformance and scope checks. No assertions, tests, task definitions, scripts or dependencies are changed.
+- Work: T-0056 continues running both literal card commands; ask the user before applying this exception to subsequent cards.
+
+- Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-0096 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
 
 ## Q-1004 · T-0044: affected-appointment warning is unspecified
 - Status: open
