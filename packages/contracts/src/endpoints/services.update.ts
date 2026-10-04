@@ -1,0 +1,10 @@
+import { z } from "zod";
+import { Uuid } from "../common.ts";
+import { ServiceItem } from "../dto/service-item.ts";
+import { recordStatus } from "../enums.ts";
+import { ServiceFields } from "./services.create.ts";
+export const ServicesUpdateParams = z.object({ serviceId: Uuid });
+export const ServicesUpdateRequest = ServiceFields.omit({ scope: true }).partial().extend({ status: recordStatus.optional() });
+export type ServicesUpdateRequest = z.infer<typeof ServicesUpdateRequest>;
+export const ServicesUpdateResponse = ServiceItem;
+export type ServicesUpdateResponse = z.infer<typeof ServicesUpdateResponse>;
