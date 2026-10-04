@@ -46,7 +46,7 @@ async function post(body: unknown, opts: { slug?: string; session?: SeedOrg | nu
     },
   );
 }
-const codeOf = async (res: Response) => ({ status: res.status, code: (await res.json()).error.code });
+const codeOf = async (res: Response) => ({ status: res.status, code: ((await res.json()) as { error: { code: string } }).error.code });
 
 it.each([
   { kind: "pet_profile", mimeType: "image/webp", sizeBytes: 800_000 },

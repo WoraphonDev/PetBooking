@@ -78,13 +78,13 @@ it.each([
   [{ ...photo, sizeBytes: 1.5 }, 422, "VALIDATION_FAILED"],
 ])("%j → %s %s", async (body, status, code) => {
   const res = await post(body);
-  expect({ status: res.status, code: (await res.json()).error.code }).toEqual({ status, code });
+  expect({ status: res.status, code: ((await res.json()) as { error: { code: string } }).error.code }).toEqual({ status, code });
   expect(await env.db.select().from(fileObject)).toEqual([]);
 });
 
 it("needs a staff session", async () => {
   const res = await post(photo, null);
-  expect((await res.json()).error.code).toBe("UNAUTHENTICATED");
+  expect(((await res.json()) as { error: { code: string } }).error.code).toBe("UNAUTHENTICATED");
 });
 
 it("the service refuses a customer context (role matrix)", async () => {
