@@ -562,6 +562,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-bills.void, 03 sm-bill / sm-booking / sm-deposit (`applied → verified`), R-13 #6, R-14 #5, Q-0074.
 - Proposed decision (implemented): owner only; reason trimmed ≥ 3 (VALIDATION_FAILED). Open bill with posted payments → VALIDATION_FAILED (void the payments first); already void → BILL_NOT_OPEN. Paid → void: commissions reversed (reversed_at), counter/booking redemptions reversed with sessions back (exhausted → active if not expired), packages sold on the bill → void, credit payments returned and `deposit_credit` rows of the bill's bookings taken back — both as credit_ledger `void_reversal` (ref bill), the balance may go below zero; every posted payment → voided with the reason; bookings closed → confirmed, applied deposit → verified (so the next bill can apply it again), bill_id = null; receipt_no kept; audit `bill.void`. visit_count is not decreased.
 
+## Q-0096 · T-0067 admin.resolveDataRequest: the access export
+- Status: open (user chose in chat, 2026-10-04: T-0067 records the resolution only)
+- Task: T-0067 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05 says `access` → "สร้างไฟล์ JSON ข้อมูลของคนนั้นส่งทาง LINE/อีเมล", but no file_kind, notification template (07 §1) or storage/link rule exists for it, LINE text messages cannot carry a file, and customers have no email of record by default. What goes in the JSON (owner_profile only, or customers/pets/bookings/bills of every shop), where is it stored, and how is it delivered?
+- Implemented for now (T-0067): access + done / rejected only sets status, note, resolved_by, resolved_at. delete + done erases owner_profile as 05 says (also last name and nickname as part of the name) + audit `pdpa.erase`; any resolved request → `INVALID_TRANSITION` (data_request has no state machine in 03).
+- Needs: a spec change (file_kind / template / delivery) and a follow-up card for the export.
+
 ## Q-0046 · AD-06: shop name and date range for admin.analytics
 - Status: answered (implemented in T-0315)
 - Task: T-0315 · Asked by: agent (claude) · Date: 2026-10-03
