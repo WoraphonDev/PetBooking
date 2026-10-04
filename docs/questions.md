@@ -547,6 +547,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
 - Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
 
+## Q-0097 · T-0163 groom.noShow: too early, and the customer.no_show money line
+- Status: answered (user chose in chat, 2026-10-04)
+- Task: T-0163 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05 says no-show is allowed once now ≥ starts_at + no_show_grace_minutes but names no error for earlier; 07 `customer.no_show` has `{moneyLine}` with no wording.
+- Answer (2026-10-04): earlier → `STATUS_NOT_ALLOWED` with details `{ allowedFrom }` (ISO). moneyLine = "มัดจำ ฿{forfeit} ถูกริบตามนโยบายร้าน" (R-31 money) when the booking closes and R-07 forfeits a verified deposit > 0; otherwise "".
+
 ## Q-0054 · C-20: when to show "ส่ง LINE อีกครั้ง", and choosing the paper size
 - Status: answered (implemented in T-0252); DTO follow-up open
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
