@@ -600,6 +600,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 - Answer (2026-10-04): user approved one larger original T-0053 PR with all tests retained. Complete signed-file/rollback/HTTP coverage before the final verification and PR.
 
+## Q-0105 · T-0157 pets.setStatus: the future-bookings warning and which reminders to cancel
+- Status: answered (user chose in chat, 2026-10-05)
+- Task: T-0157 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 05 says future bookings are not cancelled and the response carries `warnings[]`, but names no warning code/message/data. pet has no organization_id, so "cancel scheduled_job where payload.petId = this" could mean every shop's next_groom_reminder.
+- Answer (2026-10-05): when the status becomes deceased/rehomed and the pet has future bookings in this shop (a scheduled groom appointment after now, a reserved stay or daycare visit from today on) → `warnings: [{ code: "FUTURE_BOOKINGS", message: "น้องยังมีใบจองที่ยังไม่ถึงวัน กรุณาตรวจสอบ", data: { bookingIds } }]` on PetDetail; none → no `warnings` key (as Q-0032). Only this shop's pending next_groom_reminder jobs are cancelled (tenantDb); other shops' jobs recompute R-17 at run time and R-17 skips a pet that is not active.
+
 ## Q-0066 · T-0309 owner.daily_summary: noShows and tomorrowCount
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat.
