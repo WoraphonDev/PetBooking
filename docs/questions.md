@@ -577,6 +577,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
 
+## Q-0090 · T-0038: object storage PR exceeds the small-PR budget
+- Status: answered (user approved size exception in chat, 2026-10-05)
+- Task: T-0038 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: T-0038 changes ~1,030 lines: 318 generated `pnpm-lock.yaml` lines for the card's named `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner`, ~290 source lines (adapter, files.ts, two endpoints, cleanup job) and ~420 test lines. Ship as one PR or split?
+- Answer (2026-10-05): user approved the exception, as for Q-0050. Ship the card as one PR.
+
 ## Q-0050 · T-0073: Recharts lockfile exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-04)
 - Task: T-0073 · Asked by: agent (codex) · Date: 2026-10-03
