@@ -23,6 +23,11 @@ export async function branchSettings(ctx: RequestContext, tx: Executor): Promise
   return BranchSettings.parse({
     ...row,
     logoUrl: row.logoFileId ? await signedUrl(tx, ctx, row.logoFileId) : null,
+    promptpay: {
+      type: row.promptpayType,
+      idMasked: row.promptpayId === null ? null : "*".repeat(Math.max(0, row.promptpayId.length - 3)) + row.promptpayId.slice(-3),
+      accountName: row.promptpayAccountName,
+    },
     modules: { grooming: row.moduleGrooming, hotel: row.moduleHotel, daycare: row.moduleDaycare },
     hours: hours.map((h) => ({ ...h, opensAt: h.opensAt?.slice(0, 5) ?? null, closesAt: h.closesAt?.slice(0, 5) ?? null })),
     policy: { ...policy, dailySummaryTime: policy.dailySummaryTime.slice(0, 5) },

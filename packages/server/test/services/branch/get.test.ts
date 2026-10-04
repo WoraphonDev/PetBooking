@@ -49,9 +49,26 @@ it.each(["owner", "front_desk", "staff"] as const)("%s reads branch and complete
       closesAt: weekday === 0 ? null : "18:00",
     })),
   );
-  expect(result).not.toHaveProperty("promptpay");
+  expect(result.promptpay).toEqual({ type: "phone", idMasked: "*******678", accountName: "Private" });
   expect(result).not.toHaveProperty("organizationId");
 });
 it("hides another organization's branch", async () => {
   await expect(branchGet({ ...staffCtx(env.base, "owner"), branchId: foreign.branchId }, {})).rejects.toMatchObject({ code: "NOT_FOUND" });
+});
+
+it("masks a national ID and returns nulls for an unconfigured account", async () => {
+  await env.db
+    .update(branch)
+    .set({ promptpayType: "national_id", promptpayId: "1234567890123", promptpayAccountName: "Account" })
+    .where(eq(branch.id, env.base.branchId));
+  expect((await branchGet(staffCtx(env.base, "owner"), {})).promptpay).toEqual({
+    type: "national_id",
+    idMasked: "**********123",
+    accountName: "Account",
+  });
+  await env.db
+    .update(branch)
+    .set({ promptpayType: null, promptpayId: null, promptpayAccountName: null })
+    .where(eq(branch.id, env.base.branchId));
+  expect((await branchGet(staffCtx(env.base, "owner"), {})).promptpay).toEqual({ type: null, idMasked: null, accountName: null });
 });

@@ -24,8 +24,7 @@ export const BranchSettings = z.object({
   hours: z.array(
     z.object({ weekday: z.number().int(), isClosed: z.boolean(), opensAt: LocalTime.nullable(), closesAt: LocalTime.nullable() }),
   ),
-  // Q-1004: user explicitly deferred PromptPay display while get/update are implemented in a draft.
-  promptpay: z.object({ type: promptpayType.nullable(), idMasked: text, accountName: text }).optional(),
+  promptpay: z.object({ type: promptpayType.nullable(), idMasked: text, accountName: text }),
   policy: BranchPolicy,
 });
 export type BranchSettings = z.infer<typeof BranchSettings>;
