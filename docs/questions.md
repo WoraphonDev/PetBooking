@@ -672,11 +672,23 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Follow-up (2026-10-04): the user supplied the one-line C-25 generator edit personally. Its exact patch was packaged on isolated `spec-change-q0089-occupancy-menu`, with only T-0314 and its CSV path count regenerated; drift check passed. The original user edit remains untouched in the implementation worktree. Awaiting full verification and human merge of the separate scope PR before changing navigation.
 - Resolution (2026-10-04): human merged #192. T-0314 inherited the generated scope from main, enabled C-25 for owners and added menu/route denial assertions for front_desk and staff. The original user-authored generator edit is retained in a named stash and the merged scope commit; no agent-authored generator edits are included in the implementation PR.
 
-## Q-0096 · Card test commands select the entire server suite under Vitest 5
+## Q-1002 · Card test commands select the entire server suite under Vitest 5
 - Status: answered (user approved in chat, 2026-10-04)
 - Task: T-0056 (also affects subsequent service cards) · Asked by: agent (codex) · Date: 2026-10-04
 - Evidence: `pnpm --filter @app/server test -- services/photos/list` invokes `vitest run -- services/photos/list` and runs 135 files / 913 tests, rather than the requested endpoint file. Focused `pnpm --filter @app/server exec vitest run test/services/photos` runs exactly the two intended files / 13 tests. Full pnpm verify has already passed all 1,826 tests.
 - Proposed execution-only exception: for subsequent cards run each listed endpoint via `pnpm --filter @app/server exec vitest run test/services/<group>/<action>.test.ts`, plus unchanged full `pnpm verify`, conformance and scope checks. No assertions, tests, task definitions, scripts or dependencies are changed.
 - Work: T-0056 continues running both literal card commands; ask the user before applying this exception to subsequent cards.
 
-- Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-0096 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
+- Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-1002 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
+
+## Q-1003 · T-0059 exceeds the small-PR target
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0059 · Asked by: codex · Date: 2026-10-04
+- Evidence: the three endpoints, owned DTO/contracts/routes and 16 passing integration tests currently add 436 code lines, before the status log and remaining signed-photo/transaction checks. No unrelated files are included.
+- Proposed split: first services.list + ServiceItem, then services.create/update depending on the merged read/DTO task. A human must create/regenerate the split cards and allowed_paths because task/spec generators are read-only.
+- Question: approve one larger PR for the existing three-endpoint card, preserving all tests, or pause T-0059 until split cards are available? Implementation is frozen pending that decision; independent reserved tasks can continue.
+- Execution decision: the user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059/T-0044/T-0053 (Q-1002), 2026-10-04.
+
+- Answer (2026-10-04): user approved one larger T-0059 PR with all tests retained. The earlier chat called this question Q-0093; it was renumbered Q-1003 to avoid the independently merged Claude record.
+
+- Coordination correction (2026-10-04): reserve Codex Q-1001 through Q-1005 in #195; restore Claude T-0112 size question to Q-0092 and leave Claude T-0067 Q-0096 intact. User decisions remain unchanged.
