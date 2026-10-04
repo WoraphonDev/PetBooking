@@ -502,6 +502,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bills.list says `date` is "closed_at หรือ opened_at ตามสถานะ" without the mapping or the order; 05#ep-bills.updateLine names DISCOUNT_LIMIT_EXCEEDED / REASON_REQUIRED without thresholds, limits quantity to quick_item without an error, and says "delete+insert" although package_redemption references bill_line.id.
 - Answer (2026-10-03): user chose in chat. bills.list: a paid bill is dated by closed_at, open/void by opened_at (also without a status filter); `date` = that branch-local day; newest first (ms precision) with the 05 §0 keyset cursor and limit; customerName = owner_profile.first_name (null for walk-in). bills.updateLine: discount > 0 needs a reason ≥ 3 chars (REASON_REQUIRED); discount ≤ qty × unit (LINE_DISCOUNT_TOO_LARGE); front_desk: all discounts on the bill (lines + bill discount) ≤ 20% of the gross Σ qty × unit (DISCOUNT_LIMIT_EXCEEDED; owner unlimited); quantity on a non-quick_item line or a performer that is not an active staff of the org → VALIDATION_FAILED; a subtotal below the bill discount → BILL_DISCOUNT_TOO_LARGE; audit `bill.discount` only when the discount/reason changes; the row is updated in place.
 
+## Q-0107 · T-0255 C-41: where the size options come from
+- Status: answered (user chose in chat, 2026-10-05)
+- Task: T-0255 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 06#scr-C-41 makes "ขนาด" a select (ทุกขนาด) but loads only packageTemplates.list and services.list, which carry size tier ids without names.
+- Answer (2026-10-05): the screen also loads sizeTiers.list (owner already allowed). Options = "ทุกขนาด" (null) + the shop's tiers of the species the chosen service accepts, labelled "{species} {labelTh}" as in C-40. Related: `shell-console/navigation/C-41.ts` is outside the card's allowed paths, so the menu entry stays disabled (same follow-up as Q-0048).
+
 ## Q-0103 · T-0114 bookings.cancel: the customer.booking_cancelled money line
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0114 · Asked by: agent (claude) · Date: 2026-10-04
@@ -674,6 +680,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Related: Q-0048; user approved enabling each of the five screen-specific navigation entries in chat, 2026-10-03.
 
 - Implementation: scope changes must be generated in a separate spec-change PR; the shared fixture correction is included there. Screen task PRs inherit that base and change only their own page/component/messages/tests/navigation entry and Status log.
+
+## Q-0108 · T-0104 / T-0105 need LINE ID token verification from T-0149
+- Status: open
+- Task: T-0104, T-0105 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: auth.staffLine (T-0104) and staffMe.linkLine (T-0105) must verify a LINE ID token against PLATFORM_LINE_LOGIN_CHANNEL_ID, but the verifier (`integrations/line/idtoken.ts` + fake mode) belongs to T-0149, which is not merged (it waits on H-03) and is not in either card's depends_on. Both cards' allowed paths exclude `integrations/line/**`.
+- Proposed decision: add T-0149 to the depends_on of T-0104 and T-0105 (task generator / spec owner) and leave both cards until T-0149 is merged. No agent work started on them.
 
 ## Q-0099 · T-0160 bookings.decline: the verified deposit and the refund line
 - Status: answered (user chose in chat, 2026-10-04)
