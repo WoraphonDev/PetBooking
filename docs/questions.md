@@ -604,6 +604,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-AD-06 shows `organization.name` but 05#dto-PilotAnalytics returns only `orgId`; 05#ep-admin.analytics requires `from`/`to` but the 06 table has no date inputs.
 - Answer (2026-10-03): user chose in chat. The screen also loads the existing `admin.orgs` list and maps orgId → name ("—" when missing); no API/DTO change. It requests the 7 Bangkok days ending today (to = today Asia/Bangkok, from = to − 6, inclusive per Q-0037) and shows that range under the title.
 
+## Q-0098 · T-0228 groom.notifyPickup: balance and allowed status
+- Status: answered (user chose in chat, 2026-10-04)
+- Task: T-0228 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 07 `customer.ready_for_pickup` shows "ยอดชำระ {balance}" without saying what it is; 03 has no transition for the pickup notice, so which appointment statuses may send it?
+- Answer (2026-10-04): balance = the booking's open bill total − paid; without an open bill, estimated_total − deposit_verified (never below 0), R-31 money. Only a `done` appointment may notify (else STATUS_NOT_ALLOWED); repeats are absorbed by the dedupe `ready_for_pickup:{appointmentId}`.
+
 ## Q-0062 · T-0086: enabling the C-38 console menu entry
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat.
