@@ -109,16 +109,14 @@ beforeAll(async () => {
     priceSatang: 50_000,
     durationMinutes: 60,
   });
-  await env.db
-    .insert(appointmentSurcharge)
-    .values({
-      organizationId: o,
-      appointmentId: ids.appt,
-      name: "ขนพันกัน",
-      amountSatang: 10_000,
-      reason: "สังกะตัง",
-      createdBy: env.base.staff.staff,
-    });
+  await env.db.insert(appointmentSurcharge).values({
+    organizationId: o,
+    appointmentId: ids.appt,
+    name: "ขนพันกัน",
+    amountSatang: 10_000,
+    reason: "สังกะตัง",
+    createdBy: env.base.staff.staff,
+  });
   const [type] = await env.db
     .insert(roomType)
     .values({ ...tenant, nameTh: "ห้องเล็ก" })
