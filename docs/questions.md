@@ -659,6 +659,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 06#scr-AD-06 shows `organization.name` but 05#dto-PilotAnalytics returns only `orgId`; 05#ep-admin.analytics requires `from`/`to` but the 06 table has no date inputs.
 - Answer (2026-10-03): user chose in chat. The screen also loads the existing `admin.orgs` list and maps orgId → name ("—" when missing); no API/DTO change. It requests the 7 Bangkok days ending today (to = today Asia/Bangkok, from = to − 6, inclusive per Q-0037) and shows that range under the title.
 
+## Q-0109 · T-0199 C-04: customer level missing from BookingListItem; one status per query
+- Status: partly answered (user chose in chat, 2026-10-05) — spec change pending
+- Task: T-0199 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: (1) 06#scr-C-04 shows "ลูกค้า: ชื่อ + ระดับ" but 05#dto-BookingListItem has no reliability level. (2) The รอมัดจำ tab needs status awaiting_deposit and deposit_review; bookings.list accepts repeated `status`, but `apps/web/src/lib/api.ts` sends one value per query key.
+- Answer (2026-10-05): (1) show the name only for now; spec owner: add `customerReliabilityLevel` (customer.reliability_level) to BookingListItem with a card that changes the contract/service, then C-04 adds the R-09 badge. (2) implemented without touching api.ts: the deposit tab asks once per status (limit 200 each), merges by first_service_at, no paging on that tab. A follow-up could let api.ts send array query values.
+
 ## Q-0098 · T-0228 groom.notifyPickup: balance and allowed status
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0228 · Asked by: agent (claude) · Date: 2026-10-04
