@@ -469,6 +469,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Options: A) caller passes the ready text — `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" or "", `isLate` = "(ยกเลิกกระชั้น)" or "" — and the template only substitutes; B) caller passes 1/0 and the template maps 1 → that wording, 0 → nothing.
 - Implemented for now (T-0193): option A shape without fixing the wording — the template substitutes whatever text the caller sends and trims the trailing space when it is empty. The liff.uploadSlip / liff.payUploadSlip / liff.cancel cards need the wording to pass.
 
+## Q-0093 · T-0312: sales report menu enablement is outside card scope
+- Status: open
+- Task: T-0312 · Asked by: agent (claude) · Date: 2026-10-04
+- Evidence: `apps/web/src/components/shell-console/navigation/C-23.ts` has `implemented: false` and leaves enablement to the screen task (Q-0048), but T-0312's allowed_paths do not include it (same situation as Q-0089 for C-25).
+- Question: add C-23 to the generator's enable_menu screen set (human edit of `tools/spec-src/build_tasks.py` + regeneration, as in #192) so a follow-up can switch the menu on? The page works at `/console/reports/sales` meanwhile; the menu file is untouched.
+
 ## Q-0085 · T-0305 reports.sales: gross/discount/net and grouping
 - Status: answered (2026-10-04)
 - Task: T-0305 · Asked by: agent (claude) · Date: 2026-10-04
