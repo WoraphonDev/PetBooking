@@ -591,6 +591,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user chose in chat. T-0070 adds one registry file per routed C-* screen, `apps/web/src/components/shell-console/navigation/C-xx.ts` (`implemented: false`), like the admin shell. Follow-up for the task owner: add `apps/web/src/components/shell-console/navigation/<SCREEN-ID>.ts` to every C-* screen card's allowed_paths (tools/spec-src/build_tasks.py) and a step "set implemented: true".
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
 
+## Q-0093 · T-0312: sales report menu enablement is outside card scope
+- Status: open
+- Task: T-0312 · Asked by: agent (claude) · Date: 2026-10-04
+- Evidence: `apps/web/src/components/shell-console/navigation/C-23.ts` has `implemented: false` and leaves enablement to the screen task (Q-0048), but T-0312's allowed_paths do not include it (same situation as Q-0089 for C-25).
+- Question: add C-23 to the generator's enable_menu screen set (human edit of `tools/spec-src/build_tasks.py` + regeneration, as in #192) so a follow-up can switch the menu on? The page works at `/console/reports/sales` meanwhile; the menu file is untouched.
+
 ## Q-0090 · T-0038: object storage PR exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-05)
 - Task: T-0038 · Asked by: agent (claude) · Date: 2026-10-05
