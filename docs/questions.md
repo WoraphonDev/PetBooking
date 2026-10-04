@@ -539,6 +539,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 03 says awaiting_approval → expired by job:approval_overdue applies R-07 shop_cancel (full refund of a verified deposit), but `refund.created_by` is NOT NULL → staff_user and a job has no staff actor. 07 also gives no basis for `waitedMinutes`, and `refund.mode` is cash/bank_transfer/credit while R-07 says "refund".
 - Answer (2026-10-03): user chose in chat: `created_by` = the organization's first active owner. Implemented with: refund `mode = bank_transfer` (R-07 "ร้านโอนคืนเอง"), `amount` = computeCancellation(shop_cancel).returnSatang, `reason = "job:approval_overdue"`, deposit_status verified → refunded, audit `refund.create` (actor system) — all in the job transaction; children → cancelled; no customer notification (03 names none). waitedMinutes = now − (approval_due_at − branch_policy.approval_timeout_minutes); the next round runs after approval_timeout_minutes but no later than first_service_at. Spec follow-up: allow a system creator on refund (nullable created_by or actor columns).
 
+## Q-0106 · T-0282 daycare.check_out: "เพิ่มเข้าบิล" and STATUS_NOT_ALLOWED
+- Status: answered (user chose in chat, 2026-10-05)
+- Task: T-0282 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 03 gives daycare check-out the side effect "เพิ่มเข้าบิล" and 05 lists `STATUS_NOT_ALLOWED` without a condition (a wrong source status is already INVALID_TRANSITION).
+- Answer (2026-10-05): the booking's open bill without a line for the visit gets a `daycare` bill_line (as bills.open builds it) and recomputed totals (R-15); no bill yet → nothing (bills.open adds daycare visits later); a paid/void bill without the line → `STATUS_NOT_ALLOWED {billStatus}`.
+
 ## Q-0102 · T-0166 slips.reject: telling the customer on the second rejection
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0166 · Asked by: agent (claude) · Date: 2026-10-04
