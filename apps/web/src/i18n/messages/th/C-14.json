@@ -1,0 +1,21 @@
+{
+  "title": "เข้า-ออกวันนี้",
+  "arrivals": "เข้า",
+  "departures": "ออก",
+  "inHouse": "พักอยู่",
+  "arriveAt": "เวลาที่จะมา",
+  "pickUpAt": "เวลารับ",
+  "room": "ห้อง",
+  "noRoom": "ยังไม่ได้จัดห้อง",
+  "intake": "ฟอร์มรับฝาก",
+  "agreement": "ข้อตกลง",
+  "vaccines": "วัคซีน",
+  "night": "คืนที่ {current}/{total}",
+  "checkIn": "เช็คอิน",
+  "checkOut": "เช็คเอาท์",
+  "empty": "ไม่มีรายการ",
+  "loading": "กำลังโหลด…",
+  "yes": "ครบ",
+  "no": "ยังไม่ครบ",
+  "vaccineWarning": "ต้องตรวจ"
+}
