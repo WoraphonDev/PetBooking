@@ -600,6 +600,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 - Answer (2026-10-04): user approved one larger original T-0053 PR with all tests retained. Complete signed-file/rollback/HTTP coverage before the final verification and PR.
 
+## Q-0104 · T-0164 stays.noShow: when the server allows it
+- Status: answered (user chose in chat, 2026-10-05)
+- Task: T-0164 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 05 says stays.noShow "ทำได้หลัง 23:59 ของ check_in_date หรือกดเองพร้อมยืนยัน" (03: "หลัง check_in_date"), but the request has no confirm field and 05 lists no error for pressing too early.
+- Answer (2026-10-05): allowed once the branch-local date ≥ check_in_date; the screen asks for confirmation before 23:59 of that day. Earlier → `STATUS_NOT_ALLOWED` with details `{ allowedFrom: check_in_date }` (as Q-0097). Like groom.noShow, the booking closes and R-07 forfeits a verified deposit when every child is no-show/cancelled; customer.no_show uses the Q-0097 money line.
+
 ## Q-0066 · T-0309 owner.daily_summary: noShows and tomorrowCount
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat.
