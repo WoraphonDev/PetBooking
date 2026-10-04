@@ -657,3 +657,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user selected option 1, authorize the screen-specific menu path in a separate spec-change PR before enabling the menu in T-0314. The task generator `tools/spec-src/build_tasks.py` is read-only for agents under the repository scope guard; a human must add C-25 to its existing enable_menu screen set and regenerate task outputs, preserving status logs. T-0314 remains draft until that scope PR is merged; no menu or generator file is modified here.
 - Follow-up (2026-10-04): the user supplied the one-line C-25 generator edit personally. Its exact patch was packaged on isolated `spec-change-q0089-occupancy-menu`, with only T-0314 and its CSV path count regenerated; drift check passed. The original user edit remains untouched in the implementation worktree. Awaiting full verification and human merge of the separate scope PR before changing navigation.
 - Resolution (2026-10-04): human merged #192. T-0314 inherited the generated scope from main, enabled C-25 for owners and added menu/route denial assertions for front_desk and staff. The original user-authored generator edit is retained in a named stash and the merged scope commit; no agent-authored generator edits are included in the implementation PR.
+
+## Q-1005 · T-0053 exceeds the small-PR target
+- Status: answered (user approved in chat, 2026-10-04)
+- Task: T-0053 · Asked by: codex · Date: 2026-10-04
+- Evidence: the three endpoints, four owned DTOs and 13 passing PGlite tests add 512 code lines after formatting. Required scoped reads and transactional writes are present; signed-file/error/rollback and HTTP validation coverage must still be completed before claiming done.
+- Proposed split: pets.get + four DTOs first, then pets.create/update depending on the merged read/DTO task. Humans must regenerate split cards/allowed_paths because those generators are read-only.
+- Question: approve one larger PR preserving all tests for the existing card, or pause until split cards are available? Implementation is frozen pending the decision; current-snapshot verification can continue.
+- Testing: explicit-file Vitest commands plus unchanged full pnpm verify were approved in chat (Q-1002).
+
+- Answer (2026-10-04): user approved one larger original T-0053 PR with all tests retained. Complete signed-file/rollback/HTTP coverage before the final verification and PR.
