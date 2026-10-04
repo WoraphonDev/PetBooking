@@ -598,6 +598,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Implemented for now (T-0067): access + done / rejected only sets status, note, resolved_by, resolved_at. delete + done erases owner_profile as 05 says (also last name and nickname as part of the name) + audit `pdpa.erase`; any resolved request → `INVALID_TRANSITION` (data_request has no state machine in 03).
 - Needs: a spec change (file_kind / template / delivery) and a follow-up card for the export.
 
+## Q-0100 · T-0117 groom.setItems: which appointment statuses may change items
+- Status: answered (user chose in chat, 2026-10-04)
+- Task: T-0117 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: 05#ep-groom.setItems does not say when items may still change.
+- Answer (2026-10-04): scheduled, checked_in and in_progress (before the work is done, including after a check-in SIZE_CHANGED warning); done / picked_up / no_show / cancelled → STATUS_NOT_ALLOWED.
+
 ## Q-0046 · AD-06: shop name and date range for admin.analytics
 - Status: answered (implemented in T-0315)
 - Task: T-0315 · Asked by: agent (claude) · Date: 2026-10-03
