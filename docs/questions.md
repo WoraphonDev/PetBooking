@@ -469,6 +469,14 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Options: A) caller passes the ready text — `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" or "", `isLate` = "(ยกเลิกกระชั้น)" or "" — and the template only substitutes; B) caller passes 1/0 and the template maps 1 → that wording, 0 → nothing.
 - Implemented for now (T-0193): option A shape without fixing the wording — the template substitutes whatever text the caller sends and trims the trailing space when it is empty. The liff.uploadSlip / liff.payUploadSlip / liff.cancel cards need the wording to pass.
 
+## Q-0091 · T-0112 bookings.create: booking_confirmed wording and package-paid items
+- Status: open (T-0112 ships the interim choices below; human review)
+- Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: (1) 07 §1 `customer.booking_confirmed` needs `mapUrl`, but no table has a map link for the branch; `summary` / `dateTime` have no format. (2) A groom item paid by a customer package (`groom[].customerPackageId`, R-14): should its price snapshot still count in `estimated_total_satang` and the R-06 deposit?
+- Evidence: 07 §1 row `customer.booking_confirmed`; 02 `branch` (no map column); 05#dto-MyBookingItem `summary` = "ชื่อบริการ/ประเภทห้อง"; R-03, R-06, R-14.
+- Implemented for now: (1) `mapUrl` = "" (the line renders empty); `summary` = "{petName}: {service names joined ', '}" joined " / "; `dateTime` = R-31 date + time of the first appointment. (2) The item keeps its catalog price snapshot with `customer_package_id` set (the bill redeems it at 0 later), so it counts in the estimate and the deposit.
+- Options: (1) A add `branch.map_url` (spec change + migration) / B drop the map line from the template. (2) A as implemented / B price 0 for package-paid items at booking time.
+
 ## Q-0085 · T-0305 reports.sales: gross/discount/net and grouping
 - Status: answered (2026-10-04)
 - Task: T-0305 · Asked by: agent (claude) · Date: 2026-10-04
