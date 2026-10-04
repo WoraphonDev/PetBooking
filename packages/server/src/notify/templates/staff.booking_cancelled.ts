@@ -1,9 +1,7 @@
-// staff.booking_cancelled — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.booking_cancelled: Web Push to front_desk+owner on liff.cancel. `isLate` is "(ยกเลิกกระชั้น)" or "" from the caller (Q-0088).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "ลูกค้ายกเลิก {bookingNo} ({customerName}) {isLate}";
-
-export function render(payload: NotificationPayloads["staff.booking_cancelled"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["staff.booking_cancelled"]): Rendered {
+  return { text: `ลูกค้ายกเลิก ${payload.bookingNo ?? ""} (${payload.customerName ?? ""}) ${payload.isLate ?? ""}`.trimEnd() };
 }

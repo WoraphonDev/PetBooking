@@ -1,10 +1,10 @@
-// owner.daily_summary — 07 §1 text; email subject per Q-0060 (stub text: the template task for this key replaces the body).
+// 07 §1 owner.daily_summary: Web Push or email to every owner; date/money arrive formatted by the job (R-31); subject per Q-0060.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
 import type { Rendered } from "./index.ts";
 
-const TEXT = "สรุป {date}: กรูม {groomCount} ตัว, พัก {staysInHouse}, ยอดขาย {salesTotal}, no-show {noShows} | พรุ่งนี้ {tomorrowCount} นัด";
-
-export function render(payload: NotificationPayloads["owner.daily_summary"]): Rendered {
-  return { subject: fill("สรุปประจำวัน {date}", payload), text: fill(TEXT, payload) };
+export function render(p: NotificationPayloads["owner.daily_summary"]): Rendered {
+  return {
+    subject: `สรุปประจำวัน ${p.date ?? ""}`,
+    text: `สรุป ${p.date ?? ""}: กรูม ${p.groomCount ?? ""} ตัว, พัก ${p.staysInHouse ?? ""}, ยอดขาย ${p.salesTotal ?? ""}, no-show ${p.noShows ?? ""} | พรุ่งนี้ ${p.tomorrowCount ?? ""} นัด`,
+  };
 }

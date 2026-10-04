@@ -1,9 +1,7 @@
-// staff.report_card_review — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.report_card_review: Web Push to front_desk when a report card awaits review.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "Report card ของ {petName} รอตรวจ";
-
-export function render(payload: NotificationPayloads["staff.report_card_review"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["staff.report_card_review"]): Rendered {
+  return { text: `Report card ของ ${payload.petName ?? ""} รอตรวจ` };
 }

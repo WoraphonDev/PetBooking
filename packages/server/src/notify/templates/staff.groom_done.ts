@@ -1,9 +1,7 @@
-// staff.groom_done — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.groom_done: Web Push to front_desk when the groomer finishes.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "{petName} เสร็จแล้ว ({groomerName}) — กดแจ้งลูกค้ามารับ";
-
-export function render(payload: NotificationPayloads["staff.groom_done"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["staff.groom_done"]): Rendered {
+  return { text: `${payload.petName ?? ""} เสร็จแล้ว (${payload.groomerName ?? ""}) — กดแจ้งลูกค้ามารับ` };
 }

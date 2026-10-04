@@ -1,9 +1,7 @@
-// staff.approval_overdue — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 staff.approval_overdue: Web Push to front_desk+owner per overdue round.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "⏰ {bookingNo} รออนุมัติมา {waitedMinutes} นาที";
-
-export function render(payload: NotificationPayloads["staff.approval_overdue"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["staff.approval_overdue"]): Rendered {
+  return { text: `⏰ ${payload.bookingNo ?? ""} รออนุมัติมา ${payload.waitedMinutes ?? ""} นาที` };
 }
