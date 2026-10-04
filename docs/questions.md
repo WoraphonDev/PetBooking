@@ -489,6 +489,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#dto-SalesReport sets gross = Σ line_total and discount = bill + line discounts, but line_total is already net of the line discount (double count), and grouping by service/groomer/method is not defined.
 - Answer (2026-10-04): user chose option A in chat. gross = Σ qty × unit; discount = Σ line discounts + bill discount; net = gross − discount (= bill.total). Paid bills by branch-local closed_at day, void excluded. day = one row per day; service/groomer = per line with the bill discount spread like R-13 #1 (service = service or quick-item name; lines without performer → one "ไม่ระบุช่าง" row), billCount = distinct bills in the row; method = posted payments per method (net = amount, gross/discount 0). payments[] = Σ posted payments of those bills per method (deposit/credit included). totals = row shape without key. 05 text to be updated by spec change.
 
+## Q-0095 · T-0233 bills.addPayment: change_satang and a fully paid bill
+- Status: open (T-0233 ships the interim choice; human review)
+- Task: T-0233 · Asked by: agent (claude) · Date: 2026-10-04
+- Question: (1) 05 says "bill.paid_satang/change_satang อัปเดต" but not whether change_satang is the last payment's change or the total over the bill's cash payments. (2) R-15 `applyPayment` returns `BILL_ALREADY_PAID` when due = 0, which is not in the endpoint's error list.
+- Evidence: 05#ep-bills.addPayment, R-15 step 5, 02 bill.change_satang.
+- Implemented for now: (1) change_satang accumulates (+ change of each cash payment); bills.voidPayment does not touch it. (2) due = 0 answers `BILL_ALREADY_PAID` (409, defined in 05 §1).
+
 ## Q-0055 · bills.list date/order and bills.updateLine rules
 - Status: answered (implemented in T-0230)
 - Task: T-0230 · Asked by: agent (claude) · Date: 2026-10-03
