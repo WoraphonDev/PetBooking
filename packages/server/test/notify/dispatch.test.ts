@@ -1,6 +1,6 @@
 // T-0010: dispatchQueued — R-19 channel (limited by template), R-18 quota/economy, adapters via fakes, 80% owner warning.
 import { randomUUID } from "node:crypto";
-import { branchPolicy, lineChannel, lineIdentity, notification, staffUser, webPushSubscription } from "@app/db/schema";
+import { branchPolicy, lineChannel, lineIdentity, notification, platformAdmin, staffUser, webPushSubscription } from "@app/db/schema";
 import { and, eq, like } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { withTx } from "../../src/db.ts";
@@ -93,7 +93,7 @@ async function usePushes(s: SeedOrg, used: number) {
 async function enqueue<K extends TemplateKey>(
   s: SeedOrg,
   key: K,
-  recipient: { type: "customer" | "staff"; id: string },
+  recipient: { type: "customer" | "staff" | "platform_admin"; id: string },
   payload: NotificationPayloads[K],
 ) {
   const ctx = staffCtx(s, "owner");
@@ -255,6 +255,30 @@ describe("staff (Web Push / email)", () => {
     await dispatch(fakes().deps);
     expect(await rowOf(noDevice)).toMatchObject({ status: "skipped", skipReason: "no_recipient" });
     expect(await rowOf(disabled)).toMatchObject({ status: "skipped", skipReason: "no_recipient" });
+  });
+});
+
+describe("platform admin (email only, 07 §1.1)", () => {
+  it("emails an active admin with the rendered subject/text; a disabled admin → no_recipient; no R-18 quota use", async () => {
+    const s = await shop({ quota: 0 });
+    const admins = await env.db
+      .insert(platformAdmin)
+      .values([
+        { email: `ops${n}@example.test`, displayName: "Ops", passwordHash: "test-only" },
+        { email: `old${n}@example.test`, displayName: "Old", passwordHash: "test-only", status: "disabled" },
+      ])
+      .returning();
+    const payload = { shopName: "ร้านน้องหมา", message: "ปุ่มบันทึกกดไม่ได้" };
+    const active = await enqueue(s, "admin.feedback", { type: "platform_admin", id: admins[0]?.id ?? "" }, payload);
+    const disabled = await enqueue(s, "admin.feedback", { type: "platform_admin", id: admins[1]?.id ?? "" }, payload);
+    const { deps, calls } = fakes();
+    await dispatch(deps);
+    expect(await rowOf(active)).toMatchObject({ status: "sent", channel: "email", sentAt: TEST_NOW });
+    expect(await rowOf(disabled)).toMatchObject({ status: "skipped", skipReason: "no_recipient" });
+    expect(calls.email).toEqual([
+      { to: `ops${n}@example.test`, subject: "[Feedback] ร้านน้องหมา", text: "[Feedback] ร้านน้องหมา: ปุ่มบันทึกกดไม่ได้" },
+    ]);
+    expect(calls.line).toEqual([]);
   });
 });
 

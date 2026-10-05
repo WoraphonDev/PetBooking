@@ -1,5 +1,5 @@
 // T-0010: enqueueNotification — outbox row, local month key, per-recipient dedupe.
-import { notification } from "@app/db/schema";
+import { notification, platformAdmin } from "@app/db/schema";
 import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { withTx } from "../../src/db.ts";
@@ -82,7 +82,30 @@ describe("enqueueNotification", () => {
     expect(await env.db.select().from(notification).where(eq(notification.templateKey, "customer.link_approved"))).toEqual([]);
   });
 
-  it("admin.* keys are rejected until recipient_type has platform_admin (Q-0009)", async () => {
+  it("admin.* go to platform admins: one row per admin, shop's organization, per-recipient dedupe (07 §1.1)", async () => {
+    const ctx = staffCtx(env.base, "owner");
+    const [admin] = await env.db
+      .insert(platformAdmin)
+      .values({ email: "ops@example.test", displayName: "Ops", passwordHash: "test-only" })
+      .returning();
+    const row = await withTx(ctx, (tx) =>
+      enqueueNotification(tx, ctx, {
+        key: "admin.feedback",
+        recipient: { type: "platform_admin", id: admin?.id ?? "" },
+        payload: { shopName: "Shop a", message: "hi" },
+        dedupeKey: "feedback:f1",
+      }),
+    );
+    expect(row).toMatchObject({
+      recipientType: "platform_admin",
+      recipientId: admin?.id,
+      organizationId: env.base.orgId,
+      channel: "email",
+      dedupeKey: `feedback:f1:${admin?.id}`,
+    });
+  });
+
+  it("admin.* to a staff member, or a shop template to a platform admin, is a programming error", async () => {
     const ctx = staffCtx(env.base, "owner");
     await expect(
       withTx(ctx, (tx) =>
@@ -90,9 +113,19 @@ describe("enqueueNotification", () => {
           key: "admin.feedback",
           recipient: { type: "staff", id: env.base.staff.owner },
           payload: { shopName: "Shop a", message: "hi" },
-          dedupeKey: "feedback:f1",
+          dedupeKey: "feedback:f2",
         }),
       ),
-    ).rejects.toThrow(/Q-0009/);
+    ).rejects.toThrow(/cannot go to a staff recipient/);
+    await expect(
+      withTx(ctx, (tx) =>
+        enqueueNotification(tx, ctx, {
+          key: "customer.link_approved",
+          recipient: { type: "platform_admin", id: env.base.staff.owner },
+          payload: { shopName: "Shop a" },
+          dedupeKey: "link_approved:x",
+        }),
+      ),
+    ).rejects.toThrow(/cannot go to a platform_admin recipient/);
   });
 });
