@@ -760,6 +760,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: `apps/web/src/components/shell-console/navigation/C-23.ts` has `implemented: false` and leaves enablement to the screen task (Q-0048), but T-0312's allowed_paths do not include it (same situation as Q-0089 for C-25).
 - Question: add C-23 to the generator's enable_menu screen set (human edit of `tools/spec-src/build_tasks.py` + regeneration, as in #192) so a follow-up can switch the menu on? The page works at `/console/reports/sales` meanwhile; the menu file is untouched.
 
+## Q-1010 · T-0081 C-31: no staff endpoint to list public holidays; no labels for closure_source
+- Status: open
+- Task: T-0081 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: (1) "เพิ่มวันหยุดราชการ" must open "dialog เลือกวันจาก public_holiday", but the only endpoint that lists public_holiday is `admin.listHolidays` (platform admin only), so the shop can't see the list. (2) The closures table shows "ที่มา (source)", but enum-labels.th.json has `closure_scope` and no `closure_source` (manual / public_holiday).
+- Proposed decision (implemented): (1) for now the dialog takes a year, dates picked by the owner and a scope; `closures.importHolidays` already keeps only the dates that are public holidays of that year. A follow-up could add a staff read endpoint (e.g. `closures.publicHolidays?year=`) so the dialog can list them. (2) The interim labels "ตั้งเอง" / "วันหยุดราชการ" live in C-31.json (same approach as Q-0117) until a spec change adds `closure_source` to enum-labels.th.json.
+
 ## Q-0115 · T-0045 branch.setModules: the future-bookings warning
 - Status: open
 - Task: T-0045 · Asked by: agent (claude) · Date: 2026-10-05
