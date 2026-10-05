@@ -880,12 +880,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: add T-0149 to the depends_on of T-0104 and T-0105 (task generator / spec owner) and leave both cards until T-0149 is merged. No agent work started on them.
 
 ## Q-1006 · T-0039: Playwright is not an allowed dependency of the card
-- Status: open
+- Status: resolved (2026-10-06)
 - Task: T-0039 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: the card needs `@playwright/test` (playwright.config.ts, `pnpm --filter @app/web exec playwright test`), but it has no *Dependencies* section and its allowed_paths leave out `apps/web/package.json` and `pnpm-lock.yaml`. `@playwright/test` is not installed anywhere in the workspace today (the lockfile only lists it as an optional peer). Adding it would fail `check-task-scope` and golden rule 6.
 - Evidence: `docs/tasks/T-0039.md` allowed_paths; 01 §1 names Playwright as the E2E tool. Chromium is already in `~/Library/Caches/ms-playwright`, so no browser download is needed.
 - Proposed decision: regenerate T-0039 with `apps/web/package.json` + `pnpm-lock.yaml` in allowed_paths and `@playwright/test` (exact version) under Dependencies. No work started on the card.
-
+- Decision (project owner, 2026-10-06): add `@playwright/test` 1.63.0 (matches the installed Chromium 1243) to `apps/web` devDependencies; the card now lists `apps/web/package.json` + `pnpm-lock.yaml` in allowed_paths and has a *Dependencies* section. `tsx` 4.23.15 (already in `@app/db`) is added to `@app/server` for the `db:seed` script.
 ## Q-1007 · T-0062 imports.create: storage cannot read the uploaded CSV
 - Status: open
 - Task: T-0062 · Asked by: agent (claude) · Date: 2026-10-05
