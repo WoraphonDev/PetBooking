@@ -469,6 +469,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Options: A) caller passes the ready text — `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" or "", `isLate` = "(ยกเลิกกระชั้น)" or "" — and the template only substitutes; B) caller passes 1/0 and the template maps 1 → that wording, 0 → nothing.
 - Implemented for now (T-0193): option A shape without fixing the wording — the template substitutes whatever text the caller sends and trims the trailing space when it is empty. The liff.uploadSlip / liff.payUploadSlip / liff.cancel cards need the wording to pass.
 
+## Q-0114 · T-0143 C-46: mounting the feedback button and the app version
+- Status: open
+- Task: T-0143 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: (1) 06#scr-C-46 is a floating button on every page (OFS), but T-0143 may only touch `components/c-46/**`; the console / staff shells (`shell-console/**`, `shell-staff/**`) that would mount it belong to other cards. (2) "เวอร์ชัน = feedback_report.app_version (git sha), auto" — no build-time source of the version is defined (no env var in 01 / next.config).
+- Proposed decision: (1) a follow-up shell card (or widening T-0143 by a generator edit, as Q-1001) mounts `<FeedbackWidget appVersion={…} />` in the console and staff layouts. (2) expose the git sha at build time as `NEXT_PUBLIC_APP_VERSION` (set by CI / Vercel from the commit sha) and pass it in.
+- Interim (implemented): `FeedbackWidget` / `FeedbackForm` are ready in `components/c-46` (message, optional screenshot upload via staff.uploadUrl kind feedback, current page, version shown as "—" when none is passed, send → feedback.create + thank-you toast) but are not mounted anywhere yet.
+
 ## Q-0091 · T-0112 bookings.create: booking_confirmed wording and package-paid items
 - Status: open (T-0112 ships the interim choices below; human review)
 - Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
