@@ -8,6 +8,7 @@ import { BookingDetailScreen, BookingView, CancelFields } from "../../src/compon
 import {
   cancelBody,
   canDecide,
+  canOpenBill,
   canRecordDeposit,
   canSendBalance,
   canWaiveDeposit,
@@ -243,6 +244,19 @@ describe("ext-M3 logic", () => {
   });
 });
 
+describe("ext-M4 logic", () => {
+  it("เปิดบิล: confirmed and a finished child", () => {
+    const b = booking();
+    const groom = (status: string) => [{ ...(b.groom[0] as object), status }] as never;
+    expect(canOpenBill({ ...b, status: "confirmed", groom: groom("done"), stays: [], daycare: [] })).toBe(true);
+    expect(canOpenBill({ ...b, status: "confirmed", groom: groom("picked_up"), stays: [], daycare: [] })).toBe(true);
+    expect(canOpenBill({ ...b, status: "confirmed", groom: groom("in_progress"), stays: [], daycare: [] })).toBe(false);
+    expect(canOpenBill({ ...b, status: "awaiting_deposit", groom: groom("done"), stays: [], daycare: [] })).toBe(false);
+    expect(canOpenBill({ ...b, status: "confirmed", groom: [], stays: [{ status: "checked_out" }] as never, daycare: [] })).toBe(true);
+    expect(canOpenBill({ ...b, status: "confirmed", groom: [], stays: [], daycare: [{ status: "checked_out" }] as never })).toBe(true);
+  });
+});
+
 describe("BookingView", () => {
   const render = (b = booking()) =>
     renderToStaticMarkup(
@@ -307,6 +321,20 @@ describe("BookingView", () => {
       messages.cancelBooking,
     ])
       expect(html, text).toContain(text);
+  });
+
+  it("shows เปิดบิล only for a confirmed booking with a finished child", () => {
+    const b = booking();
+    const done = render({ ...b, status: "confirmed", groom: b.groom.map((x) => ({ ...x, status: "done" as const })) });
+    expect(done).toContain(`>${messages.createBill}<`);
+    const waiting = render({
+      ...b,
+      status: "confirmed",
+      groom: b.groom.map((x) => ({ ...x, status: "scheduled" as const })),
+      stays: [],
+      daycare: [],
+    });
+    expect(waiting).not.toContain(`>${messages.createBill}<`);
   });
 
   it("shows the ext-M3 buttons by state", () => {
@@ -392,6 +420,7 @@ describe("BookingDetailScreen", () => {
     // the C-02D drawer is mounted closed (groom.jobCard disabled until a card is clicked)
     expect(mock.query.mock.calls.find((c) => c[0] === "groom.jobCard")?.[2]).toEqual({ enabled: false });
     expect(mock.mutation.mock.calls.map((c) => c[0])).toContain("bookings.balanceLink");
+    expect(mutations["bills.open"]).toMatchObject({ invalidate: expect.arrayContaining(["bookings.get", "bills.list"]) });
     // R-07 preview loads only once the cancel dialog is open and ใครยกเลิก is picked
     expect(mock.query.mock.calls.find((c) => c[0] === "bookings.cancelPreview")?.[2]).toEqual({ enabled: false });
     // C-06 is mounted closed, opened from the drawer's เช็คอิน

@@ -87,3 +87,10 @@ export function depositBody(f: DepositForm): { body: BookingsRecordDepositReques
     errors,
   };
 }
+
+/** เปิดบิล: confirmed และมี child เสร็จแล้ว (groom done / picked_up, stay or daycare checked_out) */
+export const canOpenBill = (b: Pick<BookingDetail, "status" | "groom" | "stays" | "daycare">) =>
+  b.status === "confirmed" &&
+  (b.groom.some((a) => a.status === "done" || a.status === "picked_up") ||
+    b.stays.some((s) => s.status === "checked_out") ||
+    b.daycare.some((v) => v.status === "checked_out"));
