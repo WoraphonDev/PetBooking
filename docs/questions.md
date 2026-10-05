@@ -460,6 +460,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: R-09 recounts late cancels over 12 months, but bookings.cancel stores neither `kind` nor whether the cancel was late (only `cancelled_by_type`, which cannot tell a shop cancel from a cancel on the customer's behalf).
 - Answer (2026-10-04): user chose option A in chat. Add `booking.cancel_is_late boolean` (null = not cancelled), written by bookings.cancel / liff.cancel from R-07 `isLate`; recompute_reliability counts bookings with `cancel_is_late = true` and `cancelled_at` in the last 12 months. Needs a spec change (02 + 05) and a migration in the card that owns it; T-0189 waits for it.
 
+## Q-0117 · T-0089 AD-05: no Thai labels for data_request_status
+- Status: open
+- Task: T-0089 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 06#scr-AD-05 shows `data_request.status` as an enum, but enum-labels.th.json has only `data_request_type`, not `data_request_status` (open / done / rejected).
+- Proposed decision: add `data_request_status: { open: "รอดำเนินการ", done: "ดำเนินการแล้ว", rejected: "ปฏิเสธ" }` to enum-labels.th.json (spec change), then AD-05 switches to enumLabel().
+- Interim (implemented): the three labels live in AD-05.json (same approach as Q-0043 for feedback_status).
+
 ## Q-0088 · T-0193 staff templates: what `duplicateFlag` and `isLate` render as
 - Status: answered (2026-10-05)
 - Answer (2026-10-05): user chose option A in chat. The caller passes the ready text: `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" when R-05 finds a duplicate, otherwise ""; `isLate` = "(ยกเลิกกระชั้น)" when R-07 `isLate`, otherwise "". The template substitutes it and drops the trailing space when empty (T-0193). liff.uploadSlip / liff.payUploadSlip / liff.cancel pass these strings; 07 §1 to be updated by spec change.
