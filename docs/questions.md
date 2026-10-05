@@ -765,6 +765,20 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: imports.create must parse the uploaded CSV, but `ObjectStorage` (`packages/server/src/integrations/storage/index.ts`, outside the card's allowed_paths) only has presignPut / presignGet / head / delete — there is no way to read the object's bytes on the server. The row-error codes for `import_job.errors[].code` (`{row, column, code, message}`) are also not listed anywhere in 02/04/05.
 - Proposed decision: (1) a scoped follow-up (or widening T-0062) adds `getText(key): Promise<string | null>` to ObjectStorage (S3 GetObject + the fake storage); (2) a spec-change lists the row codes, e.g. `REQUIRED`, `INVALID_PHONE` (R-22), `INVALID_ENUM`, `INVALID_DATE`, `INVALID_NUMBER`, `UNKNOWN_COLUMN`, with Thai messages. No work started on the card.
 
+## Q-1012 · T-0134 C-02: size code, the C-02D drawer, and empty-slot prefill
+- Status: open
+- Task: T-0134 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. The appointment card shows "พันธุ์/ขนาด: pet.breed + size_tier.code", but `AppointmentCard` / `PetSummary` carry no size tier.
+  2. "คลิกการ์ด → เปิด C-02D (drawer)", but C-02D (T-0135) only owns `components/c-02d/**`, so it can't mount itself in C-02, and C-02D isn't merged yet.
+  3. "คลิกช่องว่าง → เปิด C-03 พร้อมวัน/เวลา/ช่าง", but C-03 doesn't read any query parameters.
+  4. Drag-to-reschedule needs a `stationId` the drop target doesn't give.
+- Proposed decision (implemented):
+  1. Only the breed is shown until `sizeTierCode` is added to AppointmentCard (spec change).
+  2. Clicking a card opens the booking (`/console/bookings/{bookingId}`, C-05) for now; T-0135's scope should include `components/c-02/**` so it can swap the link for the drawer.
+  3. The click goes to `/console/bookings/new?date=&time=&groomerId=`; a follow-up on C-03 can prefill from those.
+  4. The appointment keeps its station; groom.reschedule's R-04 check answers SLOT_TAKEN when it's busy, and the card stays where it was.
+
 ## Q-1008 · T-0115 calendar.day: week response, time off / closure shape, hotel counts
 - Status: open
 - Task: T-0115 · Asked by: agent (claude) · Date: 2026-10-05
