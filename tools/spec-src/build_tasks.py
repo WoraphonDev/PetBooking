@@ -301,11 +301,12 @@ for app, title, routes in (("console", "Console shell: layout + sidebar (คร�
          done=["pnpm --filter @app/web build", CONF, VERIFY], deps=["INF-I18N", "INF-APICLIENT"] + (["INF-HTTP"] if app == "admin" else []) + (["INF-LINE"] if app == "liff" else []) + (["H-LINE-PLATFORM"] if app == "staff" else []),
          read=["docs/spec/06-screens.md", "docs/spec/08-permissions.md"])
 task("INF-E2E", "Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test", "M1", "infra", "M", "US-13-14",
-     allowed=["apps/web/playwright.config.ts", "apps/web/e2e/**", "packages/server/src/dev/**", "packages/server/package.json"],
+     allowed=["apps/web/playwright.config.ts", "apps/web/e2e/**", "packages/server/src/dev/**", "packages/server/package.json","apps/web/package.json", "pnpm-lock.yaml"],
      steps=["packages/server/src/dev/seed.ts + script `db:seed`: ร้านตัวอย่าง (owner/front_desk/2 ช่าง, บริการ 5 รายการพร้อมราคาทุกขนาด, ห้อง 2 ประเภท 6 ห้อง, Daycare 3 รอบ, ลูกค้า 10 คน น้อง 14 ตัว)",
             "playwright.config.ts: webServer = next start + PGlite/Postgres ทดสอบ, LINE_FAKE=1, ใช้ Chromium ที่ติดตั้งแล้ว (ไม่ดาวน์โหลด)",
             "e2e/smoke.spec.ts: เปิด /login แล้วเห็นฟอร์ม"], done=["pnpm --filter @app/web exec playwright test e2e/smoke.spec.ts", VERIFY],
-     deps=["INF-WEB", "INF-SERVER"], read=["docs/spec/10-reference-data.md"])
+     deps=["INF-WEB", "INF-SERVER"], read=["docs/spec/10-reference-data.md"],
+     notes=["Dependencies (Q-1006): `@playwright/test` 1.63.0 (devDependency ของ apps/web) · `tsx` 4.23.15 (devDependency ของ packages/server สำหรับ `db:seed`)"])
 INF("INF-DEPLOY", "Deploy pipeline ตาม ADR-002 (staging + production) + migrate on deploy", "M0", "M", "US-13-01",
     ["deploy/**", "apps/web/Dockerfile", "docker-compose.yml", "docs/ops/**"],
     ["ตาม ADR-002 ที่ accepted: Dockerfile (Next standalone) หรือ config ของ host", "ขั้นตอน migrate ก่อนสลับเวอร์ชัน (`pnpm --filter @app/db db:migrate`)",
