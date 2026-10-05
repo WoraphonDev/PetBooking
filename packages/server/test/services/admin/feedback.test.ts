@@ -1,6 +1,6 @@
 import { AdminFeedbackRequest, AdminFeedbackResponse } from "@app/contracts/endpoints/admin.feedback";
 import { feedbackReport, platformAdmin } from "@app/db/schema";
-import { afterEach, beforeEach, expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { withAdmin } from "../../../src/http.ts";
 import { adminFeedback } from "../../../src/services/admin/feedback.ts";
@@ -13,6 +13,9 @@ const get = (qs = "", cookie = `aid=${token}`) =>
   GET(new Request(`https://petbooking.test/api/v1/admin/feedback${qs}`, { headers: { cookie } }));
 
 beforeEach(async () => {
+  // the HTTP pipeline reads the clock once per request: pin it to TEST_NOW so the 12 h admin session stays valid
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(TEST_NOW);
   env = await setupTestDb();
   const [admin] = await env.db
     .insert(platformAdmin)
@@ -21,6 +24,7 @@ beforeEach(async () => {
   token = (await createSession(env.db, { subjectType: "platform_admin", subjectId: admin?.id ?? "" }, TEST_NOW)).token;
 });
 afterEach(async () => {
+  vi.useRealTimers();
   await env.close();
 });
 

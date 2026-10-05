@@ -969,6 +969,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 - Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-1002 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
 
+## Q-1019 · Admin service tests fail after 15:00 UTC (real clock vs 12 h admin session)
+- Status: open
+- Task: none (maintenance; files belong to T-0319 and other admin API cards) · Asked by: agent (claude) · Date: 2026-10-05
+- Evidence: 21 tests in `packages/server/test/services/admin/{createOrg,feedback,orgs,supportEnd,supportStart,updateFeedback,updateOrg}.test.ts` get 401 from 15:00 UTC every day, so `pnpm verify` fails. They create the platform_admin session with `createSession(env.db, …, TEST_NOW)` (TEST_NOW = 2026-10-05T03:00:00Z, `test/helpers/setup.ts`); admin sessions last 12 h (`src/auth/session.ts`), but `withAdmin` reads the real clock because these files do not fake `Date`. Reproduced at 15:23 UTC: 7 files / 21 tests failed.
+- Proposed fix (test-only, no src or TTL change): pin the clock like `test/services/dashboard/today.test.ts` — `vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(TEST_NOW);` at the start of each file's `beforeEach`, `vi.useRealTimers()` in `afterEach`. Verified after 15:00 UTC: `vitest run test/services/admin` 13 files / 69 tests pass; `pnpm verify` passes.
+- Question: no card lists all seven files in `allowed_paths` — accept this as one maintenance PR on a non-task branch (CODEOWNERS review), or create a maintenance card for it?
+
 ## Q-1018 · T-0085 C-37: drag ordering, status labels, existing service photo
 - Status: open
 - Task: T-0085 · Asked by: agent (claude) · Date: 2026-10-05
