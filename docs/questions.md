@@ -374,6 +374,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-bookings.balanceLink mentions "send=true" but has no request table, names no error for "ต้องมี bill open", and says only "url = LIFF /pay/{billId}".
 - Answer (2026-10-02): user chose in chat. Body `{ send?: boolean }` (default false = only return the link). No bill on the booking, or the bill is paid/void → `BILL_NOT_OPEN` (409). `amountSatang = bill.total_satang − bill.paid_satang`. `url = APP_BASE_URL + /liff/{branch.booking_slug}/pay/{billId}` (route of L-14; 01 §6 APP_BASE_URL is the base for links in messages). send=true enqueues `customer.balance_link` to booking.customer_id with `amount` formatted by R-31 formatTHB(always).
 
+## Q-1025 · T-0206 C-34: the full PromptPay id is never loaded, so which id the test QR uses
+- Status: open
+- Task: T-0206 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 06#scr-C-34 shows หมายเลข PromptPay as "แสดง+แก้ (แสดงแบบปิดบัง)" and a QR ทดสอบ ฿1 (R-30 amount 100). `branch.get` returns only `promptpay.idMasked`, and `branch.setPromptpay` needs the full `id` on every save, so the screen cannot build a QR for the saved account. `shell-console/navigation/C-34.ts` is also outside the card's allowed paths (Q-0048).
+- Proposed decision (implemented):
+  - The current account shows as "บัญชีปัจจุบัน {idMasked}", and the id input starts empty: the owner types the id again whenever they save.
+  - The test QR is built on the client with R-30 `promptPayPayload` from the typed type + id (shown once the id is valid). The same check flags a wrong id before the request; the server still answers INVALID_PROMPTPAY_ID / INVALID_CREDENTIALS.
+  - The menu entry is left for a follow-up.
+
 ## Q-0061 · T-0186 expire_hold: bookAgainUrl
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat.
