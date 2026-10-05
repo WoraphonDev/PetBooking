@@ -869,6 +869,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: (1) add `staff_photo` to `file_kind` (migration + spec) and commit with it. (2) `{ code: "GROOMER_HAS_FUTURE_APPOINTMENTS", message: "ช่างยังมีนัดที่ค้างอยู่ {n} นัด", data: { appointmentIds } }` for scheduled/checked_in/in_progress appointments ending after now. (3) invited stays invited until staff.inviteAccept; changing an invited person's status → STATUS_NOT_ALLOWED.
 - Interim (implemented): (1) photoFileId → VALIDATION_FAILED until answered; (2) and (3) as proposed. role staff in staffUsers.list gets only id/displayName/isGroomer/photoUrl (keys left out, as Q-0032).
 
+## Q-1011 · T-0107 workingHours.set: the warning shape and break rules
+- Status: open
+- Task: T-0107 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 05 says "ตอบ warnings[] นัดอนาคตที่อยู่นอกเวลาใหม่" but defines no code/message/data (same gap as Q-1004 / Q-0116), and the request table gives no rule for the optional break times.
+- Proposed decision (implemented): the response is `StaffUserItem` + optional `warnings[]` (as staffUsers.update, Q-0116), with one warning `{ code: "WORKING_HOURS_AFFECTED", message: "มีนัดของช่างอยู่นอกเวลาทำงานใหม่ {n} นัด", data: { appointmentIds } }`. It covers the staff member's scheduled / checked_in / in_progress appointments at the session branch that end after now and either fall on a day off, start before / end after the new hours, or overlap the break; nothing is moved. Only the session branch's rows are replaced. A break must have both ends and lie inside the working time (`breakStartsAt ≥ startsAt`, `breakEndsAt > breakStartsAt`, `breakEndsAt ≤ endsAt`), otherwise VALIDATION_FAILED.
+
 ## Q-0089 · T-0314: occupancy menu enablement is outside card scope
 - Status: answered (scope merged in #192; implemented in T-0314)
 - Task: T-0314 · Asked by: agent (codex) · Date: 2026-10-04
