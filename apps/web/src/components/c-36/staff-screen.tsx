@@ -1,12 +1,17 @@
 "use client";
+import type { AffectedServiceItem } from "@app/contracts/dto/affected-service-item";
 import type { StaffUserItem } from "@app/contracts/dto/staff-user-item";
 import { AuthMeResponse } from "@app/contracts/endpoints/auth.me";
 import { StaffUsersInviteResponse } from "@app/contracts/endpoints/staffUsers.invite";
 import { StaffUsersListResponse } from "@app/contracts/endpoints/staffUsers.list";
 import { StaffUsersResendInviteResponse } from "@app/contracts/endpoints/staffUsers.resendInvite";
 import { StaffUsersUpdateResponse } from "@app/contracts/endpoints/staffUsers.update";
+import { TimeOffCreateResponse } from "@app/contracts/endpoints/timeOff.create";
+import { TimeOffListResponse } from "@app/contracts/endpoints/timeOff.list";
+import { WorkingHoursSetResponse } from "@app/contracts/endpoints/workingHours.set";
 import { type StaffRole, staffRoleValues } from "@app/contracts/enums";
-import { useTranslations } from "next-intl";
+import { toLocalDate } from "@app/domain/time/local-time";
+import { useTimeZone, useTranslations } from "next-intl";
 import { type ReactNode, useState } from "react";
 import { toast } from "sonner";
 import { errorMessage } from "../../lib/api";
@@ -23,27 +28,43 @@ import {
   type EditForm,
   editBody,
   emptyInvite,
+  emptyTimeOff,
   fullItems,
   type InviteErrors,
   type InviteForm,
   inviteBody,
   lineShareUrl,
+  type TimeOffErrors,
+  type TimeOffForm,
   timeAgo,
+  timeOffBody,
+  timeOffRange,
   toggleStatus,
   WEEK_ORDER,
 } from "./logic";
+import { AffectedDialog, HoursDialog, TimeOffSection } from "./schedule";
 
 type T = ReturnType<typeof useTranslations<"C-36">>;
 const ROLE_HELP = { owner: "roleOwner", front_desk: "roleFrontDesk", staff: "roleStaff" } as const;
 const DAY_KEY = ["day0", "day1", "day2", "day3", "day4", "day5", "day6"] as const;
 const INVALIDATE = ["staffUsers.list"] as const;
 
-/** 06#scr-C-36 — staff list, invite (owner), edit / disable / resend (owner), weekly hours (read here; editing via workingHours.set comes later). */
+/** 06#scr-C-36 — staff list, invite (owner), edit / disable / resend (owner), weekly hours (workingHours.set) and time off. */
 export function StaffScreen() {
   const t = useTranslations("C-36");
   const common = useTranslations("common");
   const me = useApiQuery("auth.me", { response: AuthMeResponse });
   const list = useApiQuery("staffUsers.list", { response: StaffUsersListResponse });
+  const timezone = useTimeZone() ?? "Asia/Bangkok";
+  const range = timeOffRange(toLocalDate({ instant: new Date().toISOString(), timezone }));
+  const timeOff = useApiQuery("timeOff.list", { query: range, response: TimeOffListResponse });
+  const setHours = useApiMutation("workingHours.set", { response: WorkingHoursSetResponse, invalidate: [...INVALIDATE] });
+  const addTimeOff = useApiMutation("timeOff.create", { response: TimeOffCreateResponse, invalidate: ["timeOff.list"] });
+  const deleteTimeOff = useApiMutation("timeOff.delete", { invalidate: ["timeOff.list"] });
+  const [hoursOf, setHoursOf] = useState<StaffUserItem | null>(null);
+  const [offForm, setOffForm] = useState<TimeOffForm>(emptyTimeOff);
+  const [offErrors, setOffErrors] = useState<TimeOffErrors>({});
+  const [affected, setAffected] = useState<AffectedServiceItem[] | null>(null);
   const invite = useApiMutation("staffUsers.invite", { response: StaffUsersInviteResponse, invalidate: [...INVALIDATE] });
   const update = useApiMutation("staffUsers.update", { response: StaffUsersUpdateResponse, invalidate: [...INVALIDATE] });
   const resend = useApiMutation("staffUsers.resendInvite", { response: StaffUsersResendInviteResponse, invalidate: [...INVALIDATE] });
@@ -97,7 +118,45 @@ export function StaffScreen() {
           }}
         />
       ) : null}
-      <HoursTable t={t} staff={staff.filter((s) => s.status !== "disabled")} />
+      <HoursTable t={t} staff={staff.filter((s) => s.status !== "disabled")} onEdit={setHoursOf} />
+      <TimeOffSection
+        t={t}
+        staff={staff.filter((s) => s.status !== "disabled")}
+        items={timeOff.data ?? []}
+        timezone={timezone}
+        form={offForm}
+        onForm={setOffForm}
+        errors={offErrors}
+        adding={addTimeOff.isPending}
+        deleting={deleteTimeOff.isPending}
+        onAdd={async () => {
+          const { body, errors } = timeOffBody(offForm, timezone);
+          setOffErrors(errors);
+          if (!body) return;
+          const res = await addTimeOff.mutateAsync({ body });
+          setOffForm(emptyTimeOff());
+          toast.success(t("timeOffAdded"));
+          setAffected(res.affected);
+        }}
+        onDelete={async (timeOffId) => {
+          await deleteTimeOff.mutateAsync({ params: { timeOffId } });
+          toast.success(t("timeOffDeleted"));
+        }}
+      />
+      <HoursDialog
+        t={t}
+        staff={hoursOf}
+        busy={setHours.isPending}
+        cancelLabel={common("cancel")}
+        onClose={() => setHoursOf(null)}
+        onSave={async (s, body) => {
+          const res = await setHours.mutateAsync({ params: { staffUserId: s.id }, body });
+          setHoursOf(null);
+          toast.success(t("saved"));
+          showWarnings(res.warnings);
+        }}
+      />
+      <AffectedDialog t={t} items={affected} timezone={timezone} closeLabel={common("close")} onClose={() => setAffected(null)} />
       <InviteLinkDialog t={t} url={link} closeLabel={common("close")} onClose={() => setLink(null)} />
       <EditDialog
         t={t}
@@ -283,8 +342,8 @@ export function InviteSection(props: {
   );
 }
 
-/** weekly hours from staffUsers.list (edit via workingHours.set is a later task — card step 2) */
-export function HoursTable({ t, staff }: { t: T; staff: StaffUserItem[] }) {
+/** weekly hours from staffUsers.list; แก้ตารางงาน opens the editor (workingHours.set) */
+export function HoursTable({ t, staff, onEdit }: { t: T; staff: StaffUserItem[]; onEdit: (s: StaffUserItem) => void }) {
   return (
     <Section title={t("sectionHours")}>
       <div className="overflow-x-auto">
@@ -297,6 +356,7 @@ export function HoursTable({ t, staff }: { t: T; staff: StaffUserItem[] }) {
                   {t(DAY_KEY[d] ?? "day0")}
                 </th>
               ))}
+              <th className="py-2" />
             </tr>
           </thead>
           <tbody>
@@ -324,6 +384,11 @@ export function HoursTable({ t, staff }: { t: T; staff: StaffUserItem[] }) {
                     </td>
                   );
                 })}
+                <td className="py-2 text-right">
+                  <Button type="button" size="sm" variant="outline" className="h-11" onClick={() => onEdit(s)}>
+                    {t("editHours")}
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>

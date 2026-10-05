@@ -963,6 +963,19 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05 says "ตอบ warnings[] นัดอนาคตที่อยู่นอกเวลาใหม่" but defines no code/message/data (same gap as Q-1004 / Q-0116), and the request table gives no rule for the optional break times.
 - Proposed decision (implemented): the response is `StaffUserItem` + optional `warnings[]` (as staffUsers.update, Q-0116), with one warning `{ code: "WORKING_HOURS_AFFECTED", message: "มีนัดของช่างอยู่นอกเวลาทำงานใหม่ {n} นัด", data: { appointmentIds } }`. It covers the staff member's scheduled / checked_in / in_progress appointments at the session branch that end after now and either fall on a day off, start before / end after the new hours, or overlap the break; nothing is moved. Only the session branch's rows are replaced. A break must have both ends and lie inside the working time (`breakStartsAt ≥ startsAt`, `breakEndsAt > breakStartsAt`, `breakEndsAt ≤ endsAt`), otherwise VALIDATION_FAILED.
 
+## Q-1021 · T-0139 C-36: time-off list range, which staff member, and how warnings show
+- Status: open
+- Task: T-0139 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. `timeOff.list` needs `from` / `to`, but 06#scr-C-36 gives no range.
+  2. The วันลา form lists only ช่วงลา and เหตุผล, but `timeOff.create` requires `staffUserId`.
+  3. บันทึกตารางงาน → "warnings" has no defined UI.
+- Proposed decision (implemented):
+  1. The list runs from today (branch-local) to +365 days.
+  2. The form adds a พนักงาน select of the non-disabled staff.
+  3. Each warning message shows as a toast (same as staffUsers.update on this screen), with the Q-1011 message "มีนัดของช่างอยู่นอกเวลาทำงานใหม่ {n} นัด". timeOff.create's `affected` opens a dialog listing the bookings (or "ไม่มีนัดที่ทับวันลา").
+  - The weekly hours are edited per person in a dialog (แก้ตารางงาน) with the same จ.–อา. rows.
+
 ## Q-0089 · T-0314: occupancy menu enablement is outside card scope
 - Status: answered (scope merged in #192; implemented in T-0314)
 - Task: T-0314 · Asked by: agent (codex) · Date: 2026-10-04
