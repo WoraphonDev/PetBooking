@@ -1,9 +1,11 @@
 // 06#scr-C-37 — services, price table and add-on links.
 import type { ServiceItem } from "@app/contracts/dto/service-item";
 import type { SizeTierItem } from "@app/contracts/dto/size-tier-item";
+import type { SurchargeTypeItem } from "@app/contracts/dto/surcharge-type-item";
 import { ServicesCreateRequest } from "@app/contracts/endpoints/services.create";
 import type { ServicesSetPricesRequest } from "@app/contracts/endpoints/services.setPrices";
 import type { ServicesUpdateRequest } from "@app/contracts/endpoints/services.update";
+import type { SurchargeTypesUpsertRequest } from "@app/contracts/endpoints/surchargeTypes.upsert";
 import type { ServiceCategory, ServiceScope, Species } from "@app/contracts/enums";
 import { bahtToSatang } from "../shared/form";
 
@@ -130,4 +132,44 @@ export function moveTarget(list: ServiceItem[], index: number, dir: -1 | 1): [Se
   const a = list[index];
   const b = list[index + dir];
   return a && b ? [a, b] : null;
+}
+
+/** one row of ค่าบริการเพิ่มหน้างาน; `id` null = new (surchargeTypes.upsert inserts it) */
+export type SurchargeRow = {
+  key: string;
+  id: string | null;
+  nameTh: string;
+  /** satang; null = empty, undefined = not a valid amount */
+  amountSatang: number | null | undefined;
+  active: boolean;
+};
+
+export const surchargeRows = (items: SurchargeTypeItem[]): SurchargeRow[] =>
+  items.map((x) => ({ key: x.id, id: x.id, nameTh: x.nameTh, amountSatang: x.defaultAmountSatang, active: x.status === "active" }));
+
+/** 06 กติกา (05 validation): ชื่อ 1–60 · ราคาตั้งต้น ≥ 0; returns the keys of the rows that fail */
+export function invalidSurcharges(rows: SurchargeRow[]): string[] {
+  return rows
+    .filter((r) => {
+      const name = r.nameTh.trim();
+      return name.length < 1 || name.length > 60 || r.amountSatang == null || r.amountSatang < 0;
+    })
+    .map((r) => r.key);
+}
+
+/** surchargeTypes.upsert body: new rows + rows that changed; null while a row is invalid or nothing changed */
+export function surchargesBody(rows: SurchargeRow[], before: SurchargeTypeItem[]): SurchargeTypesUpsertRequest | null {
+  if (invalidSurcharges(rows).length) return null;
+  const items = rows
+    .map((r) => ({
+      ...(r.id ? { id: r.id } : {}),
+      nameTh: r.nameTh.trim(),
+      defaultAmountSatang: r.amountSatang as number,
+      status: r.active ? ("active" as const) : ("archived" as const),
+    }))
+    .filter((item) => {
+      const old = "id" in item ? before.find((b) => b.id === item.id) : undefined;
+      return !old || old.nameTh !== item.nameTh || old.defaultAmountSatang !== item.defaultAmountSatang || old.status !== item.status;
+    });
+  return items.length ? { items } : null;
 }
