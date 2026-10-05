@@ -731,6 +731,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: T-0038 changes ~1,030 lines: 318 generated `pnpm-lock.yaml` lines for the card's named `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner`, ~290 source lines (adapter, files.ts, two endpoints, cleanup job) and ~420 test lines. Ship as one PR or split?
 - Answer (2026-10-05): user approved the exception, as for Q-0050. Ship the card as one PR.
 
+## Q-0111 · T-0274 stays.saveIntake: prefill, and replacing medications / belongings
+- Status: open
+- Task: T-0274 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: (1) 05 lists "prefill จาก pet_shop_profile + customer.emergency_contact_*" as an effect of the PUT, but every prefilled field is in the request and emergency name/phone are required — is prefill only the screen's job (StayDetail has no prefill data before an intake exists)? (2) medications[] / belongings[] are full lists; stay_medication deletes cascade to care_task (done history included), and belongings carry returned_at.
+- Proposed decision: (1) prefill is the C-15 screen's job (it reads pets.get / customers.get); the PUT stores what it receives. (2) the PUT replaces both lists; an unchanged medication (same name, dose, times, instructions) keeps its row and task history, a changed one is replaced; belongings are replaced (intake happens before anything is returned).
+- Interim (implemented): as proposed. Also: emergency phone normalised by R-22 (INVALID_PHONE), vet phone stored as typed (05 gives it no rule), complete=false leaves an earlier completed_at alone, photos must be stay_update files, reserved / checked_in only (else STATUS_NOT_ALLOWED).
+
 ## Q-0101 · Multi-endpoint API cards exceed the small-PR budget
 - Status: answered (user approved in chat, 2026-10-04)
 - Tasks: T-0160 (merged, ~1,030 lines), T-0120 (~920) and the multi-endpoint cards of the same batch · Asked by: agent (claude) · Date: 2026-10-04
