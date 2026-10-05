@@ -726,6 +726,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-bills.void, 03 sm-bill / sm-booking / sm-deposit (`applied → verified`), R-13 #6, R-14 #5, Q-0074.
 - Proposed decision (implemented): owner only; reason trimmed ≥ 3 (VALIDATION_FAILED). Open bill with posted payments → VALIDATION_FAILED (void the payments first); already void → BILL_NOT_OPEN. Paid → void: commissions reversed (reversed_at), counter/booking redemptions reversed with sessions back (exhausted → active if not expired), packages sold on the bill → void, credit payments returned and `deposit_credit` rows of the bill's bookings taken back — both as credit_ledger `void_reversal` (ref bill), the balance may go below zero; every posted payment → voided with the reason; bookings closed → confirmed, applied deposit → verified (so the next bill can apply it again), bill_id = null; receipt_no kept; audit `bill.void`. visit_count is not decreased.
 
+## Q-1017 · T-0078 C-11: missing labels, favourite photo id, clearing profile fields
+- Status: open
+- Task: T-0078 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. enum-labels.th.json has no `photo_kind` (profile / before / after / stay) or `record_source` (shop / customer / import), which the photo filter and the vaccine "ที่มา" column show.
+  2. "รูปทรงโปรด: เลือกจากคลังรูป" saves `favoriteStylePhotoId`, but `PetDetail.shop` only carries `favoriteStylePhotoUrl`, so the current choice can't be preselected.
+  3. `pets.update` = `PetFields.partial()` with non-nullable optional text, so a profile field (breed, colour, microchip…) can't be cleared once set.
+- Proposed decision (implemented):
+  1. Interim Thai labels in C-11.json (as Q-0117) until a spec change adds both enums to enum-labels.th.json.
+  2. The current photo is shown, and the select defaults to "ไม่เปลี่ยน" (the key is left out); picking a photo sends its id. A spec change could add `favoriteStylePhotoId` to PetDetail.shop.
+  3. Blank profile fields are left out (unchanged). A spec change could make them nullable in pets.update.
+
 ## Q-0112 · T-0292 C-14: departure / in-house card data missing from StayCard
 - Status: open
 - Task: T-0292 · Asked by: agent (claude) · Date: 2026-10-05
