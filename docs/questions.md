@@ -823,6 +823,16 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: T-0038 changes ~1,030 lines: 318 generated `pnpm-lock.yaml` lines for the card's named `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner`, ~290 source lines (adapter, files.ts, two endpoints, cleanup job) and ~420 test lines. Ship as one PR or split?
 - Answer (2026-10-05): user approved the exception, as for Q-0050. Ship the card as one PR.
 
+## Q-1014 · T-0077 C-10: create/update field sets, address autocomplete
+- Status: open
+- Task: T-0077 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. C-10 edits every field in one form, but `customers.create` doesn't take birth date, address, emergency contact or deposit exempt, and `customers.update` doesn't take `sourceChannel` / `referralNote`.
+  2. ตำบล/อำเภอ should autocomplete from the postal code, but the 10 reference data has only the 77 provinces and no postal-code dataset.
+- Proposed decision (implemented):
+  1. A new customer is saved with customers.create, then a customers.update right away for the remaining fields (only when any is filled). In edit mode "รู้จักร้านจาก" / "รายละเอียด" are shown read-only. A spec change could add the missing fields to each contract.
+  2. ตำบล/แขวง and อำเภอ/เขต are free text and จังหวัด is a select of the 77 provinces until a postal-code dataset is added to 10.
+
 ## Q-0111 · T-0274 stays.saveIntake: prefill, and replacing medications / belongings
 - Status: open
 - Task: T-0274 · Asked by: agent (claude) · Date: 2026-10-05
