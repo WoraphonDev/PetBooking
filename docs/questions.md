@@ -477,6 +477,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Implemented for now: (1) `mapUrl` = "" (the line renders empty); `summary` = "{petName}: {service names joined ', '}" joined " / "; `dateTime` = R-31 date + time of the first appointment. (2) The item keeps its catalog price snapshot with `customer_package_id` set (the bill redeems it at 0 later), so it counts in the estimate and the deposit.
 - Options: (1) A add `branch.map_url` (spec change + migration) / B drop the map line from the template. (2) A as implemented / B price 0 for package-paid items at booking time.
 
+## Q-0113 · T-0279 stays.checkOut: where missingNote goes, and opening the bill
+- Status: open
+- Task: T-0279 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: (1) 05 accepts `missingNote` when belongings are missing, but no column stores it (stay_belonging has only returned_at). (2) "เปิด/เติมบิลอัตโนมัติ (bills.openFromBooking)" names a function that 05 does not define; bills.open is the endpoint that builds stay lines.
+- Proposed decision: (1) add `stay.checkout_note` (or `stay_belonging.missing_note`) by a spec change, or record it in booking_event.reason of the checked_out event. (2) "openFromBooking" = bills.open with the stay's booking, in the same transaction; an already open bill is kept as is (it already carries the stay lines).
+- Interim (implemented): missingNote is required when an item is missing but not stored; after the check-out commits, a confirmed booking without a bill gets one through bills.open (a second transaction — if it fails, the stay is still checked out and the bill can be opened from C-17/C-18).
+
 ## Q-0092 · T-0112: bookings.create PR exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-04)
 - Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
