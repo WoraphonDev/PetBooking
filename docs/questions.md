@@ -753,6 +753,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: `apps/web/src/components/shell-console/navigation/C-23.ts` has `implemented: false` and leaves enablement to the screen task (Q-0048), but T-0312's allowed_paths do not include it (same situation as Q-0089 for C-25).
 - Question: add C-23 to the generator's enable_menu screen set (human edit of `tools/spec-src/build_tasks.py` + regeneration, as in #192) so a follow-up can switch the menu on? The page works at `/console/reports/sales` meanwhile; the menu file is untouched.
 
+## Q-0115 · T-0045 branch.setModules: the future-bookings warning
+- Status: open
+- Task: T-0045 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 05 says switching off a module with future bookings is allowed and "ตอบ warnings[] จำนวนใบจองที่ค้าง", but defines no warning code/message/data, and BranchSettings has no warnings field (same gap as Q-1004 for setHours).
+- Proposed decision (as Q-1004): BranchSettings + `warnings[]` (always an array); one warning per module switched from on to off that still has bookings with an unfinished item of that module ahead — `{ code: "MODULE_HAS_FUTURE_BOOKINGS", message: "ยังมีใบจองที่ค้างอยู่ {n} ใบ", data: { module, bookingCount } }`. Unfinished = grooming scheduled/checked_in/in_progress ending after now, stays reserved/checked_in checking out today or later, daycare reserved/checked_in from today.
+- Interim (implemented): as proposed; nothing is cancelled.
+
 ## Q-0090 · T-0038: object storage PR exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-05)
 - Task: T-0038 · Asked by: agent (claude) · Date: 2026-10-05
