@@ -647,6 +647,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#ep-bills.void, 03 sm-bill / sm-booking / sm-deposit (`applied → verified`), R-13 #6, R-14 #5, Q-0074.
 - Proposed decision (implemented): owner only; reason trimmed ≥ 3 (VALIDATION_FAILED). Open bill with posted payments → VALIDATION_FAILED (void the payments first); already void → BILL_NOT_OPEN. Paid → void: commissions reversed (reversed_at), counter/booking redemptions reversed with sessions back (exhausted → active if not expired), packages sold on the bill → void, credit payments returned and `deposit_credit` rows of the bill's bookings taken back — both as credit_ledger `void_reversal` (ref bill), the balance may go below zero; every posted payment → voided with the reason; bookings closed → confirmed, applied deposit → verified (so the next bill can apply it again), bill_id = null; receipt_no kept; audit `bill.void`. visit_count is not decreased.
 
+## Q-0112 · T-0292 C-14: departure / in-house card data missing from StayCard
+- Status: open
+- Task: T-0292 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 06#scr-C-14 loads only stays.today (StayCard[]), but the ออก card asks for the stay's add-ons and the bundle bath (อาบน้ำก่อนกลับ) status, and the พักอยู่ card for pending care tasks ("งานค้าง"). StayCard has only `bundleAppointmentId` and no add-ons or task counts.
+- Proposed decision: extend 05#dto-StayCard (or a C-14-only item) with `addonNames: string[]`, `bundleStatus: groom_appointment_status | null` and `pendingTaskCount: int` (pending tasks due by now), filled by stays.today, in a card that owns the contract/service; then C-14 shows them.
+- Interim (implemented): C-14 shows every field StayCard has (times, pet, room, intake/agreement/vaccine marks, night x/y) and leaves those three out. The menu entry navigation/C-14.ts is outside the card's paths (Q-0048).
+
 ## Q-0096 · T-0067 admin.resolveDataRequest: the access export
 - Status: open (user chose in chat, 2026-10-04: T-0067 records the resolution only)
 - Task: T-0067 · Asked by: agent (claude) · Date: 2026-10-04
