@@ -1,0 +1,22 @@
+{
+  "title": "Room map",
+  "date": "วันที่",
+  "zone": "โซน",
+  "allZones": "ทุกโซน",
+  "noZone": "ไม่ระบุโซน",
+  "code": "รหัสห้อง",
+  "roomType": "ประเภท",
+  "status": "สถานะห้อง",
+  "housekeeping": "ทำความสะอาด",
+  "markClean": "ทำความสะอาดแล้ว",
+  "markDirty": "ต้องทำความสะอาด",
+  "occupant": "น้องที่พัก",
+  "vacant": "ว่าง",
+  "checkOut": "เช็คเอาท์",
+  "leavingToday": "ออกวันนี้",
+  "arrivingToday": "เข้าวันนี้",
+  "nextArrival": "จองถัดไป",
+  "noRooms": "ยังไม่มีห้อง",
+  "moved": "ย้ายห้องแล้ว",
+  "saved": "บันทึกแล้ว"
+}
