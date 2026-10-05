@@ -1,0 +1,20 @@
+{
+  "title": "Daycare วันนี้",
+  "date": "วันที่",
+  "pet": "น้อง",
+  "session": "รอบ",
+  "status": "สถานะ",
+  "inOut": "เข้า/ออก",
+  "vaccine": "วัคซีน",
+  "vaccineOk": "วัคซีนครบ",
+  "vaccineWarn": "วัคซีนต้องตรวจ",
+  "none": "—",
+  "empty": "ไม่มี Daycare วันนี้",
+  "checkIn": "เช็คอิน",
+  "checkOut": "เช็คเอาท์",
+  "noShow": "ไม่มา",
+  "cancel": "ยกเลิก",
+  "cancelReason": "เหตุผล",
+  "confirm": "ยืนยันยกเลิก",
+  "saved": "บันทึกแล้ว"
+}
