@@ -1,0 +1,21 @@
+{
+  "title": "คำขอ PDPA",
+  "shop": "ร้าน",
+  "type": "ประเภท",
+  "status": "สถานะ",
+  "requestedAt": "ขอเมื่อ",
+  "daysLeft": "เหลือ {days} วัน",
+  "overdue": "เกินกำหนด {days} วัน",
+  "note": "บันทึก",
+  "resolve": "ดำเนินการ",
+  "resolveTitle": "ดำเนินการคำขอ",
+  "resultDone": "ดำเนินการแล้ว",
+  "resultRejected": "ปฏิเสธคำขอ",
+  "deleteWarning": "การลบข้อมูลย้อนกลับไม่ได้ ตรวจสอบให้แน่ใจก่อนยืนยัน",
+  "confirm": "ยืนยัน",
+  "cancel": "ยกเลิก",
+  "statusOpen": "รอดำเนินการ",
+  "statusDone": "ดำเนินการแล้ว",
+  "statusRejected": "ปฏิเสธ",
+  "empty": "ไม่มีคำขอ"
+}
