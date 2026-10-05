@@ -871,6 +871,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05 gives the response as `CalendarDay` but says "week คืน 7 CalendarDay"; `groomers[].timeOff[]` and `closures[]` only cite a column (`starts_at`); the card says hotel/daycare should return 0 until M5, but stay/daycare_visit are already merged and 05 defines them as counts.
 - Proposed decision (implemented): `CalendarDayResponse = CalendarDay | CalendarDay[7]` (the 7 local days from `date`); `timeOff[]` = `TimeOffItem` and `closures[]` = `ClosureItem` (the same row DTOs timeOff.list / closures.list return, so C-02 gets end time and reason for the grey bar); closures limited to scope all/grooming; groomers = active `is_groomer` staff; appointments start in the local day, cancelled left out, no_show kept; `workingHours` = that weekday's row or null; hotel/daycare counted as in dashboard.today (arrivals/departures by date, inHouse = checked_in now, daycare visits not cancelled).
 
+## Q-1024 · T-0201 C-07: "booking ต้องอนุมัติ", the original-slip link, and the menu entry
+- Status: open
+- Task: T-0201 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. ยืนยัน + อนุมัติจอง shows when the "booking ต้องอนุมัติ", but `SlipItem` carries no booking status or approval flag.
+  2. สลิปซ้ำ links to "สลิปเดิม", but there is no slip detail route or endpoint. The original is usually already verified, so it is not in the submitted list.
+  3. `shell-console/navigation/C-07.ts` stays `implemented: false` because it is outside the card's allowed paths (Q-0048).
+- Proposed decision (implemented):
+  1. The button shows for every submitted booking slip. The server applies `approveBooking` only when the booking waits for approval (`approvalDueAt` set), so otherwise it acts as a plain ยืนยัน. Alternative: add `needsApproval` to SlipItem (spec change).
+  2. The link is an in-page anchor `#slip-{duplicateOfSlipId}`.
+  3. Turn the menu entry on in a follow-up that owns the file. The page works at `/console/slips` and is linked from C-05.
+
 ## Q-0099 · T-0160 bookings.decline: the verified deposit and the refund line
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0160 · Asked by: agent (claude) · Date: 2026-10-04
