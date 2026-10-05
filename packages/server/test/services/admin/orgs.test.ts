@@ -1,7 +1,7 @@
 import { AdminOrgsRequest, AdminOrgsResponse } from "@app/contracts/endpoints/admin.orgs";
 import { booking, lineChannel, organization, platformAdmin, staffUser } from "@app/db/schema";
 import { eq } from "drizzle-orm";
-import { afterEach, beforeEach, expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { createSession } from "../../../src/auth/session.ts";
 import { makeSystemCtx } from "../../../src/context.ts";
 import { withAdmin } from "../../../src/http/wrap.ts";
@@ -11,9 +11,13 @@ import { otherOrg, setupTestDb, TEST_NOW, type TestEnv } from "../../helpers/set
 let env: TestEnv;
 const GET = withAdmin("admin.orgs", { query: AdminOrgsRequest }, adminOrgs);
 beforeEach(async () => {
+  // the HTTP pipeline reads the clock once per request: pin it to TEST_NOW so the 12 h admin session stays valid
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(TEST_NOW);
   env = await setupTestDb();
 });
 afterEach(async () => {
+  vi.useRealTimers();
   await env.close();
 });
 it("maps every field across shops, picks the earliest owner and latest booking, and preserves nulls", async () => {
