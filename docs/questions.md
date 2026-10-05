@@ -969,6 +969,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 - Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-1002 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
 
+## Q-1018 · T-0085 C-37: drag ordering, status labels, existing service photo
+- Status: open
+- Task: T-0085 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. ลำดับ is a "drag handle", but there is no drag-and-drop list component and services.update takes one sortOrder at a time.
+  2. `service.status` (record_status: active / archived) has no Thai labels in enum-labels.th.json.
+  3. `ServiceItem` carries `photoUrl` but not `photoFileId`, so the form can show the current photo but can't resend it.
+- Proposed decision (implemented):
+  1. ↑ / ↓ buttons swap a service with its neighbour (two services.update calls); a drag handle can replace them later.
+  2. Interim labels in C-37.json (ใช้งาน / เก็บแล้ว).
+  3. The current photo is shown; `photoFileId` is sent only when a new photo is uploaded.
+
 ## Q-1003 · T-0059 exceeds the small-PR target
 - Status: answered (user approved in chat, 2026-10-04)
 - Task: T-0059 · Asked by: codex · Date: 2026-10-04
