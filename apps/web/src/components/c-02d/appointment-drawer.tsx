@@ -3,12 +3,15 @@ import type { AppointmentCard } from "@app/contracts/dto/appointment-card";
 import type { JobCard } from "@app/contracts/dto/job-card";
 import type { SurchargeTypeItem } from "@app/contracts/dto/surcharge-type-item";
 import { AuthMeResponse } from "@app/contracts/endpoints/auth.me";
+import { BillsOpenResponse } from "@app/contracts/endpoints/bills.open";
 import { BranchGetResponse } from "@app/contracts/endpoints/branch.get";
 import { GroomAddSurchargeResponse } from "@app/contracts/endpoints/groom.addSurcharge";
 import { GroomCancelResponse } from "@app/contracts/endpoints/groom.cancel";
 import { GroomFinishResponse } from "@app/contracts/endpoints/groom.finish";
 import { GroomJobCardResponse } from "@app/contracts/endpoints/groom.jobCard";
 import { GroomNoShowResponse } from "@app/contracts/endpoints/groom.noShow";
+import { GroomNotifyPickupResponse } from "@app/contracts/endpoints/groom.notifyPickup";
+import { GroomPickUpResponse } from "@app/contracts/endpoints/groom.pickUp";
 import { GroomRemoveSurchargeResponse } from "@app/contracts/endpoints/groom.removeSurcharge";
 import { GroomStartResponse } from "@app/contracts/endpoints/groom.start";
 import { SurchargeTypesListResponse } from "@app/contracts/endpoints/surchargeTypes.list";
@@ -75,12 +78,22 @@ export function AppointmentDrawer({ appointmentId, onClose, onCheckIn }: Appoint
   const addSurcharge = useApiMutation("groom.addSurcharge", { response: GroomAddSurchargeResponse, invalidate });
   const removeSurcharge = useApiMutation("groom.removeSurcharge", { response: GroomRemoveSurchargeResponse, invalidate });
   const noShow = useApiMutation("groom.noShow", { response: GroomNoShowResponse, invalidate });
-  const [dialog, setDialog] = useState<"cancel" | "noShow" | "surcharge" | null>(null);
+  const notifyPickup = useApiMutation("groom.notifyPickup", { response: GroomNotifyPickupResponse, invalidate });
+  const pickUp = useApiMutation("groom.pickUp", { response: GroomPickUpResponse, invalidate });
+  const openBill = useApiMutation("bills.open", { response: BillsOpenResponse, invalidate: ["bookings.get", "bills.list"] });
+  const [dialog, setDialog] = useState<"cancel" | "noShow" | "surcharge" | "bill" | null>(null);
 
   const role = me.data?.staff.role;
   const today = toLocalDate({ instant: new Date().toISOString(), timezone });
   const busy =
-    start.isPending || finish.isPending || cancel.isPending || noShow.isPending || addSurcharge.isPending || removeSurcharge.isPending;
+    start.isPending ||
+    finish.isPending ||
+    cancel.isPending ||
+    noShow.isPending ||
+    notifyPickup.isPending ||
+    pickUp.isPending ||
+    addSurcharge.isPending ||
+    removeSurcharge.isPending;
   const grace = branch.data?.policy.noShowGraceMinutes;
   const noShowAt = grace === undefined ? undefined : { now: new Date().toISOString(), graceMinutes: grace };
   const params = { appointmentId: appointmentId ?? "" };
@@ -126,6 +139,21 @@ export function AppointmentDrawer({ appointmentId, onClose, onCheckIn }: Appoint
                 finish: () => void run(() => finish.mutateAsync({ params, body: {} })),
                 cancel: () => setDialog("cancel"),
                 noShow: () => setDialog("noShow"),
+                // R-18 dedupe per appointment on the server: pressing again sends nothing new
+                notifyPickup: () =>
+                  void notifyPickup
+                    .mutateAsync({ params })
+                    .then(() => toast.success(t("notified")))
+                    .catch(() => {}),
+                // ถ้ายังไม่มีบิล → ปุ่ม 'เปิดบิล' (bills.open → C-18)
+                pickUp: () =>
+                  void pickUp
+                    .mutateAsync({ params })
+                    .then(() => {
+                      toast.success(t("done"));
+                      setDialog("bill");
+                    })
+                    .catch(() => {}),
                 surcharge: () => setDialog("surcharge"),
               }}
             />
@@ -154,6 +182,20 @@ export function AppointmentDrawer({ appointmentId, onClose, onCheckIn }: Appoint
                 await noShow.mutateAsync({ params, body: reason ? { reason } : {} });
                 setDialog(null);
                 toast.success(t("done"));
+              }}
+            />
+            <OpenBillDialog
+              t={t}
+              open={dialog === "bill"}
+              busy={openBill.isPending}
+              closeLabel={common("close")}
+              onClose={() => setDialog(null)}
+              onOpen={async () => {
+                const bill = await openBill.mutateAsync({ body: { bookingIds: [job.data.appointment.bookingId] } });
+                setDialog(null);
+                onClose();
+                // → C-18 (plain navigation: the drawer is hosted by several screens)
+                window.location.assign(`/console/bills/${bill.id}`);
               }}
             />
             <SurchargeDialog
@@ -338,12 +380,14 @@ export function JobDetails(props: {
   );
 }
 
-const ACTION_LABEL: Record<Action, "checkIn" | "start" | "finish" | "cancel" | "noShow" | "addSurcharge"> = {
+const ACTION_LABEL: Record<Action, "checkIn" | "start" | "finish" | "cancel" | "noShow" | "notifyPickup" | "pickUp" | "addSurcharge"> = {
   checkIn: "checkIn",
   start: "start",
   finish: "finish",
   cancel: "cancel",
   noShow: "noShow",
+  notifyPickup: "notifyPickup",
+  pickUp: "pickUp",
   surcharge: "addSurcharge",
 };
 
@@ -402,6 +446,36 @@ export function CancelDialog(props: {
             onClick={() => void props.onConfirm(reason.trim()).then(() => setReason(""))}
           >
             {t("confirmCancel")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+/** after ลูกค้ารับน้องแล้ว: เปิดบิล (bills.open is idempotent — an open bill of the booking comes back as is) */
+export function OpenBillDialog(props: {
+  t: T;
+  open: boolean;
+  busy: boolean;
+  closeLabel: string;
+  onClose: () => void;
+  onOpen: () => Promise<void>;
+}) {
+  const { t } = props;
+  return (
+    <Dialog open={props.open} onOpenChange={(o) => (o ? null : props.onClose())}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("pickedUpTitle")}</DialogTitle>
+        </DialogHeader>
+        <p className="text-sm">{t("openBillHint")}</p>
+        <DialogFooter>
+          <Button type="button" variant="outline" className="h-11" onClick={props.onClose}>
+            {props.closeLabel}
+          </Button>
+          <Button type="button" className="h-11" disabled={props.busy} onClick={() => void props.onOpen().catch(() => {})}>
+            {t("openBill")}
           </Button>
         </DialogFooter>
       </DialogContent>
