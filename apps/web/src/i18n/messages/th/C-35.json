@@ -1,0 +1,20 @@
+{
+  "title": "LINE OA และลิงก์จอง",
+  "sectionStatus": "สถานะ",
+  "connection": "การเชื่อม",
+  "pendingHint": "ทีมงานตั้งค่าให้",
+  "lineId": "LINE ID",
+  "quota": "โควตา push/เดือน",
+  "used": "ใช้ไปเดือนนี้",
+  "usedOf": "{used} / {quota} ข้อความ",
+  "sectionLinks": "ลิงก์และโปสเตอร์",
+  "liffUrl": "ลิงก์จองใน LINE",
+  "storefront": "ลิงก์หน้าร้าน",
+  "copy": "คัดลอก",
+  "copied": "คัดลอกแล้ว",
+  "poster": "QR โปสเตอร์",
+  "posterCaption": "สแกนเพื่อจองคิว",
+  "downloadPng": "ดาวน์โหลด PNG",
+  "downloadPdf": "ดาวน์โหลด PDF",
+  "none": "—"
+}
