@@ -3,8 +3,8 @@ import type { JobCard } from "@app/contracts/dto/job-card";
 import { GroomAddSurchargeRequest } from "@app/contracts/endpoints/groom.addSurcharge";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ActionBar, AppointmentDrawer, JobDetails, SurchargeFields } from "../../src/components/c-02d/appointment-drawer";
-import { actions, canRemoveSurcharge, emptySurcharge, pickType, surchargeBody } from "../../src/components/c-02d/logic";
+import { ActionBar, AppointmentDrawer, JobDetails, NoShowEffects, SurchargeFields } from "../../src/components/c-02d/appointment-drawer";
+import { actions, canRemoveSurcharge, emptySurcharge, noShowEffect, pickType, surchargeBody } from "../../src/components/c-02d/logic";
 import messages from "../../src/i18n/messages/th/C-02D.json";
 import common from "../../src/i18n/messages/th/common.json";
 
@@ -119,6 +119,24 @@ describe("logic", () => {
     ]).toEqual([true, false, false]);
   });
 
+  it("ลูกค้าไม่มา: OF, scheduled, from starts_at + no_show_grace_minutes", () => {
+    const a = { status: "scheduled" as const, startsAt: "2026-10-05T03:00:00.000Z" };
+    const at = (now: string) => ({ now, graceMinutes: 15 });
+    expect(actions(a, "owner", today, "Asia/Bangkok", at("2026-10-05T03:14:59.000Z"))).toEqual(["checkIn", "cancel"]);
+    expect(actions(a, "owner", today, "Asia/Bangkok", at("2026-10-05T03:15:00.000Z"))).toEqual(["checkIn", "cancel", "noShow"]);
+    expect(actions(a, "front_desk", today, "Asia/Bangkok", at("2026-10-05T05:00:00.000Z"))).toContain("noShow");
+    expect(actions(a, "staff", today, "Asia/Bangkok", at("2026-10-05T05:00:00.000Z"))).toEqual([]);
+    expect(actions({ ...a, status: "checked_in" }, "owner", today, "Asia/Bangkok", at("2026-10-05T05:00:00.000Z"))).not.toContain("noShow");
+    expect(noShowEffect({ depositStatus: "verified", reliabilityLevel: 3 })).toEqual({
+      deposit: "forfeit",
+      level: { from: 3, to: "1-2" },
+    });
+    expect(noShowEffect({ depositStatus: "not_required", reliabilityLevel: 1 })).toEqual({
+      deposit: "none",
+      level: { from: 1, to: "1" },
+    });
+  });
+
   it("prefills the surcharge from its type and validates 06 rules before building the body", () => {
     const type = { id: id(60), nameTh: "ขนพันกัน", defaultAmountSatang: 20_000, status: "active" as const };
     const form = pickType(emptySurcharge(), type);
@@ -226,7 +244,7 @@ describe("JobDetails", () => {
 
 describe("buttons and dialogs", () => {
   it("renders the allowed actions; check-in waits for the host's C-06", () => {
-    const on = { checkIn: vi.fn(), start: vi.fn(), finish: vi.fn(), cancel: vi.fn(), surcharge: vi.fn() };
+    const on = { checkIn: vi.fn(), start: vi.fn(), finish: vi.fn(), cancel: vi.fn(), noShow: vi.fn(), surcharge: vi.fn() };
     const html = renderToStaticMarkup(
       <ActionBar t={t} list={["checkIn", "cancel", "surcharge"]} busy={false} checkInReady={false} on={on} />,
     );
@@ -234,6 +252,23 @@ describe("buttons and dialogs", () => {
     expect(html).toContain(messages.cancel);
     expect(html).toContain(messages.addSurcharge);
     expect(renderToStaticMarkup(<ActionBar t={t} list={["start"]} busy={false} checkInReady on={on} />)).toContain(messages.start);
+  });
+
+  it("no-show dialog shows the deposit (R-07) and reliability (R-09) effects; the button shows when allowed", () => {
+    const html = renderToStaticMarkup(<NoShowEffects t={t} appointment={appt({ status: "scheduled" })} />);
+    for (const text of [
+      messages.noShowDeposit,
+      "รับมัดจำแล้ว",
+      messages.noShowForfeit,
+      messages.noShowLevel,
+      "ระดับ 2",
+      messages.noShowLevelDrops,
+    ])
+      expect(html, text).toContain(text);
+    const on = { checkIn: vi.fn(), start: vi.fn(), finish: vi.fn(), cancel: vi.fn(), noShow: vi.fn(), surcharge: vi.fn() };
+    expect(renderToStaticMarkup(<ActionBar t={t} list={["cancel", "noShow"]} busy={false} checkInReady on={on} />)).toContain(
+      messages.noShow,
+    );
   });
 
   it("surcharge form shows ประเภท / ชื่อ / ยอด / เหตุผล with active types", () => {
@@ -266,7 +301,8 @@ describe("AppointmentDrawer", () => {
     renderToStaticMarkup(<AppointmentDrawer appointmentId={null} onClose={vi.fn()} />);
     expect(mock.query.mock.calls.find((c) => c[0] === "groom.jobCard")?.[2]).toEqual({ enabled: false });
     const mutations = Object.fromEntries(mock.mutation.mock.calls.map((c) => [c[0], c[1]]));
-    for (const key of ["groom.start", "groom.finish", "groom.cancel", "groom.addSurcharge", "groom.removeSurcharge"])
+    expect(mock.query.mock.calls.find((c) => c[0] === "branch.get")?.[2]).toEqual({ enabled: false });
+    for (const key of ["groom.start", "groom.finish", "groom.cancel", "groom.noShow", "groom.addSurcharge", "groom.removeSurcharge"])
       expect(mutations[key], key).toMatchObject({ invalidate: expect.arrayContaining(["calendar.day", "bookings.get"]) });
   });
 });

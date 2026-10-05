@@ -3,10 +3,12 @@ import type { AppointmentCard } from "@app/contracts/dto/appointment-card";
 import type { JobCard } from "@app/contracts/dto/job-card";
 import type { SurchargeTypeItem } from "@app/contracts/dto/surcharge-type-item";
 import { AuthMeResponse } from "@app/contracts/endpoints/auth.me";
+import { BranchGetResponse } from "@app/contracts/endpoints/branch.get";
 import { GroomAddSurchargeResponse } from "@app/contracts/endpoints/groom.addSurcharge";
 import { GroomCancelResponse } from "@app/contracts/endpoints/groom.cancel";
 import { GroomFinishResponse } from "@app/contracts/endpoints/groom.finish";
 import { GroomJobCardResponse } from "@app/contracts/endpoints/groom.jobCard";
+import { GroomNoShowResponse } from "@app/contracts/endpoints/groom.noShow";
 import { GroomRemoveSurchargeResponse } from "@app/contracts/endpoints/groom.removeSurcharge";
 import { GroomStartResponse } from "@app/contracts/endpoints/groom.start";
 import { SurchargeTypesListResponse } from "@app/contracts/endpoints/surchargeTypes.list";
@@ -34,6 +36,7 @@ import {
   CONDITION_KEY,
   canRemoveSurcharge,
   emptySurcharge,
+  noShowEffect,
   pickType,
   type SurchargeErrors,
   type SurchargeForm,
@@ -63,17 +66,23 @@ export function AppointmentDrawer({ appointmentId, onClose, onCheckIn }: Appoint
   );
   const me = useApiQuery("auth.me", { response: AuthMeResponse });
   const types = useApiQuery("surchargeTypes.list", { response: SurchargeTypesListResponse }, { enabled: open });
+  // branch_policy.no_show_grace_minutes for ลูกค้าไม่มา
+  const branch = useApiQuery("branch.get", { response: BranchGetResponse }, { enabled: open });
   const invalidate = [...INVALIDATE];
   const start = useApiMutation("groom.start", { response: GroomStartResponse, invalidate });
   const finish = useApiMutation("groom.finish", { response: GroomFinishResponse, invalidate });
   const cancel = useApiMutation("groom.cancel", { response: GroomCancelResponse, invalidate });
   const addSurcharge = useApiMutation("groom.addSurcharge", { response: GroomAddSurchargeResponse, invalidate });
   const removeSurcharge = useApiMutation("groom.removeSurcharge", { response: GroomRemoveSurchargeResponse, invalidate });
-  const [dialog, setDialog] = useState<"cancel" | "surcharge" | null>(null);
+  const noShow = useApiMutation("groom.noShow", { response: GroomNoShowResponse, invalidate });
+  const [dialog, setDialog] = useState<"cancel" | "noShow" | "surcharge" | null>(null);
 
   const role = me.data?.staff.role;
   const today = toLocalDate({ instant: new Date().toISOString(), timezone });
-  const busy = start.isPending || finish.isPending || cancel.isPending || addSurcharge.isPending || removeSurcharge.isPending;
+  const busy =
+    start.isPending || finish.isPending || cancel.isPending || noShow.isPending || addSurcharge.isPending || removeSurcharge.isPending;
+  const grace = branch.data?.policy.noShowGraceMinutes;
+  const noShowAt = grace === undefined ? undefined : { now: new Date().toISOString(), graceMinutes: grace };
   const params = { appointmentId: appointmentId ?? "" };
   const run = async (fn: () => Promise<unknown>) => {
     await fn();
@@ -107,7 +116,7 @@ export function AppointmentDrawer({ appointmentId, onClose, onCheckIn }: Appoint
             />
             <ActionBar
               t={t}
-              list={actions(job.data.appointment, role, today, timezone)}
+              list={actions(job.data.appointment, role, today, timezone, noShowAt)}
               busy={busy}
               checkInReady={!!onCheckIn}
               on={{
@@ -116,6 +125,7 @@ export function AppointmentDrawer({ appointmentId, onClose, onCheckIn }: Appoint
                 // the server creates the report card draft; the groomer fills it in on S-03
                 finish: () => void run(() => finish.mutateAsync({ params, body: {} })),
                 cancel: () => setDialog("cancel"),
+                noShow: () => setDialog("noShow"),
                 surcharge: () => setDialog("surcharge"),
               }}
             />
@@ -131,6 +141,19 @@ export function AppointmentDrawer({ appointmentId, onClose, onCheckIn }: Appoint
                 setDialog(null);
                 toast.success(t("done"));
                 onClose();
+              }}
+            />
+            <NoShowDialog
+              t={t}
+              open={dialog === "noShow"}
+              appointment={job.data.appointment}
+              cancelLabel={common("cancel")}
+              busy={noShow.isPending}
+              onClose={() => setDialog(null)}
+              onConfirm={async (reason) => {
+                await noShow.mutateAsync({ params, body: reason ? { reason } : {} });
+                setDialog(null);
+                toast.success(t("done"));
               }}
             />
             <SurchargeDialog
@@ -315,11 +338,12 @@ export function JobDetails(props: {
   );
 }
 
-const ACTION_LABEL: Record<Action, "checkIn" | "start" | "finish" | "cancel" | "addSurcharge"> = {
+const ACTION_LABEL: Record<Action, "checkIn" | "start" | "finish" | "cancel" | "noShow" | "addSurcharge"> = {
   checkIn: "checkIn",
   start: "start",
   finish: "finish",
   cancel: "cancel",
+  noShow: "noShow",
   surcharge: "addSurcharge",
 };
 
@@ -332,7 +356,7 @@ export function ActionBar(props: { t: T; list: Action[]; busy: boolean; checkInR
           key={action}
           type="button"
           className="h-11"
-          variant={action === "cancel" ? "outline" : "default"}
+          variant={action === "cancel" || action === "noShow" ? "outline" : "default"}
           disabled={props.busy || (action === "checkIn" && !props.checkInReady)}
           onClick={props.on[action]}
         >
@@ -382,6 +406,68 @@ export function CancelDialog(props: {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+/** ลูกค้าไม่มา: เหตุผล + ผลต่อมัดจำ (R-07) และระดับลูกค้า (R-09) ก่อนยืนยัน */
+export function NoShowDialog(props: {
+  t: T;
+  open: boolean;
+  appointment: AppointmentCard;
+  cancelLabel: string;
+  busy: boolean;
+  onClose: () => void;
+  onConfirm: (reason: string) => Promise<void>;
+}) {
+  const { t } = props;
+  const [reason, setReason] = useState("");
+  return (
+    <Dialog open={props.open} onOpenChange={(o) => (o ? null : props.onClose())}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("noShow")}</DialogTitle>
+        </DialogHeader>
+        <NoShowEffects t={t} appointment={props.appointment} />
+        <FormField id="c02d-noshow-reason" label={t("noShowReason")}>
+          <Textarea id="c02d-noshow-reason" maxLength={500} value={reason} onChange={(e) => setReason(e.target.value)} />
+        </FormField>
+        <DialogFooter>
+          <Button type="button" variant="outline" className="h-11" onClick={props.onClose}>
+            {props.cancelLabel}
+          </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            className="h-11"
+            disabled={props.busy}
+            onClick={() =>
+              void props
+                .onConfirm(reason.trim())
+                .then(() => setReason(""))
+                .catch(() => {})
+            }
+          >
+            {t("confirmNoShow")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function NoShowEffects({ t, appointment }: { t: T; appointment: AppointmentCard }) {
+  const effect = noShowEffect(appointment);
+  return (
+    <ul className="flex list-disc flex-col gap-1 pl-5 text-sm">
+      <li>
+        {t("noShowDeposit")}: {enumLabel("deposit_status", appointment.depositStatus)} →{" "}
+        {t(effect.deposit === "forfeit" ? "noShowForfeit" : "noShowNoForfeit")}
+      </li>
+      <li>
+        {t("noShowLevel")}: {t("reliabilityLevel", { level: effect.level.from })} →{" "}
+        {t(effect.level.to === "1" ? "noShowLevelStays" : "noShowLevelDrops")}
+      </li>
+    </ul>
   );
 }
 
