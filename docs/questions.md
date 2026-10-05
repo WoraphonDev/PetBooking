@@ -819,6 +819,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 
 - Answer (2026-10-04): user approved the explicit shared menu fixtures and dashboard current-page coverage (Q-0082), and deferred economy-mode status until the read API exists while retaining quota/list/copy and the policy settings link (Q-0083).
 
+## Q-0116 · T-0048 staffUsers.update: staff photo file kind, the disabled-groomer warning, invited → active
+- Status: open
+- Task: T-0048 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: (1) `photoFileId` → staff_user.photo_file_id, but `file_kind` (02) has no staff/profile kind for people (only pet_profile, logo, …), so the upload cannot be checked/committed. (2) "นัดอนาคตของช่างที่ถูกปิดยังอยู่ — ตอบ warnings[]" names no code/message/data. (3) status allows only active ↔ disabled; may an invited person be disabled (cancel an invite) here?
+- Proposed decision: (1) add `staff_photo` to `file_kind` (migration + spec) and commit with it. (2) `{ code: "GROOMER_HAS_FUTURE_APPOINTMENTS", message: "ช่างยังมีนัดที่ค้างอยู่ {n} นัด", data: { appointmentIds } }` for scheduled/checked_in/in_progress appointments ending after now. (3) invited stays invited until staff.inviteAccept; changing an invited person's status → STATUS_NOT_ALLOWED.
+- Interim (implemented): (1) photoFileId → VALIDATION_FAILED until answered; (2) and (3) as proposed. role staff in staffUsers.list gets only id/displayName/isGroomer/photoUrl (keys left out, as Q-0032).
+
 ## Q-0089 · T-0314: occupancy menu enablement is outside card scope
 - Status: answered (scope merged in #192; implemented in T-0314)
 - Task: T-0314 · Asked by: agent (codex) · Date: 2026-10-04
