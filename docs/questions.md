@@ -571,6 +571,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
 - Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
 
+## Q-0110 · T-0276 stays.changeRoom: moving to another room type
+- Status: open
+- Task: T-0276 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 05#ep-stays.changeRoom lists only `roomUnitId` in the request, but its validation says another room type needs `keepPrice` and its effect says the price changes only when `repriceToType=true` — neither field is in the request table. Which field (one boolean or two), and how is the new price set (default-plan room_rate for the pet's tier × nights, estimate and open bill line updated)?
+- Proposed decision: one optional `repriceToType: boolean` (default false = keep the booked price, which covers "keepPrice"); true → nightly price from the new type's default-plan rate (R-28 pickPrice), room_total = nights × nightly, booking estimate and an open bill's stay_night line follow.
+- Interim (implemented): same-type moves only; another type → VALIDATION_FAILED `{ roomUnitId: "another room type is not supported yet (Q-0110)" }`.
+
 ## Q-0097 · T-0163 groom.noShow: too early, and the customer.no_show money line
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0163 · Asked by: agent (claude) · Date: 2026-10-04
