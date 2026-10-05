@@ -568,6 +568,20 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. ยอด starts at `depositRequiredSatang − depositVerifiedSatang` and can be edited.
   3. C-05 passes `onCheckIn` to the drawer and mounts `CheckInDialog`. With this, Q-1015 item 1 is done: the cancel dialog now shows the `bookings.cancelPreview` result for the chosen ใครยกเลิก, and confirm waits for it.
 
+## Q-1026 · T-0207 C-35: booking slug source, storefront origin, PDF export
+- Status: open
+- Task: T-0207 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. 06#scr-C-35 loads only `line.status`, but ลิงก์หน้าร้าน is `branch.booking_slug`, which `LineStatus` does not carry.
+  2. The table gives the path `/b/{slug}` but no base URL.
+  3. The poster needs "ดาวน์โหลด PNG/PDF (สร้างฝั่ง client)", but there is no PDF library among the allowed dependencies.
+  4. `shell-console/navigation/C-35.ts` is outside the card's allowed paths (Q-0048).
+- Proposed decision (implemented):
+  1. The screen also loads `branch.get` (owner) for `bookingSlug` and the shop name printed on the poster.
+  2. The link is `window.location.origin + /b/{slug}`.
+  3. PNG: the poster SVG is drawn on a canvas at 150 dpi. PDF: the browser print dialog (save as PDF), with `@page` set to A4/A5.
+  4. The menu entry is left for a follow-up.
+
 ## Q-0095 · T-0233 bills.addPayment: change_satang and a fully paid bill
 - Status: open (T-0233 ships the interim choice; human review)
 - Task: T-0233 · Asked by: agent (claude) · Date: 2026-10-04
