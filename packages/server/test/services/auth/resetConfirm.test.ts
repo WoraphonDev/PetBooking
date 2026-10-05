@@ -20,6 +20,7 @@ beforeEach(async () => {
   vi.stubEnv("APP_BASE_URL", "https://petbooking.test");
 });
 afterEach(async () => {
+  vi.useRealTimers();
   vi.restoreAllMocks();
   vi.unstubAllEnvs();
   await env.close();
@@ -35,6 +36,11 @@ async function seedReset(staffUserId = env.base.staff.owner, overrides: Partial<
 }
 function confirm() {
   return authResetConfirm(makeSystemCtx(null, TEST_NOW), { token, newPassword });
+}
+/** The route reads its own clock (ctx.now = new Date()); pin it to TEST_NOW so seeded expiries stay valid. */
+function freezeClock() {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(TEST_NOW);
 }
 function request(body: unknown) {
   return POST(
@@ -120,6 +126,7 @@ it.each([
   expect(await env.db.select().from(passwordReset)).toMatchObject([{ usedAt: null }]);
 });
 it("returns HTTP 204 without a session cookie for a valid public request", async () => {
+  freezeClock();
   await seedReset();
   const response = await request({ token, newPassword });
   expect(response.status).toBe(204);
@@ -127,6 +134,7 @@ it("returns HTTP 204 without a session cookie for a valid public request", async
   expect(response.headers.get("set-cookie")).toBeNull();
 });
 it("maps endpoint errors and invalid input to the specified HTTP errors", async () => {
+  freezeClock();
   const invalid = await request({ token, newPassword });
   expect(invalid.status).toBe(400);
   expect(await invalid.json()).toMatchObject({ error: { code: "TOKEN_INVALID" } });
