@@ -1,0 +1,12 @@
+{
+  "title": "บริการที่เปิด",
+  "sectionModules": "โมดูล",
+  "grooming": "กรูมมิ่ง",
+  "groomingHelp": "อาบน้ำ ตัดขน และบริการเสริม จองคิวตามเวลาช่างและโต๊ะ",
+  "hotel": "โรงแรม",
+  "daycare": "Daycare",
+  "save": "บันทึก",
+  "saved": "บันทึกแล้ว",
+  "warningsTitle": "ใบจองที่ยังค้างอยู่",
+  "warningLine": "{module}: {message}"
+}
