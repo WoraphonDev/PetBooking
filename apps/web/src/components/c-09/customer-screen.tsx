@@ -1,8 +1,13 @@
 "use client";
 import type { CustomerDetail } from "@app/contracts/dto/customer-detail";
 import type { PetSummary } from "@app/contracts/dto/pet-summary";
+import { AuthMeResponse } from "@app/contracts/endpoints/auth.me";
+import { CustomersBlacklistResponse } from "@app/contracts/endpoints/customers.blacklist";
+import { CustomersCreditResponse } from "@app/contracts/endpoints/customers.credit";
 import { CustomersGetResponse } from "@app/contracts/endpoints/customers.get";
+import { CustomersReliabilityOverrideResponse } from "@app/contracts/endpoints/customers.reliabilityOverride";
 import { PetsCreateResponse } from "@app/contracts/endpoints/pets.create";
+import { RefundsCreateResponse } from "@app/contracts/endpoints/refunds.create";
 import { coatTypeValues, petSexValues, speciesValues } from "@app/contracts/enums";
 import { toLocalDate } from "@app/domain/time/local-time";
 import { cn } from "cn";
@@ -21,6 +26,8 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
+import { CustomerActionDialog, CustomerActionsBar } from "./actions";
+import { type CustomerAction, customerActions } from "./actions-logic";
 import { breedsFor, emptyPet, type PetErrors, type PetForm, petBody, validatePet } from "./pet-form";
 
 type T = ReturnType<typeof useTranslations<"C-09">>;
@@ -38,7 +45,7 @@ export function ageLabel(t: T, months: number): string {
 
 export const parseTab = (value: string | null): Tab => ((TABS as readonly string[]).includes(value ?? "") ? (value as Tab) : "info");
 
-/** 06#scr-C-09 — one customer: head, info / pets / packages / credit tabs, add a pet. */
+/** 06#scr-C-09 — one customer: head, info / pets / packages / credit tabs, add a pet; blacklist / level / credit / refund. */
 export function CustomerScreen({ customerId }: { customerId: string }) {
   const t = useTranslations("C-09");
   const common = useTranslations("common");
@@ -50,6 +57,13 @@ export function CustomerScreen({ customerId }: { customerId: string }) {
   const customer = useApiQuery("customers.get", { params: { customerId }, response: CustomersGetResponse });
   const createPet = useApiMutation("pets.create", { response: PetsCreateResponse, invalidate: ["customers.get", "search.quick"] });
   const [adding, setAdding] = useState(false);
+  const me = useApiQuery("auth.me", { response: AuthMeResponse });
+  const invalidate: ["customers.get"] = ["customers.get"];
+  const blacklist = useApiMutation("customers.blacklist", { response: CustomersBlacklistResponse, invalidate });
+  const override = useApiMutation("customers.reliabilityOverride", { response: CustomersReliabilityOverrideResponse, invalidate });
+  const credit = useApiMutation("customers.credit", { response: CustomersCreditResponse, invalidate });
+  const refund = useApiMutation("refunds.create", { response: RefundsCreateResponse, invalidate: ["customers.get", "bookings.get"] });
+  const [action, setAction] = useState<CustomerAction | null>(null);
 
   if (customer.isPending) return <Skeleton className="m-6 h-96" />;
   if (customer.isError)
@@ -70,6 +84,7 @@ export function CustomerScreen({ customerId }: { customerId: string }) {
         c={c}
         onEdit={() => router.push(`/console/customers/${customerId}/edit`)}
         onBook={() => router.push(`/console/bookings/new?customerId=${customerId}`)}
+        actions={<CustomerActionsBar t={t} c={c} list={customerActions(me.data?.staff.role)} onPick={setAction} />}
       />
       <div role="tablist" className="flex gap-1 border-b">
         {TABS.map((x) => (
@@ -92,6 +107,24 @@ export function CustomerScreen({ customerId }: { customerId: string }) {
       {tab === "pets" ? <PetsTab t={t} pets={c.pets} onAdd={() => setAdding(true)} /> : null}
       {tab === "packages" ? <PackagesTab t={t} c={c} timezone={timezone} /> : null}
       {tab === "credit" ? <CreditTab t={t} c={c} /> : null}
+      <CustomerActionDialog
+        t={t}
+        c={c}
+        action={action}
+        requestTicket={staffTicket}
+        busy={blacklist.isPending || override.isPending || credit.isPending || refund.isPending}
+        cancelLabel={common("cancel")}
+        onClose={() => setAction(null)}
+        onSubmit={async (s) => {
+          const params = { customerId };
+          if (s.kind === "blacklist") await blacklist.mutateAsync({ params, body: s.body });
+          if (s.kind === "override") await override.mutateAsync({ params, body: s.body });
+          if (s.kind === "credit") await credit.mutateAsync({ params, body: s.body });
+          if (s.kind === "refund") await refund.mutateAsync({ body: s.body });
+          setAction(null);
+          toast.success(t("actionDone"));
+        }}
+      />
       <AddPetDialog
         t={t}
         open={adding}
@@ -118,7 +151,20 @@ function Row({ label, children, field }: { label: string; children: ReactNode; f
   );
 }
 
-export function CustomerHead({ t, c, onEdit, onBook }: { t: T; c: CustomerDetail; onEdit: () => void; onBook: () => void }) {
+export function CustomerHead({
+  t,
+  c,
+  onEdit,
+  onBook,
+  actions,
+}: {
+  t: T;
+  c: CustomerDetail;
+  onEdit: () => void;
+  onBook: () => void;
+  /** owner / front-desk buttons (Blacklist, กำหนดระดับเอง, ปรับเครดิต, บันทึกคืนเงิน) */
+  actions?: ReactNode;
+}) {
   const level = c.reliabilityOverride ?? c.reliabilityLevel;
   return (
     <section className="flex flex-col gap-3 rounded-xl border p-4">
@@ -143,6 +189,7 @@ export function CustomerHead({ t, c, onEdit, onBook }: { t: T; c: CustomerDetail
           </Button>
         </div>
       </div>
+      {actions}
       {c.blacklisted ? (
         <p role="alert" data-field="blacklisted" className="rounded-lg bg-destructive px-3 py-2 text-sm text-white">
           {t("blacklisted")}
