@@ -1,5 +1,6 @@
 import type { PetDetail } from "@app/contracts/dto/pet-detail";
 import { PetsSetFlagsRequest } from "@app/contracts/endpoints/pets.setFlags";
+import { PetsSetStatusRequest } from "@app/contracts/endpoints/pets.setStatus";
 import { PetsUpdateRequest } from "@app/contracts/endpoints/pets.update";
 import { PetsUpdateShopProfileRequest } from "@app/contracts/endpoints/pets.updateShopProfile";
 import { VaccinationsCreateRequest } from "@app/contracts/endpoints/vaccinations.create";
@@ -20,6 +21,7 @@ import {
   validateShop,
 } from "../../src/components/c-11/logic";
 import { PetScreen, PhotosTab, ProfileTab, ShopTab, VaccinesTab, WeightTab } from "../../src/components/c-11/pet-screen";
+import { canSetLeft, StatusButtons, StatusMessage } from "../../src/components/c-11/status-dialog";
 import messages from "../../src/i18n/messages/th/C-11.json";
 import common from "../../src/i18n/messages/th/common.json";
 
@@ -352,6 +354,35 @@ describe("tabs", () => {
   });
 });
 
+describe("น้องจากไป / ย้ายบ้าน", () => {
+  it("shows for OF on an active pet, with a sympathetic message", () => {
+    expect([
+      canSetLeft("owner", "active"),
+      canSetLeft("front_desk", "active"),
+      canSetLeft("staff", "active"),
+      canSetLeft("owner", "deceased"),
+    ]).toEqual([true, true, false, false]);
+    const buttons = renderToStaticMarkup(<StatusButtons t={t} onPick={vi.fn()} />);
+    for (const text of [messages.passedAway, messages.rehomed]) expect(buttons, text).toContain(text);
+    const html = renderToStaticMarkup(<StatusMessage t={t} status="deceased" petName="โมจิ" />);
+    expect(html).toContain("เสียใจด้วยกับการจากไปของโมจิ");
+    expect(html).toContain(messages.statusEffect);
+    expect(renderToStaticMarkup(<StatusMessage t={t} status="rehomed" petName="โมจิ" />)).toContain("ขอให้โมจิมีความสุขกับบ้านใหม่");
+    expect(PetsSetStatusRequest.parse({ status: "rehomed", note: "ย้ายไปเชียงใหม่" })).toEqual({ status: "rehomed", note: "ย้ายไปเชียงใหม่" });
+  });
+
+  it("the page shows the buttons for the front desk only while the pet is active", () => {
+    mock.data = { "auth.me": { staff: { role: "front_desk" } }, "pets.get": pet(), "photos.list": { items: [], nextCursor: null } };
+    expect(renderToStaticMarkup(<PetScreen petId={id(1)} />)).toContain(messages.passedAway);
+    mock.data = {
+      "auth.me": { staff: { role: "front_desk" } },
+      "pets.get": pet({ status: "deceased" }),
+      "photos.list": { items: [], nextCursor: null },
+    };
+    expect(renderToStaticMarkup(<PetScreen petId={id(1)} />)).not.toContain(`>${messages.passedAway}<`);
+  });
+});
+
 describe("PetScreen", () => {
   it("loads pets.get + photos.list and wires every save endpoint", () => {
     mock.params = "tab=health";
@@ -369,6 +400,7 @@ describe("PetScreen", () => {
       "vaccinations.reject",
       "photos.add",
       "pets.addWeight",
+      "pets.setStatus",
     ]);
   });
 });

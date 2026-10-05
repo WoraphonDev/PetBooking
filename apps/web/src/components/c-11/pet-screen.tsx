@@ -5,6 +5,7 @@ import { AuthMeResponse } from "@app/contracts/endpoints/auth.me";
 import { PetsAddWeightResponse } from "@app/contracts/endpoints/pets.addWeight";
 import { PetsGetResponse } from "@app/contracts/endpoints/pets.get";
 import { PetsSetFlagsResponse } from "@app/contracts/endpoints/pets.setFlags";
+import { PetsSetStatusResponse } from "@app/contracts/endpoints/pets.setStatus";
 import { PetsUpdateResponse } from "@app/contracts/endpoints/pets.update";
 import { PetsUpdateShopProfileResponse } from "@app/contracts/endpoints/pets.updateShopProfile";
 import { PhotosAddResponse } from "@app/contracts/endpoints/photos.add";
@@ -52,6 +53,7 @@ import {
   vaccineOptions,
   validateShop,
 } from "./logic";
+import { canSetLeft, type LeaveStatus, StatusButtons, StatusDialog } from "./status-dialog";
 
 type T = ReturnType<typeof useTranslations<"C-11">>;
 const TAB_LABEL = {
@@ -92,6 +94,8 @@ export function PetScreen({ petId }: { petId: string }) {
   const reject = useApiMutation("vaccinations.reject", { response: VaccinationsRejectResponse, invalidate });
   const addPhoto = useApiMutation("photos.add", { response: PhotosAddResponse, invalidate: ["photos.list"] });
   const addWeight = useApiMutation("pets.addWeight", { response: PetsAddWeightResponse, invalidate });
+  const setStatus = useApiMutation("pets.setStatus", { response: PetsSetStatusResponse, invalidate });
+  const [leaving, setLeaving] = useState<LeaveStatus | null>(null);
 
   if (pet.isPending) return <Skeleton className="m-6 h-96" />;
   if (pet.isError)
@@ -118,7 +122,23 @@ export function PetScreen({ petId }: { petId: string }) {
         ) : null}
         <h1 className="font-semibold text-2xl">{p.name}</h1>
         <StatusBadge enumName="pet_status" value={p.status} />
+        {canSetLeft(role, p.status) ? <StatusButtons t={t} onPick={setLeaving} /> : null}
       </div>
+      <StatusDialog
+        t={t}
+        status={leaving}
+        petName={p.name}
+        busy={setStatus.isPending}
+        cancelLabel={common("cancel")}
+        onClose={() => setLeaving(null)}
+        onConfirm={async (status, note) => {
+          const res = await setStatus.mutateAsync({ params: { petId }, body: { status, ...(note ? { note } : {}) } });
+          setLeaving(null);
+          saved();
+          // future bookings are not cancelled (Q-0105) — tell the shop
+          for (const w of res.warnings ?? []) toast.warning(w.message);
+        }}
+      />
       <div role="tablist" className="flex flex-wrap gap-1 border-b">
         {TABS.map((x) => (
           <button
