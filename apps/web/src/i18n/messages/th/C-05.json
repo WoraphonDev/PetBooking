@@ -68,5 +68,6 @@
   "copyLink": "คัดลอกลิงก์",
   "copied": "คัดลอกแล้ว",
   "sendLine": "ส่ง LINE",
-  "sentLine": "ส่งลิงก์ทาง LINE แล้ว"
+  "sentLine": "ส่งลิงก์ทาง LINE แล้ว",
+  "createBill": "เปิดบิล"
 }
