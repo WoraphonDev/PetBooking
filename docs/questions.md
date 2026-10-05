@@ -677,6 +677,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - An override (R-09 step 1) is not visible here, so the text can be wrong for overridden customers.
   - Alternative: a preview field on AppointmentCard or a dry-run flag on groom.noShow (spec change).
 
+## Q-1027 · T-0247 C-02D: "ถ้ายังไม่มีบิล" after ลูกค้ารับน้องแล้ว
+- Status: open
+- Task: T-0247 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: after `groom.pickUp`, 06#scr-C-02D shows a เปิดบิล button "ถ้ายังไม่มีบิล". `AppointmentCard` / `JobCard` carry no bill id or bill state (same gap as Q-1013 item 3).
+- Proposed decision (implemented): after a successful pick-up, the drawer always opens a small dialog: ลูกค้ารับน้องแล้ว — เปิดบิล?
+  - เปิดบิล calls `bills.open { bookingIds: [bookingId] }`, which is idempotent: an open bill of the booking comes back as is. It then navigates to `/console/bills/{id}` (C-18).
+  - A booking whose bill is already closed gets the server's error as a toast.
+  - Alternative: add `billId` to AppointmentCard (spec change).
+
 ## Q-0110 · T-0276 stays.changeRoom: moving to another room type
 - Status: open
 - Task: T-0276 · Asked by: agent (claude) · Date: 2026-10-05
