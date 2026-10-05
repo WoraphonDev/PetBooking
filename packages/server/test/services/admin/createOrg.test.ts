@@ -45,6 +45,9 @@ const request = (body: unknown, cookie = adminToken) =>
 const errorCode = async (response: Response) => ((await response.json()) as { error: { code: string } }).error.code;
 
 beforeEach(async () => {
+  // the HTTP pipeline reads the clock once per request: pin it to TEST_NOW so the 12 h admin session stays valid
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(TEST_NOW);
   vi.stubEnv("APP_BASE_URL", "https://petbooking.test");
   env = await setupTestDb();
   const [admin] = await env.db
@@ -55,6 +58,7 @@ beforeEach(async () => {
   adminToken = (await createSession(env.db, { subjectType: "platform_admin", subjectId: admin.id }, TEST_NOW)).token;
 });
 afterEach(async () => {
+  vi.useRealTimers();
   await env.close();
   vi.unstubAllEnvs();
 });
