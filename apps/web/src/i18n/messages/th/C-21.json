@@ -1,0 +1,20 @@
+{
+  "title": "Report card รอตรวจ",
+  "pet": "น้อง",
+  "groomer": "ช่าง",
+  "findings": "ผลตรวจ",
+  "skin": "ผิว",
+  "ears": "หู",
+  "nails": "เล็บ",
+  "teeth": "ฟัน",
+  "parasites": "ปรสิต",
+  "staffNote": "ข้อความถึงลูกค้า",
+  "recommendation": "คำแนะนำ",
+  "none": "—",
+  "empty": "ไม่มี Report card รอตรวจ",
+  "invalid": "ข้อความยาวเกินกำหนด",
+  "save": "บันทึก",
+  "send": "ส่งลูกค้า",
+  "saved": "บันทึกแล้ว",
+  "sent": "ส่ง Report card ให้ลูกค้าแล้ว"
+}
