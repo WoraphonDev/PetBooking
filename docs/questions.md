@@ -643,6 +643,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   3. The buttons follow the status rule only, and the server refuses when the bill is closed.
   4. `specific` is read as "requested".
 
+## Q-1020 · T-0138 C-06: consent text and new size label are not in groom.jobCard; labels; hosts
+- Status: open
+- Task: T-0138 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. 06#scr-C-06 loads only `groom.jobCard`, but ข้อความใบยินยอม is `branch_policy.grooming_consent_text` (not in `JobCard`) and the SIZE_CHANGED dialog needs the new size name "X" (the warning carries only `newSizeTierId` and `newPriceSatang`).
+  2. enum-labels.th.json has no labels for `condition_flags` or `consent_document.reasons`.
+  3. C-06 is a dialog on C-02 / C-05, but those hosts are outside the card's allowed paths.
+- Proposed decision (implemented):
+  1. While open, C-06 also loads `branch.get` (OF can read it) for `policy.groomingConsentText`. After a SIZE_CHANGED check-in it loads `sizeTiers.list` for `labelTh`. A null `newPriceSatang` shows "ยังไม่มีราคา". Alternative: add both to JobCard and the warning data (spec change).
+  2. The Thai labels in the 06 table go in `messages/th/C-06.json` (same precedent as Q-0043 / C-02D).
+  3. `CheckInDialog({ appointmentId, onClose })` is exported. C-02 / C-05 render it from C-02D's `onCheckIn` (Q-1013) in a card that owns those files.
+
 ## Q-0110 · T-0276 stays.changeRoom: moving to another room type
 - Status: open
 - Task: T-0276 · Asked by: agent (claude) · Date: 2026-10-05
