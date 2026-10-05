@@ -110,7 +110,8 @@ describe("logic", () => {
     expect(actions(at("checked_in"), "owner", today, "Asia/Bangkok")).toEqual(["start", "cancel", "surcharge"]);
     expect(actions(at("checked_in"), "staff", today, "Asia/Bangkok")).toEqual(["start"]);
     expect(actions(at("in_progress"), "staff", today, "Asia/Bangkok")).toEqual(["finish"]);
-    expect(actions(at("done"), "front_desk", today, "Asia/Bangkok")).toEqual(["surcharge"]);
+    expect(actions(at("done"), "front_desk", today, "Asia/Bangkok")).toEqual(["notifyPickup", "pickUp", "surcharge"]);
+    expect(actions(at("done"), "staff", today, "Asia/Bangkok")).toEqual([]);
     expect(actions(at("picked_up"), "owner", today, "Asia/Bangkok")).toEqual([]);
     expect([
       canRemoveSurcharge({ status: "done" }, "owner"),
@@ -244,7 +245,16 @@ describe("JobDetails", () => {
 
 describe("buttons and dialogs", () => {
   it("renders the allowed actions; check-in waits for the host's C-06", () => {
-    const on = { checkIn: vi.fn(), start: vi.fn(), finish: vi.fn(), cancel: vi.fn(), noShow: vi.fn(), surcharge: vi.fn() };
+    const on = {
+      checkIn: vi.fn(),
+      start: vi.fn(),
+      finish: vi.fn(),
+      cancel: vi.fn(),
+      noShow: vi.fn(),
+      notifyPickup: vi.fn(),
+      pickUp: vi.fn(),
+      surcharge: vi.fn(),
+    };
     const html = renderToStaticMarkup(
       <ActionBar t={t} list={["checkIn", "cancel", "surcharge"]} busy={false} checkInReady={false} on={on} />,
     );
@@ -265,10 +275,34 @@ describe("buttons and dialogs", () => {
       messages.noShowLevelDrops,
     ])
       expect(html, text).toContain(text);
-    const on = { checkIn: vi.fn(), start: vi.fn(), finish: vi.fn(), cancel: vi.fn(), noShow: vi.fn(), surcharge: vi.fn() };
+    const on = {
+      checkIn: vi.fn(),
+      start: vi.fn(),
+      finish: vi.fn(),
+      cancel: vi.fn(),
+      noShow: vi.fn(),
+      notifyPickup: vi.fn(),
+      pickUp: vi.fn(),
+      surcharge: vi.fn(),
+    };
     expect(renderToStaticMarkup(<ActionBar t={t} list={["cancel", "noShow"]} busy={false} checkInReady on={on} />)).toContain(
       messages.noShow,
     );
+  });
+
+  it("done: แจ้งลูกค้ามารับ and ลูกค้ารับน้องแล้ว; after pick-up the เปิดบิล dialog", () => {
+    const on = {
+      checkIn: vi.fn(),
+      start: vi.fn(),
+      finish: vi.fn(),
+      cancel: vi.fn(),
+      noShow: vi.fn(),
+      notifyPickup: vi.fn(),
+      pickUp: vi.fn(),
+      surcharge: vi.fn(),
+    };
+    const html = renderToStaticMarkup(<ActionBar t={t} list={["notifyPickup", "pickUp", "surcharge"]} busy={false} checkInReady on={on} />);
+    for (const text of [messages.notifyPickup, messages.pickUp]) expect(html, text).toContain(text);
   });
 
   it("surcharge form shows ประเภท / ชื่อ / ยอด / เหตุผล with active types", () => {
@@ -302,7 +336,17 @@ describe("AppointmentDrawer", () => {
     expect(mock.query.mock.calls.find((c) => c[0] === "groom.jobCard")?.[2]).toEqual({ enabled: false });
     const mutations = Object.fromEntries(mock.mutation.mock.calls.map((c) => [c[0], c[1]]));
     expect(mock.query.mock.calls.find((c) => c[0] === "branch.get")?.[2]).toEqual({ enabled: false });
-    for (const key of ["groom.start", "groom.finish", "groom.cancel", "groom.noShow", "groom.addSurcharge", "groom.removeSurcharge"])
+    expect(mutations["bills.open"]).toMatchObject({ invalidate: expect.arrayContaining(["bookings.get"]) });
+    for (const key of [
+      "groom.start",
+      "groom.finish",
+      "groom.cancel",
+      "groom.noShow",
+      "groom.notifyPickup",
+      "groom.pickUp",
+      "groom.addSurcharge",
+      "groom.removeSurcharge",
+    ])
       expect(mutations[key], key).toMatchObject({ invalidate: expect.arrayContaining(["calendar.day", "bookings.get"]) });
   });
 });

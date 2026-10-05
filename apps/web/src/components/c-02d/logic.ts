@@ -5,9 +5,9 @@ import type { GroomAddSurchargeRequest } from "@app/contracts/endpoints/groom.ad
 import type { StaffRole } from "@app/contracts/enums";
 import { toLocalDate } from "@app/domain/time/local-time";
 
-export type Action = "checkIn" | "start" | "finish" | "cancel" | "noShow" | "surcharge";
+export type Action = "checkIn" | "start" | "finish" | "cancel" | "noShow" | "notifyPickup" | "pickUp" | "surcharge";
 
-/** 06 ปุ่ม/การกระทำ (notifyPickup / pickUp come with later tasks); ลูกค้าไม่มา needs `noShow` (now + grace) */
+/** 06 ปุ่ม/การกระทำ (03 state machine + role); ลูกค้าไม่มา needs `noShow` (now + grace) */
 export function actions(
   a: Pick<AppointmentCard, "status" | "startsAt">,
   role: StaffRole | undefined,
@@ -25,6 +25,8 @@ export function actions(
   if (of && a.status === "scheduled" && noShow && Date.parse(noShow.now) >= Date.parse(a.startsAt) + noShow.graceMinutes * 60_000)
     out.push("noShow");
   // บิลยังไม่ปิด is enforced by the server (AppointmentCard carries no bill state — Q-1013)
+  // แจ้งลูกค้ามารับ / ลูกค้ารับน้องแล้ว: OF, status done
+  if (of && a.status === "done") out.push("notifyPickup", "pickUp");
   if (of && (a.status === "checked_in" || a.status === "in_progress" || a.status === "done")) out.push("surcharge");
   return out;
 }
