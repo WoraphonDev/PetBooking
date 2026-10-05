@@ -138,7 +138,7 @@ T-0120,API-groom-3,M2,3,api,agent,M,,"API groom.addSurcharge, groom.removeSurcha
 T-0121,API-groom-4,M2,3,api,agent,S,,API groom.myQueue,US-09-03,T-0007 T-0112 T-0051,4
 T-0122,API-stays-4,M2,3,api,agent,S,,API stays.cancel,US-05-08,T-0007 T-0035 T-0112 T-0051 T-0050,4
 T-0123,API-daycare-2,M2,3,api,agent,S,,API daycare.cancel,US-05-08,T-0007 T-0035 T-0112 T-0051,4
-T-0124,API-feedback-0,M2,1,api,agent,S,,API feedback.create,US-13-13,T-0007 T-0010 T-0038,4
+T-0124,API-feedback-0,M2,1,api,agent,S,,API feedback.create,US-13-13,T-0320 T-0007 T-0010 T-0038,8
 T-0125,API-admin-2,M2,1,api,agent,M,yes,"API admin.supportStart, admin.supportEnd, admin.feedback",US-13-11 US-13-13,T-0007 T-0035 T-0010,13
 T-0126,API-admin-3,M2,2,api,agent,S,,API admin.updateFeedback,US-13-13,T-0007 T-0125,4
 T-0127,NTF-staff-M2-0,M2,2,notify,agent,M,,"Notification templates (staff, M2): new_booking, groom_done, care_task_overdue",US-05-09 US-06-09 US-09-04 US-13-05,T-0010 T-0320 T-0091,6

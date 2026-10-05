@@ -633,6 +633,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1/§2 owner_daily_summary rows, 05#dto-DashboardToday, Q-0053.
 - Proposed decision (implemented): numbers are for the job's `localDate` (not ctx.now, so a retry after midnight reports the right day) with the Q-0053 definitions: groomCount = groom.total, staysInHouse = hotel.inHouse, salesTotal = sales.paidTotalSatang via formatTHB auto, noShows = grooming no-shows of the day, tomorrowCount = next day's grooming appointments + hotel check-ins + daycare visits (cancelled excluded), date = formatThaiDate. Sent to every active owner.
 
+## Q-1001 · T-0124: platform-admin notification pipeline is still unsupported
+- Status: answered (user decision, 2026-10-05)
+- Task: T-0124 · Asked by: agent (codex) · Date: 2026-10-04
+- Evidence: Q-0009 and 07 §1.1 already specify platform_admin recipients. The merged recipient_type enum includes platform_admin, but packages/server/src/notify/enqueue.ts rejects every admin.feedback enqueue and Recipient only accepts customer/staff. packages/server/src/notify/dispatch.ts routes every non-customer recipient to deliverToStaff, which loads staff_user rather than platform_admin.
+- Required prerequisite: a scoped follow-up owning notify/enqueue.ts, notify/dispatch.ts and their tests to support active platform admins and per-recipient dedupe/email delivery under the already approved Q-0009 contract. These files are outside T-0124 allowed_paths.
+- Answer (2026-10-05): user chose to widen T-0124 itself. The user edited `tools/spec-src/build_tasks.py` (feedback.create also owns notify/enqueue.ts, notify/dispatch.ts and their two tests, and depends on INF-NOTIFY-RENDER / T-0320, which shares dispatch.ts); the card is regenerated in `spec-change-q1001-feedback-notify`. The reservation moves from Codex to Claude (issue #195). The same support unblocks `admin.data_request` (T-0067).
+
 ## Q-0094 · T-0168 refunds.create: credit reason and deposit status
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0168 · Asked by: agent (claude) · Date: 2026-10-04
