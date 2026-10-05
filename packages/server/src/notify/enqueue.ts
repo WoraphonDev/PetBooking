@@ -6,7 +6,7 @@ import { tenantDb } from "../repo/tenant.ts";
 import { type NotificationPayloads, TEMPLATES, type TemplateKey } from "./keys.ts";
 
 export type NotificationRow = typeof notification.$inferSelect;
-export type Recipient = { type: "customer" | "staff"; id: string };
+export type Recipient = { type: "customer" | "staff" | "platform_admin"; id: string };
 
 /** Local `YYYY-MM` in the branch timezone — quota is counted per local month (02#tbl-notification). */
 export function localMonthKey(now: Date, timeZone: string): string {
@@ -25,9 +25,9 @@ export async function enqueueNotification<K extends TemplateKey>(
   input: { key: K; recipient: Recipient; payload: NotificationPayloads[K]; dedupeKey: string },
 ): Promise<NotificationRow | null> {
   const meta = TEMPLATES[input.key];
-  // Q-0009: recipient_type has no platform_admin yet
-  if (meta.recipients === "platform admin")
-    throw new Error(`enqueueNotification: ${input.key} needs a platform_admin recipient type (Q-0009)`);
+  // 07 §1.1: admin.* go to platform admins only (recipient_id = platform_admin.id, organization_id = the shop it is about)
+  if ((meta.recipients === "platform admin") !== (input.recipient.type === "platform_admin"))
+    throw new Error(`enqueueNotification: ${input.key} cannot go to a ${input.recipient.type} recipient`);
   const [row] = await tenantDb(ctx, tx)
     .insert(notification, {
       branchId: ctx.branchId,

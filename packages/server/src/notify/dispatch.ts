@@ -1,6 +1,16 @@
 // Dispatcher (07 header, §3): after commit / from cron.tick, send queued notifications.
 // Channel = R-19 limited to the template's channels; customer LINE push goes through R-18 quota + economy mode.
-import { branch, branchPolicy, customer, lineChannel, lineIdentity, notification, staffUser, webPushSubscription } from "@app/db/schema";
+import {
+  branch,
+  branchPolicy,
+  customer,
+  lineChannel,
+  lineIdentity,
+  notification,
+  platformAdmin,
+  staffUser,
+  webPushSubscription,
+} from "@app/db/schema";
 import { selectChannel } from "@app/domain/notify/channel";
 import { decideLinePush } from "@app/domain/notify/line-quota";
 import { and, asc, eq, isNull } from "drizzle-orm";
@@ -71,9 +81,9 @@ async function deliver(deps: NotifyDeps, tx: Tx, ctx: RequestContext, row: Notif
   // the channel being tried when an adapter throws
   const attempt: { channel: Channel } = { channel: row.channel };
   try {
-    return row.recipientType === "customer"
-      ? await deliverToCustomer(deps, tx, ctx, row, key, text, skip, attempt)
-      : await deliverToStaff(deps, tx, ctx, row, key, rendered, skip, attempt);
+    if (row.recipientType === "customer") return await deliverToCustomer(deps, tx, ctx, row, key, text, skip, attempt);
+    if (row.recipientType === "platform_admin") return await deliverToPlatformAdmin(deps, tx, row, rendered, skip);
+    return await deliverToStaff(deps, tx, ctx, row, key, rendered, skip, attempt);
   } catch (e) {
     // adapter errors only carry API status/messages — never tokens (01 §10)
     return { status: "failed", channel: attempt.channel, error: (e instanceof Error ? e.message : String(e)).slice(0, 500) };
@@ -144,6 +154,21 @@ async function deliverToCustomer(
   await deps.line.send({ lineChannel: channel, lineUserId: identity.lineUserId, text });
   if (picked.channel === "line_push") await warnOwnersAtQuota(tx, ctx, row, used + 1, channel.monthlyPushQuota);
   return { status: "sent", channel: picked.channel };
+}
+
+/** 07 §1.1: admin.* are email-only and always emailed (no R-19 / R-18); a disabled or missing admin → no_recipient */
+async function deliverToPlatformAdmin(
+  deps: NotifyDeps,
+  tx: Tx,
+  row: NotificationRow,
+  rendered: Rendered,
+  skip: (r: SkipReason) => Outcome,
+): Promise<Outcome> {
+  // platform_admin has no organization_id (platform table)
+  const [admin] = await tx.select().from(platformAdmin).where(eq(platformAdmin.id, row.recipientId));
+  if (admin?.status !== "active" || !admin.email) return skip("no_recipient");
+  await deps.email.send({ to: admin.email, subject: rendered.subject, text: rendered.text });
+  return { status: "sent", channel: "email" };
 }
 
 async function deliverToStaff(
