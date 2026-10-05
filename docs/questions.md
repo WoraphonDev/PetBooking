@@ -741,6 +741,25 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: auth.staffLine (T-0104) and staffMe.linkLine (T-0105) must verify a LINE ID token against PLATFORM_LINE_LOGIN_CHANNEL_ID, but the verifier (`integrations/line/idtoken.ts` + fake mode) belongs to T-0149, which is not merged (it waits on H-03) and is not in either card's depends_on. Both cards' allowed paths exclude `integrations/line/**`.
 - Proposed decision: add T-0149 to the depends_on of T-0104 and T-0105 (task generator / spec owner) and leave both cards until T-0149 is merged. No agent work started on them.
 
+## Q-1006 · T-0039: Playwright is not an allowed dependency of the card
+- Status: open
+- Task: T-0039 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: the card needs `@playwright/test` (playwright.config.ts, `pnpm --filter @app/web exec playwright test`), but it has no *Dependencies* section and its allowed_paths leave out `apps/web/package.json` and `pnpm-lock.yaml`. `@playwright/test` is not installed anywhere in the workspace today (the lockfile only lists it as an optional peer). Adding it would fail `check-task-scope` and golden rule 6.
+- Evidence: `docs/tasks/T-0039.md` allowed_paths; 01 §1 names Playwright as the E2E tool. Chromium is already in `~/Library/Caches/ms-playwright`, so no browser download is needed.
+- Proposed decision: regenerate T-0039 with `apps/web/package.json` + `pnpm-lock.yaml` in allowed_paths and `@playwright/test` (exact version) under Dependencies. No work started on the card.
+
+## Q-1007 · T-0062 imports.create: storage cannot read the uploaded CSV
+- Status: open
+- Task: T-0062 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: imports.create must parse the uploaded CSV, but `ObjectStorage` (`packages/server/src/integrations/storage/index.ts`, outside the card's allowed_paths) only has presignPut / presignGet / head / delete — there is no way to read the object's bytes on the server. The row-error codes for `import_job.errors[].code` (`{row, column, code, message}`) are also not listed anywhere in 02/04/05.
+- Proposed decision: (1) a scoped follow-up (or widening T-0062) adds `getText(key): Promise<string | null>` to ObjectStorage (S3 GetObject + the fake storage); (2) a spec-change lists the row codes, e.g. `REQUIRED`, `INVALID_PHONE` (R-22), `INVALID_ENUM`, `INVALID_DATE`, `INVALID_NUMBER`, `UNKNOWN_COLUMN`, with Thai messages. No work started on the card.
+
+## Q-1008 · T-0115 calendar.day: week response, time off / closure shape, hotel counts
+- Status: open
+- Task: T-0115 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 05 gives the response as `CalendarDay` but says "week คืน 7 CalendarDay"; `groomers[].timeOff[]` and `closures[]` only cite a column (`starts_at`); the card says hotel/daycare should return 0 until M5, but stay/daycare_visit are already merged and 05 defines them as counts.
+- Proposed decision (implemented): `CalendarDayResponse = CalendarDay | CalendarDay[7]` (the 7 local days from `date`); `timeOff[]` = `TimeOffItem` and `closures[]` = `ClosureItem` (the same row DTOs timeOff.list / closures.list return, so C-02 gets end time and reason for the grey bar); closures limited to scope all/grooming; groomers = active `is_groomer` staff; appointments start in the local day, cancelled left out, no_show kept; `workingHours` = that weekday's row or null; hotel/daycare counted as in dashboard.today (arrivals/departures by date, inHouse = checked_in now, daycare visits not cancelled).
+
 ## Q-0099 · T-0160 bookings.decline: the verified deposit and the refund line
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0160 · Asked by: agent (claude) · Date: 2026-10-04
