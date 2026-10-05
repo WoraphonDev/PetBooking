@@ -603,6 +603,20 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 06#scr-C-26, 04 R-27 action list, enum-labels.th.json, Q-0043 (screen-local labels precedent), Q-0048.
 - Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
 
+## Q-1013 · T-0135 C-02D: check-in via C-06, owner link, "บิลยังไม่ปิด", and "requested"
+- Status: open
+- Task: T-0135 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. เช็คอิน "เปิด dialog C-06", but C-06 (T-0138) isn't merged, and C-02D can't own it.
+  2. เจ้าของ links to C-09 (`/console/customers/[customerId]`), but `JobCard` / `AppointmentCard` carry no customer id.
+  3. The surcharge buttons need "บิลยังไม่ปิด", but AppointmentCard carries no bill state.
+  4. The "ลูกค้าเลือก" tag is for `groomer_preference = requested`, which isn't a value of the enum (`any` / `specific`).
+- Proposed decision (implemented):
+  1. The drawer takes an `onCheckIn(appointment)` prop from its host; the button shows per the state machine and is disabled until a host passes C-06.
+  2. The owner name shows without a link until a `customerId` is added to AppointmentCard (spec change).
+  3. The buttons follow the status rule only, and the server refuses when the bill is closed.
+  4. `specific` is read as "requested".
+
 ## Q-0110 · T-0276 stays.changeRoom: moving to another room type
 - Status: open
 - Task: T-0276 · Asked by: agent (claude) · Date: 2026-10-05
