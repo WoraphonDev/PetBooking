@@ -340,6 +340,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#dto-DashboardToday does not fully define cancellation filtering, occupancy rounding, overdue boundary or skipped-message date.
 - Answer (2026-10-03): user approved in chat. groom.byStatus excludes cancelled; hotel arrivals/departures and daycare.count exclude cancelled; occupancyPercent is a whole percent rounded to nearest integer, zero with no active room units; overdueCareTasks counts pending rows with dueAt < ctx.now; unsentMessages counts skipped rows by today's createdAt.
 
+## Q-1028 · T-0202 C-09: what the บันทึกคืนเงิน dialog asks for
+- Status: open
+- Task: T-0202 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 06#scr-C-09 says only "dialog" for บันทึกคืนเงิน (`refunds.create`). The request also takes an optional `bookingId` / `billId`, and C-09 does not load the customer's past bookings or bills, so there is nothing to pick them from.
+- Proposed decision (implemented):
+  - The dialog asks for ยอดที่คืน (> 0), วิธี (`refund_mode` labels), หลักฐานการโอน (optional photo, kind `proof`) and เหตุผล (≥ 3). It sends the refund for the customer without a booking or bill.
+  - Refunds tied to a booking stay with the booking flow (R-07 cancel → refund).
+  - The other dialogs: Blacklist / ยกเลิก Blacklist takes a reason (Q-0034). กำหนดระดับเอง takes ระดับ 1–4 or อัตโนมัติ plus a reason. ปรับเครดิต takes +/− and an amount (the new balance must be ≥ 0) plus a reason.
+
 ## Q-0035 · T-0155: missing LINE channel and non-customer skipped recipients
 - Status: answered
 - Task: T-0155 · Asked by: agent (codex) · Date: 2026-10-02

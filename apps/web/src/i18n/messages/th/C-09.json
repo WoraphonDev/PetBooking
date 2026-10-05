@@ -65,5 +65,22 @@
   "pickDate": "เลือกวันที่",
   "invalid": "ค่าไม่ถูกต้อง",
   "savePet": "บันทึกน้อง",
-  "petAdded": "เพิ่มน้องแล้ว"
+  "petAdded": "เพิ่มน้องแล้ว",
+  "blacklist": "Blacklist",
+  "unblacklist": "ยกเลิก Blacklist",
+  "overrideLevel": "กำหนดระดับเอง",
+  "levelAuto": "อัตโนมัติ",
+  "adjustCredit": "ปรับเครดิต",
+  "creditDelta": "ปรับยอด",
+  "creditAdd": "+ เพิ่ม",
+  "creditDeduct": "− หัก",
+  "creditBelowZero": "ยอดเครดิตต้องไม่ติดลบ",
+  "recordRefund": "บันทึกคืนเงิน",
+  "refundAmount": "ยอดที่คืน",
+  "refundMode": "วิธี",
+  "refundProof": "หลักฐานการโอน (แนะนำ)",
+  "reason": "เหตุผล",
+  "reasonRequired": "กรุณาใส่เหตุผลอย่างน้อย 3 ตัวอักษร",
+  "confirmAction": "ยืนยัน",
+  "actionDone": "บันทึกแล้ว"
 }

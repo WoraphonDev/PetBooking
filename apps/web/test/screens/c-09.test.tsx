@@ -1,7 +1,13 @@
 import type { CustomerDetail } from "@app/contracts/dto/customer-detail";
+import { CustomersBlacklistRequest } from "@app/contracts/endpoints/customers.blacklist";
+import { CustomersCreditRequest } from "@app/contracts/endpoints/customers.credit";
+import { CustomersReliabilityOverrideRequest } from "@app/contracts/endpoints/customers.reliabilityOverride";
 import { PetsCreateRequest } from "@app/contracts/endpoints/pets.create";
+import { RefundsCreateRequest } from "@app/contracts/endpoints/refunds.create";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { ActionFields, CustomerActionsBar } from "../../src/components/c-09/actions";
+import { blacklistBody, creditBody, customerActions, emptyRefund, overrideBody, refundBody } from "../../src/components/c-09/actions-logic";
 import {
   ageLabel,
   CreditTab,
@@ -270,6 +276,78 @@ describe("C-09 sections", () => {
   });
 });
 
+describe("ext-M3 actions", () => {
+  it("owner gets all four, front desk only บันทึกคืนเงิน, staff none", () => {
+    expect(customerActions("owner")).toEqual(["blacklist", "override", "credit", "refund"]);
+    expect(customerActions("front_desk")).toEqual(["refund"]);
+    expect(customerActions("staff")).toEqual([]);
+    const html = renderToStaticMarkup(<CustomerActionsBar t={t} c={customer()} list={customerActions("owner")} onPick={vi.fn()} />);
+    for (const text of [messages.blacklist, messages.overrideLevel, messages.adjustCredit, messages.recordRefund])
+      expect(html, text).toContain(text);
+    expect(
+      renderToStaticMarkup(<CustomerActionsBar t={t} c={customer({ blacklisted: true })} list={["blacklist"]} onPick={vi.fn()} />),
+    ).toContain(messages.unblacklist);
+  });
+
+  it("builds each body with a reason ≥ 3", () => {
+    expect(blacklistBody({ blacklisted: false }, " x ")).toBeNull();
+    expect(CustomersBlacklistRequest.parse(blacklistBody({ blacklisted: true }, " ok now "))).toEqual({
+      blacklisted: false,
+      reason: "ok now",
+    });
+    expect(CustomersReliabilityOverrideRequest.parse(overrideBody("auto", "back to auto"))).toEqual({
+      level: null,
+      reason: "back to auto",
+    });
+    expect(overrideBody(1, "risky")).toEqual({ level: 1, reason: "risky" });
+    expect(creditBody({ sign: -1, amountSatang: 5_000, reason: "fix" }, 3_000).errors).toEqual({ balance: true });
+    expect(creditBody({ sign: 1, amountSatang: null, reason: "" }, 0).errors).toEqual({ amountSatang: true, reason: true });
+    expect(CustomersCreditRequest.parse(creditBody({ sign: -1, amountSatang: 2_000, reason: " used " }, 3_000).body)).toEqual({
+      deltaSatang: -2_000,
+      reason: "used",
+    });
+    expect(refundBody(id(1), emptyRefund()).errors).toEqual({ amountSatang: true, mode: true, reason: true });
+    expect(
+      RefundsCreateRequest.parse(
+        refundBody(id(1), { amountSatang: 30_000, mode: "bank_transfer", reason: "คืนมัดจำ", proofFileId: id(9) }).body,
+      ),
+    ).toEqual({ customerId: id(1), amountSatang: 30_000, mode: "bank_transfer", reason: "คืนมัดจำ", proofFileId: id(9) });
+  });
+
+  it("each dialog shows its fields", () => {
+    const render = (action: "blacklist" | "override" | "credit" | "refund") =>
+      renderToStaticMarkup(
+        <ActionFields
+          t={t}
+          c={customer()}
+          action={action}
+          requestTicket={vi.fn()}
+          busy={false}
+          cancelLabel={common.cancel}
+          onClose={vi.fn()}
+          onSubmit={vi.fn()}
+        />,
+      );
+    expect(render("blacklist")).toContain(messages.reason);
+    const level = render("override");
+    for (const text of ["ระดับ 1", "ระดับ 4", messages.levelAuto, messages.reason]) expect(level, text).toContain(text);
+    const credit = render("credit");
+    for (const text of [messages.balance, messages.creditAdd, messages.creditDeduct, messages.creditDelta])
+      expect(credit, text).toContain(text);
+    const refund = render("refund");
+    for (const text of [
+      messages.refundAmount,
+      messages.refundMode,
+      "โอนคืน",
+      "เงินสด",
+      "เครดิต",
+      messages.refundProof,
+      messages.confirmAction,
+    ])
+      expect(refund, text).toContain(text);
+  });
+});
+
 describe("CustomerScreen", () => {
   it("loads customers.get, shows the chosen tab and creates pets with pets.create", () => {
     mock.params = "tab=pets";
@@ -279,6 +357,20 @@ describe("CustomerScreen", () => {
     expect(html).toMatch(/aria-selected="true"[^>]*>น้อง</);
     expect(mock.query).toHaveBeenCalledWith("customers.get", expect.objectContaining({ params: { customerId: id(1) } }));
     expect(mock.mutation).toHaveBeenCalledWith("pets.create", expect.objectContaining({ invalidate: ["customers.get", "search.quick"] }));
+    for (const key of ["customers.blacklist", "customers.reliabilityOverride", "customers.credit", "refunds.create"])
+      expect(mock.mutation, key).toHaveBeenCalledWith(
+        key,
+        expect.objectContaining({ invalidate: expect.arrayContaining(["customers.get"]) }),
+      );
+  });
+
+  it("shows the owner buttons from auth.me", () => {
+    mock.data = { "customers.get": customer(), "auth.me": { staff: { role: "owner" } } };
+    expect(renderToStaticMarkup(<CustomerScreen customerId={id(1)} />)).toContain(messages.overrideLevel);
+    mock.data = { "customers.get": customer(), "auth.me": { staff: { role: "front_desk" } } };
+    const desk = renderToStaticMarkup(<CustomerScreen customerId={id(1)} />);
+    expect(desk).toContain(messages.recordRefund);
+    expect(desk).not.toContain(messages.overrideLevel);
   });
 
   it("role-hidden keys (front desk) leave out credit and the internal note", () => {
