@@ -382,6 +382,20 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
+## Q-1016 · T-0076 C-09: deferred tabs, pet photo crop, vaccine labels, booking prefill
+- Status: open
+- Task: T-0076 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. The ประวัติ tab and the credit history need `customers.timeline`, which the card's step 2 defers.
+  2. รูปโปรไฟล์ is "image upload crop 1:1" (C-11 profile, used by the add-pet dialog), but there is no crop component.
+  3. `PetSummary.vaccineStatus` (ok / warning / missing) has no Thai labels in enum-labels.th.json.
+  4. "จองให้ลูกค้านี้ → C-03 พร้อมลูกค้า", but C-03 doesn't read a customer from the URL.
+- Proposed decision (implemented):
+  1. The timeline tab is hidden and the credit tab shows the balance only, until the timeline task. The packages tab uses `customers.get.activePackages` (which already carries redemptions).
+  2. Photos are uploaded through the shared PhotoUploader (R-25 resize) without cropping; a crop step can be added to PhotoUploader later.
+  3. Interim labels live in C-09.json (วัคซีนครบ / วัคซีนต้องตรวจ / ไม่มีข้อมูลวัคซีน).
+  4. The button goes to `/console/bookings/new?customerId=`; a C-03 follow-up can preselect from it (together with Q-1012's date/time/groomer).
+
 ## Q-0087 · T-0189 recompute_reliability: which customers, which dates
 - Status: open (T-0189 ships these choices)
 - Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
