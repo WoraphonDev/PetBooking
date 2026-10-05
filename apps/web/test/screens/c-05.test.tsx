@@ -1,9 +1,23 @@
 import type { BookingDetail } from "@app/contracts/dto/booking-detail";
 import { BookingsCancelRequest } from "@app/contracts/endpoints/bookings.cancel";
+import { BookingsRecordDepositRequest } from "@app/contracts/endpoints/bookings.recordDeposit";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { BalanceLinkBody, CancelPreview, DepositFields } from "../../src/components/c-05/actions";
 import { BookingDetailScreen, BookingView, CancelFields } from "../../src/components/c-05/booking-detail-screen";
-import { cancelBody, isActive, offersChoice, policyLine } from "../../src/components/c-05/logic";
+import {
+  cancelBody,
+  canDecide,
+  canRecordDeposit,
+  canSendBalance,
+  canWaiveDeposit,
+  depositBody,
+  emptyDeposit,
+  isActive,
+  offersChoice,
+  policyLine,
+  reasonOk,
+} from "../../src/components/c-05/logic";
 import messages from "../../src/i18n/messages/th/C-05.json";
 import common from "../../src/i18n/messages/th/common.json";
 
@@ -148,6 +162,87 @@ describe("logic", () => {
   });
 });
 
+describe("ext-M3 logic", () => {
+  it("shows อนุมัติ/ปฏิเสธ, รับมัดจำ, ยกเว้นมัดจำ and the balance link by 06 'แสดงเมื่อ'", () => {
+    expect([canDecide({ status: "awaiting_approval" }), canDecide({ status: "confirmed" })]).toEqual([true, false]);
+    expect(
+      (["pending", "rejected", "submitted", "verified"] as const).map((depositStatus) => [
+        canRecordDeposit({ depositStatus }),
+        canWaiveDeposit({ depositStatus }),
+      ]),
+    ).toEqual([
+      [true, true],
+      [true, false],
+      [false, false],
+      [false, false],
+    ]);
+    expect([canSendBalance({ billId: id(9) }), canSendBalance({ billId: null })]).toEqual([true, false]);
+    expect([reasonOk(" ab "), reasonOk("abc"), reasonOk("x".repeat(501))]).toEqual([false, true, false]);
+  });
+
+  it("records a deposit: วิธี + ยอด > 0 required, ยอด starts at what is still due", () => {
+    const form = emptyDeposit({ depositRequiredSatang: 30_000, depositVerifiedSatang: 10_000 });
+    expect(form).toEqual({ method: null, amountSatang: 20_000, reference: "", proofFileId: null });
+    expect(depositBody(form).errors).toEqual({ method: true });
+    expect(depositBody({ ...form, method: "cash", amountSatang: 0 }).errors).toEqual({ amountSatang: true });
+    const { body } = depositBody({ ...form, method: "bank_transfer", reference: " TX123 ", proofFileId: id(60) });
+    expect(BookingsRecordDepositRequest.parse(body)).toEqual({
+      method: "bank_transfer",
+      amountSatang: 20_000,
+      reference: "TX123",
+      proofFileId: id(60),
+    });
+    expect(depositBody({ ...form, method: "cash" }).body).toEqual({ method: "cash", amountSatang: 20_000 });
+  });
+
+  it("deposit dialog shows วิธี / ยอด / เลขอ้างอิง / รูปหลักฐาน", () => {
+    const html = renderToStaticMarkup(
+      <DepositFields
+        t={t}
+        initial={emptyDeposit({ depositRequiredSatang: 30_000, depositVerifiedSatang: 0 })}
+        requestTicket={vi.fn()}
+        busy={false}
+        cancelLabel={common.cancel}
+        onClose={vi.fn()}
+        onSave={vi.fn()}
+      />,
+    );
+    for (const text of [
+      messages.depositMethod,
+      "เงินสด",
+      "PromptPay",
+      "โอนเงิน",
+      "บัตร",
+      messages.depositAmount,
+      'value="300"',
+      messages.depositReference,
+      messages.depositProof,
+      messages.saveDeposit,
+    ])
+      expect(html, text).toContain(text);
+  });
+
+  it("cancel preview shows the R-07 money result; the balance link shows amount + url", () => {
+    const html = renderToStaticMarkup(
+      <CancelPreview
+        t={t}
+        preview={{
+          isLate: true,
+          minutesBefore: 600,
+          freeCancelHours: 24,
+          forfeitSatang: 15_000,
+          returnSatang: 15_000,
+          returnMode: "credit",
+        }}
+      />,
+    );
+    for (const text of ["ยกเลิกช้า (น้อยกว่า 24 ชม.)", messages.previewForfeit, "฿150", messages.previewReturn, "คืนเป็นเครดิต"])
+      expect(html, text).toContain(text);
+    const link = renderToStaticMarkup(<BalanceLinkBody t={t} link={{ url: "https://pay.test/b/1", amountSatang: 45_000 }} />);
+    for (const text of [messages.balanceDue, "฿450", "https://pay.test/b/1"]) expect(link, text).toContain(text);
+  });
+});
+
 describe("BookingView", () => {
   const render = (b = booking()) =>
     renderToStaticMarkup(
@@ -214,6 +309,15 @@ describe("BookingView", () => {
       expect(html, text).toContain(text);
   });
 
+  it("shows the ext-M3 buttons by state", () => {
+    const waiting = render(booking({ status: "awaiting_approval", depositStatus: "pending", billId: id(9) }));
+    for (const text of [messages.approve, messages.decline, messages.recordDeposit, messages.waiveDeposit, messages.balanceLink])
+      expect(waiting, text).toContain(text);
+    const plain = render(booking({ status: "confirmed", depositStatus: "verified", billId: null }));
+    for (const text of [messages.approve, messages.recordDeposit, messages.waiveDeposit, messages.balanceLink])
+      expect(plain, text).not.toContain(`>${text}<`);
+  });
+
   it("hides cancel buttons once cancelled / not reserved", () => {
     const b = booking({ status: "cancelled" } as Partial<BookingDetail>);
     (b.stays[0] as { status: string }).status = "checked_in";
@@ -275,9 +379,22 @@ describe("BookingDetailScreen", () => {
     expect(html).toContain("B6910-0001");
     expect(mock.query).toHaveBeenCalledWith("bookings.get", expect.objectContaining({ params: { bookingId: id(1) } }), undefined);
     const mutations = Object.fromEntries(mock.mutation.mock.calls.map((c) => [c[0], c[1]]));
-    for (const key of ["bookings.cancel", "stays.cancel", "daycare.cancel"])
+    for (const key of [
+      "bookings.cancel",
+      "stays.cancel",
+      "daycare.cancel",
+      "bookings.approve",
+      "bookings.decline",
+      "bookings.recordDeposit",
+      "bookings.waiveDeposit",
+    ])
       expect(mutations[key], key).toMatchObject({ invalidate: expect.arrayContaining(["bookings.get", "calendar.day"]) });
     // the C-02D drawer is mounted closed (groom.jobCard disabled until a card is clicked)
     expect(mock.query.mock.calls.find((c) => c[0] === "groom.jobCard")?.[2]).toEqual({ enabled: false });
+    expect(mock.mutation.mock.calls.map((c) => c[0])).toContain("bookings.balanceLink");
+    // R-07 preview loads only once the cancel dialog is open and ใครยกเลิก is picked
+    expect(mock.query.mock.calls.find((c) => c[0] === "bookings.cancelPreview")?.[2]).toEqual({ enabled: false });
+    // C-06 is mounted closed, opened from the drawer's เช็คอิน
+    expect(mock.mutation.mock.calls.map((c) => c[0])).toContain("groom.checkIn");
   });
 });
