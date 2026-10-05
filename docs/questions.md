@@ -547,6 +547,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. The timeline shows the actor type with interim Thai labels in C-05.json (ร้าน / ลูกค้า / ระบบ / ผู้ดูแลระบบ).
   3. The thumbnail links to `/console/slips`.
 
+## Q-1023 · T-0200 C-05: "มีบิล open", deposit default, and hosting C-06
+- Status: open
+- Task: T-0200 · Asked by: agent (claude) · Date: 2026-10-05
+- Question:
+  1. ส่งลิงก์จ่ายยอดคงเหลือ shows when "มีบิล open", but `BookingDetail` has `billId` without the bill's status.
+  2. The รับมัดจำ dialog gives no default amount.
+  3. C-05 hosts C-02D, whose เช็คอิน opens C-06 (Q-1013 / Q-1020).
+- Proposed decision (implemented):
+  1. The button shows whenever `billId` is set. A paid / void bill gets `BILL_NOT_OPEN` from the server (Q-0040), shown as a toast. Alternative: add `billStatus` to BookingDetail (spec change).
+  2. ยอด starts at `depositRequiredSatang − depositVerifiedSatang` and can be edited.
+  3. C-05 passes `onCheckIn` to the drawer and mounts `CheckInDialog`. With this, Q-1015 item 1 is done: the cancel dialog now shows the `bookings.cancelPreview` result for the chosen ใครยกเลิก, and confirm waits for it.
+
 ## Q-0095 · T-0233 bills.addPayment: change_satang and a fully paid bill
 - Status: open (T-0233 ships the interim choice; human review)
 - Task: T-0233 · Asked by: agent (claude) · Date: 2026-10-04
