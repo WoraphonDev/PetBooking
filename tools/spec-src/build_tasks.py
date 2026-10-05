@@ -479,6 +479,11 @@ def api_task(ms, gkey, items):
         tests.append(f"**{e['key']}** ({e['method']} `{e['path']}`)")
         if e["key"] == "admin.login":
             allowed += ["packages/db/src/schema/identity.ts", "packages/db/migrations/**"]
+        if e["key"] == "feedback.create":
+            # Q-1001: admin.feedback needs platform_admin enqueue/dispatch support (07 §1.1, Q-0009); owned by this task.
+            allowed += ["packages/server/src/notify/enqueue.ts", "packages/server/src/notify/dispatch.ts",
+                        "packages/server/test/notify/enqueue.test.ts", "packages/server/test/notify/dispatch.test.ts"]
+            deps.append("INF-NOTIFY-RENDER")  # shares dispatch.ts with T-0320 (merged)
         tests.append("  - happy path: response ตรง schema `" + res + "` และค่าที่บันทึกใน DB ตรงกับ 'maps to' ของแต่ละฟิลด์")
         for code in [c.strip() for c in e["errors"].split(",") if c.strip()]:
             tests.append(f"  - error `{code}`")
