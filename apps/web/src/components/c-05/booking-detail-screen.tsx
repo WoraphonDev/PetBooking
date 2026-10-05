@@ -1,5 +1,6 @@
 "use client";
 import type { BookingDetail } from "@app/contracts/dto/booking-detail";
+import { BillsOpenResponse } from "@app/contracts/endpoints/bills.open";
 import { BookingsApproveResponse } from "@app/contracts/endpoints/bookings.approve";
 import { BookingsBalanceLinkResponse } from "@app/contracts/endpoints/bookings.balanceLink";
 import { BookingsCancelResponse } from "@app/contracts/endpoints/bookings.cancel";
@@ -33,6 +34,7 @@ import {
   type CancelForm,
   cancelBody,
   canDecide,
+  canOpenBill,
   canRecordDeposit,
   canSendBalance,
   canWaiveDeposit,
@@ -63,6 +65,7 @@ export function BookingDetailScreen({ bookingId }: { bookingId: string }) {
   const recordDeposit = useApiMutation("bookings.recordDeposit", { response: BookingsRecordDepositResponse, invalidate });
   const waiveDeposit = useApiMutation("bookings.waiveDeposit", { response: BookingsWaiveDepositResponse, invalidate });
   const balanceLink = useApiMutation("bookings.balanceLink", { response: BookingsBalanceLinkResponse });
+  const openBill = useApiMutation("bills.open", { response: BillsOpenResponse, invalidate: [...invalidate, "bills.list"] });
   const [drawer, setDrawer] = useState<string | null>(null);
   const [checkIn, setCheckIn] = useState<string | null>(null);
   const [link, setLink] = useState<BookingsBalanceLinkResponse | null>(null);
@@ -92,7 +95,7 @@ export function BookingDetailScreen({ bookingId }: { bookingId: string }) {
         b={b}
         timezone={timezone}
         onOpenAppointment={setDrawer}
-        busy={approve.isPending || balanceLink.isPending}
+        busy={approve.isPending || balanceLink.isPending || openBill.isPending}
         onCancelBooking={() => setDialog({ kind: "booking" })}
         onCancelStay={(id) => setDialog({ kind: "stay", id })}
         onCancelDaycare={(id) => setDialog({ kind: "daycare", id })}
@@ -104,6 +107,11 @@ export function BookingDetailScreen({ bookingId }: { bookingId: string }) {
         onRecordDeposit={() => setDialog({ kind: "deposit" })}
         onWaiveDeposit={() => setDialog({ kind: "waive" })}
         onBalanceLink={async () => setLink(await balanceLink.mutateAsync({ params: { bookingId }, body: {} }))}
+        onOpenBill={async () => {
+          // idempotent: an open bill of this booking comes back as is → C-18
+          const bill = await openBill.mutateAsync({ body: { bookingIds: [bookingId] } });
+          window.location.assign(`/console/bills/${bill.id}`);
+        }}
       />
       <AppointmentDrawer
         appointmentId={drawer}
@@ -212,6 +220,7 @@ export function BookingView(props: {
   onRecordDeposit?: () => void;
   onWaiveDeposit?: () => void;
   onBalanceLink?: () => void;
+  onOpenBill?: () => void;
   onCancelStay: (stayId: string) => void;
   onCancelDaycare: (visitId: string) => void;
 }) {
@@ -381,6 +390,11 @@ export function BookingView(props: {
           {canWaiveDeposit(b) ? (
             <Button type="button" variant="outline" className="h-11" onClick={props.onWaiveDeposit}>
               {t("waiveDeposit")}
+            </Button>
+          ) : null}
+          {canOpenBill(b) ? (
+            <Button type="button" className="h-11" disabled={props.busy} onClick={props.onOpenBill}>
+              {t("createBill")}
             </Button>
           ) : null}
           {canSendBalance(b) ? (
