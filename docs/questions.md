@@ -491,6 +491,17 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Implemented for now: (1) `mapUrl` = "" (the line renders empty); `summary` = "{petName}: {service names joined ', '}" joined " / "; `dateTime` = R-31 date + time of the first appointment. (2) The item keeps its catalog price snapshot with `customer_package_id` set (the bill redeems it at 0 later), so it counts in the estimate and the deposit.
 - Options: (1) A add `branch.map_url` (spec change + migration) / B drop the map line from the template. (2) A as implemented / B price 0 for package-paid items at booking time.
 
+## Q-1009 · T-0136 C-03: data the grooming form needs beyond the 06 table
+- Status: open
+- Task: T-0136 · Asked by: agent (claude) · Date: 2026-10-05
+- Question / gaps found while building C-03 (grooming tab):
+  1. "เพิ่มลูกค้า" must open C-10 as a dialog, but C-10 (T-0077) is not merged, so there is nothing to open.
+  2. "ใช้แพ็กเกจ" lists packages where R-14 canRedeem = ok, but `CustomerPackageItem` has no service id, size tier or share scope, so the client can't run canRedeemPackage.
+  3. `availability.groomSlots.pendingAppointments` needs `blockedUntil`, but `SlotList` slots only carry `endsAt`.
+  4. There are no Thai labels in the spec for `Quote.depositReason` (R-06 reasons) or `SlotList.reason`.
+  5. 06 lists only search.quick / groomSlots / hotel / daycare / quotes.create under "โหลดข้อมูล", but the fields also need customers.get (pets, level, blacklist), customers.packages, services.list (prices, add-on links), sizeTiers.list and staffUsers.list (groomers).
+- Proposed decision (implemented): (1) the button is shown but disabled until T-0077 lands; that card or a follow-up wires the dialog. (2) The client filters to active, unexpired packages with sessions left that belong to this pet or are shared; quotes.create / bookings.create enforce the rest of R-14 (PACKAGE_* errors). (3) The client sends the slot's endsAt; bookings.create re-checks overlaps and SLOT_TAKEN sends the user back to choose times. A spec change could add `blockedUntil` to SlotList. (4) Interim Thai labels live in C-03.json (same approach as Q-0117); a spec change could move them to enum-labels.th.json. (5) Those existing endpoints are read as-is; no new endpoint or field.
+
 ## Q-0113 · T-0279 stays.checkOut: where missingNote goes, and opening the bill
 - Status: open
 - Task: T-0279 · Asked by: agent (claude) · Date: 2026-10-05
