@@ -655,6 +655,16 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. The Thai labels in the 06 table go in `messages/th/C-06.json` (same precedent as Q-0043 / C-02D).
   3. `CheckInDialog({ appointmentId, onClose })` is exported. C-02 / C-05 render it from C-02D's `onCheckIn` (Q-1013) in a card that owns those files.
 
+## Q-1022 · T-0198 C-02D: previewing the no-show effects (R-07 / R-09) before confirming
+- Status: open
+- Task: T-0198 · Asked by: agent (claude) · Date: 2026-10-05
+- Question: 06#scr-C-02D asks the ลูกค้าไม่มา dialog to show the deposit result (R-07) and the reliability effect (R-09) before confirming. The drawer has `AppointmentCard.depositStatus` and `reliabilityLevel` only. It has no deposit amount, no `booking.policy_snapshot`, no other items of the booking (forfeit happens only once all of them end), and no no-show / late-cancel counts or override. No endpoint previews `groom.noShow`.
+- Proposed decision (implemented): the drawer also loads `branch.get` for `no_show_grace_minutes` (button rule). The dialog states the rule outcome:
+  - Deposit: "ริบมัดจำทั้งหมด (เมื่อทุกบริการในใบจองจบแล้ว)" when the deposit is `verified`, else "ไม่มีมัดจำที่ต้องริบ".
+  - Level: from the current level to "2 (or 1 with earlier no-shows / late cancels)", or "stays 1".
+  - An override (R-09 step 1) is not visible here, so the text can be wrong for overridden customers.
+  - Alternative: a preview field on AppointmentCard or a dry-run flag on groom.noShow (spec change).
+
 ## Q-0110 · T-0276 stays.changeRoom: moving to another room type
 - Status: open
 - Task: T-0276 · Asked by: agent (claude) · Date: 2026-10-05

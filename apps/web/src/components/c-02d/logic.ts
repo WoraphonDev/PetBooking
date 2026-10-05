@@ -5,14 +5,15 @@ import type { GroomAddSurchargeRequest } from "@app/contracts/endpoints/groom.ad
 import type { StaffRole } from "@app/contracts/enums";
 import { toLocalDate } from "@app/domain/time/local-time";
 
-export type Action = "checkIn" | "start" | "finish" | "cancel" | "surcharge";
+export type Action = "checkIn" | "start" | "finish" | "cancel" | "noShow" | "surcharge";
 
-/** 06 ปุ่ม/การกระทำ (notifyPickup / pickUp / noShow come with later tasks) */
+/** 06 ปุ่ม/การกระทำ (notifyPickup / pickUp come with later tasks); ลูกค้าไม่มา needs `noShow` (now + grace) */
 export function actions(
   a: Pick<AppointmentCard, "status" | "startsAt">,
   role: StaffRole | undefined,
   today: string,
   timezone: string,
+  noShow?: { now: string; graceMinutes: number },
 ): Action[] {
   const of = role === "owner" || role === "front_desk";
   const out: Action[] = [];
@@ -20,6 +21,9 @@ export function actions(
   if (role && a.status === "checked_in") out.push("start");
   if (role && a.status === "in_progress") out.push("finish");
   if (of && (a.status === "scheduled" || a.status === "checked_in")) out.push("cancel");
+  // OF, scheduled, now ≥ starts_at + branch_policy.no_show_grace_minutes
+  if (of && a.status === "scheduled" && noShow && Date.parse(noShow.now) >= Date.parse(a.startsAt) + noShow.graceMinutes * 60_000)
+    out.push("noShow");
   // บิลยังไม่ปิด is enforced by the server (AppointmentCard carries no bill state — Q-1013)
   if (of && (a.status === "checked_in" || a.status === "in_progress" || a.status === "done")) out.push("surcharge");
   return out;
@@ -62,3 +66,17 @@ export const CONDITION_KEY: Record<string, string> = {
   matted: "conditionMatted",
   skin_issue: "conditionSkinIssue",
 };
+
+/**
+ * ลูกค้าไม่มา preview (Q-1022): R-07 no_show forfeits the whole verified deposit once every item of the booking has
+ * ended; R-09 counts one more no-show, so the computed level becomes 2, or 1 with earlier no-shows / late cancels.
+ */
+export function noShowEffect(a: Pick<AppointmentCard, "depositStatus" | "reliabilityLevel">): {
+  deposit: "forfeit" | "none";
+  level: { from: number; to: "1" | "1-2" };
+} {
+  return {
+    deposit: a.depositStatus === "verified" ? "forfeit" : "none",
+    level: { from: a.reliabilityLevel, to: a.reliabilityLevel === 1 ? "1" : "1-2" },
+  };
+}
