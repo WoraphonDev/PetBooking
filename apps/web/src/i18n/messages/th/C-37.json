@@ -46,5 +46,10 @@
   "savePrices": "บันทึกราคา",
   "invalid": "ค่าไม่ถูกต้อง",
   "categoryMismatch": "หมวดนี้ใช้กับประเภทบริการนี้ไม่ได้",
-  "saved": "บันทึกแล้ว"
+  "saved": "บันทึกแล้ว",
+  "sectionSurcharges": "ค่าบริการเพิ่มหน้างาน",
+  "defaultAmount": "ราคาตั้งต้น",
+  "noSurcharges": "ยังไม่มีค่าบริการเพิ่ม",
+  "addSurcharge": "เพิ่มรายการ",
+  "saveSurcharges": "บันทึกค่าบริการเพิ่ม"
 }

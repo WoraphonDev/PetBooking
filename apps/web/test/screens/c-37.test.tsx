@@ -3,6 +3,7 @@ import type { SizeTierItem } from "@app/contracts/dto/size-tier-item";
 import { ServicesCreateRequest } from "@app/contracts/endpoints/services.create";
 import { ServicesSetPricesRequest } from "@app/contracts/endpoints/services.setPrices";
 import { ServicesUpdateRequest } from "@app/contracts/endpoints/services.update";
+import { SurchargeTypesUpsertRequest } from "@app/contracts/endpoints/surchargeTypes.upsert";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
@@ -10,15 +11,19 @@ import {
   emptyService,
   fromPrice,
   gridFrom,
+  invalidSurcharges,
   moveTarget,
   parseScope,
   pricesBody,
   serviceBody,
   serviceFormFrom,
+  surchargeRows,
+  surchargesBody,
   tierRows,
   updateFromCreate,
 } from "../../src/components/c-37/logic";
 import { ServiceEditor, ServiceList, ServicesScreen } from "../../src/components/c-37/services-screen";
+import { SurchargeSection } from "../../src/components/c-37/surcharges";
 import messages from "../../src/i18n/messages/th/C-37.json";
 import common from "../../src/i18n/messages/th/common.json";
 
@@ -237,18 +242,62 @@ describe("sections", () => {
   });
 });
 
+describe("surcharge types", () => {
+  const items = [
+    { id: id(70), nameTh: "ขนพันกัน", defaultAmountSatang: 20_000, status: "active" as const },
+    { id: id(71), nameTh: "ดุ", defaultAmountSatang: 10_000, status: "archived" as const },
+  ];
+
+  it("validates ชื่อ 1–60 / ราคาตั้งต้น ≥ 0 and sends only new and changed rows", () => {
+    const rows = surchargeRows(items);
+    expect(surchargesBody(rows, items)).toBeNull();
+    const added = [...rows, { key: "new-2", id: null, nameTh: " เห็บหมัด ", amountSatang: 15_000, active: true }];
+    added[1] = { ...(added[1] as (typeof added)[number]), active: true };
+    expect(SurchargeTypesUpsertRequest.parse(surchargesBody(added, items))).toEqual({
+      items: [
+        { id: id(71), nameTh: "ดุ", defaultAmountSatang: 10_000, status: "active" },
+        { nameTh: "เห็บหมัด", defaultAmountSatang: 15_000, status: "active" },
+      ],
+    });
+    const bad = [...rows, { key: "new-2", id: null, nameTh: " ", amountSatang: null, active: true }];
+    expect(invalidSurcharges(bad)).toEqual(["new-2"]);
+    expect(surchargesBody(bad, items)).toBeNull();
+    expect(invalidSurcharges([{ key: "x", id: null, nameTh: "x".repeat(61), amountSatang: 0, active: true }])).toEqual(["x"]);
+  });
+
+  it("shows ชื่อ / ราคาตั้งต้น / ใช้งาน per row and บันทึกค่าบริการเพิ่ม", () => {
+    const html = renderToStaticMarkup(<SurchargeSection t={t} items={items} busy={false} onSave={vi.fn()} />);
+    for (const text of [
+      messages.sectionSurcharges,
+      messages.name,
+      messages.defaultAmount,
+      messages.statusActive,
+      'value="ขนพันกัน"',
+      'value="200"',
+      messages.addSurcharge,
+      messages.saveSurcharges,
+    ])
+      expect(html, text).toContain(text);
+    expect(renderToStaticMarkup(<SurchargeSection t={t} items={[]} busy={false} onSave={vi.fn()} />)).toContain(messages.noSurcharges);
+  });
+});
+
 describe("ServicesScreen", () => {
   it("loads services.list (scope + archived) and sizeTiers.list; wires create / update / setPrices / setAddonLinks", () => {
     mock.params = "scope=hotel";
-    mock.data = { "services.list": [service()], "sizeTiers.list": tiers };
+    mock.data = { "services.list": [service()], "sizeTiers.list": tiers, "surchargeTypes.list": [] };
     const html = renderToStaticMarkup(<ServicesScreen />);
     expect(html).toContain(messages.title);
     expect(mock.query).toHaveBeenCalledWith("services.list", expect.objectContaining({ query: { scope: "hotel", includeArchived: true } }));
+    expect(mock.query).toHaveBeenCalledWith("surchargeTypes.list", expect.anything());
+    expect(html).toContain(messages.sectionSurcharges);
     expect(mock.mutation.mock.calls.map((c) => c[0])).toEqual([
       "services.create",
       "services.update",
       "services.setPrices",
       "services.setAddonLinks",
+      "surchargeTypes.upsert",
     ]);
+    expect(mock.mutation.mock.calls[4]?.[1]).toMatchObject({ invalidate: ["surchargeTypes.list"] });
   });
 });

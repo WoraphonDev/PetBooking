@@ -7,6 +7,8 @@ import { ServicesSetAddonLinksResponse } from "@app/contracts/endpoints/services
 import { ServicesSetPricesResponse } from "@app/contracts/endpoints/services.setPrices";
 import { ServicesUpdateResponse } from "@app/contracts/endpoints/services.update";
 import { SizeTiersListResponse } from "@app/contracts/endpoints/sizeTiers.list";
+import { SurchargeTypesListResponse } from "@app/contracts/endpoints/surchargeTypes.list";
+import { SurchargeTypesUpsertResponse } from "@app/contracts/endpoints/surchargeTypes.upsert";
 import { type ServiceScope, serviceCategoryValues, speciesValues } from "@app/contracts/enums";
 import { cn } from "cn";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -43,11 +45,12 @@ import {
   tierRows,
   updateFromCreate,
 } from "./logic";
+import { SurchargeSection } from "./surcharges";
 
 type T = ReturnType<typeof useTranslations<"C-37">>;
 const INVALIDATE = ["services.list"] as const;
 
-/** 06#scr-C-37 — owner manages services, add-on links and the price table per size / coat (surcharge types come later). */
+/** 06#scr-C-37 — owner manages services, add-on links and the price table per size / coat and surcharge types. */
 export function ServicesScreen() {
   const t = useTranslations("C-37");
   const common = useTranslations("common");
@@ -57,11 +60,16 @@ export function ServicesScreen() {
   const scope = parseScope(params.get("scope"));
   const services = useApiQuery("services.list", { query: { scope, includeArchived: true }, response: ServicesListResponse });
   const tiers = useApiQuery("sizeTiers.list", { response: SizeTiersListResponse });
+  const surcharges = useApiQuery("surchargeTypes.list", { response: SurchargeTypesListResponse });
   const invalidate = [...INVALIDATE];
   const create = useApiMutation("services.create", { response: ServicesCreateResponse, invalidate });
   const update = useApiMutation("services.update", { response: ServicesUpdateResponse, invalidate });
   const setPrices = useApiMutation("services.setPrices", { response: ServicesSetPricesResponse, invalidate });
   const setLinks = useApiMutation("services.setAddonLinks", { response: ServicesSetAddonLinksResponse, invalidate });
+  const upsertSurcharges = useApiMutation("surchargeTypes.upsert", {
+    response: SurchargeTypesUpsertResponse,
+    invalidate: ["surchargeTypes.list"],
+  });
   /** null = list only, "new" = blank form, else the service being edited */
   const [selected, setSelected] = useState<"new" | string | null>(null);
 
@@ -162,6 +170,15 @@ export function ServicesScreen() {
           }}
         />
       ) : null}
+      <SurchargeSection
+        t={t}
+        items={surcharges.data ?? []}
+        busy={upsertSurcharges.isPending}
+        onSave={async (body) => {
+          await upsertSurcharges.mutateAsync({ body });
+          saved();
+        }}
+      />
     </div>
   );
 }
