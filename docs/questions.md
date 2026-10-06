@@ -998,6 +998,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   5. Completing the existing card will exceed the 400-line target. Proposed split: keep get/update in T-0044 and ask a human to create a follow-up card for setHours plus its warning response; alternatively explicitly approve a larger PR #202 while retaining all tests. The agent will not edit read-only spec files or create an unapproved task identifier.
 - Answer (2026-10-04): user explicitly approved the complete proposal above, including the larger PR with all tests retained. Implementing these approved decisions within T-0044 allowed paths; read-only spec files remain for human correction.
 
+## Q-1047 · T-0176 liff.quote: item shape, hotel/daycare arrays, checks done here vs at createBooking
+- Status: open (T-0176 ships the interim choices below; human review)
+- Task: T-0176 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05#ep-liff.quote lists `groom[]`, `stays[]`, `daycare[]` as "object[]" with no item fields and no errors. The card limits it to groom[] only, and does not say which R-04 / R-11 / R-12 checks belong to a quote.
+- Implemented for now:
+  1. groom item = `{ petId, serviceIds[] ≥ 1, addonIds[], startsAt, groomerId, stationId, sizeTierId? }`. This is the quotes.create item without groomerPreference / customerPackageId: a slot picked from liff.groomSlots plus the size choice.
+  2. `stays[]` / `daycare[]` must be empty for now (VALIDATION_FAILED otherwise), and `groom[]` needs at least one item. The hotel / daycare LIFF cards fill them in.
+  3. Errors here:
+     - MODULE_DISABLED, CUSTOMER_BLACKLISTED
+     - NOT_FOUND: another owner's pet, another shop's service / groomer / station
+     - VALIDATION_FAILED: inactive or not-online services
+     - WEIGHT_REQUIRED (size choice only without a weight), PRICE_NOT_FOUND
+     - Slot availability (R-04), the vaccine gate (R-11) and the other eligibility reasons (R-12) are not re-checked; liff.createBooking does that before saving.
+  4. Deposit (R-06) uses this customer's reliability / deposit_exempt. requiresApproval = !auto_confirm_grooming or reliability 1. cancelSummary uses the grooming free-cancel hours (Q-0036 wording).
+- Proposed decision: accept; spell out the item fields in 05 when the hotel / daycare LIFF quote cards land.
+
 ## Q-0054 · C-20: when to show "ส่ง LINE อีกครั้ง", and choosing the paper size
 - Status: answered (implemented in T-0252); DTO follow-up open
 - Task: T-0252 · Asked by: agent (claude) · Date: 2026-10-03
