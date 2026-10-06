@@ -577,6 +577,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Interim (implemented): `FeedbackWidget` / `FeedbackForm` are ready in `components/c-46` (message, optional screenshot upload via staff.uploadUrl kind feedback, current page, version shown as "—" when none is passed, send → feedback.create + thank-you toast) but are not mounted anywhere yet.
 - Answer (2026-10-06): user approved in chat: build-time `NEXT_PUBLIC_APP_VERSION` (git sha) and a follow-up card that mounts FeedbackWidget in the console and staff shells.
 
+## Q-1036 · T-0174 liff.bookings / liff.booking / liff.addVaccination: scope, summary and detail fields
+- Status: open (T-0174 ships the interim choices below; human review)
+- Task: T-0174 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05#ep-liff.bookings has an optional `scope` (upcoming | past) with no definition or default. MyBookingItem.summary, MyBookingDetail.payment / cancelPreview / mapUrl / icsUrl are "calc" without a format. liff.addVaccination lists no checks.
+- Implemented for now:
+  1. `scope` defaults to upcoming. upcoming = status awaiting_deposit / deposit_review / awaiting_approval / confirmed, soonest first_service_at first. past = cancelled / expired / closed, latest first. Only the signed-in customer's bookings in this branch; another customer's or another shop's booking → NOT_FOUND.
+  2. `summary` = distinct grooming item names, then room type names, then daycare session names, joined with ", ". `petNames` = distinct pet names across the lines.
+  3. `payment` = the deposit still due, the same rule as bookings.get; there is no bill-due case here. `cancelPreview` = R-07 `customer_cancel` while R-21 allows cancelling, else null.
+  4. R-21 uses `policy_snapshot.rescheduleCutoffHours`, default 24 when an old snapshot lacks it; a booking without first_service_at cannot be cancelled or rescheduled.
+  5. `mapUrl` = `https://www.google.com/maps/search/?api=1&query={lat},{lng}` (null without coordinates). `icsUrl` = the relative liff.ics path.
+  6. liff.addVaccination uses the same checks as vaccinations.create:
+     - the code must be a vaccine_type of the pet's species
+     - administeredOn ≤ today (branch-local), and expiresOn ≥ administeredOn
+     - the proof must be a vaccine_proof file
+     - failures → VALIDATION_FAILED
+     staff.vaccine_review goes to active front_desk only, per 07.
+- Proposed decision: accept as implemented.
+
 ## Q-0091 · T-0112 bookings.create: booking_confirmed wording and package-paid items
 - Status: answered
 - Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
