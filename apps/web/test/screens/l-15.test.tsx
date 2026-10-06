@@ -115,7 +115,8 @@ it("ส่งคำขอ in the PDPA dialog calls liff.dataRequest and toasts '
   const html = renderToStaticMarkup(section);
   expect(html).toContain(messages.requestDelete);
   const send = elements(section).find((e) => e.props.children === messages.send);
-  await (send?.props.onClick as () => Promise<void>)();
+  if (!send) throw new Error("send button not rendered");
+  await (send.props.onClick as () => Promise<void>)();
   expect(mock.mutation).toHaveBeenCalledWith("liff.dataRequest");
   expect(mock.mutate).toHaveBeenCalledWith({ params: { branchSlug: "shop-a" }, body: { type: "delete" } });
   expect(mock.toast.success).toHaveBeenCalledWith(messages.requestSent);
