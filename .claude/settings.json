@@ -1,11 +1,6 @@
 {
   "permissions": {
-    "ask": [
-      "Edit(/docs/spec/**)",
-      "Edit(/.github/**)",
-      "Edit(/scripts/**)",
-      "Edit(/tools/spec-src/**)"
-    ],
+    "ask": ["Edit(/docs/spec/**)", "Edit(/.github/**)", "Edit(/scripts/**)", "Edit(/tools/spec-src/**)"],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
