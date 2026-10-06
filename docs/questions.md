@@ -341,13 +341,14 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-03): user approved in chat. groom.byStatus excludes cancelled; hotel arrivals/departures and daycare.count exclude cancelled; occupancyPercent is a whole percent rounded to nearest integer, zero with no active room units; overdueCareTasks counts pending rows with dueAt < ctx.now; unsentMessages counts skipped rows by today's createdAt.
 
 ## Q-1028 · T-0202 C-09: what the บันทึกคืนเงิน dialog asks for
-- Status: open
+- Status: answered
 - Task: T-0202 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 06#scr-C-09 says only "dialog" for บันทึกคืนเงิน (`refunds.create`). The request also takes an optional `bookingId` / `billId`, and C-09 does not load the customer's past bookings or bills, so there is nothing to pick them from.
 - Proposed decision (implemented):
   - The dialog asks for ยอดที่คืน (> 0), วิธี (`refund_mode` labels), หลักฐานการโอน (optional photo, kind `proof`) and เหตุผล (≥ 3). It sends the refund for the customer without a booking or bill.
   - Refunds tied to a booking stay with the booking flow (R-07 cancel → refund).
   - The other dialogs: Blacklist / ยกเลิก Blacklist takes a reason (Q-0034). กำหนดระดับเอง takes ระดับ 1–4 or อัตโนมัติ plus a reason. ปรับเครดิต takes +/− and an amount (the new balance must be ≥ 0) plus a reason.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0035 · T-0155: missing LINE channel and non-customer skipped recipients
 - Status: answered
@@ -384,13 +385,14 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user chose in chat. Body `{ send?: boolean }` (default false = only return the link). No bill on the booking, or the bill is paid/void → `BILL_NOT_OPEN` (409). `amountSatang = bill.total_satang − bill.paid_satang`. `url = APP_BASE_URL + /liff/{branch.booking_slug}/pay/{billId}` (route of L-14; 01 §6 APP_BASE_URL is the base for links in messages). send=true enqueues `customer.balance_link` to booking.customer_id with `amount` formatted by R-31 formatTHB(always).
 
 ## Q-1025 · T-0206 C-34: the full PromptPay id is never loaded, so which id the test QR uses
-- Status: open
+- Status: answered
 - Task: T-0206 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 06#scr-C-34 shows หมายเลข PromptPay as "แสดง+แก้ (แสดงแบบปิดบัง)" and a QR ทดสอบ ฿1 (R-30 amount 100). `branch.get` returns only `promptpay.idMasked`, and `branch.setPromptpay` needs the full `id` on every save, so the screen cannot build a QR for the saved account. `shell-console/navigation/C-34.ts` is also outside the card's allowed paths (Q-0048).
 - Proposed decision (implemented):
   - The current account shows as "บัญชีปัจจุบัน {idMasked}", and the id input starts empty: the owner types the id again whenever they save.
   - The test QR is built on the client with R-30 `promptPayPayload` from the typed type + id (shown once the id is valid). The same check flags a wrong id before the request; the server still answers INVALID_PROMPTPAY_ID / INVALID_CREDENTIALS.
   - The menu entry is left for a follow-up.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0061 · T-0186 expire_hold: bookAgainUrl
 - Status: answered (2026-10-04)
@@ -401,7 +403,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
 ## Q-1016 · T-0076 C-09: deferred tabs, pet photo crop, vaccine labels, booking prefill
-- Status: open
+- Status: answered
 - Task: T-0076 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. The ประวัติ tab and the credit history need `customers.timeline`, which the card's step 2 defers.
@@ -413,20 +415,23 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. Photos are uploaded through the shared PhotoUploader (R-25 resize) without cropping; a crop step can be added to PhotoUploader later.
   3. Interim labels live in C-09.json (วัคซีนครบ / วัคซีนต้องตรวจ / ไม่มีข้อมูลวัคซีน).
   4. The button goes to `/console/bookings/new?customerId=`; a C-03 follow-up can preselect from it (together with Q-1012's date/time/groomer).
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1029 · T-0149: wiring LineSender + reply tokens into the dispatcher is outside allowed paths
-- Status: open
+- Status: answered
 - Question: Step 6 asks to connect LineSender to the dispatcher with the reply-token store (R-19 / SP-03). `packages/server/src/notify/dispatch.ts` hard-codes `replyTokenAgeSeconds: null` and is not in T-0149's allowed_paths; the code that builds `NotifyDeps` for the cron runner is not either. Also 01 §7 says a 401 must notify the owner by Web Push, but no notification template exists for it.
 - Evidence: T-0149 allowed_paths (only integrations/line, crypto.ts); 01 §7; R-19 step 2; packages/server/src/notify/dispatch.ts lines 121, 205.
 - Done in T-0149: `createLineSender({ onUnauthorized })`, `createReplyTokenStore()` (put / ageSeconds / take, 50 s), `createLineSenderFromEnv()`.
 - Proposed decision: a follow-up card (or T-0183 webhook.line) with `notify/dispatch.ts` + the runner deps in scope: pass `ageSeconds` into selectChannel, `take` the token for `line_reply`, and set `line_channel.status = error` in onUnauthorized. The owner Web Push on 401 needs a template key in 07 first.
+- Answer (2026-10-06): user approved in chat: dispatcher wiring goes to card T-0324 (PR #293). Add notification template `owner.line_error` (Web Push to owners when LINE answers 401; e.g. 'การเชื่อมต่อ LINE OA ของร้านขาด กรุณาตรวจสอบ token') by spec change.
 
 ## Q-0087 · T-0189 recompute_reliability: which customers, which dates
-- Status: open (T-0189 ships these choices)
+- Status: answered
 - Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
 - Question: 07 §2 says "นับ 12 เดือนใหม่ทุก customer ที่มีเหตุการณ์ใน 13 เดือน" without defining "เหตุการณ์", the date each no-show counts on, or "completed" for the job.
 - Evidence: 07 §2 recompute_reliability, R-09, Q-0074 (completed in bills.close), Q-0084 (cancel_is_late).
 - Proposed decision (implemented): customers with a booking created or cancelled in the last 13 months, plus any customer whose stored counts are non-zero (so old counts decay to 0). Window = now − 12 calendar months. No-show counts on the child's date (groom starts_at, stay check_in_date, daycare visit_date); late cancel = booking.cancel_is_late = true with cancelled_at in the window; completed = picked_up / checked_out children of the customer's bills paid in the window (as bills.close). Writes no_show_count_12m, late_cancel_count_12m and reliability_level only when one of them changes.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0063 · T-0187 reminder_24h: "active", dateTime, service and reschedules
 - Status: answered (2026-10-04)
@@ -500,11 +505,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user chose option A in chat. Add `booking.cancel_is_late boolean` (null = not cancelled), written by bookings.cancel / liff.cancel from R-07 `isLate`; recompute_reliability counts bookings with `cancel_is_late = true` and `cancelled_at` in the last 12 months. Needs a spec change (02 + 05) and a migration in the card that owns it; T-0189 waits for it.
 
 ## Q-0117 · T-0089 AD-05: no Thai labels for data_request_status
-- Status: open
+- Status: answered
 - Task: T-0089 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 06#scr-AD-05 shows `data_request.status` as an enum, but enum-labels.th.json has only `data_request_type`, not `data_request_status` (open / done / rejected).
 - Proposed decision: add `data_request_status: { open: "รอดำเนินการ", done: "ดำเนินการแล้ว", rejected: "ปฏิเสธ" }` to enum-labels.th.json (spec change), then AD-05 switches to enumLabel().
 - Interim (implemented): the three labels live in AD-05.json (same approach as Q-0043 for feedback_status).
+- Answer (2026-10-06): user approved in chat: add `data_request_status` to enum-labels.th.json (spec change, batch with other missing enum labels); AD-05 then uses enumLabel().
 
 ## Q-0088 · T-0193 staff templates: what `duplicateFlag` and `isLate` render as
 - Status: answered (2026-10-05)
@@ -516,22 +522,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Implemented for now (T-0193): option A shape without fixing the wording — the template substitutes whatever text the caller sends and trims the trailing space when it is empty. The liff.uploadSlip / liff.payUploadSlip / liff.cancel cards need the wording to pass.
 
 ## Q-0114 · T-0143 C-46: mounting the feedback button and the app version
-- Status: open
+- Status: answered
 - Task: T-0143 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: (1) 06#scr-C-46 is a floating button on every page (OFS), but T-0143 may only touch `components/c-46/**`; the console / staff shells (`shell-console/**`, `shell-staff/**`) that would mount it belong to other cards. (2) "เวอร์ชัน = feedback_report.app_version (git sha), auto" — no build-time source of the version is defined (no env var in 01 / next.config).
 - Proposed decision: (1) a follow-up shell card (or widening T-0143 by a generator edit, as Q-1001) mounts `<FeedbackWidget appVersion={…} />` in the console and staff layouts. (2) expose the git sha at build time as `NEXT_PUBLIC_APP_VERSION` (set by CI / Vercel from the commit sha) and pass it in.
 - Interim (implemented): `FeedbackWidget` / `FeedbackForm` are ready in `components/c-46` (message, optional screenshot upload via staff.uploadUrl kind feedback, current page, version shown as "—" when none is passed, send → feedback.create + thank-you toast) but are not mounted anywhere yet.
+- Answer (2026-10-06): user approved in chat: build-time `NEXT_PUBLIC_APP_VERSION` (git sha) and a follow-up card that mounts FeedbackWidget in the console and staff shells.
 
 ## Q-0091 · T-0112 bookings.create: booking_confirmed wording and package-paid items
-- Status: open (T-0112 ships the interim choices below; human review)
+- Status: answered
 - Task: T-0112 · Asked by: agent (claude) · Date: 2026-10-04
 - Question: (1) 07 §1 `customer.booking_confirmed` needs `mapUrl`, but no table has a map link for the branch; `summary` / `dateTime` have no format. (2) A groom item paid by a customer package (`groom[].customerPackageId`, R-14): should its price snapshot still count in `estimated_total_satang` and the R-06 deposit?
 - Evidence: 07 §1 row `customer.booking_confirmed`; 02 `branch` (no map column); 05#dto-MyBookingItem `summary` = "ชื่อบริการ/ประเภทห้อง"; R-03, R-06, R-14.
 - Implemented for now: (1) `mapUrl` = "" (the line renders empty); `summary` = "{petName}: {service names joined ', '}" joined " / "; `dateTime` = R-31 date + time of the first appointment. (2) The item keeps its catalog price snapshot with `customer_package_id` set (the bill redeems it at 0 later), so it counts in the estimate and the deposit.
 - Options: (1) A add `branch.map_url` (spec change + migration) / B drop the map line from the template. (2) A as implemented / B price 0 for package-paid items at booking time.
+- Answer (2026-10-06): user approved in chat: (1) B — drop the map line from `customer.booking_confirmed` (no `branch.map_url`). (2) A — package-paid items keep their price snapshot in the estimate and deposit, as implemented.
 
 ## Q-1009 · T-0136 C-03: data the grooming form needs beyond the 06 table
-- Status: open
+- Status: answered
 - Task: T-0136 · Asked by: agent (claude) · Date: 2026-10-05
 - Question / gaps found while building C-03 (grooming tab):
   1. "เพิ่มลูกค้า" must open C-10 as a dialog, but C-10 (T-0077) is not merged, so there is nothing to open.
@@ -540,13 +548,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   4. There are no Thai labels in the spec for `Quote.depositReason` (R-06 reasons) or `SlotList.reason`.
   5. 06 lists only search.quick / groomSlots / hotel / daycare / quotes.create under "โหลดข้อมูล", but the fields also need customers.get (pets, level, blacklist), customers.packages, services.list (prices, add-on links), sizeTiers.list and staffUsers.list (groomers).
 - Proposed decision (implemented): (1) the button is shown but disabled until T-0077 lands; that card or a follow-up wires the dialog. (2) The client filters to active, unexpired packages with sessions left that belong to this pet or are shared; quotes.create / bookings.create enforce the rest of R-14 (PACKAGE_* errors). (3) The client sends the slot's endsAt; bookings.create re-checks overlaps and SLOT_TAKEN sends the user back to choose times. A spec change could add `blockedUntil` to SlotList. (4) Interim Thai labels live in C-03.json (same approach as Q-0117); a spec change could move them to enum-labels.th.json. (5) Those existing endpoints are read as-is; no new endpoint or field.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0113 · T-0279 stays.checkOut: where missingNote goes, and opening the bill
-- Status: open
+- Status: answered
 - Task: T-0279 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: (1) 05 accepts `missingNote` when belongings are missing, but no column stores it (stay_belonging has only returned_at). (2) "เปิด/เติมบิลอัตโนมัติ (bills.openFromBooking)" names a function that 05 does not define; bills.open is the endpoint that builds stay lines.
 - Proposed decision: (1) add `stay.checkout_note` (or `stay_belonging.missing_note`) by a spec change, or record it in booking_event.reason of the checked_out event. (2) "openFromBooking" = bills.open with the stay's booking, in the same transaction; an already open bill is kept as is (it already carries the stay lines).
 - Interim (implemented): missingNote is required when an item is missing but not stored; after the check-out commits, a confirmed booking without a bill gets one through bills.open (a second transaction — if it fails, the stay is still checked out and the bill can be opened from C-17/C-18).
+- Answer (2026-10-06): user approved in chat: (1) store missingNote in `booking_event.reason` of the checked_out event (no new column). (2) openFromBooking = bills.open as proposed.
 
 ## Q-0092 · T-0112: bookings.create PR exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-04)
@@ -561,7 +571,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user chose option A in chat. gross = Σ qty × unit; discount = Σ line discounts + bill discount; net = gross − discount (= bill.total). Paid bills by branch-local closed_at day, void excluded. day = one row per day; service/groomer = per line with the bill discount spread like R-13 #1 (service = service or quick-item name; lines without performer → one "ไม่ระบุช่าง" row), billCount = distinct bills in the row; method = posted payments per method (net = amount, gross/discount 0). payments[] = Σ posted payments of those bills per method (deposit/credit included). totals = row shape without key. 05 text to be updated by spec change.
 
 ## Q-1015 · T-0137 C-05: cancel without R-07 preview, event actor, slip dialog
-- Status: open
+- Status: answered
 - Task: T-0137 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. "ยกเลิกใบจอง" is `bookings.cancelPreview → bookings.cancel` with the R-07 money shown before confirming, but the card's step 2 defers `bookings.cancelPreview`.
@@ -571,9 +581,10 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   1. The cancel dialog asks who cancels (ลูกค้าขอ / ร้าน), refund or credit when the snapshot's `cancelRefundMode` is customer_choice, and a reason, then calls bookings.cancel without a preview. The cancelPreview task adds the R-07 amounts to the same dialog.
   2. The timeline shows the actor type with interim Thai labels in C-05.json (ร้าน / ลูกค้า / ระบบ / ผู้ดูแลระบบ).
   3. The thumbnail links to `/console/slips`.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1023 · T-0200 C-05: "มีบิล open", deposit default, and hosting C-06
-- Status: open
+- Status: answered
 - Task: T-0200 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. ส่งลิงก์จ่ายยอดคงเหลือ shows when "มีบิล open", but `BookingDetail` has `billId` without the bill's status.
@@ -583,9 +594,10 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   1. The button shows whenever `billId` is set. A paid / void bill gets `BILL_NOT_OPEN` from the server (Q-0040), shown as a toast. Alternative: add `billStatus` to BookingDetail (spec change).
   2. ยอด starts at `depositRequiredSatang − depositVerifiedSatang` and can be edited.
   3. C-05 passes `onCheckIn` to the drawer and mounts `CheckInDialog`. With this, Q-1015 item 1 is done: the cancel dialog now shows the `bookings.cancelPreview` result for the chosen ใครยกเลิก, and confirm waits for it.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1026 · T-0207 C-35: booking slug source, storefront origin, PDF export
-- Status: open
+- Status: answered
 - Task: T-0207 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. 06#scr-C-35 loads only `line.status`, but ลิงก์หน้าร้าน is `branch.booking_slug`, which `LineStatus` does not carry.
@@ -597,13 +609,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. The link is `window.location.origin + /b/{slug}`.
   3. PNG: the poster SVG is drawn on a canvas at 150 dpi. PDF: the browser print dialog (save as PDF), with `@page` set to A4/A5.
   4. The menu entry is left for a follow-up.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0095 · T-0233 bills.addPayment: change_satang and a fully paid bill
-- Status: open (T-0233 ships the interim choice; human review)
+- Status: answered
 - Task: T-0233 · Asked by: agent (claude) · Date: 2026-10-04
 - Question: (1) 05 says "bill.paid_satang/change_satang อัปเดต" but not whether change_satang is the last payment's change or the total over the bill's cash payments. (2) R-15 `applyPayment` returns `BILL_ALREADY_PAID` when due = 0, which is not in the endpoint's error list.
 - Evidence: 05#ep-bills.addPayment, R-15 step 5, 02 bill.change_satang.
 - Implemented for now: (1) change_satang accumulates (+ change of each cash payment); bills.voidPayment does not touch it. (2) due = 0 answers `BILL_ALREADY_PAID` (409, defined in 05 §1).
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0055 · bills.list date/order and bills.updateLine rules
 - Status: answered (implemented in T-0230)
@@ -681,7 +695,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision (implemented, labels need approval): Thai labels for all 31 R-27 actions, the audited entity types and non-staff actors live in `messages/th/C-26.json` (keys use `__` for the action's dot because next-intl keys cannot contain dots; a test keeps the list equal to R-27). Links: bill → C-18, booking → C-05, customer → C-09, stay → C-15, pet → C-11; other entities show their name only. Diff = one line per changed key `key: before → after` (audit rows hold changed keys only). Time = formatThaiDate + formatTime in the branch timezone. Spec owner: add `audit_action` (and entity type) labels to enum-labels.th.json, then C-26 switches to `enumLabel()`; enable `navigation/C-26.ts` in a card that owns it.
 
 ## Q-1013 · T-0135 C-02D: check-in via C-06, owner link, "บิลยังไม่ปิด", and "requested"
-- Status: open
+- Status: answered
 - Task: T-0135 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. เช็คอิน "เปิด dialog C-06", but C-06 (T-0138) isn't merged, and C-02D can't own it.
@@ -693,9 +707,10 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. The owner name shows without a link until a `customerId` is added to AppointmentCard (spec change).
   3. The buttons follow the status rule only, and the server refuses when the bill is closed.
   4. `specific` is read as "requested".
+- Answer (2026-10-06): user approved in chat: implemented choices accepted; spec change adds `customerId`, `billId`, `billStatus`, `sizeTierCode` to AppointmentCard so the drawer can link the owner and gate the surcharge / bill buttons.
 
 ## Q-1020 · T-0138 C-06: consent text and new size label are not in groom.jobCard; labels; hosts
-- Status: open
+- Status: answered
 - Task: T-0138 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. 06#scr-C-06 loads only `groom.jobCard`, but ข้อความใบยินยอม is `branch_policy.grooming_consent_text` (not in `JobCard`) and the SIZE_CHANGED dialog needs the new size name "X" (the warning carries only `newSizeTierId` and `newPriceSatang`).
@@ -705,9 +720,10 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   1. While open, C-06 also loads `branch.get` (OF can read it) for `policy.groomingConsentText`. After a SIZE_CHANGED check-in it loads `sizeTiers.list` for `labelTh`. A null `newPriceSatang` shows "ยังไม่มีราคา". Alternative: add both to JobCard and the warning data (spec change).
   2. The Thai labels in the 06 table go in `messages/th/C-06.json` (same precedent as Q-0043 / C-02D).
   3. `CheckInDialog({ appointmentId, onClose })` is exported. C-02 / C-05 render it from C-02D's `onCheckIn` (Q-1013) in a card that owns those files.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1022 · T-0198 C-02D: previewing the no-show effects (R-07 / R-09) before confirming
-- Status: open
+- Status: answered
 - Task: T-0198 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 06#scr-C-02D asks the ลูกค้าไม่มา dialog to show the deposit result (R-07) and the reliability effect (R-09) before confirming. The drawer has `AppointmentCard.depositStatus` and `reliabilityLevel` only. It has no deposit amount, no `booking.policy_snapshot`, no other items of the booking (forfeit happens only once all of them end), and no no-show / late-cancel counts or override. No endpoint previews `groom.noShow`.
 - Proposed decision (implemented): the drawer also loads `branch.get` for `no_show_grace_minutes` (button rule). The dialog states the rule outcome:
@@ -715,22 +731,25 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - Level: from the current level to "2 (or 1 with earlier no-shows / late cancels)", or "stays 1".
   - An override (R-09 step 1) is not visible here, so the text can be wrong for overridden customers.
   - Alternative: a preview field on AppointmentCard or a dry-run flag on groom.noShow (spec change).
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1027 · T-0247 C-02D: "ถ้ายังไม่มีบิล" after ลูกค้ารับน้องแล้ว
-- Status: open
+- Status: answered
 - Task: T-0247 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: after `groom.pickUp`, 06#scr-C-02D shows a เปิดบิล button "ถ้ายังไม่มีบิล". `AppointmentCard` / `JobCard` carry no bill id or bill state (same gap as Q-1013 item 3).
 - Proposed decision (implemented): after a successful pick-up, the drawer always opens a small dialog: ลูกค้ารับน้องแล้ว — เปิดบิล?
   - เปิดบิล calls `bills.open { bookingIds: [bookingId] }`, which is idempotent: an open bill of the booking comes back as is. It then navigates to `/console/bills/{id}` (C-18).
   - A booking whose bill is already closed gets the server's error as a toast.
   - Alternative: add `billId` to AppointmentCard (spec change).
+- Answer (2026-10-06): user approved in chat: accepted; AppointmentCard gains `billId` / `billStatus` (spec change, with Q-1013) so the เปิดบิล button follows the bill.
 
 ## Q-0110 · T-0276 stays.changeRoom: moving to another room type
-- Status: open
+- Status: answered
 - Task: T-0276 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 05#ep-stays.changeRoom lists only `roomUnitId` in the request, but its validation says another room type needs `keepPrice` and its effect says the price changes only when `repriceToType=true` — neither field is in the request table. Which field (one boolean or two), and how is the new price set (default-plan room_rate for the pet's tier × nights, estimate and open bill line updated)?
 - Proposed decision: one optional `repriceToType: boolean` (default false = keep the booked price, which covers "keepPrice"); true → nightly price from the new type's default-plan rate (R-28 pickPrice), room_total = nights × nightly, booking estimate and an open bill's stay_night line follow.
 - Interim (implemented): same-type moves only; another type → VALIDATION_FAILED `{ roomUnitId: "another room type is not supported yet (Q-0110)" }`.
+- Answer (2026-10-06): user approved in chat: one optional `repriceToType: boolean` (default false = keep price) as proposed (spec change + follow-up).
 
 ## Q-0097 · T-0163 groom.noShow: too early, and the customer.no_show money line
 - Status: answered (user chose in chat, 2026-10-04)
@@ -809,7 +828,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision (implemented): owner only; reason trimmed ≥ 3 (VALIDATION_FAILED). Open bill with posted payments → VALIDATION_FAILED (void the payments first); already void → BILL_NOT_OPEN. Paid → void: commissions reversed (reversed_at), counter/booking redemptions reversed with sessions back (exhausted → active if not expired), packages sold on the bill → void, credit payments returned and `deposit_credit` rows of the bill's bookings taken back — both as credit_ledger `void_reversal` (ref bill), the balance may go below zero; every posted payment → voided with the reason; bookings closed → confirmed, applied deposit → verified (so the next bill can apply it again), bill_id = null; receipt_no kept; audit `bill.void`. visit_count is not decreased.
 
 ## Q-1017 · T-0078 C-11: missing labels, favourite photo id, clearing profile fields
-- Status: open
+- Status: answered
 - Task: T-0078 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. enum-labels.th.json has no `photo_kind` (profile / before / after / stay) or `record_source` (shop / customer / import), which the photo filter and the vaccine "ที่มา" column show.
@@ -819,20 +838,23 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   1. Interim Thai labels in C-11.json (as Q-0117) until a spec change adds both enums to enum-labels.th.json.
   2. The current photo is shown, and the select defaults to "ไม่เปลี่ยน" (the key is left out); picking a photo sends its id. A spec change could add `favoriteStylePhotoId` to PetDetail.shop.
   3. Blank profile fields are left out (unchanged). A spec change could make them nullable in pets.update.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0112 · T-0292 C-14: departure / in-house card data missing from StayCard
-- Status: open
+- Status: answered
 - Task: T-0292 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 06#scr-C-14 loads only stays.today (StayCard[]), but the ออก card asks for the stay's add-ons and the bundle bath (อาบน้ำก่อนกลับ) status, and the พักอยู่ card for pending care tasks ("งานค้าง"). StayCard has only `bundleAppointmentId` and no add-ons or task counts.
 - Proposed decision: extend 05#dto-StayCard (or a C-14-only item) with `addonNames: string[]`, `bundleStatus: groom_appointment_status | null` and `pendingTaskCount: int` (pending tasks due by now), filled by stays.today, in a card that owns the contract/service; then C-14 shows them.
 - Interim (implemented): C-14 shows every field StayCard has (times, pet, room, intake/agreement/vaccine marks, night x/y) and leaves those three out. The menu entry navigation/C-14.ts is outside the card's paths (Q-0048).
+- Answer (2026-10-06): user approved in chat: extend StayCard with `addonNames: string[]`, `bundleStatus: groom_appointment_status | null`, `pendingTaskCount: int` (spec change + follow-up card).
 
 ## Q-0096 · T-0067 admin.resolveDataRequest: the access export
-- Status: open (user chose in chat, 2026-10-04: T-0067 records the resolution only)
+- Status: answered
 - Task: T-0067 · Asked by: agent (claude) · Date: 2026-10-04
 - Question: 05 says `access` → "สร้างไฟล์ JSON ข้อมูลของคนนั้นส่งทาง LINE/อีเมล", but no file_kind, notification template (07 §1) or storage/link rule exists for it, LINE text messages cannot carry a file, and customers have no email of record by default. What goes in the JSON (owner_profile only, or customers/pets/bookings/bills of every shop), where is it stored, and how is it delivered?
 - Implemented for now (T-0067): access + done / rejected only sets status, note, resolved_by, resolved_at. delete + done erases owner_profile as 05 says (also last name and nickname as part of the name) + audit `pdpa.erase`; any resolved request → `INVALID_TRANSITION` (data_request has no state machine in 03).
 - Needs: a spec change (file_kind / template / delivery) and a follow-up card for the export.
+- Answer (2026-10-06): user approved in chat: the access export is deferred until after MVP; a platform admin exports manually meanwhile. T-0067 behaviour stands.
 
 ## Q-0105 · T-0157 pets.setStatus: the future-bookings warning and which reminders to cancel
 - Status: answered (user chose in chat, 2026-10-05)
@@ -881,10 +903,11 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Implementation: scope changes must be generated in a separate spec-change PR; the shared fixture correction is included there. Screen task PRs inherit that base and change only their own page/component/messages/tests/navigation entry and Status log.
 
 ## Q-0108 · T-0104 / T-0105 need LINE ID token verification from T-0149
-- Status: open
+- Status: answered
 - Task: T-0104, T-0105 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: auth.staffLine (T-0104) and staffMe.linkLine (T-0105) must verify a LINE ID token against PLATFORM_LINE_LOGIN_CHANNEL_ID, but the verifier (`integrations/line/idtoken.ts` + fake mode) belongs to T-0149, which is not merged (it waits on H-03) and is not in either card's depends_on. Both cards' allowed paths exclude `integrations/line/**`.
 - Proposed decision: add T-0149 to the depends_on of T-0104 and T-0105 (task generator / spec owner) and leave both cards until T-0149 is merged. No agent work started on them.
+- Answer (2026-10-06): user approved in chat: add T-0149 to depends_on of T-0104 and T-0105 (generator edit).
 
 ## Q-1006 · T-0039: Playwright is not an allowed dependency of the card
 - Status: resolved (2026-10-06)
@@ -894,13 +917,14 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: regenerate T-0039 with `apps/web/package.json` + `pnpm-lock.yaml` in allowed_paths and `@playwright/test` (exact version) under Dependencies. No work started on the card.
 - Decision (project owner, 2026-10-06): add `@playwright/test` 1.63.0 (matches the installed Chromium 1243) to `apps/web` devDependencies; the card now lists `apps/web/package.json` + `pnpm-lock.yaml` in allowed_paths and has a *Dependencies* section. `tsx` 4.23.15 (already in `@app/db`) is added to `@app/server` for the `db:seed` script.
 ## Q-1007 · T-0062 imports.create: storage cannot read the uploaded CSV
-- Status: open
+- Status: answered
 - Task: T-0062 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: imports.create must parse the uploaded CSV, but `ObjectStorage` (`packages/server/src/integrations/storage/index.ts`, outside the card's allowed_paths) only has presignPut / presignGet / head / delete — there is no way to read the object's bytes on the server. The row-error codes for `import_job.errors[].code` (`{row, column, code, message}`) are also not listed anywhere in 02/04/05.
 - Proposed decision: (1) a scoped follow-up (or widening T-0062) adds `getText(key): Promise<string | null>` to ObjectStorage (S3 GetObject + the fake storage); (2) a spec-change lists the row codes, e.g. `REQUIRED`, `INVALID_PHONE` (R-22), `INVALID_ENUM`, `INVALID_DATE`, `INVALID_NUMBER`, `UNKNOWN_COLUMN`, with Thai messages. No work started on the card.
+- Answer (2026-10-06): user approved in chat: add `ObjectStorage.getText(key)` and list the row error codes (REQUIRED, INVALID_PHONE, INVALID_ENUM, INVALID_DATE, INVALID_NUMBER, UNKNOWN_COLUMN) with Thai messages (spec change + widened T-0062 scope).
 
 ## Q-1012 · T-0134 C-02: size code, the C-02D drawer, and empty-slot prefill
-- Status: open
+- Status: answered
 - Task: T-0134 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. The appointment card shows "พันธุ์/ขนาด: pet.breed + size_tier.code", but `AppointmentCard` / `PetSummary` carry no size tier.
@@ -912,15 +936,17 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. Clicking a card opens the booking (`/console/bookings/{bookingId}`, C-05) for now; T-0135's scope should include `components/c-02/**` so it can swap the link for the drawer.
   3. The click goes to `/console/bookings/new?date=&time=&groomerId=`; a follow-up on C-03 can prefill from those.
   4. The appointment keeps its station; groom.reschedule's R-04 check answers SLOT_TAKEN when it's busy, and the card stays where it was.
+- Answer (2026-10-06): user approved in chat: accepted; AppointmentCard gains `sizeTierCode` (spec change, with Q-1013).
 
 ## Q-1008 · T-0115 calendar.day: week response, time off / closure shape, hotel counts
-- Status: open
+- Status: answered
 - Task: T-0115 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 05 gives the response as `CalendarDay` but says "week คืน 7 CalendarDay"; `groomers[].timeOff[]` and `closures[]` only cite a column (`starts_at`); the card says hotel/daycare should return 0 until M5, but stay/daycare_visit are already merged and 05 defines them as counts.
 - Proposed decision (implemented): `CalendarDayResponse = CalendarDay | CalendarDay[7]` (the 7 local days from `date`); `timeOff[]` = `TimeOffItem` and `closures[]` = `ClosureItem` (the same row DTOs timeOff.list / closures.list return, so C-02 gets end time and reason for the grey bar); closures limited to scope all/grooming; groomers = active `is_groomer` staff; appointments start in the local day, cancelled left out, no_show kept; `workingHours` = that weekday's row or null; hotel/daycare counted as in dashboard.today (arrivals/departures by date, inHouse = checked_in now, daycare visits not cancelled).
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1024 · T-0201 C-07: "booking ต้องอนุมัติ", the original-slip link, and the menu entry
-- Status: open
+- Status: answered
 - Task: T-0201 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. ยืนยัน + อนุมัติจอง shows when the "booking ต้องอนุมัติ", but `SlipItem` carries no booking status or approval flag.
@@ -930,6 +956,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   1. The button shows for every submitted booking slip. The server applies `approveBooking` only when the booking waits for approval (`approvalDueAt` set), so otherwise it acts as a plain ยืนยัน. Alternative: add `needsApproval` to SlipItem (spec change).
   2. The link is an in-page anchor `#slip-{duplicateOfSlipId}`.
   3. Turn the menu entry on in a follow-up that owns the file. The page works at `/console/slips` and is linked from C-05.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0099 · T-0160 bookings.decline: the verified deposit and the refund line
 - Status: answered (user chose in chat, 2026-10-04)
@@ -945,23 +972,26 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Notes on T-0070 choices: the menu lists list pages only (detail/form routes with ids, `…/new`, `…/edit` are reached from their list page); C-02D, C-06 and C-46 are a drawer, a dialog and a floating button, not routes. The guard uses the existing `auth.me` pipeline (`withStaff`) because `resolveStaff` is not exported by `@app/server`; the 403 view shows the API's FORBIDDEN message.
 
 ## Q-0093 · T-0312: sales report menu enablement is outside card scope
-- Status: open
+- Status: answered
 - Task: T-0312 · Asked by: agent (claude) · Date: 2026-10-04
 - Evidence: `apps/web/src/components/shell-console/navigation/C-23.ts` has `implemented: false` and leaves enablement to the screen task (Q-0048), but T-0312's allowed_paths do not include it (same situation as Q-0089 for C-25).
 - Question: add C-23 to the generator's enable_menu screen set (human edit of `tools/spec-src/build_tasks.py` + regeneration, as in #192) so a follow-up can switch the menu on? The page works at `/console/reports/sales` meanwhile; the menu file is untouched.
+- Answer (2026-10-06): user approved in chat: one generator edit enables the menu entries of C-23, C-14, C-34, C-35 and C-07 (Q-0048 follow-ups).
 
 ## Q-1010 · T-0081 C-31: no staff endpoint to list public holidays; no labels for closure_source
-- Status: open
+- Status: answered
 - Task: T-0081 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: (1) "เพิ่มวันหยุดราชการ" must open "dialog เลือกวันจาก public_holiday", but the only endpoint that lists public_holiday is `admin.listHolidays` (platform admin only), so the shop can't see the list. (2) The closures table shows "ที่มา (source)", but enum-labels.th.json has `closure_scope` and no `closure_source` (manual / public_holiday).
 - Proposed decision (implemented): (1) for now the dialog takes a year, dates picked by the owner and a scope; `closures.importHolidays` already keeps only the dates that are public holidays of that year. A follow-up could add a staff read endpoint (e.g. `closures.publicHolidays?year=`) so the dialog can list them. (2) The interim labels "ตั้งเอง" / "วันหยุดราชการ" live in C-31.json (same approach as Q-0117) until a spec change adds `closure_source` to enum-labels.th.json.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0115 · T-0045 branch.setModules: the future-bookings warning
-- Status: open
+- Status: answered
 - Task: T-0045 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 05 says switching off a module with future bookings is allowed and "ตอบ warnings[] จำนวนใบจองที่ค้าง", but defines no warning code/message/data, and BranchSettings has no warnings field (same gap as Q-1004 for setHours).
 - Proposed decision (as Q-1004): BranchSettings + `warnings[]` (always an array); one warning per module switched from on to off that still has bookings with an unfinished item of that module ahead — `{ code: "MODULE_HAS_FUTURE_BOOKINGS", message: "ยังมีใบจองที่ค้างอยู่ {n} ใบ", data: { module, bookingCount } }`. Unfinished = grooming scheduled/checked_in/in_progress ending after now, stays reserved/checked_in checking out today or later, daycare reserved/checked_in from today.
 - Interim (implemented): as proposed; nothing is cancelled.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0090 · T-0038: object storage PR exceeds the small-PR budget
 - Status: answered (user approved size exception in chat, 2026-10-05)
@@ -970,7 +1000,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-05): user approved the exception, as for Q-0050. Ship the card as one PR.
 
 ## Q-1014 · T-0077 C-10: create/update field sets, address autocomplete
-- Status: open
+- Status: answered
 - Task: T-0077 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. C-10 edits every field in one form, but `customers.create` doesn't take birth date, address, emergency contact or deposit exempt, and `customers.update` doesn't take `sourceChannel` / `referralNote`.
@@ -978,13 +1008,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision (implemented):
   1. A new customer is saved with customers.create, then a customers.update right away for the remaining fields (only when any is filled). In edit mode "รู้จักร้านจาก" / "รายละเอียด" are shown read-only. A spec change could add the missing fields to each contract.
   2. ตำบล/แขวง and อำเภอ/เขต are free text and จังหวัด is a select of the 77 provinces until a postal-code dataset is added to 10.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0111 · T-0274 stays.saveIntake: prefill, and replacing medications / belongings
-- Status: open
+- Status: answered
 - Task: T-0274 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: (1) 05 lists "prefill จาก pet_shop_profile + customer.emergency_contact_*" as an effect of the PUT, but every prefilled field is in the request and emergency name/phone are required — is prefill only the screen's job (StayDetail has no prefill data before an intake exists)? (2) medications[] / belongings[] are full lists; stay_medication deletes cascade to care_task (done history included), and belongings carry returned_at.
 - Proposed decision: (1) prefill is the C-15 screen's job (it reads pets.get / customers.get); the PUT stores what it receives. (2) the PUT replaces both lists; an unchanged medication (same name, dose, times, instructions) keeps its row and task history, a changed one is replaced; belongings are replaced (intake happens before anything is returned).
 - Interim (implemented): as proposed. Also: emergency phone normalised by R-22 (INVALID_PHONE), vet phone stored as typed (05 gives it no rule), complete=false leaves an earlier completed_at alone, photos must be stay_update files, reserved / checked_in only (else STATUS_NOT_ALLOWED).
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0101 · Multi-endpoint API cards exceed the small-PR budget
 - Status: answered (user approved in chat, 2026-10-04)
@@ -1033,20 +1065,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user approved the explicit shared menu fixtures and dashboard current-page coverage (Q-0082), and deferred economy-mode status until the read API exists while retaining quota/list/copy and the policy settings link (Q-0083).
 
 ## Q-0116 · T-0048 staffUsers.update: staff photo file kind, the disabled-groomer warning, invited → active
-- Status: open
+- Status: answered
 - Task: T-0048 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: (1) `photoFileId` → staff_user.photo_file_id, but `file_kind` (02) has no staff/profile kind for people (only pet_profile, logo, …), so the upload cannot be checked/committed. (2) "นัดอนาคตของช่างที่ถูกปิดยังอยู่ — ตอบ warnings[]" names no code/message/data. (3) status allows only active ↔ disabled; may an invited person be disabled (cancel an invite) here?
 - Proposed decision: (1) add `staff_photo` to `file_kind` (migration + spec) and commit with it. (2) `{ code: "GROOMER_HAS_FUTURE_APPOINTMENTS", message: "ช่างยังมีนัดที่ค้างอยู่ {n} นัด", data: { appointmentIds } }` for scheduled/checked_in/in_progress appointments ending after now. (3) invited stays invited until staff.inviteAccept; changing an invited person's status → STATUS_NOT_ALLOWED.
 - Interim (implemented): (1) photoFileId → VALIDATION_FAILED until answered; (2) and (3) as proposed. role staff in staffUsers.list gets only id/displayName/isGroomer/photoUrl (keys left out, as Q-0032).
+- Answer (2026-10-06): user approved in chat: (1) add `staff_photo` to `file_kind` (spec change + migration). (2) and (3) as proposed.
 
 ## Q-1011 · T-0107 workingHours.set: the warning shape and break rules
-- Status: open
+- Status: answered
 - Task: T-0107 · Asked by: agent (claude) · Date: 2026-10-05
 - Question: 05 says "ตอบ warnings[] นัดอนาคตที่อยู่นอกเวลาใหม่" but defines no code/message/data (same gap as Q-1004 / Q-0116), and the request table gives no rule for the optional break times.
 - Proposed decision (implemented): the response is `StaffUserItem` + optional `warnings[]` (as staffUsers.update, Q-0116), with one warning `{ code: "WORKING_HOURS_AFFECTED", message: "มีนัดของช่างอยู่นอกเวลาทำงานใหม่ {n} นัด", data: { appointmentIds } }`. It covers the staff member's scheduled / checked_in / in_progress appointments at the session branch that end after now and either fall on a day off, start before / end after the new hours, or overlap the break; nothing is moved. Only the session branch's rows are replaced. A break must have both ends and lie inside the working time (`breakStartsAt ≥ startsAt`, `breakEndsAt > breakStartsAt`, `breakEndsAt ≤ endsAt`), otherwise VALIDATION_FAILED.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1021 · T-0139 C-36: time-off list range, which staff member, and how warnings show
-- Status: open
+- Status: answered
 - Task: T-0139 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. `timeOff.list` needs `from` / `to`, but 06#scr-C-36 gives no range.
@@ -1057,6 +1091,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. The form adds a พนักงาน select of the non-disabled staff.
   3. Each warning message shows as a toast (same as staffUsers.update on this screen), with the Q-1011 message "มีนัดของช่างอยู่นอกเวลาทำงานใหม่ {n} นัด". timeOff.create's `affected` opens a dialog listing the bookings (or "ไม่มีนัดที่ทับวันลา").
   - The weekly hours are edited per person in a dialog (แก้ตารางงาน) with the same จ.–อา. rows.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-0089 · T-0314: occupancy menu enablement is outside card scope
 - Status: answered (scope merged in #192; implemented in T-0314)
@@ -1077,14 +1112,15 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user approved explicit-file Vitest commands plus unchanged full pnpm verify for T-0059, T-0044 and T-0053. Renumbered from Q-0092 to Q-1002 after Claude independently merged Q-0092; the earlier chat references this same test-runner question.
 
 ## Q-1019 · Admin service tests fail after 15:00 UTC (real clock vs 12 h admin session)
-- Status: open
+- Status: answered
 - Task: none (maintenance; files belong to T-0319 and other admin API cards) · Asked by: agent (claude) · Date: 2026-10-05
 - Evidence: 21 tests in `packages/server/test/services/admin/{createOrg,feedback,orgs,supportEnd,supportStart,updateFeedback,updateOrg}.test.ts` get 401 from 15:00 UTC every day, so `pnpm verify` fails. They create the platform_admin session with `createSession(env.db, …, TEST_NOW)` (TEST_NOW = 2026-10-05T03:00:00Z, `test/helpers/setup.ts`); admin sessions last 12 h (`src/auth/session.ts`), but `withAdmin` reads the real clock because these files do not fake `Date`. Reproduced at 15:23 UTC: 7 files / 21 tests failed.
 - Proposed fix (test-only, no src or TTL change): pin the clock like `test/services/dashboard/today.test.ts` — `vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(TEST_NOW);` at the start of each file's `beforeEach`, `vi.useRealTimers()` in `afterEach`. Verified after 15:00 UTC: `vitest run test/services/admin` 13 files / 69 tests pass; `pnpm verify` passes.
 - Question: no card lists all seven files in `allowed_paths` — accept this as one maintenance PR on a non-task branch (CODEOWNERS review), or create a maintenance card for it?
+- Answer (2026-10-06): user approved in chat: one maintenance PR on a non-task branch, test-only clock pinning as proposed.
 
 ## Q-1018 · T-0085 C-37: drag ordering, status labels, existing service photo
-- Status: open
+- Status: answered
 - Task: T-0085 · Asked by: agent (claude) · Date: 2026-10-05
 - Question:
   1. ลำดับ is a "drag handle", but there is no drag-and-drop list component and services.update takes one sortOrder at a time.
@@ -1094,6 +1130,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   1. ↑ / ↓ buttons swap a service with its neighbour (two services.update calls); a drag handle can replace them later.
   2. Interim labels in C-37.json (ใช้งาน / เก็บแล้ว).
   3. The current photo is shown; `photoFileId` is sent only when a new photo is uploaded.
+- Answer (2026-10-06): user approved in chat: the proposed / implemented decision is accepted.
 
 ## Q-1003 · T-0059 exceeds the small-PR target
 - Status: answered (user approved in chat, 2026-10-04)
