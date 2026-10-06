@@ -1,9 +1,8 @@
-// customer.booking_cancelled — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.booking_cancelled (LINE push). reason / moneyLine come ready from bookings.cancel; empty lines are left out.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "การจอง {bookingNo} ถูกยกเลิก\n{reason}\n{moneyLine}";
-
-export function render(payload: NotificationPayloads["customer.booking_cancelled"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.booking_cancelled"]): Rendered {
+  const lines = [`การจอง ${payload.bookingNo ?? ""} ถูกยกเลิก`, String(payload.reason ?? ""), String(payload.moneyLine ?? "")];
+  return { text: lines.filter((l, i) => i === 0 || l !== "").join("\n") };
 }

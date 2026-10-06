@@ -1,9 +1,13 @@
-// customer.booking_declined — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.booking_declined (LINE push). refundLine comes ready from bookings.decline ("" when nothing is returned,
+// Q-0040 answer) — an empty line is left out.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "ขออภัย ร้านไม่สามารถรับการจอง {bookingNo} ได้\nเหตุผล: {reason}\n{refundLine}";
-
-export function render(payload: NotificationPayloads["customer.booking_declined"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.booking_declined"]): Rendered {
+  const lines = [
+    `ขออภัย ร้านไม่สามารถรับการจอง ${payload.bookingNo ?? ""} ได้`,
+    `เหตุผล: ${payload.reason ?? ""}`,
+    String(payload.refundLine ?? ""),
+  ];
+  return { text: lines.filter((l, i) => i < 2 || l !== "").join("\n") };
 }
