@@ -167,10 +167,16 @@
   "T-0148",
   "H-11",
   "T-0324",
+  "T-0175",
+  "T-0153",
+  "T-0152",
+  "T-0174",
+  "T-0177",
+  "T-0330",
+  "T-0190",
+  "T-0331",
   "T-0150",
   "T-0151",
-  "T-0152",
-  "T-0153",
   "T-0154",
   "T-0155",
   "T-0156",
@@ -191,10 +197,7 @@
   "T-0171",
   "T-0172",
   "T-0173",
-  "T-0174",
-  "T-0175",
   "T-0176",
-  "T-0177",
   "T-0178",
   "T-0179",
   "T-0180",
@@ -207,7 +210,6 @@
   "T-0187",
   "T-0188",
   "T-0189",
-  "T-0190",
   "T-0191",
   "T-0192",
   "T-0193",
@@ -2973,6 +2975,149 @@
    "title": "Wire LINE sender + reply tokens into the notification dispatcher (Q-1029)",
    "human_review": true
   },
+  "T-0175": {
+   "key": "API-liff.groomSlots",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0040",
+    "T-0041",
+    "T-0092",
+    "T-0093",
+    "T-0100",
+    "T-0149",
+    "T-0110"
+   ],
+   "title": "API liff.groomSlots",
+   "human_review": true
+  },
+  "T-0153": {
+   "key": "DOM-R-30",
+   "ms": "M3",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-30 PromptPay QR (EMVCo payload)",
+   "human_review": false
+  },
+  "T-0152": {
+   "key": "DOM-R-21",
+   "ms": "M3",
+   "lane": "domain",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "H-01"
+   ],
+   "title": "Rule R-21 สิทธิ์ลูกค้าเลื่อน/ยกเลิกเอง",
+   "human_review": false
+  },
+  "T-0174": {
+   "key": "API-liff-2",
+   "ms": "M3",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0038",
+    "T-0149",
+    "T-0053",
+    "T-0152",
+    "T-0095",
+    "T-0112"
+   ],
+   "title": "API liff.addVaccination, liff.bookings, liff.booking",
+   "human_review": false
+  },
+  "T-0177": {
+   "key": "API-liff.createBooking-grooming",
+   "ms": "M3",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0007",
+    "T-0010",
+    "T-0035",
+    "T-0092",
+    "T-0093",
+    "T-0094",
+    "T-0096",
+    "T-0097",
+    "T-0098",
+    "T-0099",
+    "T-0100",
+    "T-0101",
+    "T-0102",
+    "T-0103",
+    "T-0153",
+    "T-0149",
+    "T-0174",
+    "T-0112"
+   ],
+   "title": "API liff.createBooking (grooming)",
+   "human_review": true
+  },
+  "T-0330": {
+   "key": "INF-SLOTS-SHARED",
+   "ms": "M3",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 4,
+   "deps": [
+    "T-0110",
+    "T-0175",
+    "T-0177"
+   ],
+   "title": "Share one R-04 slot gathering between availability.groomSlots and liff.groomSlots (Q-1046)",
+   "human_review": false
+  },
+  "T-0190": {
+   "key": "NTF-customer-M3-0",
+   "ms": "M3",
+   "lane": "notify",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "T-0320",
+    "T-0149"
+   ],
+   "title": "Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed",
+   "human_review": false
+  },
+  "T-0331": {
+   "key": "INF-LINE-FLEX",
+   "ms": "M3",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0320",
+    "T-0149",
+    "T-0324",
+    "T-0124",
+    "T-0190"
+   ],
+   "title": "LINE Flex Message for customer templates: text + LIFF button, altText = first line (Q-1048)",
+   "human_review": true
+  },
   "T-0150": {
    "key": "DOM-R-05",
    "ms": "M3",
@@ -2998,32 +3143,6 @@
    ],
    "title": "Rule R-15 ยอดบิล ส่วนลด และการรับชำระ",
    "human_review": true
-  },
-  "T-0152": {
-   "key": "DOM-R-21",
-   "ms": "M3",
-   "lane": "domain",
-   "size": "S",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "H-01"
-   ],
-   "title": "Rule R-21 สิทธิ์ลูกค้าเลื่อน/ยกเลิกเอง",
-   "human_review": false
-  },
-  "T-0153": {
-   "key": "DOM-R-30",
-   "ms": "M3",
-   "lane": "domain",
-   "size": "S",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "H-01"
-   ],
-   "title": "Rule R-30 PromptPay QR (EMVCo payload)",
-   "human_review": false
   },
   "T-0154": {
    "key": "API-branch-2",
@@ -3358,46 +3477,6 @@
    "title": "API liff.pets, liff.createPet, liff.updatePet",
    "human_review": false
   },
-  "T-0174": {
-   "key": "API-liff-2",
-   "ms": "M3",
-   "lane": "api",
-   "size": "M",
-   "owner": "agent",
-   "wave": 2,
-   "deps": [
-    "T-0007",
-    "T-0010",
-    "T-0038",
-    "T-0149",
-    "T-0053",
-    "T-0152",
-    "T-0095",
-    "T-0112"
-   ],
-   "title": "API liff.addVaccination, liff.bookings, liff.booking",
-   "human_review": false
-  },
-  "T-0175": {
-   "key": "API-liff.groomSlots",
-   "ms": "M3",
-   "lane": "api",
-   "size": "L",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "T-0007",
-    "T-0040",
-    "T-0041",
-    "T-0092",
-    "T-0093",
-    "T-0100",
-    "T-0149",
-    "T-0110"
-   ],
-   "title": "API liff.groomSlots",
-   "human_review": true
-  },
   "T-0176": {
    "key": "API-liff.quote-grooming",
    "ms": "M3",
@@ -3415,36 +3494,6 @@
     "T-0111"
    ],
    "title": "API liff.quote (grooming)",
-   "human_review": true
-  },
-  "T-0177": {
-   "key": "API-liff.createBooking-grooming",
-   "ms": "M3",
-   "lane": "api",
-   "size": "L",
-   "owner": "agent",
-   "wave": 3,
-   "deps": [
-    "T-0007",
-    "T-0010",
-    "T-0035",
-    "T-0092",
-    "T-0093",
-    "T-0094",
-    "T-0096",
-    "T-0097",
-    "T-0098",
-    "T-0099",
-    "T-0100",
-    "T-0101",
-    "T-0102",
-    "T-0103",
-    "T-0153",
-    "T-0149",
-    "T-0174",
-    "T-0112"
-   ],
-   "title": "API liff.createBooking (grooming)",
    "human_review": true
   },
   "T-0178": {
@@ -3646,21 +3695,6 @@
     "T-0097"
    ],
    "title": "Job handler recompute_reliability",
-   "human_review": false
-  },
-  "T-0190": {
-   "key": "NTF-customer-M3-0",
-   "ms": "M3",
-   "lane": "notify",
-   "size": "M",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "T-0010",
-    "T-0320",
-    "T-0149"
-   ],
-   "title": "Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed",
    "human_review": false
   },
   "T-0191": {
@@ -4153,6 +4187,8 @@
    "deps": [
     "T-0149",
     "T-0324",
+    "T-0330",
+    "T-0331",
     "T-0195",
     "T-0196",
     "T-0150",

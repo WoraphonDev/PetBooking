@@ -2601,6 +2601,7 @@
     "lastName",
     "nickname",
     "phone",
+    "email",
     "photoConsent"
    ],
    "query": [],
