@@ -433,6 +433,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Still to choose: (A) add `liffId` (line_channel.liff_id) to ShopPublic (spec change, recommended) / (B) the shell parses the id from `liffUrl` = `https://liff.line.me/{liffId}`.
 - Answer (2026-10-06): user chose A — add `liffId` to ShopPublic and add T-0170 / T-0182 to T-0195's depends_on (spec change).
 
+## Q-1038 · T-0195 LIFF shell: what "redirect to the login page" means in LIFF, menu, LINE_FAKE user
+- Status: open (T-0195 ships the interim choices below; human review)
+- Task: T-0195 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: The card's guard step says "no session → redirect to the correct login page; role too low → 403". LIFF has no login page: the session comes from liff.init → liff.session (Q-1030). The card does not say which L-* screens belong in the menu, or which LINE user LINE_FAKE signs in as.
+- Implemented for now:
+  1. The server guard on `/liff/[branchSlug]/*` uses the same pipelines as the routes: public.branch for the header + liffId, and liff.me for the `cid`.
+     - unknown / hidden shop → 404
+     - no cid, or another branch's cid (UNAUTHENTICATED) → the client runs liff.init(liffId) → liff.login when signed out → getIDToken → liff.session, then router.refresh()
+     - NOT_REGISTERED → every page except L-01 replaces itself with L-01
+     - FORBIDDEN → 403 view; this is unreachable today because public.branch already hides suspended shops
+     - a shop without liffId shows the LINE_NOT_CONNECTED message
+  2. The menu shows L-02, L-03, L-04/05/06 (only for enabled modules), L-08, L-12 and L-15. Screens that need another id (L-07, L-09, L-10, L-11, L-13, L-14) and L-01 are in `shell-liff/navigation` but not in the menu. Every entry is disabled until its screen card sets `implemented: true`.
+  3. LINE_FAKE=1 (server env, passed to the client): the token is `fake:<?fakeUser= or Udevcustomer>:ลูกค้าทดสอบ`, with no SDK call.
+  4. `shell-liff/navigation/L-xx.ts` is not in the L-xx screen cards' allowed_paths, the same problem as Q-0048. Each screen card cannot enable its own menu item.
+- Proposed decision: accept 1–3. For 4, add `apps/web/src/components/shell-liff/navigation/L-xx.ts` to each L-xx card's allowed_paths (generator change), or enable the entries in a follow-up card like T-0326.
+
 ## Q-1031 · T-0170 liff.session: an unregistered LINE user has no owner_profile, but line_identity needs one
 - Status: answered
 - Task: T-0170 · Asked by: agent (claude) · Date: 2026-10-06
