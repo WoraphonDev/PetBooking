@@ -1,14 +1,11 @@
 {
   "permissions": {
+    "ask": ["Edit(/docs/spec/**)", "Edit(/.github/**)", "Edit(/scripts/**)", "Edit(/tools/spec-src/**)"],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
-      "Edit(/docs/spec/**)",
       "Edit(/AGENTS.md)",
       "Edit(/CLAUDE.md)",
-      "Edit(/.github/**)",
-      "Edit(/scripts/**)",
-      "Edit(/tools/spec-src/**)",
       "Bash(npx drizzle-kit push:*)",
       "Bash(pnpm drizzle-kit push:*)",
       "Bash(git push --force:*)",
