@@ -40,7 +40,6 @@ export function LiffSignIn({ branchSlug, liffId, fake }: { branchSlug: string; l
   const t = useTranslations("shell-liff");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     if (!liffId && !fake) return;
     let cancelled = false;
@@ -54,7 +53,7 @@ export function LiffSignIn({ branchSlug, liffId, fake }: { branchSlug: string; l
     return () => {
       cancelled = true;
     };
-  }, [branchSlug, liffId, fake, router, attempt]);
+  }, [branchSlug, liffId, fake, router]);
 
   if (!liffId && !fake)
     return (
@@ -66,13 +65,8 @@ export function LiffSignIn({ branchSlug, liffId, fake }: { branchSlug: string; l
     return (
       <div role="alert" className="grid justify-items-center gap-3 p-4 text-center">
         <p>{error}</p>
-        <Button
-          type="button"
-          onClick={() => {
-            setError(null);
-            setAttempt((n) => n + 1);
-          }}
-        >
+        {/* a fresh load re-runs the guard and the whole LIFF sign-in */}
+        <Button type="button" onClick={() => window.location.reload()}>
           {t("retry")}
         </Button>
       </div>
