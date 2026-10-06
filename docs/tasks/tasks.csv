@@ -46,7 +46,7 @@ T-0036,INF-JOBS,M1,1,infra,agent,L,,Job runner + POST /api/cron/tick + stub hand
 T-0037,DOM-R-25,M1,1,domain,agent,S,,Rule R-25 ข้อจำกัดการอัปโหลดไฟล์,US-03-06 US-07-02 US-13-04,H-01,4
 T-0038,INF-STORAGE,M1,2,infra,agent,M,yes,Object storage (presign) + upload-url endpoints + file commit + cleanup job,US-13-04,T-0007 T-0037 T-0036,15
 T-0321,INF-SUPPORT-READ,M1,1,infra,agent,S,,Support mode อ่านได้ทุก endpoint ที่ owner อ่านได้ (Q-0033),US-13-11,T-0007,2
-T-0039,INF-E2E,M1,1,infra,agent,M,,Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test,US-13-14,T-0001 T-0004,4
+T-0039,INF-E2E,M1,1,infra,agent,M,,Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test,US-13-14,T-0001 T-0004,6
 T-0040,DOM-R-01,M1,1,domain,agent,S,,Rule R-01 หาขนาด (size tier) จากน้ำหนัก,US-04-02 US-11-03,H-01,4
 T-0041,DOM-R-02,M1,1,domain,agent,M,,Rule R-02 กลุ่มขนและการหาราคา/เวลาของบริการ,US-04-02 US-04-03,H-01,4
 T-0322,API-auth.invitePreview,M1,1,api,agent,L,yes,API auth.invitePreview,US-01-04,T-0007,5
