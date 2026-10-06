@@ -218,6 +218,13 @@ export const TEMPLATES = {
     economy: null,
     vars: ["date", "groomCount", "staysInHouse", "salesTotal", "noShows", "tomorrowCount"],
   },
+  "owner.line_error": {
+    recipients: "owner",
+    channels: ["web_push", "email"],
+    messageClass: null,
+    economy: null,
+    vars: ["branchName"],
+  },
   "owner.quota_warning": { recipients: "owner", channels: ["web_push"], messageClass: null, economy: null, vars: ["used", "quota"] },
   "owner.promptpay_changed": {
     recipients: "owner (ทุกคน)",

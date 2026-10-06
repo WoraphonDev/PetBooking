@@ -19,6 +19,7 @@ const RULES: Record<string, Rule[]> = {
   service_photo: image(2 * MB),
   feedback: image(2 * MB),
   proof: image(2 * MB),
+  staff_photo: image(2 * MB),
   // stay updates: photos 2 MB or a video 20 MB
   stay_update: [...image(2 * MB), { mime: "video/mp4", maxBytes: 20 * MB }],
   // vaccine documents 5 MB (photo or PDF)

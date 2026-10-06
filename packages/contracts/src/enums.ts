@@ -92,6 +92,7 @@ export const fileKindValues = [
   "feedback",
   "import_csv",
   "proof",
+  "staff_photo",
 ] as const;
 export const fileKind = z.enum(fileKindValues);
 export type FileKind = z.infer<typeof fileKind>;

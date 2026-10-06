@@ -23,6 +23,7 @@ import { render as t13 } from "./customer.stay_update.ts";
 import { render as t16 } from "./customer.vaccine_rejected.ts";
 import { render as t32 } from "./owner.daily_summary.ts";
 import { render as t34 } from "./owner.promptpay_changed.ts";
+import { render as tLineError } from "./owner.line_error.ts";
 import { render as t33 } from "./owner.quota_warning.ts";
 import { render as t35 } from "./owner.support_access.ts";
 import { render as t21 } from "./staff.approval_overdue.ts";
@@ -76,6 +77,7 @@ const RENDERERS: { [K in TemplateKey]: (payload: NotificationPayloads[K]) => Ren
   "staff.invite": t30,
   "staff.password_reset": t31,
   "owner.daily_summary": t32,
+  "owner.line_error": tLineError,
   "owner.quota_warning": t33,
   "owner.promptpay_changed": t34,
   "owner.support_access": t35,
