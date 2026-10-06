@@ -448,7 +448,8 @@ dto("ShopPublic", "ข้อมูลร้านสาธารณะ", [("name
  ("address", "calc: branch address"), ("latitude", "branch.latitude"), ("longitude", "branch.longitude"), ("hours[]", "branch_hours.opens_at"),
  ("modules.grooming", "branch.module_grooming"), ("modules.hotel", "branch.module_hotel"), ("modules.daycare", "branch.module_daycare"),
  ("policyText", "branch_policy.policy_text"), ("services[]", "[]dto:ServiceItem"), ("roomTypes[]", "[]dto:RoomTypeItem"),
- ("addFriendUrl", "calc: line_channel.bot_basic_id"), ("liffUrl", "calc: line_channel.liff_id")])
+ ("addFriendUrl", "calc: line_channel.bot_basic_id"), ("liffUrl", "calc: line_channel.liff_id"),
+ ("liffId", "line_channel.liff_id")])
 dto("MyProfile", "โปรไฟล์ลูกค้า (LIFF)", [("firstName", "owner_profile.first_name"), ("lastName", "owner_profile.last_name"),
  ("nickname", "owner_profile.nickname"), ("phone", "owner_profile.phone_e164"), ("email", "owner_profile.email"),
  ("photoConsent", "customer.photo_consent"), ("creditBalanceSatang", "customer.credit_balance_satang")])

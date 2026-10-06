@@ -233,7 +233,7 @@
 | [T-0192](T-0192.md) | 1 | notify | M |  | Notification templates (customer, M3): link_approved | T-0010 T-0320 T-0149 |
 | [T-0193](T-0193.md) | 1 | notify | M |  | Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request | T-0010 T-0320 T-0091 |
 | [T-0194](T-0194.md) | 1 | notify | M |  | Notification templates (owner, M3): line_error, quota_warning, promptpay_changed | T-0010 T-0320 T-0091 T-0011 |
-| [T-0195](T-0195.md) | 1 | ui | M |  | LIFF shell: liff.init + session + header ร้าน | T-0015 T-0016 T-0149 |
+| [T-0195](T-0195.md) | 3 | ui | M |  | LIFF shell: liff.init + session + header ร้าน | T-0015 T-0016 T-0149 T-0170 T-0182 |
 | [T-0196](T-0196.md) | 2 | ui | M |  | Shared component: PromptPayQR (R-30) + Countdown + SlipUploader (jsQR อ่าน QR บนสลิป → qrPayload) | T-0015 T-0071 T-0153 |
 | [T-0197](T-0197.md) | 3 | ui | M |  | Screen P-01 หน้าลิงก์จองของร้าน | T-0015 T-0026 T-0196 T-0027 T-0182 |
 | [T-0198](T-0198.md) | 2 | ui | L |  | Screen C-02D รายละเอียดนัดกรูม (drawer) (ext-M3) | T-0070 T-0026 T-0027 T-0071 T-0163 T-0135 |
@@ -246,15 +246,15 @@
 | [T-0205](T-0205.md) | 2 | ui | S |  | Screen C-22 ข้อความที่ไม่ได้ส่ง | T-0070 T-0155 |
 | [T-0206](T-0206.md) | 3 | ui | S |  | Screen C-34 บัญชีรับเงิน PromptPay | T-0070 T-0196 T-0044 T-0154 |
 | [T-0207](T-0207.md) | 3 | ui | S |  | Screen C-35 LINE OA และลิงก์จอง | T-0070 T-0196 T-0155 |
-| [T-0208](T-0208.md) | 3 | ui | S |  | Screen L-01 ลงทะเบียน | T-0195 T-0026 T-0071 T-0170 T-0172 T-0171 |
-| [T-0209](T-0209.md) | 3 | ui | S |  | Screen L-02 หน้าแรก | T-0195 T-0026 T-0172 T-0174 |
-| [T-0210](T-0210.md) | 3 | ui | M |  | Screen L-03 น้องของฉัน | T-0195 T-0026 T-0071 T-0173 T-0038 T-0174 |
+| [T-0208](T-0208.md) | 4 | ui | S |  | Screen L-01 ลงทะเบียน | T-0195 T-0026 T-0071 T-0170 T-0172 T-0171 |
+| [T-0209](T-0209.md) | 4 | ui | S |  | Screen L-02 หน้าแรก | T-0195 T-0026 T-0172 T-0174 |
+| [T-0210](T-0210.md) | 4 | ui | M |  | Screen L-03 น้องของฉัน | T-0195 T-0026 T-0071 T-0173 T-0038 T-0174 |
 | [T-0211](T-0211.md) | 4 | ui | M |  | Screen L-04 จองกรูม | T-0195 T-0026 T-0072 T-0071 T-0172 T-0173 T-0175 T-0176 … |
 | [T-0212](T-0212.md) | 4 | ui | S |  | Screen L-07 จ่ายมัดจำ | T-0195 T-0026 T-0196 T-0071 T-0174 T-0038 T-0178 |
-| [T-0213](T-0213.md) | 3 | ui | S |  | Screen L-08 นัดของฉัน | T-0195 T-0026 T-0174 |
+| [T-0213](T-0213.md) | 4 | ui | S |  | Screen L-08 นัดของฉัน | T-0195 T-0026 T-0174 |
 | [T-0214](T-0214.md) | 4 | ui | M |  | Screen L-09 รายละเอียดนัด | T-0195 T-0026 T-0174 T-0178 T-0175 T-0180 T-0179 |
 | [T-0215](T-0215.md) | 4 | ui | S |  | Screen L-14 จ่ายยอดคงเหลือ | T-0195 T-0026 T-0196 T-0071 T-0178 T-0181 |
-| [T-0216](T-0216.md) | 3 | ui | S |  | Screen L-15 โปรไฟล์ของฉัน | T-0195 T-0026 T-0071 T-0172 T-0181 |
+| [T-0216](T-0216.md) | 4 | ui | S |  | Screen L-15 โปรไฟล์ของฉัน | T-0195 T-0026 T-0071 T-0172 T-0181 |
 | [T-0217](T-0217.md) | 3 | ui | M |  | Screen AD-03 ร้าน (admin) | T-0025 T-0026 T-0319 T-0184 T-0185 T-0125 |
 | [T-0218](T-0218.md) | 5 | e2e | L |  | E2E M3: ลูกค้าเปิด LIFF (fake LINE) … | T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186 |
 | [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0324 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 … |

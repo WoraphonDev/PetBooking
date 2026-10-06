@@ -1408,6 +1408,7 @@ Dashboard วันนี้
 | `roomTypes[]` | []dto:RoomTypeItem |
 | `addFriendUrl` | calc: line_channel.bot_basic_id |
 | `liffUrl` | calc: line_channel.liff_id |
+| `liffId` | line_channel.liff_id |
 
 <a id="dto-MyProfile"></a>
 

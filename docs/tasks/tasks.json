@@ -3730,11 +3730,13 @@
    "lane": "ui",
    "size": "M",
    "owner": "agent",
-   "wave": 1,
+   "wave": 3,
    "deps": [
     "T-0015",
     "T-0016",
-    "T-0149"
+    "T-0149",
+    "T-0170",
+    "T-0182"
    ],
    "title": "LIFF shell: liff.init + session + header ร้าน",
    "human_review": false
@@ -3948,7 +3950,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 3,
+   "wave": 4,
    "deps": [
     "T-0195",
     "T-0026",
@@ -3966,7 +3968,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 3,
+   "wave": 4,
    "deps": [
     "T-0195",
     "T-0026",
@@ -3982,7 +3984,7 @@
    "lane": "ui",
    "size": "M",
    "owner": "agent",
-   "wave": 3,
+   "wave": 4,
    "deps": [
     "T-0195",
     "T-0026",
@@ -4040,7 +4042,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 3,
+   "wave": 4,
    "deps": [
     "T-0195",
     "T-0026",
@@ -4092,7 +4094,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 3,
+   "wave": 4,
    "deps": [
     "T-0195",
     "T-0026",

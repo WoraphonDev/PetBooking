@@ -211,7 +211,7 @@ T-0191,NTF-customer-M3-1,M3,1,notify,agent,M,,"Notification templates (customer,
 T-0192,NTF-customer-M3-2,M3,1,notify,agent,M,,"Notification templates (customer, M3): link_approved",US-11-01,T-0010 T-0320 T-0149,2
 T-0193,NTF-staff-M3-0,M3,1,notify,agent,M,,"Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request",US-05-05 US-07-02 US-11-01 US-11-08,T-0010 T-0320 T-0091,10
 T-0194,NTF-owner-M3-0,M3,1,notify,agent,M,,"Notification templates (owner, M3): line_error, quota_warning, promptpay_changed",US-02-03 US-13-06,T-0010 T-0320 T-0091 T-0011,6
-T-0195,UI-SHELL-liff,M3,1,ui,agent,M,,LIFF shell: liff.init + session + header ร้าน,US-13-01,T-0015 T-0016 T-0149,8
+T-0195,UI-SHELL-liff,M3,3,ui,agent,M,,LIFF shell: liff.init + session + header ร้าน,US-13-01,T-0015 T-0016 T-0149 T-0170 T-0182,8
 T-0196,UI-C-PAY,M3,2,ui,agent,M,,Shared component: PromptPayQR (R-30) + Countdown + SlipUploader (jsQR อ่าน QR บนสลิป → qrPayload),US-13-03,T-0015 T-0071 T-0153,4
 T-0197,SCR-P-01,M3,3,ui,agent,M,,Screen P-01 หน้าลิงก์จองของร้าน,US-02-07,T-0015 T-0026 T-0196 T-0027 T-0182,4
 T-0198,SCR-C-02D-ext-M3,M3,2,ui,agent,L,,Screen C-02D รายละเอียดนัดกรูม (drawer) (ext-M3),US-04-05 US-05-03 US-05-08 US-05-09 US-07-07,T-0070 T-0026 T-0027 T-0071 T-0163 T-0135,3
@@ -224,15 +224,15 @@ T-0204,SCR-C-12,M3,3,ui,agent,S,,Screen C-12 คำขอจับคู่บ�
 T-0205,SCR-C-22,M3,2,ui,agent,S,,Screen C-22 ข้อความที่ไม่ได้ส่ง,US-13-06,T-0070 T-0155,5
 T-0206,SCR-C-34,M3,3,ui,agent,S,,Screen C-34 บัญชีรับเงิน PromptPay,US-02-03 US-07-01,T-0070 T-0196 T-0044 T-0154,4
 T-0207,SCR-C-35,M3,3,ui,agent,S,,Screen C-35 LINE OA และลิงก์จอง,US-02-06 US-02-07 US-13-06,T-0070 T-0196 T-0155,4
-T-0208,SCR-L-01,M3,3,ui,agent,S,,Screen L-01 ลงทะเบียน,US-01-01 US-03-12 US-11-01 US-13-08,T-0195 T-0026 T-0071 T-0170 T-0172 T-0171,4
-T-0209,SCR-L-02,M3,3,ui,agent,S,,Screen L-02 หน้าแรก,US-11-03 US-11-08,T-0195 T-0026 T-0172 T-0174,4
-T-0210,SCR-L-03,M3,3,ui,agent,M,,Screen L-03 น้องของฉัน,US-06-05 US-11-02,T-0195 T-0026 T-0071 T-0173 T-0038 T-0174,6
+T-0208,SCR-L-01,M3,4,ui,agent,S,,Screen L-01 ลงทะเบียน,US-01-01 US-03-12 US-11-01 US-13-08,T-0195 T-0026 T-0071 T-0170 T-0172 T-0171,4
+T-0209,SCR-L-02,M3,4,ui,agent,S,,Screen L-02 หน้าแรก,US-11-03 US-11-08,T-0195 T-0026 T-0172 T-0174,4
+T-0210,SCR-L-03,M3,4,ui,agent,M,,Screen L-03 น้องของฉัน,US-06-05 US-11-02,T-0195 T-0026 T-0071 T-0173 T-0038 T-0174,6
 T-0211,SCR-L-04,M3,4,ui,agent,M,,Screen L-04 จองกรูม,US-11-03,T-0195 T-0026 T-0072 T-0071 T-0172 T-0173 T-0175 T-0176 T-0177,4
 T-0212,SCR-L-07,M3,4,ui,agent,S,,Screen L-07 จ่ายมัดจำ,US-05-02 US-07-01 US-11-07,T-0195 T-0026 T-0196 T-0071 T-0174 T-0038 T-0178,4
-T-0213,SCR-L-08,M3,3,ui,agent,S,,Screen L-08 นัดของฉัน,US-11-08,T-0195 T-0026 T-0174,4
+T-0213,SCR-L-08,M3,4,ui,agent,S,,Screen L-08 นัดของฉัน,US-11-08,T-0195 T-0026 T-0174,4
 T-0214,SCR-L-09,M3,4,ui,agent,M,,Screen L-09 รายละเอียดนัด,US-11-08 US-11-10,T-0195 T-0026 T-0174 T-0178 T-0175 T-0180 T-0179,4
 T-0215,SCR-L-14,M3,4,ui,agent,S,,Screen L-14 จ่ายยอดคงเหลือ,US-07-08,T-0195 T-0026 T-0196 T-0071 T-0178 T-0181,4
-T-0216,SCR-L-15,M3,3,ui,agent,S,,Screen L-15 โปรไฟล์ของฉัน,US-03-12 US-11-01 US-13-08,T-0195 T-0026 T-0071 T-0172 T-0181,4
+T-0216,SCR-L-15,M3,4,ui,agent,S,,Screen L-15 โปรไฟล์ของฉัน,US-03-12 US-11-01 US-13-08,T-0195 T-0026 T-0071 T-0172 T-0181,4
 T-0217,SCR-AD-03,M3,3,ui,agent,M,,Screen AD-03 ร้าน (admin),US-02-06 US-13-10 US-13-11,T-0025 T-0026 T-0319 T-0184 T-0185 T-0125,5
 T-0218,E2E-M3,M3,5,e2e,agent,L,,E2E M3: ลูกค้าเปิด LIFF (fake LINE) …,,T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186,2
 H-12,H-GATE-M3,M3,6,human,human,-,,Milestone review M3: demo + ตรวจคุณภาพ,,T-0149 T-0324 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 T-0153 T-0154 T-0155 T-0156 T-0157 T-0158 T-0159 T-0160 T-0161 T-0162 T-0163 T-0164 T-0165 T-0166 T-0167 T-0168 T-0169 T-0170 T-0171 T-0172 T-0173 T-0174 T-0175 T-0176 T-0177 T-0178 T-0179 T-0180 T-0181 T-0182 T-0183 T-0184 T-0185 T-0186 T-0187 T-0188 T-0189 T-0190 T-0191 T-0192 T-0193 T-0194 T-0197 T-0198 T-0199 T-0200 T-0201 T-0202 T-0203 T-0204 T-0205 T-0206 T-0207 T-0208 T-0209 T-0210 T-0211 T-0212 T-0213 T-0214 T-0215 T-0216 T-0217 T-0218 H-11,0
