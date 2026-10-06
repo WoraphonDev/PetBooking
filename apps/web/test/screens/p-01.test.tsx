@@ -128,7 +128,7 @@ it("helpers: hours Monday first with missing days closed, map fallback to the ad
 });
 
 it("loads public.branch with a 60 s revalidate; 404 → notFound; metadata = name + logo OG image", async () => {
-  const fetchMock = vi.fn(async (url: URL) =>
+  const fetchMock = vi.fn(async (url: URL, _init?: RequestInit) =>
     url.pathname.endsWith("/no-shop") ? new Response("{}", { status: 404 }) : Response.json(shop()),
   );
   vi.stubGlobal("fetch", fetchMock);
