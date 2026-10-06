@@ -27,3 +27,19 @@ MVP ใช้ **A** (ร้านเป็นเจ้าของ OA + provider
 
 ## ผลทดลอง
 (กรอกโดยมนุษย์)
+
+### ชุดทดสอบ (สร้างแล้ว 2026-10-06)
+| | ชื่อ | Provider | ID |
+|---|---|---|---|
+| Provider P1 | PetBooking | — | `provider_2005598518` |
+| Provider P2 | PetBooking-2 | — | `provider_2005604023` |
+| OA-1 (Messaging API) | Luna Grooming | P1 | channel `2011875979`, bot `@762czddi` |
+| OA-2 (Messaging API) | Garmin Pet Hotel | P1 | channel `2011876068`, bot `@574uyayi` |
+| Login-1 (LINE Login + LIFF) | PetBooking | P1 | channel `2011876637`, LIFF `2011876637-Barf0NHC` |
+| Login-2 (LINE Login + LIFF) | PetBooking-2 | P2 | channel `2011878136`, LIFF `2011878136-6UedWW8i` |
+
+คู่ทดลองตามข้อ 1:
+- provider เดียวกัน: OA-1 / OA-2 + Login-1 (P1 ทั้งหมด) → คาดว่า `sub` = `source.userId`
+- ต่าง provider: OA-1 หรือ OA-2 (P1) + Login-2 (P2) → คาดว่า `sub` ≠ `source.userId`
+
+ผลเทียบ `sub` กับ `source.userId` (ข้อ 2): ยังไม่ได้บันทึก
