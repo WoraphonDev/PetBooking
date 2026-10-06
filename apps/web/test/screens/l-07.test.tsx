@@ -3,9 +3,12 @@ import { afterEach, expect, it, vi } from "vitest";
 import PayDepositPage from "../../app/(liff)/liff/[branchSlug]/bookings/[bookingId]/pay/page";
 import { canSendSlip, isExpired, PayScreen, PayView, screenPath } from "../../src/components/l-07/pay-screen";
 import { entry } from "../../src/components/shell-liff/navigation/L-07";
+import { entry as l09 } from "../../src/components/shell-liff/navigation/L-09";
 import messages from "../../src/i18n/messages/th/L-07.json";
 
 const NOW = Date.parse("2026-10-07T03:00:00.000Z");
+/** where L-07 sends the customer: L-09 once that screen ships, the L-08 list until then */
+const AFTER = (bookingId: string) => (l09.implemented ? `/liff/shop-a/bookings/${bookingId}` : "/liff/shop-a/bookings");
 const BOOKING_ID = "10000000-0000-4000-8000-000000000001";
 const detail = (over: { status?: string; expiresAt?: string | null; payment?: null } = {}) => ({
   booking: {
@@ -127,7 +130,7 @@ it("ส่งสลิป sends liff.uploadSlip with the file and the slip QR, t
     body: { fileId: "10000000-0000-4000-8000-0000000000f1", qrPayload: "QRDATA" },
   });
   expect(mock.toast.success).toHaveBeenCalledWith(messages.slipSent);
-  expect(mock.replace).toHaveBeenCalledWith("/liff/shop-a/bookings"); // L-09 not built yet → L-08
+  expect(mock.replace).toHaveBeenCalledWith(AFTER(BOOKING_ID));
 });
 
 it("HOLD_EXPIRED from the server switches to the time-up page", async () => {
@@ -153,7 +156,7 @@ it("time up or expired booking → หมดเวลา page with จองใ�
   mock.data = detail({ status: "deposit_review", payment: null });
   const none = renderToStaticMarkup(<PayScreen branchSlug="shop-a" bookingId={BOOKING_ID} />);
   expect(none).toContain(messages.nothingDue);
-  expect(none).toContain('href="/liff/shop-a/bookings"');
+  expect(none).toContain(`href="${AFTER(BOOKING_ID)}"`);
 });
 
 it("helpers: send only while awaiting_deposit before the hold ends; screen paths", () => {
@@ -161,6 +164,8 @@ it("helpers: send only while awaiting_deposit before the hold ends; screen paths
   expect(canSendSlip(detail({ expiresAt: "2026-10-07T03:00:00.000Z" }) as never, NOW)).toBe(false);
   expect(canSendSlip(detail({ status: "deposit_review" }) as never, NOW)).toBe(false);
   expect(isExpired(detail({ expiresAt: "2026-10-07T03:00:00.000Z" }) as never, NOW)).toBe(true);
-  expect(screenPath("L-09", "shop a", BOOKING_ID, "/fallback")).toBe("/fallback");
+  expect(screenPath("L-09", "shop a", BOOKING_ID, "/fallback")).toBe(
+    l09.implemented ? `/liff/shop%20a/bookings/${BOOKING_ID}` : "/fallback",
+  );
   expect(screenPath("L-08", "shop-a", BOOKING_ID)).toBe("/liff/shop-a/bookings");
 });
