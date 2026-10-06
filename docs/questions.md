@@ -378,6 +378,25 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 05#dto-PilotAnalytics lists counts and ratios without a concrete channel object shape, rate units/empty denominators, date boundaries or the seven-day anchor.
 - Answer (2026-10-02): user approved in chat: from/to are inclusive Thai local dates; activeDays7 uses seven days ending on to; bookingsByChannel contains every booking channel; onlineShare/noShowRate are whole percentages, zero with an empty denominator; noShowRate covers due grooming/stay/daycare items excluding cancelled items; reportCardsSent and billsClosed use sentAt/closedAt. Booking activity uses booking/bill creation dates; push usage uses sentAt. Scheduled starts use grooming.startsAt, stay expected check-in time (branch opening when absent, as bookings.create defines first service time), and daycare session start. These details preserve the existing 02 columns and 05 scheduling semantics.
 
+## Q-1043 · T-0210 L-03: "วัคซีนใกล้หมด" window, coat example photos, one-pet load
+- Status: open (T-0210 ships the interim choices below; human review)
+- Task: T-0210 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. The pet card shows "วัคซีนใกล้หมด (แดง)", but 06 gives no window.
+  2. ประเภทขน is an "การ์ดพร้อมรูปตัวอย่าง", but there are no example images in the repo or the spec.
+  3. The edit page `/pets/[petId]` loads only `liff.pets`; there is no endpoint for a single pet.
+- Implemented for now:
+  1. The card turns red when a pending or verified vaccination expires within 30 days or has already expired. Rejected ones do not count.
+  2. Coat types are text cards with enum labels.
+  3. The detail page finds the pet in the liff.pets list; one that is missing shows "ไม่พบน้องตัวนี้".
+  - Also:
+    - Age is the months since birth_date, or "ประมาณ …" from age_estimate_months.
+    - "ไม่ทราบวันเกิด" switches to years + months, which are sent as ageEstimateMonths.
+    - Weight is sent only when it was filled.
+    - Breed is free text with a datalist from reference-data breeds.
+    - Vaccine codes come from reference-data vaccineTypes for the pet's species.
+- Proposed decision: accept 1 and 3. For 2, add coat example images under `apps/web/public/` in a follow-up card.
+
 ## Q-0040 · bookings.balanceLink: request body, missing-bill error and URL
 - Status: answered (implemented in T-0162)
 - Task: T-0162 · Asked by: agent (claude) · Date: 2026-10-02
