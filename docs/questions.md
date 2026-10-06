@@ -452,6 +452,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. Services and room types: `status = active` and `online_bookable = true`, ordered by sort_order; `estCostSatang` is null for customers. Address = non-empty address_line, subdistrict, district, province, postal_code joined by a space (null when all empty). hours[] = the BranchSettings shape `{ weekday, isClosed, opensAt, closesAt }`. Room rates = the branch's default rate plan; unitCount = active room units. addFriendUrl / liffUrl follow LineStatus (`https://line.me/R/ti/p/{bot_basic_id}`, `https://liff.line.me/{liff_id}`), plus `liffId` (Q-1030).
 - Proposed decision: accept the interim choices; widen the generator so the DTO files are in T-0172 / T-0182 scope, or move them in a follow-up card.
 
+## Q-1033 · T-0182 public.branch: which shops are public, and what "cache 60 วินาที" means
+- Status: open (T-0182 ships the interim choices below; human review)
+- Task: T-0182 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05#ep-public.branch lists no errors and only says "cache 60 วินาที". It does not say what an unknown slug, an archived branch or a suspended organization returns, nor where the cache lives.
+- Implemented for now: unknown slug, `branch.status = archived` or `organization.status = suspended` → `NOT_FOUND` (pilot and active orgs are public). The response is the same ShopPublic as liff.shop (Q-1032 filters). Cache: the service keeps each slug's response for 60 s measured on ctx.now (per server process; errors are not cached), and the route sends `cache-control: public, max-age=60` on success.
+- Proposed decision: accept as implemented.
+
 ## Q-0087 · T-0189 recompute_reliability: which customers, which dates
 - Status: answered
 - Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
