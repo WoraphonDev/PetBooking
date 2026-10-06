@@ -1,0 +1,19 @@
+{
+  "loading": "กำลังโหลด…",
+  "retry": "ลองใหม่",
+  "shopName": "ชื่อร้าน",
+  "todayHours": "เวลาเปิดวันนี้",
+  "openToday": "เปิด {hours}",
+  "closedToday": "วันนี้ร้านปิด",
+  "nextBooking": "นัดถัดไป",
+  "noBooking": "ยังไม่มีนัด",
+  "payDeposit": "จ่ายมัดจำ",
+  "menu": "เมนู",
+  "bookGrooming": "จองกรูม",
+  "bookHotel": "จองโรงแรม",
+  "bookDaycare": "จอง Daycare",
+  "myBookings": "นัดของฉัน",
+  "myPets": "น้องของฉัน",
+  "packages": "แพ็กเกจ",
+  "profile": "โปรไฟล์"
+}
