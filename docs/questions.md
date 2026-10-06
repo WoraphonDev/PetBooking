@@ -402,6 +402,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
+## Q-1037 · T-0197 P-01: SEO province, when the LINE button shows, hours order
+- Status: open (T-0197 ships the interim choices below; human review)
+- Task: T-0197 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. P-01 note "SEO: title = ชื่อร้าน + จังหวัด", but ShopPublic only has `address` (one joined string), with no province field.
+  2. "จองผ่าน LINE" shows when `line_channel.status = active`, but ShopPublic has no channel status. liff.shop / public.branch fill `liffUrl` whenever a line_channel row exists (Q-1032).
+  3. "ตาราง 7 วัน" gives no day order, and does not say what a weekday without a branch_hours row shows.
+- Implemented for now:
+  1. The page title and og:title are the shop name only; og:image is the logo.
+  2. The LINE button shows when `liffUrl` is set, and เพิ่มเพื่อน when `addFriendUrl` is set. Without liffUrl, a โทรจอง (tel:) button shows when there is a phone.
+  3. Rows run Monday→Sunday; a day without a row, or with isClosed, shows "ปิด".
+  - Also: the map link uses the coordinates, or else a Google Maps search for the address. A service or room type without a price shows "–".
+  - The page loads public.branch through its own route with `fetch(..., { next: { revalidate: 60 } })`, and an unknown / hidden shop → 404.
+- Proposed decision:
+  1. Add `province` (branch.province) to ShopPublic, then the title becomes name + province.
+  2. Only fill liffUrl / liffId / addFriendUrl when `line_channel.status = active`. This is a one-line follow-up in services/liff/shop.ts.
+  3. Accept as implemented.
+
 ## Q-1016 · T-0076 C-09: deferred tabs, pet photo crop, vaccine labels, booking prefill
 - Status: answered
 - Task: T-0076 · Asked by: agent (claude) · Date: 2026-10-05
