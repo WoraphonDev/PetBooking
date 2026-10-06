@@ -441,6 +441,17 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: (A) liff.session creates a placeholder owner_profile on first sight (`first_name` = LINE display name, `created_in_org_id` = the branch's org, no phone), links line_identity to it and opens a `cid` session with that subject; liff.register then fills the same owner_profile and creates the customer (or the link request when the phone matches an existing customer — linkRequests.approve moves the line_identity to the existing profile). No schema change. (B) allow a null owner_profile_id / a separate unregistered session subject (schema + migration change).
 - Answer (2026-10-06): user chose A — placeholder owner_profile at liff.session, filled by liff.register; linkRequests.approve moves the line_identity to the existing profile. T-0170 implements this.
 
+## Q-1032 · T-0172 liff.shop: DTO files outside allowed_paths, and what ShopPublic shows a customer
+- Status: open (T-0172 ships the interim choices below; human review)
+- Task: T-0172 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. The card's Deliverables make it the owner of `dto/shop-public.ts` and `dto/room-type-item.ts`, but neither path is in its allowed_paths (CI scope check).
+  2. 05#dto-ShopPublic lists `services[]` (ServiceItem) and `roomTypes[]` (RoomTypeItem) with no filter, and ServiceItem carries `estCostSatang` (the shop's internal cost). `address` is "calc: branch address" with no format; `hours[]` cites only `branch_hours.opens_at`; RoomTypeItem.rates[] does not name a rate plan.
+- Implemented for now:
+  1. `ShopPublic` and `RoomTypeItem` are defined and exported in `endpoints/liff.shop.ts`; public.branch (T-0182) and roomTypes (T-0265) import them from there until a card owning the dto files moves them.
+  2. Services and room types: `status = active` and `online_bookable = true`, ordered by sort_order; `estCostSatang` is null for customers. Address = non-empty address_line, subdistrict, district, province, postal_code joined by a space (null when all empty). hours[] = the BranchSettings shape `{ weekday, isClosed, opensAt, closesAt }`. Room rates = the branch's default rate plan; unitCount = active room units. addFriendUrl / liffUrl follow LineStatus (`https://line.me/R/ti/p/{bot_basic_id}`, `https://liff.line.me/{liff_id}`), plus `liffId` (Q-1030).
+- Proposed decision: accept the interim choices; widen the generator so the DTO files are in T-0172 / T-0182 scope, or move them in a follow-up card.
+
 ## Q-0087 · T-0189 recompute_reliability: which customers, which dates
 - Status: answered
 - Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
