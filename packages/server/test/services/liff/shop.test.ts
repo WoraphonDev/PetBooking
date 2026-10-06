@@ -120,6 +120,7 @@ it("returns the branch, hours, policy, LINE links and only bookable services / r
     logoUrl: null,
     phone: "021234567",
     address: "1 ถนนสุขุมวิท วัฒนา กรุงเทพมหานคร 10110",
+    province: "กรุงเทพมหานคร",
     latitude: 13.7,
     longitude: 100.5,
     hours: [
@@ -142,6 +143,7 @@ it("a shop without LINE / policy / address gives nulls", async () => {
   const body = (await (await call("shop-sh2", await cid(s))).json()) as LiffShopResponse;
   expect(body).toMatchObject({
     address: null,
+    province: null,
     policyText: null,
     addFriendUrl: null,
     liffUrl: null,
@@ -156,4 +158,22 @@ it("another shop's session → UNAUTHENTICATED; unknown slug → NOT_FOUND", asy
   await seedOrg(env.db, "sh4");
   expect(await errorCode(await call("shop-sh4", await cid(a)))).toBe("UNAUTHENTICATED");
   expect(await errorCode(await call("no-such-shop", await cid(a)))).toBe("NOT_FOUND");
+});
+
+it("a LINE channel that is not active gives no LINE links (Q-1037)", async () => {
+  const s = await seedOrg(env.db, "sh5");
+  await env.db.insert(lineChannel).values({
+    organizationId: s.orgId,
+    branchId: s.branchId,
+    providerId: "p-sh5",
+    messagingChannelId: "m-sh5",
+    channelSecretEnc: "x",
+    channelAccessTokenEnc: "x",
+    loginChannelId: "l-sh5",
+    liffId: "2011876637-sh5",
+    botBasicId: "@sh5",
+    status: "pending",
+  });
+  const body = (await (await call("shop-sh5", await cid(s))).json()) as LiffShopResponse;
+  expect(body).toMatchObject({ addFriendUrl: null, liffUrl: null, liffId: null });
 });

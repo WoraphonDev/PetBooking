@@ -1397,6 +1397,7 @@ Dashboard วันนี้
 | `logoUrl` | calc: signed URL branch.logo_file_id |
 | `phone` | branch.phone |
 | `address` | calc: branch address |
+| `province` | branch.province |
 | `latitude` | branch.latitude |
 | `longitude` | branch.longitude |
 | `hours[]` | branch_hours.opens_at |
@@ -1406,9 +1407,9 @@ Dashboard วันนี้
 | `policyText` | branch_policy.policy_text |
 | `services[]` | []dto:ServiceItem |
 | `roomTypes[]` | []dto:RoomTypeItem |
-| `addFriendUrl` | calc: line_channel.bot_basic_id |
-| `liffUrl` | calc: line_channel.liff_id |
-| `liffId` | line_channel.liff_id |
+| `addFriendUrl` | calc: line_channel.bot_basic_id (เฉพาะ status active) |
+| `liffUrl` | calc: line_channel.liff_id (เฉพาะ status active) |
+| `liffId` | calc: line_channel.liff_id (เฉพาะ status active) |
 
 <a id="dto-MyProfile"></a>
 

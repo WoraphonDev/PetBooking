@@ -33,6 +33,8 @@ export const ShopPublic = z.object({
   logoUrl: z.string().nullable(),
   phone: z.string().nullable(),
   address: z.string().nullable(),
+  /** Q-1037: P-01 SEO title */
+  province: z.string().nullable(),
   latitude: z.number().nullable(),
   longitude: z.number().nullable(),
   hours: z.array(
@@ -42,6 +44,7 @@ export const ShopPublic = z.object({
   policyText: z.string().nullable(),
   services: z.array(ServiceItem),
   roomTypes: z.array(RoomTypeItem),
+  /** LINE links only while line_channel.status = active (Q-1037) */
   addFriendUrl: z.string().nullable(),
   liffUrl: z.string().nullable(),
   /** Q-1030: liff.init needs the id itself */

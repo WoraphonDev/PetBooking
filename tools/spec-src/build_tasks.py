@@ -691,6 +691,9 @@ for s in SCR:
             if s["id"] == "AD-01":
                 allowed.append("apps/web/src/components/shell-admin/admin-shell.test.tsx")  # Q-0025: explicit menu fixtures
             steps.append("เปิด entry ของหน้าจอนี้ใน shell-admin/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว; AD-03 สร้างลิงก์เฉพาะเมื่อมี orgId ปัจจุบัน ไม่เลือก org แทนผู้ใช้ (06 Q-0024)")
+        if s["app"] == "liff":  # Q-1038: the screen card enables its own LIFF menu entry
+            allowed.append(f"apps/web/src/components/shell-liff/navigation/{s['id']}.ts")
+            steps.append("เปิด entry ของหน้าจอนี้ใน shell-liff/navigation/<SCREEN-ID>.ts เมื่อ implement แล้ว (Q-1038)")
         if note: steps.insert(1, f"ขอบเขตรอบนี้: {note}")
         if suf and suf.startswith("ext-"): steps.insert(1, "เพิ่มเฉพาะส่วน/ปุ่มที่ใช้ endpoint: " + ", ".join(new_eps))
         else:

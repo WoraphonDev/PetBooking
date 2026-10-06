@@ -15,11 +15,12 @@ export async function loadShop(slug: string): Promise<PublicBranchResponse | nul
   return PublicBranchResponse.parse(await res.json());
 }
 
-/** SEO: title = shop name (province: Q-1037), OG image = logo */
+/** SEO: title = shop name + province (Q-1037), OG image = logo */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const shop = await loadShop((await params).bookingSlug);
   if (!shop) return {};
-  return { title: shop.name, openGraph: { title: shop.name, images: shop.logoUrl ? [shop.logoUrl] : [] } };
+  const title = [shop.name, shop.province].filter(Boolean).join(" ");
+  return { title, openGraph: { title, images: shop.logoUrl ? [shop.logoUrl] : [] } };
 }
 
 export default async function ShopLandingPage({ params }: Props) {
