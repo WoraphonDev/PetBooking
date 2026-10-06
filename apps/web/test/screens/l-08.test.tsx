@@ -3,6 +3,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import MyBookingsPage from "../../app/(liff)/liff/[branchSlug]/bookings/page";
 import { BookingsScreen, depositDue, screenHref } from "../../src/components/l-08/bookings-screen";
 import { entry } from "../../src/components/shell-liff/navigation/L-08";
+import { entry as l09 } from "../../src/components/shell-liff/navigation/L-09";
 import messages from "../../src/i18n/messages/th/L-08.json";
 
 const booking = (over: Record<string, unknown> = {}) => ({
@@ -69,5 +70,6 @@ it("helpers: deposit due for pending/rejected; links only once L-07 / L-09 exist
   expect(depositDue(booking() as never)).toBe(true);
   expect(depositDue(booking({ depositStatus: "rejected" }) as never)).toBe(true);
   expect(depositDue(booking({ depositStatus: "submitted" }) as never)).toBe(false);
-  expect(screenHref("L-09", "shop-a", "b1")).toBeNull();
+  // follows the live entry: null until L-09 ships, then its route
+  expect(screenHref("L-09", "shop-a", "b1")).toBe(l09.implemented ? "/liff/shop-a/bookings/b1" : null);
 });
