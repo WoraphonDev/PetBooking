@@ -1231,6 +1231,30 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 03 says decline → "R-07 shop_cancel (คืนมัดจำเต็ม)" — record the refund at decline time or leave it to refunds.create? 07 `customer.booking_declined` `{refundLine}` has no wording.
 - Answer (2026-10-04): at decline, a verified deposit is returned in full: insert refund (mode bank_transfer, amount = R-07 return, reason = the decline reason, created_by = staff) and deposit_status → refunded in the same transaction (the shop transfers and may attach proof later). refundLine = "ร้านจะคืนมัดจำ ฿{amount} เต็มจำนวน" (R-31) when something is returned, else "".
 
+## Q-1049 · T-0177 liff.createBooking: channel, reply token, unlisted error cases, multi-pet slots
+- Status: open (T-0177 ships the interim choices below; human review)
+- Task: T-0177 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: Several rules are not spelled out in 05 / 03:
+  1. "line_liff (หรือ booking_link ถ้ามาจากลิงก์จอง)", but the request has no field telling the two apart.
+  2. "ใช้ reply ยืนยันถ้าทำได้ (SP-03)", but no reply token reaches this endpoint.
+  3. A closed day or closure has no listed code (staff uses BRANCH_CLOSED).
+  4. ROOM_TAKEN / DAYCARE_FULL belong to stays / daycare, which this card answers with MODULE_DISABLED until M5.
+  5. INVALID_TRANSITION cannot happen on ∅ → initial.
+  6. With a deposit and approval both due, it is not said whether approval_overdue is scheduled at creation.
+  7. Several pets at the same time with "any" groomer.
+- Implemented for now:
+  1. channel = `line_liff` always; created_by_type customer, created_by_id = the customer.
+  2. Notifications go through the outbox (push; booking_received / booking_confirmed are `essential`); no reply token.
+  3. A closed day, closure, or any time without a free slot → SLOT_TAKEN.
+     Past / beyond the horizon / inside booking_lead_minutes → OUTSIDE_BOOKING_WINDOW.
+  4. Stays / daycare items → MODULE_DISABLED, so ROOM_TAKEN / DAYCARE_FULL are not reachable yet.
+  5. Not tested.
+  6. Deadlines follow R-08: deposit > 0 → awaiting_deposit + hold_expires_at + expire_hold; approval needed → approval_due_at + approval_overdue (n = 1) whether or not a deposit is due, since leaveAwaitingDeposit keeps that job.
+     Approval is needed when auto_confirm_grooming is off, reliability is 1, or R-11 finds only pending-review vaccines; missing / expired → VACCINE_REQUIRED.
+  7. liff.groomSlots does not see earlier items of the same booking. A clash with them falls back to the next active groomer (when "any"; a chosen groomer stays fixed) and the next station with no saved or planned appointment. Otherwise → SLOT_TAKEN. The DB exclusion constraints still guard races (→ SLOT_TAKEN).
+  - staff.new_booking customerName = owner_profile.first_name.
+- Proposed decision: accept. If booking_link matters for reports, add an optional `channel` hint to the request (spec change).
+
 ## Q-0048 · Console menu entries: C-* screen cards cannot enable their own menu item
 - Status: answered for T-0070; task-generator follow-up open
 - Task: T-0070 · Asked by: agent (claude) · Date: 2026-10-03
