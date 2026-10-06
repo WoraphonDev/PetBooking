@@ -883,6 +883,21 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Needs: a spec change (file_kind / template / delivery) and a follow-up card for the export.
 - Answer (2026-10-06): user approved in chat: the access export is deferred until after MVP; a platform admin exports manually meanwhile. T-0067 behaviour stands.
 
+## Q-1034 · T-0173 liff.pets / createPet / updatePet: which pets, species "other", age
+- Status: open (T-0173 ships the interim choices below; human review)
+- Task: T-0173 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. 05#ep-liff.pets does not say which pets a customer sees. pet belongs to owner_profile (shared across shops), but vaccinations, photos and notes are per shop.
+  2. L-03 offers ชนิด หมา/แมว/อื่นๆ, but liff.createPet has no `speciesOther`, and `pet_other_chk` requires species_other when species = other.
+  3. L-03 shows age (birth date or อายุโดยประมาณ) and lets the customer edit `ageEstimateMonths`, but MyPet has no `ageEstimateMonths`, so the form cannot show a stored estimate.
+  4. MyPet.photos[] has no filter in 05; L-03 says "เฉพาะ kind before/after/stay".
+- Implemented for now:
+  1. liff.pets = the customer's own pets with `status = active` that have a pet_shop_profile in this org, oldest first. liff.updatePet on any other pet (another owner, no profile in this shop, deceased/rehomed) → NOT_FOUND. liff.createPet creates the pet (created_in_org_id = this org), its pet_shop_profile and, when weightGrams is sent, a pet_weight with source `customer`.
+  2. species = other → VALIDATION_FAILED, the same rule as the staff pets.create check.
+  3. Not added; MyPet follows 05 field by field.
+  4. photos[] = this shop's pet_photo rows with kind before/after/stay, newest first.
+- Proposed decision: accept 1 and 4. For 2 and 3, add optional `speciesOther` to the liff.createPet body and `speciesOther` + `ageEstimateMonths` to MyPet (spec change).
+
 ## Q-0105 · T-0157 pets.setStatus: the future-bookings warning and which reminders to cancel
 - Status: answered (user chose in chat, 2026-10-05)
 - Task: T-0157 · Asked by: agent (claude) · Date: 2026-10-05
