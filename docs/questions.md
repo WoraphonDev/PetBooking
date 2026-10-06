@@ -1117,7 +1117,7 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 21 tests in `packages/server/test/services/admin/{createOrg,feedback,orgs,supportEnd,supportStart,updateFeedback,updateOrg}.test.ts` get 401 from 15:00 UTC every day, so `pnpm verify` fails. They create the platform_admin session with `createSession(env.db, …, TEST_NOW)` (TEST_NOW = 2026-10-05T03:00:00Z, `test/helpers/setup.ts`); admin sessions last 12 h (`src/auth/session.ts`), but `withAdmin` reads the real clock because these files do not fake `Date`. Reproduced at 15:23 UTC: 7 files / 21 tests failed.
 - Proposed fix (test-only, no src or TTL change): pin the clock like `test/services/dashboard/today.test.ts` — `vi.useFakeTimers({ toFake: ["Date"] }); vi.setSystemTime(TEST_NOW);` at the start of each file's `beforeEach`, `vi.useRealTimers()` in `afterEach`. Verified after 15:00 UTC: `vitest run test/services/admin` 13 files / 69 tests pass; `pnpm verify` passes.
 - Question: no card lists all seven files in `allowed_paths` — accept this as one maintenance PR on a non-task branch (CODEOWNERS review), or create a maintenance card for it?
-- Answer (2026-10-06): user approved in chat: one maintenance PR on a non-task branch, test-only clock pinning as proposed.
+- Answer (2026-10-06): already fixed on main (all seven admin test files pin Date to TEST_NOW); no further work.
 
 ## Q-1018 · T-0085 C-37: drag ordering, status labels, existing service photo
 - Status: answered
