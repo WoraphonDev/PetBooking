@@ -238,6 +238,8 @@
   "T-0218",
   "H-12",
   "H-13",
+  "T-0328",
+  "T-0329",
   "T-0326",
   "T-0219",
   "T-0220",
@@ -3719,7 +3721,7 @@
     "T-0091",
     "T-0011"
    ],
-   "title": "Notification templates (owner, M3): quota_warning, promptpay_changed",
+   "title": "Notification templates (owner, M3): line_error, quota_warning, promptpay_changed",
    "human_review": false
   },
   "T-0195": {
@@ -4233,6 +4235,35 @@
    "wave": 1,
    "deps": [],
    "title": "SP-05 ทดสอบพิมพ์ใบเสร็จ 58/80 มม. จาก browser",
+   "human_review": false
+  },
+  "T-0328": {
+   "key": "API-STAFF-PHOTO",
+   "ms": "M4",
+   "lane": "infra",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0048",
+    "T-0038"
+   ],
+   "title": "staffUsers.update: staff photo via file_kind staff_photo (Q-0116)",
+   "human_review": false
+  },
+  "T-0329": {
+   "key": "UI-FEEDBACK-MOUNT",
+   "ms": "M4",
+   "lane": "infra",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0143",
+    "T-0070",
+    "T-0130"
+   ],
+   "title": "Mount the C-46 feedback button in the console and staff shells + app version (Q-0114)",
    "human_review": false
   },
   "T-0326": {
@@ -5000,6 +5031,8 @@
    "owner": "human",
    "wave": 6,
    "deps": [
+    "T-0328",
+    "T-0329",
     "T-0326",
     "T-0219",
     "T-0220",

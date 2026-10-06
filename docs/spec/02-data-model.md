@@ -2065,7 +2065,7 @@ Stories: US-02-08 · PK: `id` · schema: `packages/db/src/schema/compliance.ts`
 | `record_source` | `shop`, `customer`, `import` |  |
 | `photo_consent` | `unknown`, `granted`, `denied` |  |
 | `link_request_status` | `pending`, `approved`, `rejected` |  |
-| `file_kind` | `pet_profile`, `before`, `after`, `stay_update`, `vaccine_proof`, `slip`, `signature`, `consent_pdf`, `logo`, `room_photo`, `service_photo`, `feedback`, `import_csv`, `proof` |  |
+| `file_kind` | `pet_profile`, `before`, `after`, `stay_update`, `vaccine_proof`, `slip`, `signature`, `consent_pdf`, `logo`, `room_photo`, `service_photo`, `feedback`, `import_csv`, `proof`, `staff_photo` |  |
 | `photo_kind` | `profile`, `before`, `after`, `stay` |  |
 | `record_status` | `active`, `archived` |  |
 | `closure_scope` | `all`, `grooming`, `hotel`, `daycare` |  |

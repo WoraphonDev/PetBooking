@@ -77,6 +77,8 @@ nt("staff.password_reset", "พนักงาน", "email", "-", "-", "auth.res
    "ตั้งรหัสผ่านใหม่: {resetUrl} (หมดอายุใน 30 นาที) — ถ้าไม่ได้ขอ ให้เพิกเฉยอีเมลนี้", "US-01-02")
 nt("owner.daily_summary", "owner", "web_push|email", "-", "-", "job owner_daily_summary", "daily_summary:{branchId}:{localDate}",
    "date, groomCount, staysInHouse, salesTotal, noShows, tomorrowCount", "สรุป {date}: กรูม {groomCount} ตัว, พัก {staysInHouse}, ยอดขาย {salesTotal}, no-show {noShows} | พรุ่งนี้ {tomorrowCount} นัด", "US-12-05")
+nt("owner.line_error", "owner", "web_push|email", "-", "-", "LINE ตอบ 401 → line_channel.status = error (01 §7)", "line_error:{lineChannelId}:{localDate}", "branchName",
+   "⚠️ การเชื่อมต่อ LINE OA ของสาขา {branchName} ขาด ลูกค้าจะไม่ได้รับข้อความ — กรุณาติดต่อทีมงานเพื่อตรวจสอบ token", "US-13-06")
 nt("owner.quota_warning", "owner", "web_push", "-", "-", "ส่ง push แล้ว used ≥ 80% (R-18)", "quota_warning:{branchId}:{monthKey}", "used, quota",
    "ข้อความ LINE ใช้ไป {used}/{quota} แล้ว ระบบจะสงวนโควตาให้ข้อความสำคัญ", "US-13-06")
 nt("owner.promptpay_changed", "owner (ทุกคน)", "web_push|email", "-", "-", "branch.setPromptpay", "promptpay_changed:{auditId}", "byName, idMasked",

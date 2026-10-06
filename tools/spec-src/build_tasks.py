@@ -275,7 +275,7 @@ INF("INF-LINE-DISPATCH", "Wire LINE sender + reply tokens into the notification 
      "dispatch: ส่ง `replyTokens.ageSeconds({ messagingChannelId, lineUserId, now })` เป็น `replyTokenAgeSeconds` ของ selectChannel (R-19 ข้อ 2) แทนค่า null",
      "เมื่อเลือก `line_reply`: `take` token แล้วส่ง `replyToken` ให้ LineSender; token หมดอายุระหว่างนั้น → ส่งแบบ push ผ่าน R-18 ตามปกติ และบันทึก channel ตามที่ส่งจริง",
      "line_reply ไม่นับโควตา push (R-18) — นับเฉพาะ notification.channel = line_push",
-     "LineSender ที่ตอบ 401 (`createLineSender({ onUnauthorized })`): ตั้ง `line_channel.status = error` ของ channel นั้น (01 §7) — การแจ้งเจ้าของทาง Web Push ยังไม่อยู่ในการ์ดนี้ (ต้องมี template ใน 07 ก่อน, Q-1029)",
+     "LineSender ที่ตอบ 401 (`createLineSender({ onUnauthorized })`): ตั้ง `line_channel.status = error` ของ channel นั้น (01 §7) และ enqueue `owner.line_error` ถึงเจ้าของสาขา (Q-1029)",
      "test (PGlite + fake sender): reply token สด → line_reply ไม่นับโควตา; token เก่า/ไม่มี → line_push; template ไม่อนุญาต reply → push; 401 → status error + notification failed"],
     ["pnpm --filter @app/server test -- notify"], deps=["INF-LINE", "INF-NOTIFY", "INF-NOTIFY-RENDER", "API-feedback-0"],
     read=["docs/spec/04-business-rules.md#R-19", "docs/spec/04-business-rules.md#R-18", "docs/spec/01-architecture.md §7", "docs/questions.md (Q-1029)"], hr=True)
@@ -298,6 +298,19 @@ INF("API-ANSWER-FOLLOWUPS", "Apply Q-0091 / Q-0110 / Q-0113 answers: booking_con
      "stays.checkOut: บันทึก missingNote ใน booking_event.reason ของ event checked_out; เปิดบิลด้วย bills.open ใน transaction เดียวกัน (Q-0113)"],
     ["pnpm --filter @app/server test -- stays", "pnpm --filter @app/server test -- booking_confirmed"], deps=["INF-SERVER", "NTF-customer-M3-0", "API-stays-1", "API-stays.checkOut"],
     read=["docs/spec/05-api.md#ep-stays.changeRoom", "docs/spec/05-api.md#ep-stays.checkOut", "docs/spec/07-notifications-jobs.md §1", "docs/questions.md (Q-0091, Q-0110, Q-0113)"], hr=True)
+INF("API-STAFF-PHOTO", "staffUsers.update: staff photo via file_kind staff_photo (Q-0116)", "M4", "S", "US-02-04",
+    ["packages/server/src/services/staffUsers/update.ts", "packages/server/test/services/staffUsers/update.test.ts"],
+    ["photoFileId: commitFile kind `staff_photo` (R-25 รูปทั่วไป 2 MB) แล้วบันทึก staff_user.photo_file_id แทน VALIDATION_FAILED ชั่วคราว (Q-0116)",
+     "test: รูป staff_photo ถูกต้อง → บันทึก; kind อื่น / ไฟล์ของ org อื่น → error ตาม commitFile"],
+    ["pnpm --filter @app/server test -- staffUsers"], deps=["API-staffUsers-0", "INF-STORAGE"],
+    read=["docs/spec/05-api.md#ep-staffUsers.update", "docs/spec/04-business-rules.md#R-25", "docs/questions.md (Q-0116)"])
+INF("UI-FEEDBACK-MOUNT", "Mount the C-46 feedback button in the console and staff shells + app version (Q-0114)", "M4", "S", "US-13-10",
+    ["apps/web/app/(console)/console/layout.tsx", "apps/web/app/(staff)/layout.tsx", "apps/web/next.config.ts", "apps/web/test/screens/c-46-mount.test.tsx"],
+    ["next.config.ts: `NEXT_PUBLIC_APP_VERSION` จาก env ตอน build (git sha ที่ CI/hosting ตั้ง; ไม่มี → ไม่ส่ง = แสดง '—') ตาม 01 §6",
+     "mount `<FeedbackWidget appVersion={process.env.NEXT_PUBLIC_APP_VERSION} />` ใน layout ของ console และ staff",
+     "test: ปุ่ม feedback แสดงใน layout ทั้งสอง"],
+    ["pnpm --filter @app/web test -- c-46"], deps=["SCR-C-46", "UI-SHELL-console", "UI-SHELL-staff"],
+    read=["docs/spec/06-screens.md#scr-C-46", "docs/questions.md (Q-0114)"])
 INF("UI-MENU-ENABLE", "Enable console menu entries: C-07, C-14, C-23, C-34, C-35 (Q-0093)", "M4", "S", "US-13-01",
     ["apps/web/src/components/shell-console/navigation/C-07.ts", "apps/web/src/components/shell-console/navigation/C-14.ts",
      "apps/web/src/components/shell-console/navigation/C-23.ts", "apps/web/src/components/shell-console/navigation/C-34.ts",

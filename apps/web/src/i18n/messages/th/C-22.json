@@ -45,6 +45,7 @@
   "template_staff_password_reset": "ตั้งรหัสผ่านใหม่",
   "template_owner_support_access": "ทีมช่วยเหลือเข้าดูข้อมูล",
   "template_owner_daily_summary": "สรุปประจำวัน",
+  "template_owner_line_error": "LINE OA ขาดการเชื่อมต่อ",
   "template_owner_quota_warning": "เตือนโควตา LINE",
   "template_owner_promptpay_changed": "บัญชีรับเงินถูกเปลี่ยน",
   "template_admin_feedback": "ความคิดเห็นจากร้าน",
