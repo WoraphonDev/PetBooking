@@ -414,6 +414,13 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   3. Interim labels live in C-09.json (วัคซีนครบ / วัคซีนต้องตรวจ / ไม่มีข้อมูลวัคซีน).
   4. The button goes to `/console/bookings/new?customerId=`; a C-03 follow-up can preselect from it (together with Q-1012's date/time/groomer).
 
+## Q-1029 · T-0149: wiring LineSender + reply tokens into the dispatcher is outside allowed paths
+- Status: open
+- Question: Step 6 asks to connect LineSender to the dispatcher with the reply-token store (R-19 / SP-03). `packages/server/src/notify/dispatch.ts` hard-codes `replyTokenAgeSeconds: null` and is not in T-0149's allowed_paths; the code that builds `NotifyDeps` for the cron runner is not either. Also 01 §7 says a 401 must notify the owner by Web Push, but no notification template exists for it.
+- Evidence: T-0149 allowed_paths (only integrations/line, crypto.ts); 01 §7; R-19 step 2; packages/server/src/notify/dispatch.ts lines 121, 205.
+- Done in T-0149: `createLineSender({ onUnauthorized })`, `createReplyTokenStore()` (put / ageSeconds / take, 50 s), `createLineSenderFromEnv()`.
+- Proposed decision: a follow-up card (or T-0183 webhook.line) with `notify/dispatch.ts` + the runner deps in scope: pass `ageSeconds` into selectChannel, `take` the token for `line_reply`, and set `line_channel.status = error` in onUnauthorized. The owner Web Push on 401 needs a template key in 07 first.
+
 ## Q-0087 · T-0189 recompute_reliability: which customers, which dates
 - Status: open (T-0189 ships these choices)
 - Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
