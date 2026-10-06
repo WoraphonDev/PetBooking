@@ -49,12 +49,21 @@ describe("TEMPLATES ⇄ 07 §1", () => {
     });
   });
 
-  it.each(rows)("$key: stub renders the 07 text with variables substituted", (r) => {
+  it.each(rows)("$key: renders the 07 text with variables substituted", (r) => {
     const payload = Object.fromEntries(r.vars.map((v) => [v, `<${v}>`]));
     const expected = r.text.replace(/\{(\w+)\}/g, (_m, v: string) => (r.vars.includes(v) ? `<${v}>` : ""));
     const { text } = renderTemplate(r.key as TemplateKey, payload as NotificationPayloads[TemplateKey]);
-    expect(text).toBe(expected);
     expect(text).not.toMatch(/\{\w+\}/);
+    // 07 §1.2: a `{…Line}` the template composes itself is checked by that template's own test once implemented;
+    // here every other line must match (a stub still renders the composed line empty)
+    const composed = new Set(
+      r.text.split("\n").flatMap((l, i) => (/^\{\w+Line\}$/.test(l) && !r.vars.includes(l.slice(1, -1)) ? [i] : [])),
+    );
+    if (!composed.size) return expect(text).toBe(expected);
+    const got = text.split("\n");
+    expected.split("\n").forEach((line, i) => {
+      if (!composed.has(i)) expect(got[i]).toBe(line);
+    });
   });
 
   it("placeholders outside the variable list render empty (Q-0010)", () => {
