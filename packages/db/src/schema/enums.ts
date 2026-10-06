@@ -45,6 +45,7 @@ export const fileKindEnum = pgEnum("file_kind", [
   "feedback",
   "import_csv",
   "proof",
+  "staff_photo",
 ]);
 export const photoKindEnum = pgEnum("photo_kind", ["profile", "before", "after", "stay"]);
 export const recordStatusEnum = pgEnum("record_status", ["active", "archived"]);

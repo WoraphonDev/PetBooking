@@ -232,7 +232,7 @@
 | [T-0191](T-0191.md) | 1 | notify | M |  | Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected | T-0010 T-0320 T-0149 |
 | [T-0192](T-0192.md) | 1 | notify | M |  | Notification templates (customer, M3): link_approved | T-0010 T-0320 T-0149 |
 | [T-0193](T-0193.md) | 1 | notify | M |  | Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request | T-0010 T-0320 T-0091 |
-| [T-0194](T-0194.md) | 1 | notify | M |  | Notification templates (owner, M3): quota_warning, promptpay_changed | T-0010 T-0320 T-0091 T-0011 |
+| [T-0194](T-0194.md) | 1 | notify | M |  | Notification templates (owner, M3): line_error, quota_warning, promptpay_changed | T-0010 T-0320 T-0091 T-0011 |
 | [T-0195](T-0195.md) | 1 | ui | M |  | LIFF shell: liff.init + session + header ร้าน | T-0015 T-0016 T-0149 |
 | [T-0196](T-0196.md) | 2 | ui | M |  | Shared component: PromptPayQR (R-30) + Countdown + SlipUploader (jsQR อ่าน QR บนสลิป → qrPayload) | T-0015 T-0071 T-0153 |
 | [T-0197](T-0197.md) | 3 | ui | M |  | Screen P-01 หน้าลิงก์จองของร้าน | T-0015 T-0026 T-0196 T-0027 T-0182 |
@@ -259,11 +259,13 @@
 | [T-0218](T-0218.md) | 5 | e2e | L |  | E2E M3: ลูกค้าเปิด LIFF (fake LINE) … | T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186 |
 | [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0324 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 … |
 
-## M4 — ปิดบิล ค่ามือ หลังบริการ (48 tasks)
+## M4 — ปิดบิล ค่ามือ หลังบริการ (50 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
 | [H-13](H-13.md) | 1 | human | - |  | SP-05 ทดสอบพิมพ์ใบเสร็จ 58/80 มม. จาก browser |  |
+| [T-0328](T-0328.md) | 1 | infra | S |  | staffUsers.update: staff photo via file_kind staff_photo (Q-0116) | T-0048 T-0038 |
+| [T-0329](T-0329.md) | 1 | infra | S |  | Mount the C-46 feedback button in the console and staff shells + app version (Q-0114) | T-0143 T-0070 T-0130 |
 | [T-0326](T-0326.md) | 1 | infra | S |  | Enable console menu entries: C-07, C-14, C-23, C-34, C-35 (Q-0093) | T-0001 |
 | [T-0219](T-0219.md) | 1 | domain | L | ⚠️ | Rule R-13 ค่ามือ (commission) | H-01 |
 | [T-0220](T-0220.md) | 1 | domain | M |  | Rule R-14 แพ็กเกจ: มูลค่าต่อครั้ง วันหมดอายุ และสิทธิ์ใช้ | H-01 T-0012 |
@@ -310,7 +312,7 @@
 | [T-0261](T-0261.md) | 3 | ui | S |  | Screen L-12 แพ็กเกจของฉัน | T-0195 T-0026 T-0242 |
 | [T-0262](T-0262.md) | 3 | ui | S |  | Screen L-13 ใบเสร็จ | T-0195 T-0026 T-0071 T-0242 |
 | [T-0263](T-0263.md) | 5 | e2e | L |  | E2E M4: เปิดบิลจากนัด … | T-0039 T-0250 T-0252 T-0258 T-0260 |
-| [H-14](H-14.md) | 6 | human | - |  | Release B: UAT + ตัดสินใจปล่อยร้านนำร่อง (M4) | T-0326 T-0219 T-0220 T-0221 T-0222 T-0223 T-0224 T-0225 … |
+| [H-14](H-14.md) | 6 | human | - |  | Release B: UAT + ตัดสินใจปล่อยร้านนำร่อง (M4) | T-0328 T-0329 T-0326 T-0219 T-0220 T-0221 T-0222 T-0223 … |
 
 ## M5 — Pet Hotel & Daycare (43 tasks)
 

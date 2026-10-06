@@ -65,7 +65,7 @@
 | US-11-03 | จองกรูมใน LINE | M3 | L-02, L-04 | `liff.shop`, `liff.groomSlots`, `liff.quote`, `liff.createBooking` | R-01, R-03, R-04, R-06, R-12, R-23 | customer.booking_received, customer.booking_confirmed | booking, groom_appointment_item |
 | US-05-05 | ยืนยันอัตโนมัติหรืออนุมัติเอง | M3 | C-04, C-33 | `branch.updatePolicy`, `bookings.list`, `bookings.approve`, `bookings.decline` | R-08 | customer.booking_confirmed, customer.booking_declined, staff.approval_overdue, approval_overdue |  |
 | US-07-05 | บันทึกคืนเงิน / เครดิต | M3 | C-05, C-09 | `customers.credit`, `refunds.create` | R-07 |  | refund, credit_ledger |
-| US-13-06 | ส่ง LINE ผ่าน OA ร้าน + คุมโควตา | M3 | C-22, C-33, C-35 | `branch.updatePolicy`, `line.status`, `line.skipped`, `webhook.line` | R-18, R-19 | owner.quota_warning | branch_policy, line_channel, notification |
+| US-13-06 | ส่ง LINE ผ่าน OA ร้าน + คุมโควตา | M3 | C-22, C-33, C-35 | `branch.updatePolicy`, `line.status`, `line.skipped`, `webhook.line` | R-18, R-19 | owner.line_error, owner.quota_warning | branch_policy, line_channel, notification |
 | US-11-08 | นัดของฉัน | M3 | L-02, L-08, L-09 | `liff.bookings`, `liff.booking`, `liff.cancel`, `liff.reschedule` | R-07, R-21 | staff.booking_cancelled, staff.booking_rescheduled |  |
 | US-07-06 | เตือนนัด 24 ชม. | M3 | C-33 | `cron.tick` |  | customer.reminder_24h, reminder_24h | scheduled_job |
 | US-07-08 | ลิงก์จ่ายยอดคงเหลือ | M3 | C-05, L-14 | `bookings.balanceLink`, `liff.payPage`, `liff.payUploadSlip` | R-30 | customer.balance_link |  |

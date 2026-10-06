@@ -130,6 +130,7 @@ type RequestContext = {
 | `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | storage | ตาม ADR-004 |
 | `LINE_FAKE` | dev/E2E เท่านั้น | `1` = ไม่เรียก LINE จริง — server ต้อง **ปฏิเสธการ start** ถ้า `NODE_ENV=production` และ `LINE_FAKE=1` |
 | `ERROR_REPORT_DSN` (ไม่บังคับ) | monitoring | ตาม ADR-002 (ถ้าใช้ free tier) |
+| `NEXT_PUBLIC_APP_VERSION` (ไม่บังคับ) | web (build time) | git sha ของ commit ที่ build — CI/hosting ตั้งให้; ใช้เป็น `feedback_report.app_version` (C-46, Q-0114); ไม่มี = แสดง '—' |
 
 - secret ใส่โดยมนุษย์ใน hosting/GitHub Actions เท่านั้น — **ห้ามวาง secret ในแชทกับ agent, ห้าม commit `.env*`** (มีแค่ `.env.example`)
 - LINE channel secret / access token ของร้านเก็บใน DB แบบเข้ารหัส (`*_enc`) ใส่ผ่านหน้า AD-03 — ไม่อยู่ใน env

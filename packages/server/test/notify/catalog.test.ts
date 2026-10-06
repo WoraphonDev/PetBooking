@@ -33,8 +33,8 @@ const rows = section
   });
 
 describe("TEMPLATES ⇄ 07 §1", () => {
-  it("has exactly the 38 keys in 07 order", () => {
-    expect(rows).toHaveLength(38);
+  it("has exactly the 39 keys in 07 order", () => {
+    expect(rows).toHaveLength(39);
     expect(Object.keys(TEMPLATES)).toEqual(rows.map((r) => r.key));
   });
 
