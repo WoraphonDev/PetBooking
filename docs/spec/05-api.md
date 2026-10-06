@@ -1437,9 +1437,11 @@ Dashboard วันนี้
 | `id` | pet.id |
 | `name` | pet.name |
 | `species` | pet.species |
+| `speciesOther` | pet.species_other |
 | `breed` | pet.breed |
 | `sex` | pet.sex |
 | `birthDate` | pet.birth_date |
+| `ageEstimateMonths` | pet.age_estimate_months |
 | `neutered` | pet.neutered |
 | `coatType` | pet.coat_type |
 | `latestWeightGrams` | pet.latest_weight_grams |
@@ -5438,6 +5440,7 @@ Request body:
 |---|---|---|---|---|
 | `name` | string | ✓ | pet.name |  |
 | `species` | enum:species | ✓ | pet.species |  |
+| `speciesOther` | string |  | pet.species_other | บังคับเมื่อ other |
 | `breed` | string |  | pet.breed |  |
 | `sex` | enum:pet_sex | ✓ | pet.sex |  |
 | `birthDate` | date |  | pet.birth_date |  |

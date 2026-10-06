@@ -402,6 +402,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Evidence: 07 §1 rows hold_expired / no_show; Q-0040 built LIFF links as `APP_BASE_URL + /liff/{branch.booking_slug}/…`; 06 L-02 `/liff/[branchSlug]` is the LIFF home where booking starts.
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
+## Q-1037 · T-0197 P-01: SEO province, when the LINE button shows, hours order
+- Status: open (T-0197 ships the interim choices below; human review)
+- Task: T-0197 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. P-01 note "SEO: title = ชื่อร้าน + จังหวัด", but ShopPublic only has `address` (one joined string), with no province field.
+  2. "จองผ่าน LINE" shows when `line_channel.status = active`, but ShopPublic has no channel status. liff.shop / public.branch fill `liffUrl` whenever a line_channel row exists (Q-1032).
+  3. "ตาราง 7 วัน" gives no day order, and does not say what a weekday without a branch_hours row shows.
+- Implemented for now:
+  1. The page title and og:title are the shop name only; og:image is the logo.
+  2. The LINE button shows when `liffUrl` is set, and เพิ่มเพื่อน when `addFriendUrl` is set. Without liffUrl, a โทรจอง (tel:) button shows when there is a phone.
+  3. Rows run Monday→Sunday; a day without a row, or with isClosed, shows "ปิด".
+  - Also: the map link uses the coordinates, or else a Google Maps search for the address. A service or room type without a price shows "–".
+  - The page loads public.branch through its own route with `fetch(..., { next: { revalidate: 60 } })`, and an unknown / hidden shop → 404.
+- Proposed decision:
+  1. Add `province` (branch.province) to ShopPublic, then the title becomes name + province.
+  2. Only fill liffUrl / liffId / addFriendUrl when `line_channel.status = active`. This is a one-line follow-up in services/liff/shop.ts.
+  3. Accept as implemented.
+
 ## Q-1016 · T-0076 C-09: deferred tabs, pet photo crop, vaccine labels, booking prefill
 - Status: answered
 - Task: T-0076 · Asked by: agent (claude) · Date: 2026-10-05
@@ -444,6 +462,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - The new session is the same `sid` as a password login, and the response is StaffMe built by auth.me.
 - Proposed decision: add `PLATFORM_LINE_LOGIN_CHANNEL_ID` (required in staging/production) to 01-architecture §6, and fail the server start without it, like the other required LINE settings.
 
+## Q-1038 · T-0195 LIFF shell: what "redirect to the login page" means in LIFF, menu, LINE_FAKE user
+- Status: open (T-0195 ships the interim choices below; human review)
+- Task: T-0195 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: The card's guard step says "no session → redirect to the correct login page; role too low → 403". LIFF has no login page: the session comes from liff.init → liff.session (Q-1030). The card does not say which L-* screens belong in the menu, or which LINE user LINE_FAKE signs in as.
+- Implemented for now:
+  1. The server guard on `/liff/[branchSlug]/*` uses the same pipelines as the routes: public.branch for the header + liffId, and liff.me for the `cid`.
+     - unknown / hidden shop → 404
+     - no cid, or another branch's cid (UNAUTHENTICATED) → the client runs liff.init(liffId) → liff.login when signed out → getIDToken → liff.session, then router.refresh()
+     - NOT_REGISTERED → every page except L-01 replaces itself with L-01
+     - FORBIDDEN → 403 view; this is unreachable today because public.branch already hides suspended shops
+     - a shop without liffId shows the LINE_NOT_CONNECTED message
+  2. The menu shows L-02, L-03, L-04/05/06 (only for enabled modules), L-08, L-12 and L-15. Screens that need another id (L-07, L-09, L-10, L-11, L-13, L-14) and L-01 are in `shell-liff/navigation` but not in the menu. Every entry is disabled until its screen card sets `implemented: true`.
+  3. LINE_FAKE=1 (server env, passed to the client): the token is `fake:<?fakeUser= or Udevcustomer>:ลูกค้าทดสอบ`, with no SDK call.
+  4. `shell-liff/navigation/L-xx.ts` is not in the L-xx screen cards' allowed_paths, the same problem as Q-0048. Each screen card cannot enable its own menu item.
+- Proposed decision: accept 1–3. For 4, add `apps/web/src/components/shell-liff/navigation/L-xx.ts` to each L-xx card's allowed_paths (generator change), or enable the entries in a follow-up card like T-0326.
+
 ## Q-1031 · T-0170 liff.session: an unregistered LINE user has no owner_profile, but line_identity needs one
 - Status: answered
 - Task: T-0170 · Asked by: agent (claude) · Date: 2026-10-06
@@ -453,7 +487,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user chose A — placeholder owner_profile at liff.session, filled by liff.register; linkRequests.approve moves the line_identity to the existing profile. T-0170 implements this.
 
 ## Q-1032 · T-0172 liff.shop: DTO files outside allowed_paths, and what ShopPublic shows a customer
-- Status: open (T-0172 ships the interim choices below; human review)
+- Status: answered (implemented in T-0172; moving the DTO files is a later follow-up)
+- Answer (2026-10-06): user accepted the interim choices in chat. Services / room types = active + online_bookable by sort_order, estCostSatang null; address, hours[] shape, default rate plan as implemented. ShopPublic / RoomTypeItem stay in endpoints/liff.shop.ts until a follow-up card moves them to dto/shop-public.ts and dto/room-type-item.ts.
 - Task: T-0172 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. The card's Deliverables make it the owner of `dto/shop-public.ts` and `dto/room-type-item.ts`, but neither path is in its allowed_paths (CI scope check).
@@ -464,7 +499,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: accept the interim choices; widen the generator so the DTO files are in T-0172 / T-0182 scope, or move them in a follow-up card.
 
 ## Q-1033 · T-0182 public.branch: which shops are public, and what "cache 60 วินาที" means
-- Status: open (T-0182 ships the interim choices below; human review)
+- Status: answered (implemented in T-0182)
+- Answer (2026-10-06): user accepted as implemented in chat: unknown slug / archived branch / suspended org → NOT_FOUND; 60 s per-process cache on ctx.now plus `cache-control: public, max-age=60`.
 - Task: T-0182 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-public.branch lists no errors and only says "cache 60 วินาที". It does not say what an unknown slug, an archived branch or a suspended organization returns, nor where the cache lives.
 - Implemented for now: unknown slug, `branch.status = archived` or `organization.status = suspended` → `NOT_FOUND` (pilot and active orgs are public). The response is the same ShopPublic as liff.shop (Q-1032 filters). Cache: the service keeps each slug's response for 60 s measured on ctx.now (per server process; errors are not cached), and the route sends `cache-control: public, max-age=60` on success.
@@ -558,7 +594,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user approved in chat: add `data_request_status` to enum-labels.th.json (spec change, batch with other missing enum labels); AD-05 then uses enumLabel().
 
 ## Q-1035 · T-0181 liff.payUploadSlip / liff.dataRequest: errors and payload details
-- Status: open (T-0181 ships the interim choices below; human review)
+- Status: answered (implemented in T-0181)
+- Answer (2026-10-06): user accepted as implemented in chat (error codes, slip amount/bookingNo, repeated data requests allowed).
 - Task: T-0181 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-liff.payUploadSlip and 05#ep-liff.dataRequest list no error codes or rules beyond the body and the notification.
 - Implemented for now:
@@ -587,6 +624,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: (1) a follow-up shell card (or widening T-0143 by a generator edit, as Q-1001) mounts `<FeedbackWidget appVersion={…} />` in the console and staff layouts. (2) expose the git sha at build time as `NEXT_PUBLIC_APP_VERSION` (set by CI / Vercel from the commit sha) and pass it in.
 - Interim (implemented): `FeedbackWidget` / `FeedbackForm` are ready in `components/c-46` (message, optional screenshot upload via staff.uploadUrl kind feedback, current page, version shown as "—" when none is passed, send → feedback.create + thank-you toast) but are not mounted anywhere yet.
 - Answer (2026-10-06): user approved in chat: build-time `NEXT_PUBLIC_APP_VERSION` (git sha) and a follow-up card that mounts FeedbackWidget in the console and staff shells.
+
+## Q-1036 · T-0174 liff.bookings / liff.booking / liff.addVaccination: scope, summary and detail fields
+- Status: open (T-0174 ships the interim choices below; human review)
+- Task: T-0174 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05#ep-liff.bookings has an optional `scope` (upcoming | past) with no definition or default. MyBookingItem.summary, MyBookingDetail.payment / cancelPreview / mapUrl / icsUrl are "calc" without a format. liff.addVaccination lists no checks.
+- Implemented for now:
+  1. `scope` defaults to upcoming. upcoming = status awaiting_deposit / deposit_review / awaiting_approval / confirmed, soonest first_service_at first. past = cancelled / expired / closed, latest first. Only the signed-in customer's bookings in this branch; another customer's or another shop's booking → NOT_FOUND.
+  2. `summary` = distinct grooming item names, then room type names, then daycare session names, joined with ", ". `petNames` = distinct pet names across the lines.
+  3. `payment` = the deposit still due, the same rule as bookings.get; there is no bill-due case here. `cancelPreview` = R-07 `customer_cancel` while R-21 allows cancelling, else null.
+  4. R-21 uses `policy_snapshot.rescheduleCutoffHours`, default 24 when an old snapshot lacks it; a booking without first_service_at cannot be cancelled or rescheduled.
+  5. `mapUrl` = `https://www.google.com/maps/search/?api=1&query={lat},{lng}` (null without coordinates). `icsUrl` = the relative liff.ics path.
+  6. liff.addVaccination uses the same checks as vaccinations.create:
+     - the code must be a vaccine_type of the pet's species
+     - administeredOn ≤ today (branch-local), and expiresOn ≥ administeredOn
+     - the proof must be a vaccine_proof file
+     - failures → VALIDATION_FAILED
+     staff.vaccine_review goes to active front_desk only, per 07.
+- Proposed decision: accept as implemented.
 
 ## Q-0091 · T-0112 bookings.create: booking_confirmed wording and package-paid items
 - Status: answered
@@ -916,7 +971,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user approved in chat: the access export is deferred until after MVP; a platform admin exports manually meanwhile. T-0067 behaviour stands.
 
 ## Q-1034 · T-0173 liff.pets / createPet / updatePet: which pets, species "other", age
-- Status: open (T-0173 ships the interim choices below; human review)
+- Status: answered (spec change applied in this PR)
+- Answer (2026-10-06): user chose the spec change in chat. 05: liff.createPet (and so liff.updatePet) body gains optional `speciesOther` (pet.species_other, required when species = other); MyPet gains `speciesOther` and `ageEstimateMonths`. Points 1 and 4 accepted as implemented in T-0173.
 - Task: T-0173 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. 05#ep-liff.pets does not say which pets a customer sees. pet belongs to owner_profile (shared across shops), but vaccinations, photos and notes are per shop.

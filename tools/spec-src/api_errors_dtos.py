@@ -453,8 +453,8 @@ dto("ShopPublic", "ข้อมูลร้านสาธารณะ", [("name
 dto("MyProfile", "โปรไฟล์ลูกค้า (LIFF)", [("firstName", "owner_profile.first_name"), ("lastName", "owner_profile.last_name"),
  ("nickname", "owner_profile.nickname"), ("phone", "owner_profile.phone_e164"), ("email", "owner_profile.email"),
  ("photoConsent", "customer.photo_consent"), ("creditBalanceSatang", "customer.credit_balance_satang")])
-dto("MyPet", "น้องของฉัน (LIFF) — ไม่มี internal_note", [("id", "pet.id"), ("name", "pet.name"), ("species", "pet.species"), ("breed", "pet.breed"),
- ("sex", "pet.sex"), ("birthDate", "pet.birth_date"), ("neutered", "pet.neutered"), ("coatType", "pet.coat_type"),
+dto("MyPet", "น้องของฉัน (LIFF) — ไม่มี internal_note", [("id", "pet.id"), ("name", "pet.name"), ("species", "pet.species"), ("speciesOther", "pet.species_other"), ("breed", "pet.breed"),
+ ("sex", "pet.sex"), ("birthDate", "pet.birth_date"), ("ageEstimateMonths", "pet.age_estimate_months"), ("neutered", "pet.neutered"), ("coatType", "pet.coat_type"),
  ("latestWeightGrams", "pet.latest_weight_grams"), ("photoUrl", "calc: signed URL pet.profile_file_id"), ("sharedNote", "pet_shop_profile.shared_note"),
  ("vaccinations[]", "[]dto:VaccinationItem"), ("photos[]", "[]dto:PhotoItem"), ("nextGroomDue", "calc: R-17")])
 dto("MyBookingItem", "นัดของฉัน (LIFF)", [("id", "booking.id"), ("bookingNo", "booking.booking_no"), ("status", "booking.status"),

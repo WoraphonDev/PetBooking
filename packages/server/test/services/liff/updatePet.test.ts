@@ -62,6 +62,14 @@ it("updates only the sent fields and records a customer weight", async () => {
   ]);
 });
 
+it("switches to species other with speciesOther and sets an age estimate", async () => {
+  const s = await seedOrg(env.db, "up5");
+  const p = await addPet(s.ownerProfileId, s.orgId);
+  const res = await call("shop-up5", s, p.id, { species: "other", speciesOther: "เต่า", ageEstimateMonths: 30 });
+  expect(res.status).toBe(200);
+  expect(await res.json()).toMatchObject({ species: "other", speciesOther: "เต่า", ageEstimateMonths: 30 });
+});
+
 it("invalid fields → VALIDATION_FAILED", async () => {
   const s = await seedOrg(env.db, "up2");
   const p = await addPet(s.ownerProfileId, s.orgId);
