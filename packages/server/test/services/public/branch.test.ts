@@ -7,7 +7,7 @@ import { makeSystemCtx } from "../../../src/context.ts";
 import { resetRateLimits } from "../../../src/http/rate-limit.ts";
 import { withPublic } from "../../../src/http/wrap.ts";
 import { PUBLIC_BRANCH_CACHE_MS, publicBranch, resetPublicBranchCache } from "../../../src/services/public/branch.ts";
-import { seedOrg, setupTestDb, type TestEnv, TEST_NOW } from "../../helpers/setup.ts";
+import { seedOrg, setupTestDb, TEST_NOW, type TestEnv } from "../../helpers/setup.ts";
 
 let env: TestEnv;
 const GET = withPublic("public.branch", { params: PublicBranchParams }, publicBranch);
