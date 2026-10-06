@@ -1,9 +1,7 @@
-// customer.link_approved — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.link_approved (LINE push): sent when the shop approves a LINE ↔ existing-customer link (linkRequests.approve).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "ร้าน{shopName}เชื่อมบัญชี LINE กับประวัติเดิมของคุณแล้ว ✅";
-
-export function render(payload: NotificationPayloads["customer.link_approved"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.link_approved"]): Rendered {
+  return { text: `ร้าน${payload.shopName ?? ""}เชื่อมบัญชี LINE กับประวัติเดิมของคุณแล้ว ✅` };
 }
