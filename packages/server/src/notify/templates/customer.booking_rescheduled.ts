@@ -1,9 +1,7 @@
-// customer.booking_rescheduled — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.booking_rescheduled (LINE push). The two date-times arrive formatted by the caller (R-31).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "นัดของ{petName}ถูกเลื่อน\nจาก {oldDateTime}\nเป็น {newDateTime}";
-
-export function render(payload: NotificationPayloads["customer.booking_rescheduled"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.booking_rescheduled"]): Rendered {
+  return { text: `นัดของ${payload.petName ?? ""}ถูกเลื่อน\nจาก ${payload.oldDateTime ?? ""}\nเป็น ${payload.newDateTime ?? ""}` };
 }

@@ -1,9 +1,7 @@
-// customer.deposit_confirmed — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.deposit_confirmed (LINE push). `amount` arrives formatted by the caller (R-31, slips.verify / recordDeposit).
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "ได้รับมัดจำ {amount} สำหรับ {bookingNo} แล้ว ขอบคุณค่ะ";
-
-export function render(payload: NotificationPayloads["customer.deposit_confirmed"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.deposit_confirmed"]): Rendered {
+  return { text: `ได้รับมัดจำ ${payload.amount ?? ""} สำหรับ ${payload.bookingNo ?? ""} แล้ว ขอบคุณค่ะ` };
 }

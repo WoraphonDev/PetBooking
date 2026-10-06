@@ -902,6 +902,20 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: R-08 step 4 expires the booking on the second slip rejection, but 05 only lists customer.slip_rejected (with a new deadline and pay link) as the notification.
 - Answer (2026-10-04): first rejection → awaiting_deposit with hold = now + hold_minutes, expire_hold job, customer.slip_rejected. Second rejection (≥ 2 rejected slips on the booking) → booking expired, children cancelled, customer.hold_expired (as the expire_hold job) instead of slip_rejected.
 
+## Q-1048 · T-0190 customer templates: LINE Flex, the branch timezone in {depositLine}, empty lines
+- Status: open (T-0190 ships the interim choices below; human review)
+- Task: T-0190 · Asked by: agent (claude) · Date: 2026-10-07
+- Question:
+  1. Step 7 asks for a LINE Flex Message (text + LIFF link button, altText = first line). `render()` returns `{ text, subject?, url? }`, and the LINE sender sends plain text. Flex needs `templates/index.ts`, `notify/senders.ts` and the LINE integration, which are outside this card (Q-0060 moved Flex to T-0149, which did not add it).
+  2. 07 §1.2 renders `holdExpiresTime` in the branch's local time, but the payload carries no timezone.
+  3. 07 does not say whether an empty line variable leaves a blank line.
+- Implemented for now:
+  1. Plain text exactly as 07. booking_received / booking_confirmed also return `url = bookingUrl`, ready for a Flex button.
+  2. `{depositLine}` uses Asia/Bangkok (the 06 default): "กรุณาชำระมัดจำ ฿{R-31 auto} ภายใน HH:mm น. เพื่อยืนยันคิว", else "ร้านจะยืนยันคิวให้เร็ว ๆ นี้ค่ะ".
+  3. An empty refundLine (declined), or an empty reason / moneyLine (cancelled), drops that line instead of leaving it blank.
+  - The T-0010 catalog test expected the stub's empty {depositLine}; it is relaxed for 07 §1.2 lines in a separate PR (#321).
+- Proposed decision: accept 2 and 3. For 1, add a card that owns templates/index.ts + senders + the LINE adapter, so a template can return a Flex bubble (text + button to `url`, altText = first line).
+
 ## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
 - Status: answered for T-0147; spec follow-up open
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02
