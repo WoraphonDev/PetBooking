@@ -628,6 +628,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 07 `customer.receipt` needs `receiptUrl` and dedupe `receipt:{billId}:{n}` without defining either; 05#dto-Receipt `logoUrl` is a signed URL but object storage (T-0038) is not merged; 05 does not say which bill statuses bills.receipt / bills.sendReceipt accept.
 - Answer (2026-10-02): user chose in chat. `receiptUrl = APP_BASE_URL + /liff/{branch.booking_slug}/receipts/{billId}` (route of L-13). `logoUrl` is null until T-0038 lands (same approach as Q-0032). bills.receipt works for any status (receiptNo/closedAt null while open). bills.sendReceipt needs a paid bill: open → `BILL_HAS_DUE`; void → `BILL_NOT_OPEN`; a bill without customer → `NOT_FOUND`. `n` = number of `customer.receipt` rows already queued for the bill + 1. Implementation details: payments list posted rows only; cashierName = closed_by (else opened_by) display_name; packagesRemaining = the customer's active packages (CustomerPackageItem).
 
+## Q-1045 · T-0171 liff.register: re-registering, terms version, phone match scope
+- Status: open (T-0171 ships the interim choices below; human review)
+- Task: T-0171 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05#ep-liff.register does not say:
+  - what happens when the LINE user is already a customer of the shop
+  - whether `termsVersion` must also be the latest (only privacyVersion has "ต้องเท่าเวอร์ชันล่าสุด")
+  - which customers count as "ลูกค้าเดิมของร้าน"
+  - which photo_consent version is recorded
+- Implemented for now:
+  - An already-registered caller gets the LiffSession unchanged: no second customer, and no profile or consent change.
+  - Only privacyVersion is checked against reference-data legalDocs (a mismatch → VALIDATION_FAILED); termsVersion is stored as sent.
+  - The match is a customer of this organization whose owner_profile.phone_e164 equals the normalized phone and is not the caller's own placeholder profile.
+  - photo_consent is recorded with legalDocs.photo_consent.version.
+  - The profile and the 3 consent_records are written in both outcomes; the customer row only when there is no match.
+  - On a match the response is `{ registered: false, linkPending: true }`, and a second call → LINK_REQUEST_PENDING.
+  - staff.link_request: lineName = the LINE display name (else the entered first name), phone = R-22 display format.
+- Proposed decision: accept; optionally also require termsVersion = latest.
+
 ## Q-0049 · bills.open: request combinations, idempotency, eligible bookings, unusable packages
 - Status: answered (implemented in T-0229)
 - Task: T-0229 · Asked by: agent (claude) · Date: 2026-10-03
