@@ -13,6 +13,7 @@ import {
 } from "@app/db/schema";
 import { selectChannel } from "@app/domain/notify/channel";
 import { decideLinePush } from "@app/domain/notify/line-quota";
+import { toLocalDate } from "@app/domain/time/local-time";
 import { and, asc, eq, isNull } from "drizzle-orm";
 import { makeSystemCtx, type RequestContext } from "../context.ts";
 import { getDb, type Tx } from "../db.ts";
@@ -118,13 +119,27 @@ async function deliverToCustomer(
     hasLineIdentity: !!identity,
     isFriend: identity?.isFriend ?? false,
     templateAllowsReply: (meta.channels as readonly Channel[]).includes("line_reply"),
-    // reply tokens are not stored yet (02) → always push
-    replyTokenAgeSeconds: null,
+    replyTokenAgeSeconds: identity
+      ? (deps.replyTokens?.ageSeconds({ messagingChannelId: channel.messagingChannelId, lineUserId: identity.lineUserId, now: ctx.now }) ??
+        null)
+      : null,
     activePushSubscriptions: 0,
     isOwner: false,
     hasEmail: false,
   });
   if (!picked.channel || !identity || !(meta.channels as readonly Channel[]).includes(picked.channel)) return skip("no_recipient");
+
+  // a reply token is single-use: one that is gone by now falls back to push (+ R-18), recorded as line_push
+  let replyToken: string | undefined;
+  if (picked.channel === "line_reply") {
+    replyToken =
+      deps.replyTokens?.take({ messagingChannelId: channel.messagingChannelId, lineUserId: identity.lineUserId, now: ctx.now }) ??
+      undefined;
+    if (!replyToken) {
+      if (!(meta.channels as readonly Channel[]).includes("line_push")) return skip("no_recipient");
+      picked.channel = "line_push";
+    }
+  }
 
   // R-18 applies to push only — replies are free
   let used = 0;
@@ -151,7 +166,12 @@ async function deliverToCustomer(
   }
 
   attempt.channel = picked.channel;
-  await deps.line.send({ lineChannel: channel, lineUserId: identity.lineUserId, text });
+  try {
+    await deps.line.send({ lineChannel: channel, lineUserId: identity.lineUserId, text, ...(replyToken ? { replyToken } : {}) });
+  } catch (e) {
+    if (e instanceof Error && LINE_UNAUTHORIZED.test(e.message)) await markLineChannelError(tx, ctx, channel);
+    throw e;
+  }
   if (picked.channel === "line_push") await warnOwnersAtQuota(tx, ctx, row, used + 1, channel.monthlyPushQuota);
   return { status: "sent", channel: picked.channel };
 }
@@ -231,6 +251,31 @@ async function deliverToStaff(
 }
 
 /** R-18 step 7: once sent pushes reach 80% → owner.quota_warning to every active owner, deduped per branch + month. */
+/** createLineSender's error for a 401 answer ("LINE delivery failed (401)") */
+const LINE_UNAUTHORIZED = /\(401\)$/;
+
+/** 01 §7: LINE answered 401 → line_channel.status = error + owners get owner.line_error (Q-1029), once per channel per local day */
+async function markLineChannelError(tx: Tx, ctx: RequestContext, channel: typeof lineChannel.$inferSelect): Promise<void> {
+  const db = tenantDb(ctx, tx);
+  await db.update(lineChannel, { status: "error" }, eq(lineChannel.id, channel.id));
+  const [br] = (await db.select(branch, eq(branch.id, channel.branchId))) as (typeof branch.$inferSelect)[];
+  const timezone = br?.timezone ?? ctx.timezone;
+  const owners = (await db.select(
+    staffUser,
+    and(eq(staffUser.role, "owner"), eq(staffUser.status, "active")),
+  )) as (typeof staffUser.$inferSelect)[];
+  const branchCtx: RequestContext = { ...ctx, branchId: channel.branchId, timezone };
+  const localDate = toLocalDate({ instant: ctx.now.toISOString(), timezone });
+  for (const owner of owners) {
+    await enqueueNotification(tx, branchCtx, {
+      key: "owner.line_error",
+      recipient: { type: "staff", id: owner.id },
+      payload: { branchName: br?.name ?? "" },
+      dedupeKey: `line_error:${channel.id}:${localDate}`,
+    });
+  }
+}
+
 async function warnOwnersAtQuota(tx: Tx, ctx: RequestContext, row: NotificationRow, used: number, quota: number): Promise<void> {
   if (!row.branchId || used * 100 < quota * QUOTA_WARNING_PERCENT) return;
   const db = tenantDb(ctx, tx);
