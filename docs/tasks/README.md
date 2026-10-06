@@ -182,11 +182,12 @@
 | [T-0148](T-0148.md) | 5 | e2e | L |  | E2E M2: หน้าร้านลงนัด … | T-0039 T-0136 T-0134 T-0135 T-0138 T-0145 T-0144 |
 | [H-11](H-11.md) | 6 | human | - |  | Release A: UAT + ตัดสินใจปล่อยร้านนำร่อง (M2) | T-0091 T-0130 T-0131 T-0072 T-0092 T-0093 T-0094 T-0095 … |
 
-## M3 — ลูกค้าจองกรูมเองใน LINE + มัดจำ (71 tasks)
+## M3 — ลูกค้าจองกรูมเองใน LINE + มัดจำ (72 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
 | [T-0149](T-0149.md) | 1 | infra | L | ⚠️ | LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode | T-0010 H-03 |
+| [T-0324](T-0324.md) | 2 | infra | M | ⚠️ | Wire LINE sender + reply tokens into the notification dispatcher (Q-1029) | T-0149 T-0010 T-0320 T-0124 |
 | [T-0150](T-0150.md) | 1 | domain | M |  | Rule R-05 อ่าน QR บนสลิป + จับสลิปซ้ำ | H-01 |
 | [T-0151](T-0151.md) | 1 | domain | M | ⚠️ | Rule R-15 ยอดบิล ส่วนลด และการรับชำระ | H-01 |
 | [T-0152](T-0152.md) | 1 | domain | S |  | Rule R-21 สิทธิ์ลูกค้าเลื่อน/ยกเลิกเอง | H-01 |
@@ -256,7 +257,7 @@
 | [T-0216](T-0216.md) | 3 | ui | S |  | Screen L-15 โปรไฟล์ของฉัน | T-0195 T-0026 T-0071 T-0172 T-0181 |
 | [T-0217](T-0217.md) | 3 | ui | M |  | Screen AD-03 ร้าน (admin) | T-0025 T-0026 T-0319 T-0184 T-0185 T-0125 |
 | [T-0218](T-0218.md) | 5 | e2e | L |  | E2E M3: ลูกค้าเปิด LIFF (fake LINE) … | T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186 |
-| [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 T-0153 … |
+| [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0324 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 … |
 
 ## M4 — ปิดบิล ค่ามือ หลังบริการ (47 tasks)
 
