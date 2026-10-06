@@ -451,6 +451,17 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Still to choose: (A) add `liffId` (line_channel.liff_id) to ShopPublic (spec change, recommended) / (B) the shell parses the id from `liffUrl` = `https://liff.line.me/{liffId}`.
 - Answer (2026-10-06): user chose A — add `liffId` to ShopPublic and add T-0170 / T-0182 to T-0195's depends_on (spec change).
 
+## Q-1039 · T-0104 auth.staffLine: PLATFORM_LINE_LOGIN_CHANNEL_ID is not in the 01 env list
+- Status: answered (implemented in T-0104; env row added to 01 §6 by the Q-1036..Q-1039 spec-change PR)
+- Answer (2026-10-06): user chose in chat: add `PLATFORM_LINE_LOGIN_CHANNEL_ID` to 01 §6 as required in staging/production; the T-0104 code stays as implemented.
+- Task: T-0104 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05#ep-auth.staffLine verifies the token against `PLATFORM_LINE_LOGIN_CHANNEL_ID`, but 01-architecture's environment table does not list that variable, and the spec does not say what happens when it is unset.
+- Implemented for now:
+  - The service reads `process.env.PLATFORM_LINE_LOGIN_CHANNEL_ID`. When it is unset, LINE's verify answer cannot match the channel, so every login gets LINE_TOKEN_INVALID; LINE_FAKE=1 accepts fake tokens.
+  - A suspended organization is handled like auth.staffLogin: the session is created and the console guard then shows 403.
+  - The new session is the same `sid` as a password login, and the response is StaffMe built by auth.me.
+- Proposed decision: add `PLATFORM_LINE_LOGIN_CHANNEL_ID` (required in staging/production) to 01-architecture §6, and fail the server start without it, like the other required LINE settings.
+
 ## Q-1038 · T-0195 LIFF shell: what "redirect to the login page" means in LIFF, menu, LINE_FAKE user
 - Status: open (T-0195 ships the interim choices below; human review)
 - Task: T-0195 · Asked by: agent (claude) · Date: 2026-10-06
