@@ -105,7 +105,7 @@ async function enqueue<K extends TemplateKey>(
 const rowOf = async (id: string) => (await env.db.select().from(notification).where(eq(notification.id, id)))[0];
 const dispatch = (deps: NotifyDeps) => dispatchQueued(deps, { now: TEST_NOW });
 
-const confirmed = { bookingNo: "B-1", summary: "อาบน้ำ", dateTime: "5 ต.ค. 10:00", shopName: "Shop", mapUrl: "m", bookingUrl: "b" };
+const confirmed = { bookingNo: "B-1", summary: "อาบน้ำ", dateTime: "5 ต.ค. 10:00", shopName: "Shop", bookingUrl: "b" };
 const reminder = { petName: "โมจิ", dateTime: "พรุ่งนี้ 10:00", service: "อาบน้ำ", bookingUrl: "b" };
 const nextGroom = { petName: "โมจิ", dueDate: "2026-11-01", bookUrl: "u" };
 const newBooking = { bookingNo: "B-1", customerName: "คุณเอ", summary: "อาบน้ำ" };
@@ -117,7 +117,7 @@ describe("customer (LINE)", () => {
     const { deps, calls } = fakes();
     await dispatch(deps);
     expect(await rowOf(id)).toMatchObject({ status: "sent", channel: "line_push", skipReason: null, sentAt: TEST_NOW, error: null });
-    expect(calls.line).toEqual([{ lineUserId: `U${n}`, text: "ยืนยันการจอง B-1 ✅\nอาบน้ำ\n📅 5 ต.ค. 10:00\nแผนที่: m" }]);
+    expect(calls.line).toEqual([{ lineUserId: `U${n}`, text: "ยืนยันการจอง B-1 ✅\nอาบน้ำ\n📅 5 ต.ค. 10:00" }]);
   });
 
   it.each([

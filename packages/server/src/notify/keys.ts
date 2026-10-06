@@ -23,7 +23,7 @@ export const TEMPLATES = {
     channels: ["line_reply", "line_push"],
     messageClass: "essential",
     economy: "send",
-    vars: ["bookingNo", "summary", "dateTime", "shopName", "mapUrl", "bookingUrl"],
+    vars: ["bookingNo", "summary", "dateTime", "shopName", "bookingUrl"],
   },
   "customer.booking_declined": {
     recipients: "customer",

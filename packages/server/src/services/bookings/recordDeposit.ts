@@ -105,7 +105,6 @@ export async function leaveAwaitingDeposit(tx: Tx, ctx: RequestContext, bk: Book
           ? `${formatThaiDate({ date: toLocalDate({ instant: first.toISOString(), timezone: tz }) })} ${formatTime({ instant: first.toISOString(), timezone: tz })}`
           : "",
         shopName: br.name,
-        mapUrl: "",
         bookingUrl: new URL(`/liff/${br.bookingSlug}/bookings/${bk.id}`, process.env.APP_BASE_URL).toString(),
       },
       dedupeKey: `booking_confirmed:${bk.id}`,

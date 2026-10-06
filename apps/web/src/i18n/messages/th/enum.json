@@ -272,6 +272,36 @@
     "access": "ขอสำเนาข้อมูล",
     "delete": "ขอลบข้อมูล"
   },
+  "data_request_status": {
+    "open": "รอดำเนินการ",
+    "done": "ดำเนินการแล้ว",
+    "rejected": "ปฏิเสธ"
+  },
+  "photo_kind": {
+    "profile": "รูปโปรไฟล์",
+    "before": "ก่อนทำ",
+    "after": "หลังทำ",
+    "stay": "ระหว่างพัก"
+  },
+  "record_source": {
+    "shop": "ร้าน",
+    "customer": "ลูกค้า",
+    "import": "นำเข้า"
+  },
+  "closure_source": {
+    "manual": "ตั้งเอง",
+    "public_holiday": "วันหยุดราชการ"
+  },
+  "record_status": {
+    "active": "ใช้งาน",
+    "archived": "เก็บแล้ว"
+  },
+  "actor_type": {
+    "staff": "ร้าน",
+    "customer": "ลูกค้า",
+    "system": "ระบบ",
+    "platform_admin": "ผู้ดูแลระบบ"
+  },
   "org_status": {
     "pilot": "นำร่อง",
     "active": "ใช้งาน",
