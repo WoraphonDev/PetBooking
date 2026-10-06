@@ -1016,6 +1016,19 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   4. photos[] = this shop's pet_photo rows with kind before/after/stay, newest first.
 - Proposed decision: accept 1 and 4. For 2 and 3, add optional `speciesOther` to the liff.createPet body and `speciesOther` + `ageEstimateMonths` to MyPet (spec change).
 
+## Q-1042 · T-0209 L-02: branch timezone for "today", when "จ่ายมัดจำ" shows, links to unbuilt screens
+- Status: open (T-0209 ships the interim choices below; human review)
+- Task: T-0209 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. "เวลาเปิดวันนี้" needs the branch-local weekday, but ShopPublic / liff.shop has no `timezone`.
+  2. "ปุ่ม 'จ่ายมัดจำ' ถ้าค้าง" does not say which deposit statuses count as ค้าง.
+  3. The card links to L-07 / L-04..06 / L-08 / L-03 / L-12, and most of those screens do not exist yet.
+- Implemented for now:
+  1. "Today" uses the app default timezone Asia/Bangkok (`DEFAULT_TIME_ZONE`). The next booking's date and time use the same zone.
+  2. The button shows for deposit_status `pending` or `rejected`, the same statuses for which bookings.get / liff.booking offer a PaymentInstruction.
+  3. Every link goes through `shell-liff/navigation`: a screen not yet implemented shows a disabled button, and its card enables it (Q-1038). The next booking is the first upcoming liff.bookings item (soonest first_service_at).
+- Proposed decision: accept 2 and 3. For 1, add `timezone` (branch.timezone) to ShopPublic (spec change) when a non-Bangkok branch exists.
+
 ## Q-0105 · T-0157 pets.setStatus: the future-bookings warning and which reminders to cancel
 - Status: answered (user chose in chat, 2026-10-05)
 - Task: T-0157 · Asked by: agent (claude) · Date: 2026-10-05
