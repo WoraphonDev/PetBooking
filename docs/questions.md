@@ -591,6 +591,29 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 05#ep-exports.csv lists the types and the CSV format but no columns, no column for from/to, and the route `[type].csv` cannot be a Next.js dynamic segment while `withStaff` always answers JSON (`packages/server/src/http/respond.ts`, outside the card).
 - Answer (2026-10-02): user chose in chat. Each type exports its 02 table (customers→customer, pets→pet, bills→bill, bill_lines→bill_line, commissions→commission_entry, bookings→booking) with every column in schema order except organization_id; `*_satang` columns are output in baht with 2 decimals and named without the `_satang` suffix. Pets are the pets of the organization's customers' owner profiles. from/to are inclusive branch-local days on created_at (bills: closed_at, commissions: earned_at, bookings: first_service_at). The route reads `{type}` from the URL path, calls the `withStaff` handler and re-sends its JSON string as `text/csv; charset=utf-8` with `Content-Disposition: attachment`. A shared non-JSON response option in respond.ts would remove this adapter (follow-up, not in T-0307).
 
+## Q-1044 · T-0178 liff.uploadSlip / liff.ics / liff.payPage: error order, slip amount, calendar contents
+- Status: open (T-0178 ships the interim choices below; human review)
+- Task: T-0178 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05 lists HOLD_EXPIRED and STATUS_NOT_ALLOWED for liff.uploadSlip but not which one wins. It does not say what amount a deposit slip expects. For liff.ics it only says "1 VEVENT ต่อนัด/การพัก, LOCATION = ที่อยู่ร้าน, URL = Google Maps", and liff.payPage lists no errors.
+- Implemented for now:
+  1. uploadSlip:
+     - Errors:
+       - a hold past hold_expires_at, or a booking the expire_hold job already set to `expired` → HOLD_EXPIRED, so L-07 shows its "หมดเวลา" page
+       - any other status than awaiting_deposit → STATUS_NOT_ALLOWED
+       - a deposit that is not pending/rejected → INVALID_TRANSITION, from the deposit machine
+     - The slip's amount_expected = deposit_required − deposit_verified.
+     - The expire_hold job is left in place; it no-ops once the booking leaves awaiting_deposit.
+  2. ics:
+     - Grooming appointments use their UTC start/end.
+     - A stay is an all-day event from check-in to the check-out date (DTEND exclusive).
+     - A daycare visit uses its session's local times in branch.timezone. Daycare visits are included as "นัด".
+     - Cancelled and no-show lines are left out.
+     - SUMMARY = shop · pet · services / room type / session.
+     - URL = Google Maps by coordinates, else an address search.
+     - The route answers `text/calendar` as an attachment; errors stay JSON.
+  3. payPage: the same checks as liff.payUploadSlip: NOT_FOUND / BILL_NOT_OPEN / PROMPTPAY_NOT_CONFIGURED.
+- Proposed decision: accept as implemented.
+
 ## Q-0074 · T-0234 bills.close: redemption count, package value, reliability, booking close
 - Status: answered (2026-10-04)
 - Answer (2026-10-04): user confirmed the implemented decision in chat.
