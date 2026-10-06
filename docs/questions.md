@@ -421,6 +421,21 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. Only fill liffUrl / liffId / addFriendUrl when `line_channel.status = active`. This is a one-line follow-up in services/liff/shop.ts.
   3. Accept as implemented.
 
+## Q-1041 · T-0105 staffMe.linkLine / pushSubscribe / pushUnsubscribe: clash code, cross-shop endpoint, unknown endpoint
+- Status: open (T-0105 ships the interim choices below; human review)
+- Task: T-0105 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05 lists only `EMAIL_TAKEN` for staffMe.linkLine. It does not say what that code means for a LINE link, nor what the push endpoints do when the endpoint belongs to another shop or does not exist.
+- Implemented for now:
+  1. linkLine:
+     - The token is verified against PLATFORM_LINE_LOGIN_CHANNEL_ID, as auth.staffLine does.
+     - A LINE user already linked to another staff member, in any organization, → `EMAIL_TAKEN` (line_user_id is unique across staff). Relinking the same account is allowed.
+     - Returns StaffMe; no audit (no matching R-27 action).
+  2. pushSubscribe:
+     - Upserts by endpoint for the caller: keys and owner are replaced, disabled_at is cleared, user_agent is taken from the request.
+     - An endpoint already registered in another organization → NOT_FOUND. Tenant rows are never moved between shops.
+  3. pushUnsubscribe: deletes only the caller's row for the endpoint; a colleague's, another shop's or an unknown endpoint → NOT_FOUND.
+- Proposed decision: accept. Optionally add a dedicated `LINE_ALREADY_LINKED` error code for 1 (spec change), and make unsubscribe idempotent (204 when nothing matches).
+
 ## Q-1016 · T-0076 C-09: deferred tabs, pet photo crop, vaccine labels, booking prefill
 - Status: answered
 - Task: T-0076 · Asked by: agent (claude) · Date: 2026-10-05
