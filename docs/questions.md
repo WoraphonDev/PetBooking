@@ -866,6 +866,24 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: a human (legal owner) supplies the three markdown files; the card gains `apps/web/content/legal/**` (or the files land first in a separate PR) and lists the markdown dependency (or the page renders plain paragraphs without one). `LEGAL_DOCS` can live in `components/p-02/`.
 - Work: none on T-0317 until the content exists.
 
+## Q-1046 · T-0175 liff.groomSlots: groomer "nickname", size choice, add-on bookability, other R-12 reasons, shared slot code
+- Status: open (T-0175 ships the interim choices below; human review)
+- Task: T-0175 · Asked by: agent (claude) · Date: 2026-10-06
+- Question:
+  1. 05 says to show "ชื่อเล่นช่าง", but staff_user has only `display_name`.
+  2. `sizeTierId` is "ลูกค้าเลือกเองเมื่อไม่มีน้ำหนัก"; 05 does not say what happens when the pet has a weight.
+  3. `online_bookable` is listed for serviceIds only, not addonIds.
+  4. Read first cites R-12, but only CUSTOMER_BLACKLISTED is a listed error.
+  5. The card cannot touch `services/availability/groomSlots.ts`, so the day/slot gathering is duplicated.
+- Implemented for now:
+  1. groomerName = staff_user.display_name.
+  2. A weight wins (R-01 from the weight, sizeTierId ignored). Without a weight (dog/cat), sizeTierId is required (else WEIGHT_REQUIRED) and must be a size tier of this branch.
+  3. Mains and add-ons must both be active, online_bookable grooming services; mains must not be add-ons and vice versa → VALIDATION_FAILED with field paths.
+  4. Only R-12 step 1 (online + blacklisted → CUSTOMER_BLACKLISTED) is checked here. Breed / weight / species eligibility is left to liff.quote / liff.createBooking.
+  5. The day and slot gathering is the same code as availability.groomSlots, with channel `online` (lead time + horizon) and no excludeAppointmentId / pendingAppointments.
+  - The pet must be the customer's own active pet known to the shop (else NOT_FOUND). The 30/min/user limit is the existing `liffSlotSearch` rule.
+- Proposed decision: accept 1–4. For 5, add a follow-up card that extracts the shared slot gathering from services/availability/groomSlots.ts so both endpoints use one function.
+
 ## Q-0068 · T-0188 approval_overdue: refund by a system job, waitedMinutes
 - Status: answered (implemented in T-0188); spec follow-up open
 - Task: T-0188 · Asked by: agent (claude) · Date: 2026-10-03
