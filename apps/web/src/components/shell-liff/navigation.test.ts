@@ -11,7 +11,9 @@ it("lists every L-* screen of 06 with its route", () => {
 
 it("menu: screens without an extra id, disabled until implemented, booking entries follow the modules", () => {
   expect(menuItems("shop-a", all).map((m) => m.id)).toEqual(["L-02", "L-03", "L-04", "L-05", "L-06", "L-08", "L-12", "L-15"]);
-  expect(menuItems("shop-a", all).every((m) => m.href === null)).toBe(true);
+  // explicit fixture: screen cards flip `implemented` as they ship, so the live registry is not asserted here
+  const none = liffNavigation.map((e) => ({ ...e, implemented: false }));
+  expect(menuItems("shop-a", all, none).every((m) => m.href === null)).toBe(true);
   expect(menuItems("shop-a", { grooming: true, hotel: false, daycare: false }).map((m) => m.id)).toEqual([
     "L-02",
     "L-03",
