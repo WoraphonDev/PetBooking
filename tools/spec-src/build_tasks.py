@@ -269,6 +269,16 @@ INF("INF-LINE", "LINE integration: messaging client, ID token verify, webhook si
      "LINE_FAKE=1 (ห้ามใน production): fake sender เก็บข้อความใน memory + fake idtoken รูปแบบ `fake:<userId>:<name>` สำหรับ dev/E2E",
      "ต่อ LineSender เข้ากับ dispatcher (reply token store ตาม R-19 / SP-03)"],
     ["pnpm --filter @app/server test -- line"], deps=["INF-NOTIFY", "H-SP01"], read=["docs/decisions/ADR-001-line-provider.md", "docs/spec/04-business-rules.md#R-19", "docs/spec/01-architecture.md §7"], hr=True)
+INF("INF-LINE-DISPATCH", "Wire LINE sender + reply tokens into the notification dispatcher (Q-1029)", "M3", "M", "US-13-06",
+    ["packages/server/src/notify/dispatch.ts", "packages/server/src/notify/senders.ts", "packages/server/test/notify/dispatch-line.test.ts"],
+    ["NotifyDeps รับ `replyTokens?: ReplyTokenStore` (จาก integrations/line) — ไม่มี = ไม่มี reply token (push เสมอ เหมือนเดิม)",
+     "dispatch: ส่ง `replyTokens.ageSeconds({ messagingChannelId, lineUserId, now })` เป็น `replyTokenAgeSeconds` ของ selectChannel (R-19 ข้อ 2) แทนค่า null",
+     "เมื่อเลือก `line_reply`: `take` token แล้วส่ง `replyToken` ให้ LineSender; token หมดอายุระหว่างนั้น → ส่งแบบ push ผ่าน R-18 ตามปกติ และบันทึก channel ตามที่ส่งจริง",
+     "line_reply ไม่นับโควตา push (R-18) — นับเฉพาะ notification.channel = line_push",
+     "LineSender ที่ตอบ 401 (`createLineSender({ onUnauthorized })`): ตั้ง `line_channel.status = error` ของ channel นั้น (01 §7) — การแจ้งเจ้าของทาง Web Push ยังไม่อยู่ในการ์ดนี้ (ต้องมี template ใน 07 ก่อน, Q-1029)",
+     "test (PGlite + fake sender): reply token สด → line_reply ไม่นับโควตา; token เก่า/ไม่มี → line_push; template ไม่อนุญาต reply → push; 401 → status error + notification failed"],
+    ["pnpm --filter @app/server test -- notify"], deps=["INF-LINE", "INF-NOTIFY", "INF-NOTIFY-RENDER", "API-feedback-0"],
+    read=["docs/spec/04-business-rules.md#R-19", "docs/spec/04-business-rules.md#R-18", "docs/spec/01-architecture.md §7", "docs/questions.md (Q-1029)"], hr=True)
 INF("INF-I18N", "i18n: next-intl (th), message namespaces per screen + enum labels + format helpers", "M1", "M", "US-13-03",
     ["apps/web/src/i18n/**", "apps/web/scripts/merge-messages.mjs", "apps/web/package.json", "apps/web/src/lib/format.ts", "apps/web/src/lib/enum-label.ts", "apps/web/next.config.ts","pnpm-lock.yaml"],
     ["messages/th/common.json (ปุ่ม/คำทั่วไป), messages/th/enum.json คัดลอกจาก docs/spec/enum-labels.th.json",

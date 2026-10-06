@@ -166,6 +166,7 @@
   "T-0148",
   "H-11",
   "T-0149",
+  "T-0324",
   "T-0150",
   "T-0151",
   "T-0152",
@@ -2949,6 +2950,22 @@
    "title": "LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode",
    "human_review": true
   },
+  "T-0324": {
+   "key": "INF-LINE-DISPATCH",
+   "ms": "M3",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0149",
+    "T-0010",
+    "T-0320",
+    "T-0124"
+   ],
+   "title": "Wire LINE sender + reply tokens into the notification dispatcher (Q-1029)",
+   "human_review": true
+  },
   "T-0150": {
    "key": "DOM-R-05",
    "ms": "M3",
@@ -4126,6 +4143,7 @@
    "wave": 6,
    "deps": [
     "T-0149",
+    "T-0324",
     "T-0195",
     "T-0196",
     "T-0150",
