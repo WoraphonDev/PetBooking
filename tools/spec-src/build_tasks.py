@@ -345,8 +345,8 @@ for app, title, routes in (("console", "Console shell: layout + sidebar (คร�
                 ("Admin: parent layout มี providers เท่านั้น; AD-01 public อยู่นอก guard. Protected root layouts เรียก resolveAdmin จาก @app/server/http (re-export เดิมเท่านั้น) แล้วแสดง shell; ตั้ง now ครั้งเดียวที่ guard request entry และใช้ ctx.now หลังจากนั้น. aid ไม่มี/หมดอายุ/disabled/subject ผิด → redirect /admin/login; ไม่มี role ย่อย/403 route/experimental authInterrupts (06 Q-0024)" if app == "admin" else
                  "server-side guard: อ่าน session (sid/cid/aid) → ไม่มี → redirect หน้าเข้าสู่ระบบที่ถูกต้อง; role ไม่ถึง → หน้า 403"),
                 "แถบแดง 'โหมดช่วยเหลือ (อ่านอย่างเดียว)' เมื่อ ctx.supportMode" if app == "console" else
-                ("liff.init ด้วย liff_id ของสาขา (จาก liff.shop) → getIDToken → liff.session; LINE_FAKE โหมด dev ใช้ fake token" if app == "liff" else "ใช้ได้ที่ 360px")],
-         done=["pnpm --filter @app/web build", CONF, VERIFY], deps=["INF-I18N", "INF-APICLIENT"] + (["INF-HTTP"] if app == "admin" else []) + (["INF-LINE"] if app == "liff" else []) + (["H-LINE-PLATFORM"] if app == "staff" else []),
+                ("liff.init ด้วย ShopPublic.liffId จาก public.branch (ยังไม่มี session, Q-1030) → getIDToken → liff.session; LINE_FAKE โหมด dev ใช้ fake token" if app == "liff" else "ใช้ได้ที่ 360px")],
+         done=["pnpm --filter @app/web build", CONF, VERIFY], deps=["INF-I18N", "INF-APICLIENT"] + (["INF-HTTP"] if app == "admin" else []) + (["INF-LINE", "API-liff.session", "API-public-0"] if app == "liff" else []) + (["H-LINE-PLATFORM"] if app == "staff" else []),
          read=["docs/spec/06-screens.md", "docs/spec/08-permissions.md"])
 task("INF-E2E", "Playwright setup + dev seed (ร้านตัวอย่างครบ) + smoke test", "M1", "infra", "M", "US-13-14",
      allowed=["apps/web/playwright.config.ts", "apps/web/e2e/**", "packages/server/src/dev/**", "packages/server/package.json","apps/web/package.json", "pnpm-lock.yaml"],
