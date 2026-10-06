@@ -425,6 +425,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: a follow-up card (or T-0183 webhook.line) with `notify/dispatch.ts` + the runner deps in scope: pass `ageSeconds` into selectChannel, `take` the token for `line_reply`, and set `line_channel.status = error` in onUnauthorized. The owner Web Push on 401 needs a template key in 07 first.
 - Answer (2026-10-06): user approved in chat: dispatcher wiring goes to card T-0324 (PR #293). Add notification template `owner.line_error` (Web Push to owners when LINE answers 401; e.g. 'การเชื่อมต่อ LINE OA ของร้านขาด กรุณาตรวจสอบ token') by spec change.
 
+## Q-1030 · T-0195 LIFF shell: where liff_id comes from before there is a session
+- Status: answered
+- Task: T-0195 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: T-0195 step 3 says "liff.init ด้วย liff_id ของสาขา (จาก liff.shop)", but liff.shop needs a customer session, which liff.session only gives after liff.init → getIDToken. `public.branch` (no login) returns the same ShopPublic, but `liffUrl` is a URL ("calc: line_channel.liff_id"), and liff.session / public.branch (T-0170, T-0182) are not merged and are not in T-0195's depends_on.
+- Approved direction: the shell reads ShopPublic from `public.branch` before liff.init; T-0170 and T-0182 become depends_on of T-0195 (generator edit).
+- Still to choose: (A) add `liffId` (line_channel.liff_id) to ShopPublic (spec change, recommended) / (B) the shell parses the id from `liffUrl` = `https://liff.line.me/{liffId}`.
+- Answer (2026-10-06): user chose A — add `liffId` to ShopPublic and add T-0170 / T-0182 to T-0195's depends_on (spec change).
+
+## Q-1031 · T-0170 liff.session: an unregistered LINE user has no owner_profile, but line_identity needs one
+- Status: answered
+- Task: T-0170 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: liff.session must "upsert line_identity (provider_id, sub)" and give an unregistered user a session (registered=false). `line_identity.owner_profile_id` is NOT NULL, and the customer session's subject is an owner_profile id (`resolveCustomer` loads the customer by `session.subject_id` = owner_profile). Before liff.register there is no owner_profile, so neither row can be written as specified.
+- Evidence: 05#ep-liff.session, 02#tbl-line_identity (owner_profile_id NOT NULL), packages/server/src/http/auth.ts resolveCustomer, 05#ep-liff.register (creates owner_profile + customer).
+- Proposed decision: (A) liff.session creates a placeholder owner_profile on first sight (`first_name` = LINE display name, `created_in_org_id` = the branch's org, no phone), links line_identity to it and opens a `cid` session with that subject; liff.register then fills the same owner_profile and creates the customer (or the link request when the phone matches an existing customer — linkRequests.approve moves the line_identity to the existing profile). No schema change. (B) allow a null owner_profile_id / a separate unregistered session subject (schema + migration change).
+- Answer (2026-10-06): user chose A — placeholder owner_profile at liff.session, filled by liff.register; linkRequests.approve moves the line_identity to the existing profile. T-0170 implements this.
+
 ## Q-0087 · T-0189 recompute_reliability: which customers, which dates
 - Status: answered
 - Task: T-0189 · Asked by: agent (claude) · Date: 2026-10-04
