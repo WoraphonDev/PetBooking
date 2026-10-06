@@ -403,7 +403,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: `bookAgainUrl = APP_BASE_URL + /liff/{branch.booking_slug}` (L-02). T-0186 uses this; switch to a deeper booking route (L-04/L-05) or `https://liff.line.me/{liff_id}` if preferred.
 
 ## Q-1037 · T-0197 P-01: SEO province, when the LINE button shows, hours order
-- Status: open (T-0197 ships the interim choices below; human review)
+- Status: answered (spec change applied in this PR)
+- Answer (2026-10-06): user chose the proposal in chat. 05#dto-ShopPublic gains `province` (branch.province) and P-01 title / og:title = name + province. addFriendUrl / liffUrl / liffId are filled only while line_channel.status = active (liff.shop / public.branch). Hours order (Mon→Sun, a missing day = ปิด) accepted as implemented.
 - Task: T-0197 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. P-01 note "SEO: title = ชื่อร้าน + จังหวัด", but ShopPublic only has `address` (one joined string), with no province field.
@@ -463,7 +464,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: add `PLATFORM_LINE_LOGIN_CHANNEL_ID` (required in staging/production) to 01-architecture §6, and fail the server start without it, like the other required LINE settings.
 
 ## Q-1038 · T-0195 LIFF shell: what "redirect to the login page" means in LIFF, menu, LINE_FAKE user
-- Status: open (T-0195 ships the interim choices below; human review)
+- Status: answered (generator change applied in this PR)
+- Answer (2026-10-06): user accepted 1–3 as implemented in chat and chose to add `apps/web/src/components/shell-liff/navigation/<L-xx>.ts` to every LIFF screen card's allowed_paths (build_tasks.py), with a step to enable the entry once the screen is implemented.
 - Task: T-0195 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: The card's guard step says "no session → redirect to the correct login page; role too low → 403". LIFF has no login page: the session comes from liff.init → liff.session (Q-1030). The card does not say which L-* screens belong in the menu, or which LINE user LINE_FAKE signs in as.
 - Implemented for now:
@@ -626,7 +628,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user approved in chat: build-time `NEXT_PUBLIC_APP_VERSION` (git sha) and a follow-up card that mounts FeedbackWidget in the console and staff shells.
 
 ## Q-1036 · T-0174 liff.bookings / liff.booking / liff.addVaccination: scope, summary and detail fields
-- Status: open (T-0174 ships the interim choices below; human review)
+- Status: answered (implemented in T-0174)
+- Answer (2026-10-06): user accepted as implemented in chat (scope default/meaning and ordering, summary/petNames, deposit-only payment, cancelPreview null when R-21 forbids, addVaccination checks, mapUrl/icsUrl).
 - Task: T-0174 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-liff.bookings has an optional `scope` (upcoming | past) with no definition or default. MyBookingItem.summary, MyBookingDetail.payment / cancelPreview / mapUrl / icsUrl are "calc" without a format. liff.addVaccination lists no checks.
 - Implemented for now:

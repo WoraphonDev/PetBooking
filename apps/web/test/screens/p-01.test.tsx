@@ -40,6 +40,7 @@ const shop = (over: Partial<PublicBranchResponse> = {}) =>
     logoUrl: "https://storage.test/logo.png",
     phone: "021234567",
     address: "1 ถนนสุขุมวิท วัฒนา กรุงเทพมหานคร 10110",
+    province: "กรุงเทพมหานคร",
     latitude: 13.75,
     longitude: 100.5,
     hours: [
@@ -127,7 +128,7 @@ it("helpers: hours Monday first with missing days closed, map fallback to the ad
   expect(nightlyFrom([])).toBeNull();
 });
 
-it("loads public.branch with a 60 s revalidate; 404 → notFound; metadata = name + logo OG image", async () => {
+it("loads public.branch with a 60 s revalidate; 404 → notFound; metadata = name + province + logo OG image", async () => {
   const fetchMock = vi.fn(async (url: URL, _init?: RequestInit) =>
     url.pathname.endsWith("/no-shop") ? new Response("{}", { status: 404 }) : Response.json(shop()),
   );
@@ -136,8 +137,8 @@ it("loads public.branch with a 60 s revalidate; 404 → notFound; metadata = nam
   expect(String(fetchMock.mock.calls[0]?.[0])).toBe("https://petbooking.test/api/v1/public/branches/shop-a");
   expect(fetchMock.mock.calls[0]?.[1]).toEqual({ next: { revalidate: 60 } });
   expect(await generateMetadata({ params: Promise.resolve({ bookingSlug: "shop-a" }) })).toEqual({
-    title: "ร้านน้องหมา",
-    openGraph: { title: "ร้านน้องหมา", images: ["https://storage.test/logo.png"] },
+    title: "ร้านน้องหมา กรุงเทพมหานคร",
+    openGraph: { title: "ร้านน้องหมา กรุงเทพมหานคร", images: ["https://storage.test/logo.png"] },
   });
   expect(await loadShop("no-shop")).toBeNull();
   await expect(ShopLandingPage({ params: Promise.resolve({ bookingSlug: "no-shop" }) })).rejects.toThrow("NEXT_NOT_FOUND");

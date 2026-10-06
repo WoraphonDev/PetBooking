@@ -128,6 +128,7 @@ type RequestContext = {
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | web push | `npx web-push generate-vapid-keys` |
 | `SMTP_URL`, `MAIL_FROM` | email | ตาม ADR-003 |
 | `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | storage | ตาม ADR-004 |
+| `PLATFORM_LINE_LOGIN_CHANNEL_ID` | server (`auth.staffLine`) | บังคับใน staging/production — channel ID ของ LINE Login ของแพลตฟอร์ม (พนักงานเข้าสู่ระบบด้วย LINE, Q-1039) |
 | `LINE_FAKE` | dev/E2E เท่านั้น | `1` = ไม่เรียก LINE จริง — server ต้อง **ปฏิเสธการ start** ถ้า `NODE_ENV=production` และ `LINE_FAKE=1` |
 | `ERROR_REPORT_DSN` (ไม่บังคับ) | monitoring | ตาม ADR-002 (ถ้าใช้ free tier) |
 | `NEXT_PUBLIC_APP_VERSION` (ไม่บังคับ) | web (build time) | git sha ของ commit ที่ build — CI/hosting ตั้งให้; ใช้เป็น `feedback_report.app_version` (C-46, Q-0114); ไม่มี = แสดง '—' |

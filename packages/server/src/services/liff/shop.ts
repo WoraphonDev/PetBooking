@@ -16,7 +16,11 @@ export async function shopPublic(ctx: RequestContext, db: Executor, branchId: st
   // branch_hours / branch_policy have no organization_id: keyed by the org-checked branch
   const hours = await db.select().from(branchHours).where(eq(branchHours.branchId, br.id)).orderBy(asc(branchHours.weekday));
   const [policy] = await db.select().from(branchPolicy).where(eq(branchPolicy.branchId, br.id));
-  const [channel] = (await t.select(lineChannel, eq(lineChannel.branchId, br.id))) as (typeof lineChannel.$inferSelect)[];
+  // the LINE links only exist while the channel is active (Q-1037)
+  const [channel] = (await t.select(
+    lineChannel,
+    and(eq(lineChannel.branchId, br.id), eq(lineChannel.status, "active")),
+  )) as (typeof lineChannel.$inferSelect)[];
 
   // the customer sees what they can book: active + online_bookable; the shop's cost estimate stays internal (Q-1032)
   const services = (await t.select(
@@ -70,6 +74,7 @@ export async function shopPublic(ctx: RequestContext, db: Executor, branchId: st
     logoUrl: br.logoFileId ? await signedUrl(db, ctx, br.logoFileId) : null,
     phone: br.phone,
     address: address || null,
+    province: br.province?.trim() || null,
     latitude: br.latitude,
     longitude: br.longitude,
     hours: hours.map((h) => ({

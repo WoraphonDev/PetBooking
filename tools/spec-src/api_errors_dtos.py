@@ -445,11 +445,11 @@ dto("LiffSession", "ผลเปิด LIFF", [("registered", "calc: มี cust
  ("legalVersions.privacy", "calc: เวอร์ชันล่าสุดของ legal_doc privacy_notice"), ("legalVersions.terms", "calc: เวอร์ชันล่าสุด terms_of_service"),
  ("needsConsent", "calc: ยังไม่ยอมรับเวอร์ชันล่าสุด")])
 dto("ShopPublic", "ข้อมูลร้านสาธารณะ", [("name", "branch.name"), ("logoUrl", "calc: signed URL branch.logo_file_id"), ("phone", "branch.phone"),
- ("address", "calc: branch address"), ("latitude", "branch.latitude"), ("longitude", "branch.longitude"), ("hours[]", "branch_hours.opens_at"),
+ ("address", "calc: branch address"), ("province", "branch.province"), ("latitude", "branch.latitude"), ("longitude", "branch.longitude"), ("hours[]", "branch_hours.opens_at"),
  ("modules.grooming", "branch.module_grooming"), ("modules.hotel", "branch.module_hotel"), ("modules.daycare", "branch.module_daycare"),
  ("policyText", "branch_policy.policy_text"), ("services[]", "[]dto:ServiceItem"), ("roomTypes[]", "[]dto:RoomTypeItem"),
- ("addFriendUrl", "calc: line_channel.bot_basic_id"), ("liffUrl", "calc: line_channel.liff_id"),
- ("liffId", "line_channel.liff_id")])
+ ("addFriendUrl", "calc: line_channel.bot_basic_id (เฉพาะ status active)"), ("liffUrl", "calc: line_channel.liff_id (เฉพาะ status active)"),
+ ("liffId", "calc: line_channel.liff_id (เฉพาะ status active)")])
 dto("MyProfile", "โปรไฟล์ลูกค้า (LIFF)", [("firstName", "owner_profile.first_name"), ("lastName", "owner_profile.last_name"),
  ("nickname", "owner_profile.nickname"), ("phone", "owner_profile.phone_e164"), ("email", "owner_profile.email"),
  ("photoConsent", "customer.photo_consent"), ("creditBalanceSatang", "customer.credit_balance_satang")])
