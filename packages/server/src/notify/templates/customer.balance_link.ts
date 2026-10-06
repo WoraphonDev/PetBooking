@@ -1,9 +1,8 @@
-// customer.balance_link — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.balance_link (LINE push). amount arrives formatted by bookings.balanceLink (R-31); payUrl is the L-14 link.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "ยอดคงเหลือ {amount} ชำระผ่าน PromptPay: {payUrl}";
-
-export function render(payload: NotificationPayloads["customer.balance_link"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.balance_link"]): Rendered {
+  const text = `ยอดคงเหลือ ${payload.amount ?? ""} ชำระผ่าน PromptPay: ${payload.payUrl ?? ""}`;
+  return { text, ...(payload.payUrl ? { url: String(payload.payUrl) } : {}) };
 }
