@@ -434,7 +434,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user chose A — add `liffId` to ShopPublic and add T-0170 / T-0182 to T-0195's depends_on (spec change).
 
 ## Q-1039 · T-0104 auth.staffLine: PLATFORM_LINE_LOGIN_CHANNEL_ID is not in the 01 env list
-- Status: open (T-0104 ships the interim choice below; human review)
+- Status: answered (implemented in T-0104; env row added to 01 §6 by the Q-1036..Q-1039 spec-change PR)
+- Answer (2026-10-06): user chose in chat: add `PLATFORM_LINE_LOGIN_CHANNEL_ID` to 01 §6 as required in staging/production; the T-0104 code stays as implemented.
 - Task: T-0104 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-auth.staffLine verifies the token against `PLATFORM_LINE_LOGIN_CHANNEL_ID`, but 01-architecture's environment table does not list that variable, and the spec does not say what happens when it is unset.
 - Implemented for now:
