@@ -1,9 +1,8 @@
-// customer.hold_expired — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.hold_expired (LINE push). bookAgainUrl is the shop's LIFF home.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "หมดเวลาชำระมัดจำ {bookingNo} คิวถูกปล่อยแล้ว\nจองใหม่: {bookAgainUrl}";
-
-export function render(payload: NotificationPayloads["customer.hold_expired"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.hold_expired"]): Rendered {
+  const text = `หมดเวลาชำระมัดจำ ${payload.bookingNo ?? ""} คิวถูกปล่อยแล้ว\nจองใหม่: ${payload.bookAgainUrl ?? ""}`;
+  return { text, ...(payload.bookAgainUrl ? { url: String(payload.bookAgainUrl) } : {}) };
 }

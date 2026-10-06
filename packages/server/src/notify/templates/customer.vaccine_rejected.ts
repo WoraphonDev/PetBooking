@@ -1,9 +1,8 @@
-// customer.vaccine_rejected — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.vaccine_rejected (LINE push). petUrl is the pet's L-03 page.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "หลักฐานวัคซีน {vaccineName} ของ{petName}ยังไม่ผ่าน: {reason}\nส่งใหม่: {petUrl}";
-
-export function render(payload: NotificationPayloads["customer.vaccine_rejected"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.vaccine_rejected"]): Rendered {
+  const text = `หลักฐานวัคซีน ${payload.vaccineName ?? ""} ของ${payload.petName ?? ""}ยังไม่ผ่าน: ${payload.reason ?? ""}\nส่งใหม่: ${payload.petUrl ?? ""}`;
+  return { text, ...(payload.petUrl ? { url: String(payload.petUrl) } : {}) };
 }

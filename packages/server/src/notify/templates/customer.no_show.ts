@@ -1,9 +1,10 @@
-// customer.no_show — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.no_show (LINE push). moneyLine comes ready from the no-show services ("" when nothing is forfeited) —
+// then the first line ends at "ตามนัด" without a trailing space.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "วันนี้ไม่พบ{petName}ตามนัด {moneyLine}\nนัดใหม่ได้ที่ {bookAgainUrl}";
-
-export function render(payload: NotificationPayloads["customer.no_show"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.no_show"]): Rendered {
+  const first = `วันนี้ไม่พบ${payload.petName ?? ""}ตามนัด ${payload.moneyLine ?? ""}`.trimEnd();
+  const text = `${first}\nนัดใหม่ได้ที่ ${payload.bookAgainUrl ?? ""}`;
+  return { text, ...(payload.bookAgainUrl ? { url: String(payload.bookAgainUrl) } : {}) };
 }

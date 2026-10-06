@@ -1,9 +1,8 @@
-// customer.slip_rejected — stub (07 §1 'ข้อความ', variables substituted as-is). The template task for this key replaces only this file.
+// 07 §1 customer.slip_rejected (LINE push). newDeadline arrives formatted by slips.reject (R-31); payUrl is the L-07 link.
 import type { NotificationPayloads } from "../keys.ts";
-import { fill } from "./fill.ts";
+import type { Rendered } from "./index.ts";
 
-const TEXT = "สลิปของ {bookingNo} ยังไม่ผ่านการตรวจ: {reason}\nกรุณาส่งใหม่ภายใน {newDeadline}\n{payUrl}";
-
-export function render(payload: NotificationPayloads["customer.slip_rejected"]): { text: string } {
-  return { text: fill(TEXT, payload) };
+export function render(payload: NotificationPayloads["customer.slip_rejected"]): Rendered {
+  const text = `สลิปของ ${payload.bookingNo ?? ""} ยังไม่ผ่านการตรวจ: ${payload.reason ?? ""}\nกรุณาส่งใหม่ภายใน ${payload.newDeadline ?? ""}\n${payload.payUrl ?? ""}`;
+  return { text, ...(payload.payUrl ? { url: String(payload.payUrl) } : {}) };
 }
