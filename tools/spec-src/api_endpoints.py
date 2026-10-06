@@ -632,7 +632,7 @@ ep("liff.session", "POST", f"{LF}/session", "public", "", "US-01-01", "เปิ
 ep("liff.register", "POST", f"{LF}/register", "customer", "", "US-11-01, US-13-08, US-03-12", "ลงทะเบียน + ยอมรับ PDPA",
    [F("firstName", "string", True, "owner_profile.first_name", "1–60"), F("lastName", "string", False, "owner_profile.last_name", ""),
     F("nickname", "string", False, "owner_profile.nickname", ""), F("phone", "string", True, "owner_profile.phone_e164", "R-22"),
-    F("privacyVersion", "string", True, "consent_record.version", "ต้องเท่าเวอร์ชันล่าสุด"), F("termsVersion", "string", True, "consent_record.version", ""),
+    F("privacyVersion", "string", True, "consent_record.version", "ต้องเท่าเวอร์ชันล่าสุด"), F("termsVersion", "string", True, "consent_record.version", "ต้องเท่าเวอร์ชันล่าสุด"),
     F("photoConsent", "bool", True, "customer.photo_consent", "true → granted, false → denied")],
    res="LiffSession", rules="R-22", errors="INVALID_PHONE,LINK_REQUEST_PENDING",
    effects=["insert consent_record ×3 (privacy_notice, terms_of_service, photo_consent)", "เบอร์ตรงกับลูกค้าเดิมของร้าน → สร้าง customer_link_request (ไม่ผูกเอง) แจ้งหน้าร้าน",
@@ -641,6 +641,7 @@ ep("liff.me", "GET", f"{LF}/me", "customer", "", "US-11-01", "โปรไฟล
 ep("liff.updateMe", "PATCH", f"{LF}/me", "customer", "", "US-11-01, US-03-12", "แก้โปรไฟล์",
    [F("firstName", "string", False, "owner_profile.first_name", ""), F("lastName", "string", False, "owner_profile.last_name", ""),
     F("nickname", "string", False, "owner_profile.nickname", ""), F("phone", "string", False, "owner_profile.phone_e164", "R-22"),
+    F("email", "string", False, "owner_profile.email", "รูปแบบอีเมล"),
     F("photoConsent", "bool", False, "customer.photo_consent", "insert consent_record ใหม่")], res="MyProfile")
 ep("liff.shop", "GET", f"{LF}/shop", "customer", "", "US-11-03", "ข้อมูลร้าน", res="ShopPublic")
 ep("liff.pets", "GET", f"{LF}/pets", "customer", "", "US-11-02", "น้องของฉัน", res="MyPet[]")

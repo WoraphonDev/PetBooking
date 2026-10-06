@@ -183,15 +183,21 @@
 | [T-0148](T-0148.md) | 5 | e2e | L |  | E2E M2: หน้าร้านลงนัด … | T-0039 T-0136 T-0134 T-0135 T-0138 T-0145 T-0144 |
 | [H-11](H-11.md) | 6 | human | - |  | Release A: UAT + ตัดสินใจปล่อยร้านนำร่อง (M2) | T-0091 T-0130 T-0131 T-0072 T-0092 T-0093 T-0094 T-0095 … |
 
-## M3 — ลูกค้าจองกรูมเองใน LINE + มัดจำ (71 tasks)
+## M3 — ลูกค้าจองกรูมเองใน LINE + มัดจำ (73 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
 | [T-0324](T-0324.md) | 1 | infra | M | ⚠️ | Wire LINE sender + reply tokens into the notification dispatcher (Q-1029) | T-0149 T-0010 T-0320 T-0124 |
+| [T-0175](T-0175.md) | 1 | api | L | ⚠️ | API liff.groomSlots | T-0007 T-0040 T-0041 T-0092 T-0093 T-0100 T-0149 T-0110 |
+| [T-0153](T-0153.md) | 1 | domain | S |  | Rule R-30 PromptPay QR (EMVCo payload) | H-01 |
+| [T-0152](T-0152.md) | 1 | domain | S |  | Rule R-21 สิทธิ์ลูกค้าเลื่อน/ยกเลิกเอง | H-01 |
+| [T-0174](T-0174.md) | 2 | api | M |  | API liff.addVaccination, liff.bookings, liff.booking | T-0007 T-0010 T-0038 T-0149 T-0053 T-0152 T-0095 T-0112 |
+| [T-0177](T-0177.md) | 3 | api | L | ⚠️ | API liff.createBooking (grooming) | T-0007 T-0010 T-0035 T-0092 T-0093 T-0094 T-0096 T-0097 … |
+| [T-0330](T-0330.md) | 4 | infra | M |  | Share one R-04 slot gathering between availability.groomSlots and liff.groomSlots (Q-1046) | T-0110 T-0175 T-0177 |
+| [T-0190](T-0190.md) | 1 | notify | M |  | Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed | T-0010 T-0320 T-0149 |
+| [T-0331](T-0331.md) | 2 | infra | M | ⚠️ | LINE Flex Message for customer templates: text + LIFF button, altText = first line (Q-1048) | T-0320 T-0149 T-0324 T-0124 T-0190 |
 | [T-0150](T-0150.md) | 1 | domain | M |  | Rule R-05 อ่าน QR บนสลิป + จับสลิปซ้ำ | H-01 |
 | [T-0151](T-0151.md) | 1 | domain | M | ⚠️ | Rule R-15 ยอดบิล ส่วนลด และการรับชำระ | H-01 |
-| [T-0152](T-0152.md) | 1 | domain | S |  | Rule R-21 สิทธิ์ลูกค้าเลื่อน/ยกเลิกเอง | H-01 |
-| [T-0153](T-0153.md) | 1 | domain | S |  | Rule R-30 PromptPay QR (EMVCo payload) | H-01 |
 | [T-0154](T-0154.md) | 2 | api | S |  | API branch.setPromptpay | T-0007 T-0035 T-0010 T-0153 T-0044 |
 | [T-0155](T-0155.md) | 1 | api | M |  | API line.status, line.skipped | T-0007 T-0008 |
 | [T-0156](T-0156.md) | 1 | api | M | ⚠️ | API customers.blacklist, customers.reliabilityOverride, customers.credit | T-0007 T-0035 T-0051 T-0050 T-0097 |
@@ -212,10 +218,7 @@
 | [T-0171](T-0171.md) | 2 | api | L | ⚠️ | API liff.register | T-0007 T-0010 T-0014 T-0149 T-0170 |
 | [T-0172](T-0172.md) | 1 | api | M |  | API liff.me, liff.updateMe, liff.shop | T-0007 T-0149 T-0059 |
 | [T-0173](T-0173.md) | 1 | api | M |  | API liff.pets, liff.createPet, liff.updatePet | T-0007 T-0149 T-0056 T-0053 T-0038 |
-| [T-0174](T-0174.md) | 2 | api | M |  | API liff.addVaccination, liff.bookings, liff.booking | T-0007 T-0010 T-0038 T-0149 T-0053 T-0152 T-0095 T-0112 |
-| [T-0175](T-0175.md) | 1 | api | L | ⚠️ | API liff.groomSlots | T-0007 T-0040 T-0041 T-0092 T-0093 T-0100 T-0149 T-0110 |
 | [T-0176](T-0176.md) | 1 | api | L | ⚠️ | API liff.quote (grooming) | T-0007 T-0092 T-0094 T-0096 T-0099 T-0149 T-0111 |
-| [T-0177](T-0177.md) | 3 | api | L | ⚠️ | API liff.createBooking (grooming) | T-0007 T-0010 T-0035 T-0092 T-0093 T-0094 T-0096 T-0097 … |
 | [T-0178](T-0178.md) | 3 | api | M |  | API liff.uploadSlip, liff.ics, liff.payPage | T-0007 T-0010 T-0035 T-0150 T-0096 T-0038 T-0149 T-0174 … |
 | [T-0179](T-0179.md) | 3 | api | L | ⚠️ | API liff.cancel | T-0007 T-0010 T-0035 T-0095 T-0097 T-0152 T-0149 T-0174 … |
 | [T-0180](T-0180.md) | 3 | api | L | ⚠️ | API liff.reschedule | T-0007 T-0010 T-0093 T-0152 T-0149 T-0174 T-0112 |
@@ -228,7 +231,6 @@
 | [T-0187](T-0187.md) | 1 | job | M |  | Job handler reminder_24h | T-0036 T-0010 |
 | [T-0188](T-0188.md) | 1 | job | M |  | Job handler approval_overdue | T-0036 T-0010 T-0095 |
 | [T-0189](T-0189.md) | 1 | job | M |  | Job handler recompute_reliability | T-0036 T-0010 T-0097 |
-| [T-0190](T-0190.md) | 1 | notify | M |  | Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed | T-0010 T-0320 T-0149 |
 | [T-0191](T-0191.md) | 1 | notify | M |  | Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected | T-0010 T-0320 T-0149 |
 | [T-0192](T-0192.md) | 1 | notify | M |  | Notification templates (customer, M3): link_approved | T-0010 T-0320 T-0149 |
 | [T-0193](T-0193.md) | 1 | notify | M |  | Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request | T-0010 T-0320 T-0091 |
@@ -257,7 +259,7 @@
 | [T-0216](T-0216.md) | 4 | ui | S |  | Screen L-15 โปรไฟล์ของฉัน | T-0195 T-0026 T-0071 T-0172 T-0181 |
 | [T-0217](T-0217.md) | 3 | ui | M |  | Screen AD-03 ร้าน (admin) | T-0025 T-0026 T-0319 T-0184 T-0185 T-0125 |
 | [T-0218](T-0218.md) | 5 | e2e | L |  | E2E M3: ลูกค้าเปิด LIFF (fake LINE) … | T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186 |
-| [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0324 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 … |
+| [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0324 T-0330 T-0331 T-0195 T-0196 T-0150 T-0151 … |
 
 ## M4 — ปิดบิล ค่ามือ หลังบริการ (50 tasks)
 

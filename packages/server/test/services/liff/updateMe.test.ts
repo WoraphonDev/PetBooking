@@ -56,6 +56,15 @@ it("updates the given profile fields only and returns MyProfile", async () => {
   expect(consents).toHaveLength(0);
 });
 
+it("email is saved lower-cased, and an empty string clears it (Q-1040)", async () => {
+  const s = await seedOrg(env.db, "um7");
+  const token = await cid(s);
+  expect(await (await call("shop-um7", token, { email: "Mali@Example.TEST" })).json()).toMatchObject({ email: "mali@example.test" });
+  const [saved] = await env.db.select().from(ownerProfile).where(eq(ownerProfile.id, s.ownerProfileId));
+  expect(saved?.email).toBe("mali@example.test");
+  expect(await (await call("shop-um7", token, { email: "" })).json()).toMatchObject({ email: null });
+});
+
 it("photoConsent sets customer.photo_consent and inserts a consent_record", async () => {
   const s = await seedOrg(env.db, "um2");
   const token = await cid(s);
@@ -80,13 +89,16 @@ it("INVALID_PHONE for a number R-22 rejects; nothing changes", async () => {
   expect(after?.nickname).not.toBe("x");
 });
 
-it.each([[{ firstName: "" }], [{ photoConsent: "yes" }], [{ firstName: "ก".repeat(61) }]])("VALIDATION_FAILED for %j", async (body) => {
-  const label = `um4-${++n}`;
-  const s = await seedOrg(env.db, label);
-  const res = await call(`shop-${label}`, await cid(s), body);
-  expect(res.status).toBe(422);
-  expect(await errorCode(res)).toBe("VALIDATION_FAILED");
-});
+it.each([[{ firstName: "" }], [{ photoConsent: "yes" }], [{ firstName: "ก".repeat(61) }], [{ email: "not-an-email" }]])(
+  "VALIDATION_FAILED for %j",
+  async (body) => {
+    const label = `um4-${++n}`;
+    const s = await seedOrg(env.db, label);
+    const res = await call(`shop-${label}`, await cid(s), body);
+    expect(res.status).toBe(422);
+    expect(await errorCode(res)).toBe("VALIDATION_FAILED");
+  },
+);
 
 it("a session of another shop → UNAUTHENTICATED", async () => {
   const a = await seedOrg(env.db, "um5");

@@ -145,12 +145,13 @@ it("a customer with the same phone in another shop is not a match", async () => 
   expect(await (await call("shop-rg3", v.token, { ...VALID, phone: "0899999999" })).json()).toMatchObject({ registered: true });
 });
 
-it("bad phone → INVALID_PHONE; old privacy version / missing fields → VALIDATION_FAILED; another shop's session → UNAUTHENTICATED", async () => {
+it("bad phone → INVALID_PHONE; old privacy / terms version (Q-1045) / missing fields → VALIDATION_FAILED; another shop's session → UNAUTHENTICATED", async () => {
   const s = await seedOrg(env.db, "rg5");
   const v = await visitor(s, "rg5");
   expect(await errorCode(await call("shop-rg5", v.token, { ...VALID, phone: "12345" }))).toBe("INVALID_PHONE");
   for (const body of [
     { ...VALID, privacyVersion: "2025-01-01" },
+    { ...VALID, termsVersion: "2025-01-01" },
     { ...VALID, firstName: "" },
     { ...VALID, photoConsent: undefined },
     { ...VALID, extra: 1 },

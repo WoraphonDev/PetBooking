@@ -18,7 +18,15 @@ import { Skeleton } from "../ui/skeleton";
 import { Switch } from "../ui/switch";
 
 type Profile = LiffMeResponse;
-type Draft = { firstName: string; lastName: string; nickname: string; phone: string | null; phoneError: boolean; photoConsent: boolean };
+type Draft = {
+  firstName: string;
+  lastName: string;
+  nickname: string;
+  phone: string | null;
+  phoneError: boolean;
+  email: string;
+  photoConsent: boolean;
+};
 
 export const draftOf = (p: Profile): Draft => ({
   firstName: p.firstName,
@@ -26,16 +34,19 @@ export const draftOf = (p: Profile): Draft => ({
   nickname: p.nickname ?? "",
   phone: p.phone,
   phoneError: false,
+  email: p.email ?? "",
   photoConsent: p.photoConsent === "granted",
 });
 
-/** liff.updateMe body: the contact fields, plus photoConsent only when it changed (each change writes a consent_record) */
+/** liff.updateMe body: the contact fields, plus email / photoConsent only when changed (each consent change writes a consent_record) */
 export function updateBody(profile: Profile, draft: Draft) {
   return {
     firstName: draft.firstName,
     lastName: draft.lastName,
     nickname: draft.nickname,
     ...(draft.phone ? { phone: draft.phone } : {}),
+    // "" clears the address (Q-1040); unchanged → not sent
+    ...(draft.email.trim() !== (profile.email ?? "") ? { email: draft.email.trim() } : {}),
     ...(draft.photoConsent !== (profile.photoConsent === "granted") ? { photoConsent: draft.photoConsent } : {}),
   };
 }
@@ -78,9 +89,16 @@ export function ProfileForm({ profile, branchSlug }: { profile: Profile; branchS
         <FormField id="phone" label={t("phone")} error={errors.phone}>
           <PhoneInput id="phone" value={profile.phone} onValueChange={(v) => set({ phone: v.e164, phoneError: v.error !== null })} />
         </FormField>
-        {/* Q-1040: liff.updateMe has no email field — shown read-only */}
-        <FormField id="email" label={t("email")}>
-          <Input id="email" type="email" className="h-11" value={profile.email ?? ""} readOnly disabled />
+        <FormField id="email" label={t("email")} error={errors.email}>
+          <Input
+            id="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            className="h-11"
+            value={draft.email}
+            onChange={(e) => set({ email: e.target.value })}
+          />
         </FormField>
       </section>
 
