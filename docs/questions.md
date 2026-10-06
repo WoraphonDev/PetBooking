@@ -421,6 +421,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   2. Only fill liffUrl / liffId / addFriendUrl when `line_channel.status = active`. This is a one-line follow-up in services/liff/shop.ts.
   3. Accept as implemented.
 
+## Q-1040 · T-0216 L-15: email is "แสดง+แก้" but liff.updateMe has no email field
+- Status: open (T-0216 ships the interim choice below; human review)
+- Task: T-0216 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 06#scr-L-15 marks อีเมล (`owner_profile.email`) as แสดง+แก้, but 05#ep-liff.updateMe accepts only firstName, lastName, nickname, phone and photoConsent. The PDPA dialog also has to "อธิบายผล", and 06 gives no wording for it.
+- Implemented for now:
+  - Email shows read-only, from MyProfile.email.
+  - photoConsent is sent only when the toggle changed, because every change writes a consent_record.
+  - Dialog wording (L-15.json):
+    - access: "ทีมงานจะรวบรวมข้อมูลส่วนบุคคลของคุณที่ร้านนี้เก็บไว้ แล้วติดต่อกลับเพื่อส่งสำเนาให้"
+    - delete: "ทีมงานจะตรวจสอบและลบข้อมูลส่วนบุคคลของคุณที่ไม่จำเป็นต้องเก็บตามกฎหมาย ประวัติการจองและใบเสร็จอาจยังต้องเก็บไว้"
+- Proposed decision: add optional `email` (owner_profile.email, email format) to liff.updateMe (spec change + a follow-up to make the field editable); accept the dialog wording or supply the legal text.
+
 ## Q-1041 · T-0105 staffMe.linkLine / pushSubscribe / pushUnsubscribe: clash code, cross-shop endpoint, unknown endpoint
 - Status: open (T-0105 ships the interim choices below; human review)
 - Task: T-0105 · Asked by: agent (claude) · Date: 2026-10-06
