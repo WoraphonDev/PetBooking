@@ -80,7 +80,9 @@ async function shop(label: string): Promise<Shop> {
     priceSatang,
     durationMinutes,
   });
-  await env.db.insert(servicePrice).values([price(ids.bath, 30_000, 45), price(ids.nail, 5_000, 15), price(ids.offline, 1, 15)]);
+  await env.db
+    .insert(servicePrice)
+    .values([price(ids.bath ?? "", 30_000, 45), price(ids.nail ?? "", 5_000, 15), price(ids.offline ?? "", 1, 15)]);
   const [mochi, kuma] = await env.db
     .insert(pet)
     .values([
