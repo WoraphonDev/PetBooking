@@ -21,7 +21,9 @@ type Entry = { id: (typeof liffNavigation)[number]["id"]; route: string; impleme
 type Modules = { grooming: boolean; hotel: boolean; daycare: boolean };
 
 /** L-01 is the sign-up flow, not a menu item */
-const MENU: readonly Entry["id"][] = ["L-02", "L-03", "L-04", "L-05", "L-06", "L-08", "L-12", "L-15"];
+const MENU = ["L-02", "L-03", "L-04", "L-05", "L-06", "L-08", "L-12", "L-15"] as const;
+export type MenuId = (typeof MENU)[number];
+const isMenu = (id: string): id is MenuId => (MENU as readonly string[]).includes(id);
 const MODULE_OF: Partial<Record<Entry["id"], keyof Modules>> = { "L-04": "grooming", "L-05": "hotel", "L-06": "daycare" };
 
 export function routeFor(id: Entry["id"], branchSlug: string, entries: readonly Entry[] = liffNavigation): string {
@@ -32,11 +34,10 @@ export function routeFor(id: Entry["id"], branchSlug: string, entries: readonly 
 
 /** Menu of the shell: href null = not implemented yet (shown disabled); booking entries only for enabled modules. */
 export function menuItems(branchSlug: string, modules: Modules, entries: readonly Entry[] = liffNavigation) {
-  return entries
-    .filter((e) => MENU.includes(e.id))
-    .filter((e) => {
-      const module = MODULE_OF[e.id];
-      return module === undefined || modules[module];
-    })
-    .map((e) => ({ id: e.id, href: e.implemented ? routeFor(e.id, branchSlug, entries) : null }));
+  return entries.flatMap((e) => {
+    if (!isMenu(e.id)) return [];
+    const module = MODULE_OF[e.id];
+    if (module !== undefined && !modules[module]) return [];
+    return [{ id: e.id, href: e.implemented ? routeFor(e.id, branchSlug, entries) : null }];
+  });
 }
