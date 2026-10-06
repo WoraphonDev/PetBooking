@@ -1857,7 +1857,8 @@
    "auth": "staff",
    "roles": "OF",
    "request": [
-    "roomUnitId"
+    "roomUnitId",
+    "repriceToType"
    ],
    "query": [],
    "response": "StayCard",

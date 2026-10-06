@@ -353,7 +353,6 @@ export async function bookingsCreate(ctx: RequestContext, input: BookingsCreateR
           summary: planned.map((p) => `${p.petName}: ${p.lines.map((l) => l.name).join(", ")}`).join(" / "),
           dateTime: `${formatThaiDate({ date: toLocalDate({ instant: first.input.startsAt, timezone: b.timezone }) })} ${formatTime({ instant: first.input.startsAt, timezone: b.timezone })}`,
           shopName: b.name,
-          mapUrl: "",
           bookingUrl: new URL(`/liff/${b.bookingSlug}/bookings/${bk.id}`, process.env.APP_BASE_URL).toString(),
         },
         dedupeKey: `booking_confirmed:${bk.id}`,

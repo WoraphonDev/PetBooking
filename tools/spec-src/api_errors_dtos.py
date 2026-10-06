@@ -292,6 +292,8 @@ dto("AppointmentCard", "นัดกรูม (การ์ดในปฏิท
  ("depositStatus", "booking.deposit_status"), ("reliabilityLevel", "customer.reliability_level"), ("fromStayId", "groom_appointment.from_stay_id"),
  ("checkedInAt", "groom_appointment.checked_in_at"), ("startedAt", "groom_appointment.started_at"), ("doneAt", "groom_appointment.done_at"),
  ("pickedUpAt", "groom_appointment.picked_up_at"), ("staffNote", "groom_appointment.staff_note"),
+ ("customerId", "booking.customer_id"), ("sizeTierCode", "calc: size_tier.code ของ groom_appointment.size_tier_id (null = ไม่มี)"),
+ ("billId", "calc: bill.id ล่าสุดที่ผูกกับ booking (ไม่นับ void) หรือ null"), ("billStatus", "calc: bill.status ของ billId หรือ null"),
 ])
 dto("JobCard", "Job card สำหรับช่าง", [
  ("appointment", "dto:AppointmentCard"), ("preferredStyle", "pet_shop_profile.preferred_style"), ("bladeNo", "pet_shop_profile.blade_no"),
@@ -318,6 +320,8 @@ dto("StayCard", "การพัก (การ์ด)", [
  ("expectedCheckOutTime", "stay.expected_check_out_time"), ("nights", "stay.nights"), ("roomTotalSatang", "stay.room_total_satang"),
  ("inHeat", "stay.in_heat"), ("bundleAppointmentId", "stay.bundle_appointment_id"), ("intakeCompleted", "calc: stay_intake.completed_at is not null"),
  ("agreementSigned", "calc: มี consent_document kind boarding_agreement"), ("vaccineGate", "calc: R-11"),
+ ("addonNames[]", "calc: stay_addon.name_snapshot ของ stay"), ("bundleStatus", "calc: groom_appointment.status ของ bundleAppointmentId หรือ null"),
+ ("pendingTaskCount", "calc: care_task ของ stay ที่ status pending และ due_at <= now"),
 ])
 dto("StayDetail", "การพักแบบเต็ม", [
  ("stay", "dto:StayCard"), ("weightGramsIn", "stay.weight_grams_in"), ("weightGramsOut", "stay.weight_grams_out"),
@@ -361,6 +365,7 @@ dto("SlipItem", "สลิป", [
  ("isDuplicate", "calc: payment_slip.duplicate_of_slip_id is not null"), ("duplicateOfSlipId", "payment_slip.duplicate_of_slip_id"),
  ("status", "payment_slip.status"), ("uploadedAt", "payment_slip.created_at"), ("reviewedAt", "payment_slip.reviewed_at"),
  ("rejectReason", "payment_slip.reject_reason"), ("holdExpiresAt", "booking.hold_expires_at"),
+ ("needsApproval", "calc: booking.approval_due_at is not null"),
 ])
 dto("BillListItem", "แถวบิล", [
  ("id", "bill.id"), ("receiptNo", "bill.receipt_no"), ("status", "bill.status"), ("customerName", "owner_profile.first_name"),

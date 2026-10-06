@@ -2,7 +2,7 @@
 import type { NotificationPayloads } from "../keys.ts";
 import { fill } from "./fill.ts";
 
-const TEXT = "ยืนยันการจอง {bookingNo} ✅\n{summary}\n📅 {dateTime}\nแผนที่: {mapUrl}";
+const TEXT = "ยืนยันการจอง {bookingNo} ✅\n{summary}\n📅 {dateTime}";
 
 export function render(payload: NotificationPayloads["customer.booking_confirmed"]): { text: string } {
   return { text: fill(TEXT, payload) };

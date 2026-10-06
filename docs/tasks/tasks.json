@@ -107,6 +107,7 @@
   "H-09",
   "H-10",
   "T-0091",
+  "T-0149",
   "T-0092",
   "T-0093",
   "T-0094",
@@ -165,7 +166,6 @@
   "T-0147",
   "T-0148",
   "H-11",
-  "T-0149",
   "T-0324",
   "T-0150",
   "T-0151",
@@ -238,6 +238,7 @@
   "T-0218",
   "H-12",
   "H-13",
+  "T-0326",
   "T-0219",
   "T-0220",
   "T-0221",
@@ -284,6 +285,12 @@
   "T-0262",
   "T-0263",
   "H-14",
+  "T-0273",
+  "T-0280",
+  "T-0325",
+  "T-0276",
+  "T-0279",
+  "T-0327",
   "T-0264",
   "T-0265",
   "T-0266",
@@ -293,14 +300,10 @@
   "T-0270",
   "T-0271",
   "T-0272",
-  "T-0273",
   "T-0274",
   "T-0275",
-  "T-0276",
   "T-0277",
   "T-0278",
-  "T-0279",
-  "T-0280",
   "T-0281",
   "T-0282",
   "T-0283",
@@ -1963,6 +1966,20 @@
    "title": "Web Push adapter + service worker + staff PWA manifest",
    "human_review": false
   },
+  "T-0149": {
+   "key": "INF-LINE",
+   "ms": "M2",
+   "lane": "infra",
+   "size": "L",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0010",
+    "H-03"
+   ],
+   "title": "LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode",
+   "human_review": true
+  },
   "T-0092": {
    "key": "DOM-R-03",
    "ms": "M2",
@@ -2127,9 +2144,10 @@
    "lane": "api",
    "size": "S",
    "owner": "agent",
-   "wave": 1,
+   "wave": 2,
    "deps": [
     "T-0007",
+    "T-0149",
     "T-0019"
    ],
    "title": "API auth.staffLine",
@@ -2141,9 +2159,10 @@
    "lane": "api",
    "size": "M",
    "owner": "agent",
-   "wave": 1,
+   "wave": 2,
    "deps": [
     "T-0007",
+    "T-0149",
     "T-0019"
    ],
    "title": "API staffMe.linkLine, staffMe.pushSubscribe, staffMe.pushUnsubscribe",
@@ -2582,7 +2601,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 2,
+   "wave": 3,
    "deps": [
     "T-0015",
     "T-0104",
@@ -2597,7 +2616,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 2,
+   "wave": 3,
    "deps": [
     "T-0015",
     "T-0105",
@@ -2756,7 +2775,7 @@
    "lane": "ui",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 3,
    "deps": [
     "T-0070",
     "T-0105",
@@ -2936,27 +2955,13 @@
    "title": "Release A: UAT + ตัดสินใจปล่อยร้านนำร่อง (M2)",
    "human_review": false
   },
-  "T-0149": {
-   "key": "INF-LINE",
-   "ms": "M3",
-   "lane": "infra",
-   "size": "L",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "T-0010",
-    "H-03"
-   ],
-   "title": "LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode",
-   "human_review": true
-  },
   "T-0324": {
    "key": "INF-LINE-DISPATCH",
    "ms": "M3",
    "lane": "infra",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0149",
     "T-0010",
@@ -3294,7 +3299,7 @@
    "lane": "api",
    "size": "L",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0007",
     "T-0149"
@@ -3308,7 +3313,7 @@
    "lane": "api",
    "size": "L",
    "owner": "agent",
-   "wave": 3,
+   "wave": 2,
    "deps": [
     "T-0007",
     "T-0010",
@@ -3325,7 +3330,7 @@
    "lane": "api",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0007",
     "T-0149",
@@ -3340,7 +3345,7 @@
    "lane": "api",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0007",
     "T-0149",
@@ -3377,7 +3382,7 @@
    "lane": "api",
    "size": "L",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0007",
     "T-0040",
@@ -3397,7 +3402,7 @@
    "lane": "api",
    "size": "L",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0007",
     "T-0092",
@@ -3526,7 +3531,7 @@
    "lane": "api",
    "size": "S",
    "owner": "agent",
-   "wave": 3,
+   "wave": 2,
    "deps": [
     "T-0007",
     "T-0172",
@@ -3541,7 +3546,7 @@
    "lane": "api",
    "size": "L",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0007",
     "T-0009",
@@ -3647,7 +3652,7 @@
    "lane": "notify",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0010",
     "T-0320",
@@ -3662,7 +3667,7 @@
    "lane": "notify",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0010",
     "T-0320",
@@ -3677,7 +3682,7 @@
    "lane": "notify",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0010",
     "T-0320",
@@ -3723,7 +3728,7 @@
    "lane": "ui",
    "size": "M",
    "owner": "agent",
-   "wave": 2,
+   "wave": 1,
    "deps": [
     "T-0015",
     "T-0016",
@@ -3753,7 +3758,7 @@
    "lane": "ui",
    "size": "M",
    "owner": "agent",
-   "wave": 4,
+   "wave": 3,
    "deps": [
     "T-0015",
     "T-0026",
@@ -3941,7 +3946,7 @@
    "lane": "ui",
    "size": "S",
    "owner": "agent",
-   "wave": 4,
+   "wave": 3,
    "deps": [
     "T-0195",
     "T-0026",
@@ -4228,6 +4233,19 @@
    "wave": 1,
    "deps": [],
    "title": "SP-05 ทดสอบพิมพ์ใบเสร็จ 58/80 มม. จาก browser",
+   "human_review": false
+  },
+  "T-0326": {
+   "key": "UI-MENU-ENABLE",
+   "ms": "M4",
+   "lane": "infra",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0001"
+   ],
+   "title": "Enable console menu entries: C-07, C-14, C-23, C-34, C-35 (Q-0093)",
    "human_review": false
   },
   "T-0219": {
@@ -4982,6 +5000,7 @@
    "owner": "human",
    "wave": 6,
    "deps": [
+    "T-0326",
     "T-0219",
     "T-0220",
     "T-0221",
@@ -5031,6 +5050,109 @@
    ],
    "title": "Release B: UAT + ตัดสินใจปล่อยร้านนำร่อง (M4)",
    "human_review": false
+  },
+  "T-0273": {
+   "key": "API-stays-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0112",
+    "T-0051",
+    "T-0056",
+    "T-0038"
+   ],
+   "title": "API stays.today, stays.get, stays.signAgreement",
+   "human_review": false
+  },
+  "T-0280": {
+   "key": "API-roomMap-0",
+   "ms": "M5",
+   "lane": "api",
+   "size": "S",
+   "owner": "agent",
+   "wave": 1,
+   "deps": [
+    "T-0007",
+    "T-0102",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API roomMap.get",
+   "human_review": false
+  },
+  "T-0325": {
+   "key": "API-DTO-EXT",
+   "ms": "M5",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0004",
+    "T-0112",
+    "T-0113",
+    "T-0273",
+    "T-0280",
+    "T-0166"
+   ],
+   "title": "DTO fields for screens: AppointmentCard, StayCard, SlipItem (Q-1013, Q-1027, Q-1012, Q-1024, Q-0112)",
+   "human_review": false
+  },
+  "T-0276": {
+   "key": "API-stays-1",
+   "ms": "M5",
+   "lane": "api",
+   "size": "M",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0102",
+    "T-0112",
+    "T-0051",
+    "T-0273",
+    "T-0056"
+   ],
+   "title": "API stays.changeRoom, stays.addAddon, stays.removeAddon",
+   "human_review": false
+  },
+  "T-0279": {
+   "key": "API-stays.checkOut",
+   "ms": "M5",
+   "lane": "api",
+   "size": "L",
+   "owner": "agent",
+   "wave": 2,
+   "deps": [
+    "T-0007",
+    "T-0035",
+    "T-0273",
+    "T-0056",
+    "T-0112",
+    "T-0051"
+   ],
+   "title": "API stays.checkOut",
+   "human_review": false
+  },
+  "T-0327": {
+   "key": "API-ANSWER-FOLLOWUPS",
+   "ms": "M5",
+   "lane": "infra",
+   "size": "M",
+   "owner": "agent",
+   "wave": 3,
+   "deps": [
+    "T-0004",
+    "T-0190",
+    "T-0276",
+    "T-0279"
+   ],
+   "title": "Apply Q-0091 / Q-0110 / Q-0113 answers: booking_confirmed text, stays.changeRoom repriceToType, checkOut missingNote",
+   "human_review": true
   },
   "T-0264": {
    "key": "DOM-R-26",
@@ -5183,23 +5305,6 @@
    "title": "API calendar.day (hotel+daycare)",
    "human_review": false
   },
-  "T-0273": {
-   "key": "API-stays-0",
-   "ms": "M5",
-   "lane": "api",
-   "size": "M",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "T-0007",
-    "T-0112",
-    "T-0051",
-    "T-0056",
-    "T-0038"
-   ],
-   "title": "API stays.today, stays.get, stays.signAgreement",
-   "human_review": false
-  },
   "T-0274": {
    "key": "API-stays.saveIntake",
    "ms": "M5",
@@ -5241,23 +5346,6 @@
    "title": "API stays.checkIn",
    "human_review": false
   },
-  "T-0276": {
-   "key": "API-stays-1",
-   "ms": "M5",
-   "lane": "api",
-   "size": "M",
-   "owner": "agent",
-   "wave": 2,
-   "deps": [
-    "T-0007",
-    "T-0112",
-    "T-0051",
-    "T-0273",
-    "T-0056"
-   ],
-   "title": "API stays.changeRoom, stays.addAddon, stays.removeAddon",
-   "human_review": false
-  },
   "T-0277": {
    "key": "API-stays.changeDates",
    "ms": "M5",
@@ -5293,40 +5381,6 @@
     "T-0051"
    ],
    "title": "API stays.postUpdate",
-   "human_review": false
-  },
-  "T-0279": {
-   "key": "API-stays.checkOut",
-   "ms": "M5",
-   "lane": "api",
-   "size": "L",
-   "owner": "agent",
-   "wave": 2,
-   "deps": [
-    "T-0007",
-    "T-0035",
-    "T-0273",
-    "T-0056",
-    "T-0112",
-    "T-0051"
-   ],
-   "title": "API stays.checkOut",
-   "human_review": false
-  },
-  "T-0280": {
-   "key": "API-roomMap-0",
-   "ms": "M5",
-   "lane": "api",
-   "size": "S",
-   "owner": "agent",
-   "wave": 1,
-   "deps": [
-    "T-0007",
-    "T-0102",
-    "T-0112",
-    "T-0051"
-   ],
-   "title": "API roomMap.get",
    "human_review": false
   },
   "T-0281": {
@@ -5753,6 +5807,8 @@
    "owner": "human",
    "wave": 5,
    "deps": [
+    "T-0325",
+    "T-0327",
     "T-0264",
     "T-0265",
     "T-0266",

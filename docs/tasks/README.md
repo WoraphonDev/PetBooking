@@ -114,7 +114,7 @@
 | [T-0090](T-0090.md) | 2 | ui | S |  | Screen AD-07 วันหยุดราชการ (ext-M1) | T-0025 T-0026 T-0066 T-0033 |
 | [H-06](H-06.md) | 6 | human | - |  | Milestone review M1: demo + ตรวจคุณภาพ | T-0035 T-0010 T-0036 T-0038 T-0011 T-0321 T-0320 T-0015 … |
 
-## M2 — ลงคิวกรูมแทนสมุด (63 tasks)
+## M2 — ลงคิวกรูมแทนสมุด (64 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
@@ -123,6 +123,7 @@
 | [H-09](H-09.md) | 1 | human | - |  | SP-04 ทดสอบ Web Push บนอุปกรณ์ร้านนำร่อง |  |
 | [H-10](H-10.md) | 1 | human | - |  | ชุด onboarding ร้านนำร่อง (US-13-14) |  |
 | [T-0091](T-0091.md) | 1 | infra | M |  | Web Push adapter + service worker + staff PWA manifest | T-0010 T-0001 |
+| [T-0149](T-0149.md) | 1 | infra | L | ⚠️ | LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode | T-0010 H-03 |
 | [T-0092](T-0092.md) | 1 | domain | S |  | Rule R-03 ราคาประเมินและเวลาของใบจอง | H-01 |
 | [T-0093](T-0093.md) | 1 | domain | L |  | Rule R-04 Slot engine กรูม (เวลาว่าง + เลือกช่าง/โต๊ะอัตโนมัติ) | H-01 T-0012 |
 | [T-0094](T-0094.md) | 1 | domain | M | ⚠️ | Rule R-06 คำนวณมัดจำ | H-01 |
@@ -135,8 +136,8 @@
 | [T-0101](T-0101.md) | 1 | domain | S |  | Rule R-23 เลขที่ใบจอง | H-01 T-0012 |
 | [T-0102](T-0102.md) | 1 | domain | S |  | Rule R-28 ห้องว่างของประเภทห้อง (hotel availability) | H-01 |
 | [T-0103](T-0103.md) | 1 | domain | S |  | Rule R-29 ที่ว่าง Daycare | H-01 |
-| [T-0104](T-0104.md) | 1 | api | S |  | API auth.staffLine | T-0007 T-0019 |
-| [T-0105](T-0105.md) | 1 | api | M |  | API staffMe.linkLine, staffMe.pushSubscribe, staffMe.pushUnsubscribe | T-0007 T-0019 |
+| [T-0104](T-0104.md) | 2 | api | S |  | API auth.staffLine | T-0007 T-0149 T-0019 |
+| [T-0105](T-0105.md) | 2 | api | M |  | API staffMe.linkLine, staffMe.pushSubscribe, staffMe.pushUnsubscribe | T-0007 T-0149 T-0019 |
 | [T-0106](T-0106.md) | 1 | api | M |  | API stations.list, stations.upsert | T-0007 |
 | [T-0107](T-0107.md) | 1 | api | S |  | API workingHours.set | T-0007 T-0048 |
 | [T-0108](T-0108.md) | 1 | api | M |  | API timeOff.list, timeOff.create, timeOff.delete | T-0007 T-0046 |
@@ -163,8 +164,8 @@
 | [T-0129](T-0129.md) | 1 | notify | M |  | Notification templates (admin, M2): feedback | T-0010 T-0320 T-0011 |
 | [T-0130](T-0130.md) | 2 | ui | M |  | Staff PWA shell: bottom nav + auth guard (role ใดก็ได้) | T-0015 T-0016 H-07 |
 | [T-0131](T-0131.md) | 1 | ui | M |  | Shared component: SignaturePad → PNG → อัปโหลด kind signature | T-0015 T-0071 |
-| [T-0132](T-0132.md) | 2 | ui | S |  | Screen A-01 เข้าสู่ระบบ (ร้าน) (ext-M2) | T-0015 T-0104 T-0028 |
-| [T-0133](T-0133.md) | 2 | ui | S |  | Screen A-04 รับคำเชิญเข้าร้าน (ext-M2) | T-0015 T-0105 T-0074 |
+| [T-0132](T-0132.md) | 3 | ui | S |  | Screen A-01 เข้าสู่ระบบ (ร้าน) (ext-M2) | T-0015 T-0104 T-0028 |
+| [T-0133](T-0133.md) | 3 | ui | S |  | Screen A-04 รับคำเชิญเข้าร้าน (ext-M2) | T-0015 T-0105 T-0074 |
 | [T-0134](T-0134.md) | 4 | ui | M |  | Screen C-02 ปฏิทินคิว | T-0070 T-0026 T-0072 T-0027 T-0115 T-0116 |
 | [T-0135](T-0135.md) | 4 | ui | L |  | Screen C-02D รายละเอียดนัดกรูม (drawer) | T-0070 T-0026 T-0027 T-0071 T-0120 T-0118 T-0119 |
 | [T-0136](T-0136.md) | 3 | ui | M |  | Screen C-03 สร้างใบจอง (หน้าร้าน) (grooming) | T-0070 T-0026 T-0072 T-0027 T-0050 T-0110 T-0111 T-0112 |
@@ -173,7 +174,7 @@
 | [T-0139](T-0139.md) | 2 | ui | M |  | Screen C-36 พนักงานและตารางงาน (ext-M2) | T-0070 T-0026 T-0027 T-0071 T-0108 T-0107 T-0084 |
 | [T-0140](T-0140.md) | 2 | ui | M |  | Screen C-37 บริการและราคา (ext-M2) | T-0070 T-0026 T-0027 T-0071 T-0109 T-0085 |
 | [T-0141](T-0141.md) | 2 | ui | S |  | Screen C-43 โต๊ะกรูม | T-0070 T-0106 |
-| [T-0142](T-0142.md) | 2 | ui | M |  | Screen C-45 บัญชีของฉัน (ext-M2) | T-0070 T-0105 T-0088 |
+| [T-0142](T-0142.md) | 3 | ui | M |  | Screen C-45 บัญชีของฉัน (ext-M2) | T-0070 T-0105 T-0088 |
 | [T-0143](T-0143.md) | 2 | ui | S |  | Screen C-46 แจ้งปัญหา / ขอ feature | T-0070 T-0124 |
 | [T-0144](T-0144.md) | 4 | ui | S |  | Screen S-01 คิวของฉันวันนี้ | T-0130 T-0071 T-0121 |
 | [T-0145](T-0145.md) | 4 | ui | M |  | Screen S-02 Job card | T-0130 T-0071 T-0120 T-0119 T-0038 T-0056 |
@@ -182,12 +183,11 @@
 | [T-0148](T-0148.md) | 5 | e2e | L |  | E2E M2: หน้าร้านลงนัด … | T-0039 T-0136 T-0134 T-0135 T-0138 T-0145 T-0144 |
 | [H-11](H-11.md) | 6 | human | - |  | Release A: UAT + ตัดสินใจปล่อยร้านนำร่อง (M2) | T-0091 T-0130 T-0131 T-0072 T-0092 T-0093 T-0094 T-0095 … |
 
-## M3 — ลูกค้าจองกรูมเองใน LINE + มัดจำ (72 tasks)
+## M3 — ลูกค้าจองกรูมเองใน LINE + มัดจำ (71 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
-| [T-0149](T-0149.md) | 1 | infra | L | ⚠️ | LINE integration: messaging client, ID token verify, webhook signature, secret encryption, fake mode | T-0010 H-03 |
-| [T-0324](T-0324.md) | 2 | infra | M | ⚠️ | Wire LINE sender + reply tokens into the notification dispatcher (Q-1029) | T-0149 T-0010 T-0320 T-0124 |
+| [T-0324](T-0324.md) | 1 | infra | M | ⚠️ | Wire LINE sender + reply tokens into the notification dispatcher (Q-1029) | T-0149 T-0010 T-0320 T-0124 |
 | [T-0150](T-0150.md) | 1 | domain | M |  | Rule R-05 อ่าน QR บนสลิป + จับสลิปซ้ำ | H-01 |
 | [T-0151](T-0151.md) | 1 | domain | M | ⚠️ | Rule R-15 ยอดบิล ส่วนลด และการรับชำระ | H-01 |
 | [T-0152](T-0152.md) | 1 | domain | S |  | Rule R-21 สิทธิ์ลูกค้าเลื่อน/ยกเลิกเอง | H-01 |
@@ -208,34 +208,34 @@
 | [T-0167](T-0167.md) | 2 | api | L | ⚠️ | API slips.verify | T-0007 T-0035 T-0010 T-0150 T-0151 T-0112 |
 | [T-0168](T-0168.md) | 1 | api | S | ⚠️ | API refunds.create | T-0007 T-0035 T-0095 T-0038 |
 | [T-0169](T-0169.md) | 2 | api | S |  | API bills.promptpayQr | T-0007 T-0153 T-0112 |
-| [T-0170](T-0170.md) | 2 | api | L | ⚠️ | API liff.session | T-0007 T-0149 |
-| [T-0171](T-0171.md) | 3 | api | L | ⚠️ | API liff.register | T-0007 T-0010 T-0014 T-0149 T-0170 |
-| [T-0172](T-0172.md) | 2 | api | M |  | API liff.me, liff.updateMe, liff.shop | T-0007 T-0149 T-0059 |
-| [T-0173](T-0173.md) | 2 | api | M |  | API liff.pets, liff.createPet, liff.updatePet | T-0007 T-0149 T-0056 T-0053 T-0038 |
+| [T-0170](T-0170.md) | 1 | api | L | ⚠️ | API liff.session | T-0007 T-0149 |
+| [T-0171](T-0171.md) | 2 | api | L | ⚠️ | API liff.register | T-0007 T-0010 T-0014 T-0149 T-0170 |
+| [T-0172](T-0172.md) | 1 | api | M |  | API liff.me, liff.updateMe, liff.shop | T-0007 T-0149 T-0059 |
+| [T-0173](T-0173.md) | 1 | api | M |  | API liff.pets, liff.createPet, liff.updatePet | T-0007 T-0149 T-0056 T-0053 T-0038 |
 | [T-0174](T-0174.md) | 2 | api | M |  | API liff.addVaccination, liff.bookings, liff.booking | T-0007 T-0010 T-0038 T-0149 T-0053 T-0152 T-0095 T-0112 |
-| [T-0175](T-0175.md) | 2 | api | L | ⚠️ | API liff.groomSlots | T-0007 T-0040 T-0041 T-0092 T-0093 T-0100 T-0149 T-0110 |
-| [T-0176](T-0176.md) | 2 | api | L | ⚠️ | API liff.quote (grooming) | T-0007 T-0092 T-0094 T-0096 T-0099 T-0149 T-0111 |
+| [T-0175](T-0175.md) | 1 | api | L | ⚠️ | API liff.groomSlots | T-0007 T-0040 T-0041 T-0092 T-0093 T-0100 T-0149 T-0110 |
+| [T-0176](T-0176.md) | 1 | api | L | ⚠️ | API liff.quote (grooming) | T-0007 T-0092 T-0094 T-0096 T-0099 T-0149 T-0111 |
 | [T-0177](T-0177.md) | 3 | api | L | ⚠️ | API liff.createBooking (grooming) | T-0007 T-0010 T-0035 T-0092 T-0093 T-0094 T-0096 T-0097 … |
 | [T-0178](T-0178.md) | 3 | api | M |  | API liff.uploadSlip, liff.ics, liff.payPage | T-0007 T-0010 T-0035 T-0150 T-0096 T-0038 T-0149 T-0174 … |
 | [T-0179](T-0179.md) | 3 | api | L | ⚠️ | API liff.cancel | T-0007 T-0010 T-0035 T-0095 T-0097 T-0152 T-0149 T-0174 … |
 | [T-0180](T-0180.md) | 3 | api | L | ⚠️ | API liff.reschedule | T-0007 T-0010 T-0093 T-0152 T-0149 T-0174 T-0112 |
 | [T-0181](T-0181.md) | 2 | api | M |  | API liff.payUploadSlip, liff.dataRequest | T-0007 T-0010 T-0150 T-0038 T-0149 T-0112 |
-| [T-0182](T-0182.md) | 3 | api | S |  | API public.branch | T-0007 T-0172 T-0059 |
-| [T-0183](T-0183.md) | 2 | api | L | ⚠️ | API webhook.line | T-0007 T-0009 T-0149 T-0036 |
+| [T-0182](T-0182.md) | 2 | api | S |  | API public.branch | T-0007 T-0172 T-0059 |
+| [T-0183](T-0183.md) | 1 | api | L | ⚠️ | API webhook.line | T-0007 T-0009 T-0149 T-0036 |
 | [T-0184](T-0184.md) | 2 | api | S | ⚠️ | API admin.setLineChannel | T-0007 T-0035 T-0149 T-0155 |
 | [T-0185](T-0185.md) | 2 | api | L | ⚠️ | API admin.verifyLine | T-0007 T-0035 T-0149 T-0155 |
 | [T-0186](T-0186.md) | 1 | job | M |  | Job handler expire_hold | T-0036 T-0010 |
 | [T-0187](T-0187.md) | 1 | job | M |  | Job handler reminder_24h | T-0036 T-0010 |
 | [T-0188](T-0188.md) | 1 | job | M |  | Job handler approval_overdue | T-0036 T-0010 T-0095 |
 | [T-0189](T-0189.md) | 1 | job | M |  | Job handler recompute_reliability | T-0036 T-0010 T-0097 |
-| [T-0190](T-0190.md) | 2 | notify | M |  | Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed | T-0010 T-0320 T-0149 |
-| [T-0191](T-0191.md) | 2 | notify | M |  | Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected | T-0010 T-0320 T-0149 |
-| [T-0192](T-0192.md) | 2 | notify | M |  | Notification templates (customer, M3): link_approved | T-0010 T-0320 T-0149 |
+| [T-0190](T-0190.md) | 1 | notify | M |  | Notification templates (customer, M3): booking_received, booking_confirmed, booking_declined, booking_cancelled, booking_rescheduled, deposit_confirmed | T-0010 T-0320 T-0149 |
+| [T-0191](T-0191.md) | 1 | notify | M |  | Notification templates (customer, M3): slip_rejected, hold_expired, reminder_24h, no_show, balance_link, vaccine_rejected | T-0010 T-0320 T-0149 |
+| [T-0192](T-0192.md) | 1 | notify | M |  | Notification templates (customer, M3): link_approved | T-0010 T-0320 T-0149 |
 | [T-0193](T-0193.md) | 1 | notify | M |  | Notification templates (staff, M3): slip_submitted, approval_overdue, booking_cancelled, booking_rescheduled, link_request | T-0010 T-0320 T-0091 |
 | [T-0194](T-0194.md) | 1 | notify | M |  | Notification templates (owner, M3): quota_warning, promptpay_changed | T-0010 T-0320 T-0091 T-0011 |
-| [T-0195](T-0195.md) | 2 | ui | M |  | LIFF shell: liff.init + session + header ร้าน | T-0015 T-0016 T-0149 |
+| [T-0195](T-0195.md) | 1 | ui | M |  | LIFF shell: liff.init + session + header ร้าน | T-0015 T-0016 T-0149 |
 | [T-0196](T-0196.md) | 2 | ui | M |  | Shared component: PromptPayQR (R-30) + Countdown + SlipUploader (jsQR อ่าน QR บนสลิป → qrPayload) | T-0015 T-0071 T-0153 |
-| [T-0197](T-0197.md) | 4 | ui | M |  | Screen P-01 หน้าลิงก์จองของร้าน | T-0015 T-0026 T-0196 T-0027 T-0182 |
+| [T-0197](T-0197.md) | 3 | ui | M |  | Screen P-01 หน้าลิงก์จองของร้าน | T-0015 T-0026 T-0196 T-0027 T-0182 |
 | [T-0198](T-0198.md) | 2 | ui | L |  | Screen C-02D รายละเอียดนัดกรูม (drawer) (ext-M3) | T-0070 T-0026 T-0027 T-0071 T-0163 T-0135 |
 | [T-0199](T-0199.md) | 2 | ui | M |  | Screen C-04 ใบจอง | T-0070 T-0026 T-0027 T-0160 |
 | [T-0200](T-0200.md) | 2 | ui | L |  | Screen C-05 รายละเอียดใบจอง (ext-M3) | T-0070 T-0026 T-0071 T-0160 T-0161 T-0162 T-0137 |
@@ -246,7 +246,7 @@
 | [T-0205](T-0205.md) | 2 | ui | S |  | Screen C-22 ข้อความที่ไม่ได้ส่ง | T-0070 T-0155 |
 | [T-0206](T-0206.md) | 3 | ui | S |  | Screen C-34 บัญชีรับเงิน PromptPay | T-0070 T-0196 T-0044 T-0154 |
 | [T-0207](T-0207.md) | 3 | ui | S |  | Screen C-35 LINE OA และลิงก์จอง | T-0070 T-0196 T-0155 |
-| [T-0208](T-0208.md) | 4 | ui | S |  | Screen L-01 ลงทะเบียน | T-0195 T-0026 T-0071 T-0170 T-0172 T-0171 |
+| [T-0208](T-0208.md) | 3 | ui | S |  | Screen L-01 ลงทะเบียน | T-0195 T-0026 T-0071 T-0170 T-0172 T-0171 |
 | [T-0209](T-0209.md) | 3 | ui | S |  | Screen L-02 หน้าแรก | T-0195 T-0026 T-0172 T-0174 |
 | [T-0210](T-0210.md) | 3 | ui | M |  | Screen L-03 น้องของฉัน | T-0195 T-0026 T-0071 T-0173 T-0038 T-0174 |
 | [T-0211](T-0211.md) | 4 | ui | M |  | Screen L-04 จองกรูม | T-0195 T-0026 T-0072 T-0071 T-0172 T-0173 T-0175 T-0176 … |
@@ -259,11 +259,12 @@
 | [T-0218](T-0218.md) | 5 | e2e | L |  | E2E M3: ลูกค้าเปิด LIFF (fake LINE) … | T-0039 T-0208 T-0211 T-0212 T-0214 T-0201 T-0187 T-0186 |
 | [H-12](H-12.md) | 6 | human | - |  | Milestone review M3: demo + ตรวจคุณภาพ | T-0149 T-0324 T-0195 T-0196 T-0150 T-0151 T-0008 T-0152 … |
 
-## M4 — ปิดบิล ค่ามือ หลังบริการ (47 tasks)
+## M4 — ปิดบิล ค่ามือ หลังบริการ (48 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
 | [H-13](H-13.md) | 1 | human | - |  | SP-05 ทดสอบพิมพ์ใบเสร็จ 58/80 มม. จาก browser |  |
+| [T-0326](T-0326.md) | 1 | infra | S |  | Enable console menu entries: C-07, C-14, C-23, C-34, C-35 (Q-0093) | T-0001 |
 | [T-0219](T-0219.md) | 1 | domain | L | ⚠️ | Rule R-13 ค่ามือ (commission) | H-01 |
 | [T-0220](T-0220.md) | 1 | domain | M |  | Rule R-14 แพ็กเกจ: มูลค่าต่อครั้ง วันหมดอายุ และสิทธิ์ใช้ | H-01 T-0012 |
 | [T-0221](T-0221.md) | 1 | domain | S | ⚠️ | Rule R-16 เลขที่ใบเสร็จ | H-01 T-0012 |
@@ -309,12 +310,18 @@
 | [T-0261](T-0261.md) | 3 | ui | S |  | Screen L-12 แพ็กเกจของฉัน | T-0195 T-0026 T-0242 |
 | [T-0262](T-0262.md) | 3 | ui | S |  | Screen L-13 ใบเสร็จ | T-0195 T-0026 T-0071 T-0242 |
 | [T-0263](T-0263.md) | 5 | e2e | L |  | E2E M4: เปิดบิลจากนัด … | T-0039 T-0250 T-0252 T-0258 T-0260 |
-| [H-14](H-14.md) | 6 | human | - |  | Release B: UAT + ตัดสินใจปล่อยร้านนำร่อง (M4) | T-0219 T-0220 T-0221 T-0222 T-0223 T-0224 T-0225 T-0226 … |
+| [H-14](H-14.md) | 6 | human | - |  | Release B: UAT + ตัดสินใจปล่อยร้านนำร่อง (M4) | T-0326 T-0219 T-0220 T-0221 T-0222 T-0223 T-0224 T-0225 … |
 
-## M5 — Pet Hotel & Daycare (41 tasks)
+## M5 — Pet Hotel & Daycare (43 tasks)
 
 | ID | wave | lane | size | review | title | depends on |
 |---|---|---|---|---|---|---|
+| [T-0273](T-0273.md) | 1 | api | M |  | API stays.today, stays.get, stays.signAgreement | T-0007 T-0112 T-0051 T-0056 T-0038 |
+| [T-0280](T-0280.md) | 1 | api | S |  | API roomMap.get | T-0007 T-0102 T-0112 T-0051 |
+| [T-0325](T-0325.md) | 2 | infra | M |  | DTO fields for screens: AppointmentCard, StayCard, SlipItem (Q-1013, Q-1027, Q-1012, Q-1024, Q-0112) | T-0004 T-0112 T-0113 T-0273 T-0280 T-0166 |
+| [T-0276](T-0276.md) | 2 | api | M |  | API stays.changeRoom, stays.addAddon, stays.removeAddon | T-0007 T-0102 T-0112 T-0051 T-0273 T-0056 |
+| [T-0279](T-0279.md) | 2 | api | L |  | API stays.checkOut | T-0007 T-0035 T-0273 T-0056 T-0112 T-0051 |
+| [T-0327](T-0327.md) | 3 | infra | M | ⚠️ | Apply Q-0091 / Q-0110 / Q-0113 answers: booking_confirmed text, stays.changeRoom repriceToType, checkOut missingNote | T-0004 T-0190 T-0276 T-0279 |
 | [T-0264](T-0264.md) | 1 | domain | L |  | Rule R-26 สร้างงานดูแลรายวัน (care tasks) | H-01 T-0012 |
 | [T-0265](T-0265.md) | 1 | api | M |  | API roomTypes.list, roomTypes.create, roomTypes.update | T-0007 T-0172 T-0038 |
 | [T-0266](T-0266.md) | 1 | api | S |  | API roomTypes.setRates | T-0007 T-0172 |
@@ -324,14 +331,10 @@
 | [T-0270](T-0270.md) | 1 | api | L |  | API quotes.create (hotel+daycare) | T-0007 T-0092 T-0094 T-0096 T-0097 T-0111 |
 | [T-0271](T-0271.md) | 1 | api | L | ⚠️ | API bookings.create (hotel+daycare) | T-0007 T-0035 T-0010 T-0040 T-0041 T-0092 T-0093 T-0094 … |
 | [T-0272](T-0272.md) | 1 | api | L |  | API calendar.day (hotel+daycare) | T-0007 T-0115 T-0112 T-0051 T-0048 |
-| [T-0273](T-0273.md) | 1 | api | M |  | API stays.today, stays.get, stays.signAgreement | T-0007 T-0112 T-0051 T-0056 T-0038 |
 | [T-0274](T-0274.md) | 2 | api | L |  | API stays.saveIntake | T-0007 T-0014 T-0264 T-0038 T-0273 T-0056 T-0112 T-0051 |
 | [T-0275](T-0275.md) | 2 | api | L |  | API stays.checkIn | T-0007 T-0035 T-0010 T-0099 T-0264 T-0273 T-0056 T-0112 … |
-| [T-0276](T-0276.md) | 2 | api | M |  | API stays.changeRoom, stays.addAddon, stays.removeAddon | T-0007 T-0112 T-0051 T-0273 T-0056 |
 | [T-0277](T-0277.md) | 1 | api | L |  | API stays.changeDates | T-0007 T-0092 T-0102 T-0112 T-0051 |
 | [T-0278](T-0278.md) | 2 | api | S |  | API stays.postUpdate | T-0007 T-0010 T-0008 T-0038 T-0273 T-0056 T-0112 T-0051 |
-| [T-0279](T-0279.md) | 2 | api | L |  | API stays.checkOut | T-0007 T-0035 T-0273 T-0056 T-0112 T-0051 |
-| [T-0280](T-0280.md) | 1 | api | S |  | API roomMap.get | T-0007 T-0102 T-0112 T-0051 |
 | [T-0281](T-0281.md) | 2 | api | M |  | API careTasks.list, careTasks.done, careTasks.skip | T-0007 T-0273 T-0035 T-0038 |
 | [T-0282](T-0282.md) | 1 | api | M |  | API daycare.list, daycare.check_in, daycare.check_out | T-0007 T-0112 T-0051 T-0035 T-0099 |
 | [T-0283](T-0283.md) | 1 | api | L | ⚠️ | API bills.open (hotel+daycare) | T-0007 T-0151 T-0229 T-0051 T-0050 |
@@ -355,7 +358,7 @@
 | [T-0301](T-0301.md) | 3 | ui | S |  | Screen L-06 จอง Daycare | T-0195 T-0026 T-0173 T-0284 T-0285 T-0286 |
 | [T-0302](T-0302.md) | 3 | ui | S |  | Screen L-10 อัปเดตน้องระหว่างพัก | T-0195 T-0026 T-0071 T-0284 |
 | [T-0303](T-0303.md) | 4 | e2e | L |  | E2E M5: จอง Hotel ใน LIFF … | T-0039 T-0300 T-0293 T-0298 T-0299 T-0302 T-0291 |
-| [H-15](H-15.md) | 5 | human | - |  | Milestone review M5: demo + ตรวจคุณภาพ | T-0264 T-0265 T-0266 T-0267 T-0268 T-0269 T-0270 T-0271 … |
+| [H-15](H-15.md) | 5 | human | - |  | Milestone review M5: demo + ตรวจคุณภาพ | T-0325 T-0327 T-0264 T-0265 T-0266 T-0267 T-0268 T-0269 … |
 
 ## M6 — รายงาน + พร้อมนำร่องเต็มรูปแบบ (15 tasks)
 

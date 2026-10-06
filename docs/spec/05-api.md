@@ -841,6 +841,10 @@
 | `doneAt` | groom_appointment.done_at |
 | `pickedUpAt` | groom_appointment.picked_up_at |
 | `staffNote` | groom_appointment.staff_note |
+| `customerId` | booking.customer_id |
+| `sizeTierCode` | calc: size_tier.code ของ groom_appointment.size_tier_id (null = ไม่มี) |
+| `billId` | calc: bill.id ล่าสุดที่ผูกกับ booking (ไม่นับ void) หรือ null |
+| `billStatus` | calc: bill.status ของ billId หรือ null |
 
 <a id="dto-JobCard"></a>
 
@@ -923,6 +927,9 @@ Job card สำหรับช่าง
 | `intakeCompleted` | calc: stay_intake.completed_at is not null |
 | `agreementSigned` | calc: มี consent_document kind boarding_agreement |
 | `vaccineGate` | calc: R-11 |
+| `addonNames[]` | calc: stay_addon.name_snapshot ของ stay |
+| `bundleStatus` | calc: groom_appointment.status ของ bundleAppointmentId หรือ null |
+| `pendingTaskCount` | calc: care_task ของ stay ที่ status pending และ due_at <= now |
 
 <a id="dto-StayDetail"></a>
 
@@ -1054,6 +1061,7 @@ Daycare 1 รายการ
 | `reviewedAt` | payment_slip.reviewed_at |
 | `rejectReason` | payment_slip.reject_reason |
 | `holdExpiresAt` | booking.hold_expires_at |
+| `needsApproval` | calc: booking.approval_due_at is not null |
 
 <a id="dto-BillListItem"></a>
 
@@ -4342,13 +4350,14 @@ Notify: `customer.stay_checked_in`
 #### stays.changeRoom
 
 **PATCH `/api/v1/staff/stays/{stayId}/room`** — ย้ายห้อง (Room map)  
-สิทธิ์: owner, front_desk · Stories: US-06-04
+สิทธิ์: owner, front_desk · Stories: US-06-04 · Rules: R-28
 
 Request body:
 
 | field | type | req | maps to (table.column) | validation |
 |---|---|---|---|---|
-| `roomUnitId` | uuid | ✓ | stay.room_unit_id | ประเภทเดียวกัน หรือประเภทอื่นพร้อม keepPrice |
+| `roomUnitId` | uuid | ✓ | stay.room_unit_id | ประเภทเดียวกันหรือประเภทอื่น |
+| `repriceToType` | boolean |  |  | default false = คงราคาเดิม (snapshot); true = ราคาต่อคืนจาก rate plan default ของประเภทใหม่ (R-28) |
 
 Response: `StayCard`
   
@@ -4356,7 +4365,7 @@ Errors: `ROOM_TAKEN`
 
 
 ผลที่ต้องเกิด:
-- ราคาไม่เปลี่ยน (snapshot) เว้นแต่ส่ง repriceToType=true
+- ราคาไม่เปลี่ยน (snapshot) เว้นแต่ส่ง repriceToType=true → room_total = nights × ราคาต่อคืนใหม่; booking.estimated_total_satang และบรรทัด stay_night ของบิล open ตามไปด้วย (Q-0110)
 
 
 <a id="ep-stays.changeDates"></a>
@@ -4448,7 +4457,7 @@ Request body:
 |---|---|---|---|---|
 | `weightGramsOut` | int |  | stay.weight_grams_out |  |
 | `returnedBelongingIds[]` | uuid[] | ✓ | stay_belonging.id | ต้องครบทุกชิ้นหรือส่ง missingNote |
-| `missingNote` | string |  |  |  |
+| `missingNote` | string |  | booking_event.reason | บังคับเมื่อของไม่ครบ; เก็บใน reason ของ event checked_out (Q-0113) |
 
 Response: `StayDetail`
   
@@ -4458,7 +4467,7 @@ State: `stay:checked_in→checked_out`
 ผลที่ต้องเกิด:
 - checked_out_at = now; room_unit.housekeeping = dirty; care_task pending ที่เหลือ → skipped
 - สร้าง report_card kind stay draft
-- เปิด/เติมบิลอัตโนมัติ (bills.openFromBooking)
+- เปิดบิลอัตโนมัติด้วย bills.open ของ booking นี้ (บิล open เดิมคงไว้) (Q-0113)
 
 
 <a id="ep-stays.noShow"></a>

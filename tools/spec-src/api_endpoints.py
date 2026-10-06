@@ -468,8 +468,10 @@ ep("stays.checkIn", "POST", f"{SY}/check-in", "staff", OF, "US-06-05, US-06-08, 
    audit="stay.vaccine_override (เมื่อ override)", transition="stay:reserved→checked_in", notify="customer.stay_checked_in",
    effects=["ต้องมี intake completed + agreement", "checked_in_at = now; สร้าง care_task ตาม R-26", "ทำได้ตั้งแต่วัน check_in_date (ก่อนหน้านั้น STATUS_NOT_ALLOWED)"])
 ep("stays.changeRoom", "PATCH", f"{SY}/room", "staff", OF, "US-06-04", "ย้ายห้อง (Room map)",
-   [F("roomUnitId", "uuid", True, "stay.room_unit_id", "ประเภทเดียวกัน หรือประเภทอื่นพร้อม keepPrice")], res="StayCard", errors="ROOM_TAKEN",
-   effects=["ราคาไม่เปลี่ยน (snapshot) เว้นแต่ส่ง repriceToType=true"])
+   [F("roomUnitId", "uuid", True, "stay.room_unit_id", "ประเภทเดียวกันหรือประเภทอื่น"),
+    F("repriceToType", "boolean", False, "", "default false = คงราคาเดิม (snapshot); true = ราคาต่อคืนจาก rate plan default ของประเภทใหม่ (R-28)")],
+   res="StayCard", rules="R-28", errors="ROOM_TAKEN",
+   effects=["ราคาไม่เปลี่ยน (snapshot) เว้นแต่ส่ง repriceToType=true → room_total = nights × ราคาต่อคืนใหม่; booking.estimated_total_satang และบรรทัด stay_night ของบิล open ตามไปด้วย (Q-0110)"])
 ep("stays.changeDates", "PATCH", f"{SY}/dates", "staff", OF, "US-06-03", "ขยาย/ลดวันพัก",
    [F("checkInDate", "date", False, "stay.check_in_date", "เฉพาะ reserved"), F("checkOutDate", "date", True, "stay.check_out_date", "> checkIn")],
    res="StayCard", rules="R-03,R-28", errors="ROOM_TAKEN,PET_ALREADY_BOOKED",
@@ -484,9 +486,9 @@ ep("stays.postUpdate", "POST", f"{SY}/updates", "staff", ALL, "US-06-10", "ส�
    effects=["insert pet_photo kind stay", "แจ้งลูกค้าไม่เกิน 1 ข้อความ/วัน/การพัก (dedupe stay_update:{stayId}:{date}) — ส่งลิงก์หน้าอัปเดต"])
 ep("stays.checkOut", "POST", f"{SY}/check-out", "staff", OF, "US-06-11", "เช็คเอาท์",
    [F("weightGramsOut", "int", False, "stay.weight_grams_out", ""), F("returnedBelongingIds[]", "uuid[]", True, "stay_belonging.id", "ต้องครบทุกชิ้นหรือส่ง missingNote"),
-    F("missingNote", "string", False, "", "")], res="StayDetail", transition="stay:checked_in→checked_out",
+    F("missingNote", "string", False, "booking_event.reason", "บังคับเมื่อของไม่ครบ; เก็บใน reason ของ event checked_out (Q-0113)")], res="StayDetail", transition="stay:checked_in→checked_out",
    effects=["checked_out_at = now; room_unit.housekeeping = dirty; care_task pending ที่เหลือ → skipped", "สร้าง report_card kind stay draft",
-            "เปิด/เติมบิลอัตโนมัติ (bills.openFromBooking)"])
+            "เปิดบิลอัตโนมัติด้วย bills.open ของ booking นี้ (บิล open เดิมคงไว้) (Q-0113)"])
 ep("stays.noShow", "POST", f"{SY}/no-show", "staff", OF, "US-07-07", "ไม่มาเช็คอิน", res="StayCard", rules="R-07,R-09", audit="booking.no_show",
    transition="stay:reserved→no_show", effects=["ทำได้หลัง 23:59 ของ check_in_date หรือกดเองพร้อมยืนยัน"])
 ep("stays.cancel", "POST", f"{SY}/cancel", "staff", OF, "US-05-08", "ยกเลิกการพักตัวเดียว", [F("reason", "string", True, "booking_event.reason", "")],

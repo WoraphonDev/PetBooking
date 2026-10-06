@@ -11,8 +11,8 @@ nt("customer.booking_received", "customer", "line_reply|line_push", "essential",
    "booking_received:{bookingId}", "shopName, bookingNo, summary, depositAmount, holdExpiresTime, bookingUrl",
    "ได้รับการจอง {bookingNo} แล้ว 🐾\n{summary}\n{depositLine}\nดูรายละเอียด: {bookingUrl}", "US-11-03, US-11-07")
 nt("customer.booking_confirmed", "customer", "line_reply|line_push", "essential", "send", "booking → confirmed",
-   "booking_confirmed:{bookingId}", "bookingNo, summary, dateTime, shopName, mapUrl, bookingUrl",
-   "ยืนยันการจอง {bookingNo} ✅\n{summary}\n📅 {dateTime}\nแผนที่: {mapUrl}", "US-11-03, US-05-05, US-05-04")
+   "booking_confirmed:{bookingId}", "bookingNo, summary, dateTime, shopName, bookingUrl",
+   "ยืนยันการจอง {bookingNo} ✅\n{summary}\n📅 {dateTime}", "US-11-03, US-05-05, US-05-04")
 nt("customer.booking_declined", "customer", "line_push", "essential", "send", "bookings.decline", "booking_declined:{bookingId}",
    "bookingNo, reason, refundLine", "ขออภัย ร้านไม่สามารถรับการจอง {bookingNo} ได้\nเหตุผล: {reason}\n{refundLine}", "US-05-05")
 nt("customer.booking_cancelled", "customer", "line_push", "essential", "send", "bookings.cancel (โดยร้าน)", "booking_cancelled:{bookingId}",
