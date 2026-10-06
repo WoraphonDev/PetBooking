@@ -458,7 +458,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user chose A — placeholder owner_profile at liff.session, filled by liff.register; linkRequests.approve moves the line_identity to the existing profile. T-0170 implements this.
 
 ## Q-1032 · T-0172 liff.shop: DTO files outside allowed_paths, and what ShopPublic shows a customer
-- Status: open (T-0172 ships the interim choices below; human review)
+- Status: answered (implemented in T-0172; moving the DTO files is a later follow-up)
+- Answer (2026-10-06): user accepted the interim choices in chat. Services / room types = active + online_bookable by sort_order, estCostSatang null; address, hours[] shape, default rate plan as implemented. ShopPublic / RoomTypeItem stay in endpoints/liff.shop.ts until a follow-up card moves them to dto/shop-public.ts and dto/room-type-item.ts.
 - Task: T-0172 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. The card's Deliverables make it the owner of `dto/shop-public.ts` and `dto/room-type-item.ts`, but neither path is in its allowed_paths (CI scope check).
@@ -469,7 +470,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: accept the interim choices; widen the generator so the DTO files are in T-0172 / T-0182 scope, or move them in a follow-up card.
 
 ## Q-1033 · T-0182 public.branch: which shops are public, and what "cache 60 วินาที" means
-- Status: open (T-0182 ships the interim choices below; human review)
+- Status: answered (implemented in T-0182)
+- Answer (2026-10-06): user accepted as implemented in chat: unknown slug / archived branch / suspended org → NOT_FOUND; 60 s per-process cache on ctx.now plus `cache-control: public, max-age=60`.
 - Task: T-0182 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-public.branch lists no errors and only says "cache 60 วินาที". It does not say what an unknown slug, an archived branch or a suspended organization returns, nor where the cache lives.
 - Implemented for now: unknown slug, `branch.status = archived` or `organization.status = suspended` → `NOT_FOUND` (pilot and active orgs are public). The response is the same ShopPublic as liff.shop (Q-1032 filters). Cache: the service keeps each slug's response for 60 s measured on ctx.now (per server process; errors are not cached), and the route sends `cache-control: public, max-age=60` on success.
@@ -563,7 +565,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user approved in chat: add `data_request_status` to enum-labels.th.json (spec change, batch with other missing enum labels); AD-05 then uses enumLabel().
 
 ## Q-1035 · T-0181 liff.payUploadSlip / liff.dataRequest: errors and payload details
-- Status: open (T-0181 ships the interim choices below; human review)
+- Status: answered (implemented in T-0181)
+- Answer (2026-10-06): user accepted as implemented in chat (error codes, slip amount/bookingNo, repeated data requests allowed).
 - Task: T-0181 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-liff.payUploadSlip and 05#ep-liff.dataRequest list no error codes or rules beyond the body and the notification.
 - Implemented for now:
@@ -921,7 +924,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-06): user approved in chat: the access export is deferred until after MVP; a platform admin exports manually meanwhile. T-0067 behaviour stands.
 
 ## Q-1034 · T-0173 liff.pets / createPet / updatePet: which pets, species "other", age
-- Status: open (T-0173 ships the interim choices below; human review)
+- Status: answered (spec change applied in this PR)
+- Answer (2026-10-06): user chose the spec change in chat. 05: liff.createPet (and so liff.updatePet) body gains optional `speciesOther` (pet.species_other, required when species = other); MyPet gains `speciesOther` and `ageEstimateMonths`. Points 1 and 4 accepted as implemented in T-0173.
 - Task: T-0173 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. 05#ep-liff.pets does not say which pets a customer sees. pet belongs to owner_profile (shared across shops), but vaccinations, photos and notes are per shop.

@@ -4,10 +4,11 @@ import { petSex } from "../enums.ts";
 import { PetFields } from "./pets.create.ts";
 
 export const LiffCreatePetParams = z.object({ branchSlug: z.string().min(1) });
-/** 05#ep-liff.createPet: the staff pet fields a customer may set; sex is required in LIFF */
+/** 05#ep-liff.createPet: the staff pet fields a customer may set (speciesOther required when species = other, Q-1034); sex is required in LIFF */
 export const LiffPetFields = PetFields.pick({
   name: true,
   species: true,
+  speciesOther: true,
   breed: true,
   birthDate: true,
   ageEstimateMonths: true,
