@@ -59,6 +59,8 @@ it("creates the pet for the customer's owner profile with a shop profile and a c
     birthDate: "2024-02-01",
     neutered: true,
     coatType: "curly",
+    speciesOther: null,
+    ageEstimateMonths: null,
     latestWeightGrams: 4200,
     photoUrl: null,
     sharedNote: null,
@@ -73,7 +75,17 @@ it("creates the pet for the customer's owner profile with a shop profile and a c
   ]);
 });
 
-it("missing / invalid fields, species other (no species_other in LIFF) → VALIDATION_FAILED", async () => {
+it("species other with speciesOther and an age estimate instead of a birth date", async () => {
+  const s = await seedOrg(env.db, "cp5");
+  const res = await call("shop-cp5", s, { ...valid, species: "other", speciesOther: "กระต่าย", ageEstimateMonths: 18 });
+  expect(res.status).toBe(200);
+  const body = (await res.json()) as LiffCreatePetResponse;
+  expect(body).toMatchObject({ species: "other", speciesOther: "กระต่าย", ageEstimateMonths: 18, birthDate: null });
+  const [row] = await env.db.select().from(pet).where(eq(pet.id, body.id));
+  expect(row).toMatchObject({ speciesOther: "กระต่าย", ageEstimateMonths: 18 });
+});
+
+it("missing / invalid fields, species other without speciesOther → VALIDATION_FAILED", async () => {
   const s = await seedOrg(env.db, "cp2");
   const { sex: _sex, ...noSex } = valid;
   const { coatType: _coat, ...noCoat } = valid;
@@ -85,6 +97,7 @@ it("missing / invalid fields, species other (no species_other in LIFF) → VALID
     { ...valid, weightGrams: 0 },
     { ...valid, internalNote: "x" },
     { ...valid, species: "other" },
+    { ...valid, species: "other", speciesOther: " " },
   ])
     expect(await errorCode(await call("shop-cp2", s, body))).toBe("VALIDATION_FAILED");
 });

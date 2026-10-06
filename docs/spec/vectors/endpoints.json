@@ -2638,6 +2638,7 @@
    "request": [
     "name",
     "species",
+    "speciesOther",
     "breed",
     "sex",
     "birthDate",

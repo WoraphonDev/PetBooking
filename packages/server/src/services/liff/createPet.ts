@@ -10,7 +10,7 @@ import { liffCustomer, myPet } from "./pets.ts";
 export async function liffCreatePet(ctx: RequestContext, input: LiffCreatePetRequest): Promise<LiffCreatePetResponse> {
   return withTx(ctx, async (tx) => {
     const cust = await liffCustomer(ctx, tx);
-    // LIFF has no species_other field, so species = other fails here (pet_other_chk, Q-1034)
+    // species = other needs speciesOther (pet_other_chk, Q-1034)
     validatePet(ctx, input);
     if (input.profileFileId) await commitFile(tx, ctx, input.profileFileId, "pet_profile");
     const { weightGrams, ...fields } = input;

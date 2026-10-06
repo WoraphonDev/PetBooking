@@ -645,7 +645,8 @@ ep("liff.updateMe", "PATCH", f"{LF}/me", "customer", "", "US-11-01, US-03-12", "
 ep("liff.shop", "GET", f"{LF}/shop", "customer", "", "US-11-03", "ข้อมูลร้าน", res="ShopPublic")
 ep("liff.pets", "GET", f"{LF}/pets", "customer", "", "US-11-02", "น้องของฉัน", res="MyPet[]")
 ep("liff.createPet", "POST", f"{LF}/pets", "customer", "", "US-11-02", "เพิ่มน้อง",
-   [F("name", "string", True, "pet.name", ""), F("species", "enum:species", True, "pet.species", ""), F("breed", "string", False, "pet.breed", ""),
+   [F("name", "string", True, "pet.name", ""), F("species", "enum:species", True, "pet.species", ""),
+    F("speciesOther", "string", False, "pet.species_other", "บังคับเมื่อ other"), F("breed", "string", False, "pet.breed", ""),
     F("sex", "enum:pet_sex", True, "pet.sex", ""), F("birthDate", "date", False, "pet.birth_date", ""), F("ageEstimateMonths", "int", False, "pet.age_estimate_months", ""),
     F("neutered", "bool", False, "pet.neutered", ""), F("coatType", "enum:coat_type", True, "pet.coat_type", "LIFF บังคับเลือก (มีรูปตัวอย่าง)"),
     F("weightGrams", "int", False, "pet_weight.weight_grams", "source customer"), F("profileFileId", "uuid", False, "pet.profile_file_id", "")], res="MyPet")
