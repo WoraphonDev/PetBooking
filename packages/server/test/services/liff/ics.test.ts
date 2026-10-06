@@ -100,16 +100,14 @@ it("one VEVENT per grooming appointment, stay and daycare visit; cancelled lines
     .insert(groomAppointment)
     .values([appt("2026-11-01T03:00:00.000Z", "scheduled"), appt("2026-11-02T03:00:00.000Z", "cancelled")])
     .returning();
-  await env.db
-    .insert(groomAppointmentItem)
-    .values({
-      organizationId: s.orgId,
-      appointmentId: a?.id ?? "",
-      serviceId: svc?.id ?? "",
-      nameSnapshot: "อาบน้ำ",
-      priceSatang: 1,
-      durationMinutes: 60,
-    });
+  await env.db.insert(groomAppointmentItem).values({
+    organizationId: s.orgId,
+    appointmentId: a?.id ?? "",
+    serviceId: svc?.id ?? "",
+    nameSnapshot: "อาบน้ำ",
+    priceSatang: 1,
+    durationMinutes: 60,
+  });
   const [type] = await env.db
     .insert(roomType)
     .values({ ...tenant, nameTh: "ห้องเล็ก" })
@@ -167,7 +165,7 @@ it("another customer's / shop's booking → NOT_FOUND; bad id → VALIDATION_FAI
 
 it("RFC 5545 helpers: TEXT escaping, 75-octet folding, CRLF lines", () => {
   expect(icsText("a,b;c\\d\ne")).toBe("a\\,b;c\\\\d\\ne");
-  const long = "SUMMARY:" + "ก".repeat(40);
+  const long = `SUMMARY:${"ก".repeat(40)}`;
   const folded = foldLine(long);
   for (const line of folded.split("\r\n")) expect(Buffer.byteLength(line)).toBeLessThanOrEqual(75);
   expect(folded.replace(/\r\n /g, "")).toBe(long);
