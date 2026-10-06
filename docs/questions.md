@@ -546,6 +546,20 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Interim (implemented): the three labels live in AD-05.json (same approach as Q-0043 for feedback_status).
 - Answer (2026-10-06): user approved in chat: add `data_request_status` to enum-labels.th.json (spec change, batch with other missing enum labels); AD-05 then uses enumLabel().
 
+## Q-1035 · T-0181 liff.payUploadSlip / liff.dataRequest: errors and payload details
+- Status: open (T-0181 ships the interim choices below; human review)
+- Task: T-0181 · Asked by: agent (claude) · Date: 2026-10-06
+- Question: 05#ep-liff.payUploadSlip and 05#ep-liff.dataRequest list no error codes or rules beyond the body and the notification.
+- Implemented for now:
+  1. liff.payUploadSlip:
+     - Bill checks: a bill that is not the signed-in customer's, or is in another branch → NOT_FOUND; a bill that is not open → BILL_NOT_OPEN; a branch without PromptPay → PROMPTPAY_NOT_CONFIGURED (same as bills.promptpayQr).
+     - File: `fileId` must be a `slip` file (commitFile).
+     - The slip row: booking_id null, bill_id set (slips.verify already handles a bill slip), amount_expected = total − paid. trans_ref comes from R-05 parseSlipQr and duplicate_of_slip_id from findDuplicateSlip over the org's slips.
+     - Response: the bill's PaymentInstruction as bills.promptpayQr builds it, with `expiresAt` null.
+     - staff.slip_submitted: `bookingNo` = the lowest booking_no of the bookings on the bill (or ""), `amount` = formatTHB(due), `duplicateFlag` per Q-0088.
+  2. liff.dataRequest: every call creates a new open request; there is no check for an existing open request of the same type. admin.data_request `type` = the Thai label from enum-labels data_request_type.
+- Proposed decision: accept as implemented.
+
 ## Q-0088 · T-0193 staff templates: what `duplicateFlag` and `isLate` render as
 - Status: answered (2026-10-05)
 - Answer (2026-10-05): user chose option A in chat. The caller passes the ready text: `duplicateFlag` = "⚠️ สลิปนี้เคยใช้แล้ว" when R-05 finds a duplicate, otherwise ""; `isLate` = "(ยกเลิกกระชั้น)" when R-07 `isLate`, otherwise "". The template substitutes it and drops the trailing space when empty (T-0193). liff.uploadSlip / liff.payUploadSlip / liff.cancel pass these strings; 07 §1 to be updated by spec change.
