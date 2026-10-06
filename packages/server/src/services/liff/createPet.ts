@@ -19,7 +19,7 @@ export async function liffCreatePet(ctx: RequestContext, input: LiffCreatePetReq
       .values({
         ...fields,
         ownerProfileId: cust.ownerProfileId,
-        createdInOrgId: ctx.orgId!,
+        createdInOrgId: cust.organizationId,
         latestWeightGrams: weightGrams ?? null,
         createdAt: ctx.now,
         updatedAt: ctx.now,

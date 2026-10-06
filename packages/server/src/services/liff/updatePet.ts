@@ -8,10 +8,7 @@ import { tenantDb } from "../../repo/tenant.ts";
 import { validatePet } from "../pets/create.ts";
 import { myPet, requireMyPet } from "./pets.ts";
 
-export async function liffUpdatePet(
-  ctx: RequestContext,
-  input: LiffUpdatePetRequest & { petId: string },
-): Promise<LiffUpdatePetResponse> {
+export async function liffUpdatePet(ctx: RequestContext, input: LiffUpdatePetRequest & { petId: string }): Promise<LiffUpdatePetResponse> {
   return withTx(ctx, async (tx) => {
     const p = await requireMyPet(ctx, tx, input.petId);
     const { petId, weightGrams, ...fields } = input;

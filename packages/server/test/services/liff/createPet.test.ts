@@ -67,9 +67,7 @@ it("creates the pet for the customer's owner profile with a shop profile and a c
   });
   const [row] = await env.db.select().from(pet).where(eq(pet.id, body.id));
   expect(row).toMatchObject({ ownerProfileId: s.ownerProfileId, createdInOrgId: s.orgId, latestWeightGrams: 4200 });
-  expect(await env.db.select().from(petShopProfile).where(eq(petShopProfile.petId, body.id))).toMatchObject([
-    { organizationId: s.orgId },
-  ]);
+  expect(await env.db.select().from(petShopProfile).where(eq(petShopProfile.petId, body.id))).toMatchObject([{ organizationId: s.orgId }]);
   expect(await env.db.select().from(petWeight).where(eq(petWeight.petId, body.id))).toMatchObject([
     { organizationId: s.orgId, weightGrams: 4200, source: "customer", recordedBy: null },
   ]);

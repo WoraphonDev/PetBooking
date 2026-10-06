@@ -56,7 +56,7 @@ it("lists own active pets with a profile in this shop: shared note, before/after
     { organizationId: other.orgId, petId: elsewhere.id },
     { organizationId: s.orgId, petId: strangers.id },
   ]);
-  const files = await env.db
+  const [after, profile] = await env.db
     .insert(fileObject)
     .values(
       ["after", "pet_profile"].map((kind) => ({
@@ -69,9 +69,10 @@ it("lists own active pets with a profile in this shop: shared note, before/after
       })),
     )
     .returning();
+  if (!after || !profile) throw new Error("file fixture");
   await env.db.insert(petPhoto).values([
-    { organizationId: s.orgId, petId: mochi.id, fileId: files[0]!.id, kind: "after", caption: "ทรงหมีพูห์" },
-    { organizationId: s.orgId, petId: mochi.id, fileId: files[1]!.id, kind: "profile" },
+    { organizationId: s.orgId, petId: mochi.id, fileId: after.id, kind: "after", caption: "ทรงหมีพูห์" },
+    { organizationId: s.orgId, petId: mochi.id, fileId: profile.id, kind: "profile" },
   ]);
 
   const res = await call("shop-lp1", s);
