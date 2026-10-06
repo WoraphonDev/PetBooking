@@ -136,7 +136,8 @@ it("HOLD_EXPIRED from the server switches to the time-up page", async () => {
   mock.mutate.mockRejectedValue(new ApiClientError("HOLD_EXPIRED", "หมดเวลา", 409));
   const view = PayView({ detail: detail() as never, branchSlug: "shop-a", bookingId: BOOKING_ID });
   const button = elements(view).find((e) => e.props.children === messages.sendSlip && typeof e.props.onClick === "function");
-  await (button?.props.onClick as () => Promise<void>)();
+  if (!button) throw new Error("send button not rendered");
+  await (button.props.onClick as () => Promise<void>)();
   expect(mock.setState).toHaveBeenCalledWith(true);
   expect(mock.mutate).toHaveBeenCalledWith(expect.objectContaining({ body: { fileId: "10000000-0000-4000-8000-0000000000f1" } }));
 });
