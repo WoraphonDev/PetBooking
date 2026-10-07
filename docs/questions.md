@@ -890,6 +890,23 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - The pet must be the customer's own active pet known to the shop (else NOT_FOUND). The 30/min/user limit is the existing `liffSlotSearch` rule.
 - Proposed decision: accept 1–4. For 5, add a follow-up card that extracts the shared slot gathering from services/availability/groomSlots.ts so both endpoints use one function.
 
+## Q-1051 · T-0211 L-04: size choice without a tier list, per-pet price, groomer avatars, several pets
+- Status: open (T-0211 ships the interim choices below)
+- Task: T-0211 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 06#scr-L-04 loads liff.shop, liff.pets, liff.groomSlots and liff.quote, but:
+  1. "ขนาด (ถ้าไม่รู้น้ำหนัก) — การ์ดขนาด + ช่วง กก." needs the size tiers (label, kg range). No customer endpoint returns them: ShopPublic.services[].prices only carries tier ids.
+  2. "ราคาของน้องตัวนี้ (R-02)" needs the pet's size tier (R-01 from the weight and the tier ranges), which is also missing.
+  3. "avatar ช่าง + 'ใครก็ได้'" has no groomer list or photo for customers. Only liff.groomSlots names the groomer of each slot.
+  4. "การ์ดน้อง (หลายตัวได้)" does not say whether pets share services, a date, or a groomer.
+- Implemented for now:
+  1. No size step. A dog / cat without a weight gets WEIGHT_REQUIRED from liff.groomSlots, shown in place of the time grid.
+  2. A service card shows the pet's exact price and time only when every price row for its coat group has the same price and time (e.g. one price for all sizes). Otherwise it shows "เริ่มต้น {fromPriceSatang}". The summary uses liff.quote.
+  3. The groomer choices are the groomers named in the loaded slot lists; the avatar is the name's first letter. A specific groomer reloads the slots with groomerId. 'ใครก็ได้' leaves groomerId out of liff.createBooking, so the server can re-pick (Q-1049).
+  4. Each pet picks its own services and time. Date and groomer choice are shared, and every pet has its own liff.groomSlots call.
+  - Closed weekdays (shop.hours) show "ร้านปิด" in the 14-day strip and cannot be picked. 'ต้องโอนภายใน 15 นาที' is shown only when depositRequiredSatang > 0.
+  - After liff.createBooking: status awaiting_deposit → L-07; awaiting_approval → 'รอร้านยืนยัน'; otherwise 'จองสำเร็จ'.
+- Proposed decision: accept 2–4. For 1, add `sizeTiers` (id, species, labelTh, min/maxWeightGrams) to ShopPublic (spec change + follow-up card), so L-04 can show the size cards and the exact R-02 price.
+
 ## Q-0068 · T-0188 approval_overdue: refund by a system job, waitedMinutes
 - Status: answered (implemented in T-0188); spec follow-up open
 - Task: T-0188 · Asked by: agent (claude) · Date: 2026-10-03
