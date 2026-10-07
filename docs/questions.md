@@ -651,6 +651,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - staff.link_request: lineName = the LINE display name (else the entered first name), phone = R-22 display format.
 - Proposed decision: accept; optionally also require termsVersion = latest.
 
+## Q-1050 · T-0208 L-01: liff.shop before registration, loading liff.session, a pending link on reopen
+- Status: open (T-0208 ships the interim choices below)
+- Task: T-0208 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 06#scr-L-01 loads `liff.session` and `liff.shop`, but:
+  1. liff.shop is a customer endpoint, and a LINE user with no customer gets NOT_REGISTERED.
+  2. liff.session needs a fresh ID token, and the shell does not hand its LiffSession to the page.
+  3. 06 shows 'ร้านกำลังตรวจสอบประวัติเดิมของคุณ' only after เริ่มใช้งาน. On reopen, a user with a pending link request gets the form again, and liff.register answers LINK_REQUEST_PENDING.
+  4. The privacy link target is not named in L-01.
+- Implemented for now:
+  1. The shop name and logo come from `public.branch` (the same ShopPublic DTO, no session needed).
+  2. L-01 calls liff.session again (liff.init → getIDToken, or the LINE_FAKE token) for the LINE name / picture and `legalVersions`. privacyVersion / termsVersion are sent from `legalVersions`.
+  3. When session.linkPending is already true, L-01 shows that message instead of the form. A LINK_REQUEST_PENDING error is shown as a toast.
+  4. The privacy link opens P-02 `/legal/privacy`.
+  - After a successful registration (registered = true), L-02 opens with a full page load, so the LIFF guard reads the new customer session.
+- Proposed decision: accept. Optionally let liff.shop allow unregistered LINE sessions (like liff.register), so L-01 loads exactly as 06 says.
+
 ## Q-0049 · bills.open: request combinations, idempotency, eligible bookings, unusable packages
 - Status: answered (implemented in T-0229)
 - Task: T-0229 · Asked by: agent (claude) · Date: 2026-10-03
