@@ -10,7 +10,6 @@ import { tenantDb } from "../../repo/tenant.ts";
 import { groomDaySlots } from "./groom-slots-core.ts";
 import { defaultPlanId, scopedBranch, shopPet } from "./hotel.ts";
 
-
 /** R-04 slots for one pet on one day, with R-02/R-03 price and duration (05#ep-availability.groomSlots). */
 export async function availabilityGroomSlots(
   ctx: RequestContext,

@@ -1,4 +1,14 @@
-import { booking, branch, branchHours, branchPolicy, groomAppointment, groomStation, pet, staffUser, staffWorkingHours } from "@app/db/schema";
+import {
+  booking,
+  branch,
+  branchHours,
+  branchPolicy,
+  groomAppointment,
+  groomStation,
+  pet,
+  staffUser,
+  staffWorkingHours,
+} from "@app/db/schema";
 import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, expect, it } from "vitest";
 import { groomDaySlots } from "../../../src/services/availability/groom-slots-core.ts";
@@ -76,7 +86,11 @@ const ctx = () => staffCtx(env.base, "owner");
 const day = (extra: Partial<Parameters<typeof groomDaySlots>[2]> = {}) =>
   groomDaySlots(ctx(), env.db, { branch: b, date: DATE, channel: "staff", durationMinutes: 60, ...extra });
 const picks = (r: Awaited<ReturnType<typeof groomDaySlots>>) =>
-  r.slots.map((s) => [s.startsAt.slice(11, 16), s.groomerId === env.base.staff.staff ? "staff" : "owner", s.stationId === ids.t1 ? "T1" : "T2"]);
+  r.slots.map((s) => [
+    s.startsAt.slice(11, 16),
+    s.groomerId === env.base.staff.staff ? "staff" : "owner",
+    s.stationId === ids.t1 ? "T1" : "T2",
+  ]);
 
 it("loads the day and runs R-04: saved appointments block their groomer and station", async () => {
   const r = await day();
@@ -94,7 +108,7 @@ it("loads the day and runs R-04: saved appointments block their groomer and stat
 });
 
 it("pendingAppointments hold their groomer and station like saved ones", async () => {
-  const pending = [{ groomerId: env.base.staff.owner, stationId: ids.t2, startsAt: at("10:00"), blockedUntil: at("11:00") }];
+  const pending = [{ groomerId: env.base.staff.owner, stationId: ids.t2 ?? "", startsAt: at("10:00"), blockedUntil: at("11:00") }];
   const r = await day({ pendingAppointments: pending });
   // 09:30–10:30 starts: both groomers and both stations are now taken
   expect(picks(r).map(([start]) => start)).toEqual(["02:00", "04:00"]);

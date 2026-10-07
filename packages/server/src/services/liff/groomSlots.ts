@@ -10,7 +10,6 @@ import { groomDaySlots } from "../availability/groom-slots-core.ts";
 import { defaultPlanId, scopedBranch, shopPet } from "../availability/hotel.ts";
 import { requireMyPet } from "./pets.ts";
 
-
 /**
  * 05#ep-liff.groomSlots: R-04 slots on the `online` channel (lead time + horizon) for one of the customer's own pets, with
  * R-02/R-03 price and duration. Same day inputs as availability.groomSlots (staff), plus the customer rules (Q-1046):
