@@ -29,6 +29,7 @@ export async function liffUpdateMe(ctx: RequestContext, input: LiffUpdateMeReque
       ...(input.lastName !== undefined ? { lastName: input.lastName || null } : {}),
       ...(input.nickname !== undefined ? { nickname: input.nickname || null } : {}),
       ...(phoneE164 !== undefined ? { phoneE164 } : {}),
+      ...(input.email !== undefined ? { email: input.email.trim().toLowerCase() || null } : {}),
     };
     // owner_profile has no organization_id: the id comes from the org-checked customer
     if (Object.keys(profileChanges).length)

@@ -3,6 +3,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import LiffHomePage from "../../app/(liff)/liff/[branchSlug]/page";
 import { HomeScreen, nextBooking, screenHref, todayHours } from "../../src/components/l-02/home-screen";
 import { entry } from "../../src/components/shell-liff/navigation/L-02";
+import { entry as l07 } from "../../src/components/shell-liff/navigation/L-07";
 import messages from "../../src/i18n/messages/th/L-02.json";
 
 // Tuesday 2026-10-06 10:00 Bangkok
@@ -94,5 +95,6 @@ it("helpers: today's weekday in Bangkok, soonest booking, hrefs only for impleme
   expect(todayHours(shop.hours, new Date("2026-10-06T18:00:00.000Z"))).toBeNull(); // already Wednesday in Bangkok
   expect(nextBooking([])).toBeNull();
   expect(screenHref("L-15", "shop a")).toBe("/liff/shop%20a/me");
-  expect(screenHref("L-07", "shop-a", { bookingId: "b1" })).toBeNull();
+  // follows the live entry: null until L-07 ships, then its route
+  expect(screenHref("L-07", "shop-a", { bookingId: "b1" })).toBe(l07.implemented ? "/liff/shop-a/bookings/b1/pay" : null);
 });

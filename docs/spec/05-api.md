@@ -5362,7 +5362,7 @@ Request body:
 | `nickname` | string |  | owner_profile.nickname |  |
 | `phone` | string | ✓ | owner_profile.phone_e164 | R-22 |
 | `privacyVersion` | string | ✓ | consent_record.version | ต้องเท่าเวอร์ชันล่าสุด |
-| `termsVersion` | string | ✓ | consent_record.version |  |
+| `termsVersion` | string | ✓ | consent_record.version | ต้องเท่าเวอร์ชันล่าสุด |
 | `photoConsent` | bool | ✓ | customer.photo_consent | true → granted, false → denied |
 
 Response: `LiffSession`
@@ -5403,6 +5403,7 @@ Request body:
 | `lastName` | string |  | owner_profile.last_name |  |
 | `nickname` | string |  | owner_profile.nickname |  |
 | `phone` | string |  | owner_profile.phone_e164 | R-22 |
+| `email` | string |  | owner_profile.email | รูปแบบอีเมล |
 | `photoConsent` | bool |  | customer.photo_consent | insert consent_record ใหม่ |
 
 Response: `MyProfile`

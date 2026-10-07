@@ -311,6 +311,22 @@ INF("UI-FEEDBACK-MOUNT", "Mount the C-46 feedback button in the console and staf
      "test: ปุ่ม feedback แสดงใน layout ทั้งสอง"],
     ["pnpm --filter @app/web test -- c-46"], deps=["SCR-C-46", "UI-SHELL-console", "UI-SHELL-staff"],
     read=["docs/spec/06-screens.md#scr-C-46", "docs/questions.md (Q-0114)"])
+INF("INF-SLOTS-SHARED", "Share one R-04 slot gathering between availability.groomSlots and liff.groomSlots (Q-1046)", "M3", "M", "US-11-03",
+    ["packages/server/src/services/availability/groomSlots.ts", "packages/server/src/services/liff/groomSlots.ts",
+     "packages/server/src/services/availability/groom-slots-core.ts", "packages/server/test/services/availability/groom-slots-core.test.ts"],
+    ["ย้ายการโหลดข้อมูลวัน (hours/policy/closures/stations/groomers/working hours/time off/appointments) + computeGroomSlots ไปฟังก์ชันเดียวใน groom-slots-core.ts รับ channel (staff|online), groomerPreference, pendingAppointments, excludeAppointmentId (Q-1046)",
+     "availability.groomSlots และ liff.groomSlots เรียกฟังก์ชันเดียวกัน; export ฟังก์ชันพร้อม pendingAppointments ให้ liff.createBooking ใช้แทน fallback ช่าง/โต๊ะ (เปลี่ยนในการ์ด liff.createBooking hotel+daycare ที่แตะไฟล์นั้น, Q-1049)",
+     "test: ผลของ staff/online เท่าเดิม (test เดิมผ่านทั้งหมด) + pendingAppointments กันช่าง/โต๊ะที่ถูกจองในใบเดียวกัน"],
+    ["pnpm --filter @app/server test -- groomSlots"], deps=["API-availability.groomSlots", "API-liff.groomSlots", "API-liff.createBooking-grooming"],
+    read=["docs/spec/04-business-rules.md#R-04", "docs/questions.md (Q-1046, Q-1049)"])
+INF("INF-LINE-FLEX", "LINE Flex Message for customer templates: text + LIFF button, altText = first line (Q-1048)", "M3", "M", "US-13-06",
+    ["packages/server/src/notify/templates/index.ts", "packages/server/src/notify/senders.ts", "packages/server/src/notify/dispatch.ts",
+     "packages/server/src/integrations/line/**", "packages/server/test/notify/flex.test.ts"],
+    ["Rendered เพิ่ม flex ที่สร้างจาก text + url: bubble ข้อความ + ปุ่ม uri ไปที่ url (LIFF), altText = บรรทัดแรกของ text (07 §1 step 'LINE: Flex Message แบบเรียบ')",
+     "LINE sender ส่ง Flex เมื่อ template มี url ไม่งั้นส่งข้อความเดิม; fake sender เก็บ flex ใน outbox",
+     "test: template ที่มี url → flex + altText; ไม่มี url → text; Web Push/email ไม่เปลี่ยน"],
+    ["pnpm --filter @app/server test -- notify"], deps=["INF-NOTIFY-RENDER", "INF-LINE", "INF-LINE-DISPATCH", "API-feedback-0", "NTF-customer-M3-0"],
+    read=["docs/spec/07-notifications-jobs.md §1", "docs/questions.md (Q-1048)"], hr=True)
 INF("UI-MENU-ENABLE", "Enable console menu entries: C-07, C-14, C-23, C-34, C-35 (Q-0093)", "M4", "S", "US-13-01",
     ["apps/web/src/components/shell-console/navigation/C-07.ts", "apps/web/src/components/shell-console/navigation/C-14.ts",
      "apps/web/src/components/shell-console/navigation/C-23.ts", "apps/web/src/components/shell-console/navigation/C-34.ts",

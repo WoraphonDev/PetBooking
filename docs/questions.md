@@ -379,7 +379,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user approved in chat: from/to are inclusive Thai local dates; activeDays7 uses seven days ending on to; bookingsByChannel contains every booking channel; onlineShare/noShowRate are whole percentages, zero with an empty denominator; noShowRate covers due grooming/stay/daycare items excluding cancelled items; reportCardsSent and billsClosed use sentAt/closedAt. Booking activity uses booking/bill creation dates; push usage uses sentAt. Scheduled starts use grooming.startsAt, stay expected check-in time (branch opening when absent, as bookings.create defines first service time), and daycare session start. These details preserve the existing 02 columns and 05 scheduling semantics.
 
 ## Q-1043 · T-0210 L-03: "วัคซีนใกล้หมด" window, coat example photos, one-pet load
-- Status: open (T-0210 ships the interim choices below; human review)
+- Status: answered (implemented in T-0210)
+- Answer (2026-10-07): user accepted in chat: 30-day vaccine warning (rejected ones ignored), the detail page reads liff.pets. Coat example photos are a follow-up once images exist (text cards until then).
 - Task: T-0210 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. The pet card shows "วัคซีนใกล้หมด (แดง)", but 06 gives no window.
@@ -441,7 +442,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   3. Accept as implemented.
 
 ## Q-1040 · T-0216 L-15: email is "แสดง+แก้" but liff.updateMe has no email field
-- Status: open (T-0216 ships the interim choice below; human review)
+- Status: answered (spec change applied in this PR)
+- Answer (2026-10-07): user chose in chat: 05#ep-liff.updateMe gains optional `email` (owner_profile.email, email format; "" clears it), and L-15 makes อีเมล editable (sent only when changed). The PDPA dialog wording is accepted as written.
 - Task: T-0216 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 06#scr-L-15 marks อีเมล (`owner_profile.email`) as แสดง+แก้, but 05#ep-liff.updateMe accepts only firstName, lastName, nickname, phone and photoConsent. The PDPA dialog also has to "อธิบายผล", and 06 gives no wording for it.
 - Implemented for now:
@@ -453,7 +455,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: add optional `email` (owner_profile.email, email format) to liff.updateMe (spec change + a follow-up to make the field editable); accept the dialog wording or supply the legal text.
 
 ## Q-1041 · T-0105 staffMe.linkLine / pushSubscribe / pushUnsubscribe: clash code, cross-shop endpoint, unknown endpoint
-- Status: open (T-0105 ships the interim choices below; human review)
+- Status: answered (implemented in T-0105)
+- Answer (2026-10-07): user accepted as implemented in chat: EMAIL_TAKEN for a LINE account linked to another staff member, NOT_FOUND for another shop's or an unknown push endpoint.
 - Task: T-0105 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05 lists only `EMAIL_TAKEN` for staffMe.linkLine. It does not say what that code means for a LINE link, nor what the push endpoints do when the endpoint belongs to another shop or does not exist.
 - Implemented for now:
@@ -592,7 +595,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user chose in chat. Each type exports its 02 table (customers→customer, pets→pet, bills→bill, bill_lines→bill_line, commissions→commission_entry, bookings→booking) with every column in schema order except organization_id; `*_satang` columns are output in baht with 2 decimals and named without the `_satang` suffix. Pets are the pets of the organization's customers' owner profiles. from/to are inclusive branch-local days on created_at (bills: closed_at, commissions: earned_at, bookings: first_service_at). The route reads `{type}` from the URL path, calls the `withStaff` handler and re-sends its JSON string as `text/csv; charset=utf-8` with `Content-Disposition: attachment`. A shared non-JSON response option in respond.ts would remove this adapter (follow-up, not in T-0307).
 
 ## Q-1044 · T-0178 liff.uploadSlip / liff.ics / liff.payPage: error order, slip amount, calendar contents
-- Status: open (T-0178 ships the interim choices below; human review)
+- Status: answered (implemented in T-0178)
+- Answer (2026-10-07): user accepted as implemented in chat (HOLD_EXPIRED before STATUS_NOT_ALLOWED, expected amount = deposit due, calendar incl. daycare / all-day stays / cancelled lines skipped, payPage errors as payUploadSlip).
 - Task: T-0178 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05 lists HOLD_EXPIRED and STATUS_NOT_ALLOWED for liff.uploadSlip but not which one wins. It does not say what amount a deposit slip expects. For liff.ics it only says "1 VEVENT ต่อนัด/การพัก, LOCATION = ที่อยู่ร้าน, URL = Google Maps", and liff.payPage lists no errors.
 - Implemented for now:
@@ -629,7 +633,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-02): user chose in chat. `receiptUrl = APP_BASE_URL + /liff/{branch.booking_slug}/receipts/{billId}` (route of L-13). `logoUrl` is null until T-0038 lands (same approach as Q-0032). bills.receipt works for any status (receiptNo/closedAt null while open). bills.sendReceipt needs a paid bill: open → `BILL_HAS_DUE`; void → `BILL_NOT_OPEN`; a bill without customer → `NOT_FOUND`. `n` = number of `customer.receipt` rows already queued for the bill + 1. Implementation details: payments list posted rows only; cashierName = closed_by (else opened_by) display_name; packagesRemaining = the customer's active packages (CustomerPackageItem).
 
 ## Q-1045 · T-0171 liff.register: re-registering, terms version, phone match scope
-- Status: open (T-0171 ships the interim choices below; human review)
+- Status: answered (spec change applied in this PR)
+- Answer (2026-10-07): user chose in chat: termsVersion must also equal the latest version (VALIDATION_FAILED otherwise; 05 validation updated, liff.register checks it). The rest is accepted as implemented.
 - Task: T-0171 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-liff.register does not say:
   - what happens when the LINE user is already a customer of the shop
@@ -867,7 +872,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Work: none on T-0317 until the content exists.
 
 ## Q-1046 · T-0175 liff.groomSlots: groomer "nickname", size choice, add-on bookability, other R-12 reasons, shared slot code
-- Status: open (T-0175 ships the interim choices below; human review)
+- Status: answered (implemented in T-0175; follow-up card T-0330)
+- Answer (2026-10-07): user accepted 1–4 in chat and chose a follow-up card: T-0330 shares one R-04 slot gathering between availability.groomSlots and liff.groomSlots (with pendingAppointments for liff.createBooking).
 - Task: T-0175 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. 05 says to show "ชื่อเล่นช่าง", but staff_user has only `display_name`.
@@ -903,7 +909,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): first rejection → awaiting_deposit with hold = now + hold_minutes, expire_hold job, customer.slip_rejected. Second rejection (≥ 2 rejected slips on the booking) → booking expired, children cancelled, customer.hold_expired (as the expire_hold job) instead of slip_rejected.
 
 ## Q-1048 · T-0190 customer templates: LINE Flex, the branch timezone in {depositLine}, empty lines
-- Status: open (T-0190 ships the interim choices below; human review)
+- Status: answered (implemented in T-0190; follow-up card T-0331)
+- Answer (2026-10-07): user accepted 2–3 in chat and chose a follow-up card: T-0331 sends customer templates as LINE Flex (text + LIFF button from `url`, altText = first line).
 - Task: T-0190 · Asked by: agent (claude) · Date: 2026-10-07
 - Question:
   1. Step 7 asks for a LINE Flex Message (text + LIFF link button, altText = first line). `render()` returns `{ text, subject?, url? }`, and the LINE sender sends plain text. Flex needs `templates/index.ts`, `notify/senders.ts` and the LINE integration, which are outside this card (Q-0060 moved Flex to T-0149, which did not add it).
@@ -1013,7 +1020,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Answer (2026-10-04): user explicitly approved the complete proposal above, including the larger PR with all tests retained. Implementing these approved decisions within T-0044 allowed paths; read-only spec files remain for human correction.
 
 ## Q-1047 · T-0176 liff.quote: item shape, hotel/daycare arrays, checks done here vs at createBooking
-- Status: open (T-0176 ships the interim choices below; human review)
+- Status: answered (implemented in T-0176)
+- Answer (2026-10-07): user accepted as implemented in chat: groom item = groomSlots slot + size choice, stays/daycare empty until their cards, slot / vaccine / eligibility checks at liff.createBooking.
 - Task: T-0176 · Asked by: agent (claude) · Date: 2026-10-06
 - Question: 05#ep-liff.quote lists `groom[]`, `stays[]`, `daycare[]` as "object[]" with no item fields and no errors. The card limits it to groom[] only, and does not say which R-04 / R-11 / R-12 checks belong to a quote.
 - Implemented for now:
@@ -1125,7 +1133,8 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Proposed decision: accept 1 and 4. For 2 and 3, add optional `speciesOther` to the liff.createPet body and `speciesOther` + `ageEstimateMonths` to MyPet (spec change).
 
 ## Q-1042 · T-0209 L-02: branch timezone for "today", when "จ่ายมัดจำ" shows, links to unbuilt screens
-- Status: open (T-0209 ships the interim choices below; human review)
+- Status: answered (implemented in T-0209)
+- Answer (2026-10-07): user accepted as implemented in chat: "today" in Asia/Bangkok until a non-Bangkok branch needs ShopPublic.timezone; pay button for pending/rejected deposits; unbuilt screens disabled.
 - Task: T-0209 · Asked by: agent (claude) · Date: 2026-10-06
 - Question:
   1. "เวลาเปิดวันนี้" needs the branch-local weekday, but ShopPublic / liff.shop has no `timezone`.
@@ -1244,6 +1253,30 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Task: T-0160 · Asked by: agent (claude) · Date: 2026-10-04
 - Question: 03 says decline → "R-07 shop_cancel (คืนมัดจำเต็ม)" — record the refund at decline time or leave it to refunds.create? 07 `customer.booking_declined` `{refundLine}` has no wording.
 - Answer (2026-10-04): at decline, a verified deposit is returned in full: insert refund (mode bank_transfer, amount = R-07 return, reason = the decline reason, created_by = staff) and deposit_status → refunded in the same transaction (the shop transfers and may attach proof later). refundLine = "ร้านจะคืนมัดจำ ฿{amount} เต็มจำนวน" (R-31) when something is returned, else "".
+
+## Q-1049 · T-0177 liff.createBooking: channel, reply token, unlisted error cases, multi-pet slots
+- Status: open (T-0177 ships the interim choices below; human review)
+- Task: T-0177 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: Several rules are not spelled out in 05 / 03:
+  1. "line_liff (หรือ booking_link ถ้ามาจากลิงก์จอง)", but the request has no field telling the two apart.
+  2. "ใช้ reply ยืนยันถ้าทำได้ (SP-03)", but no reply token reaches this endpoint.
+  3. A closed day or closure has no listed code (staff uses BRANCH_CLOSED).
+  4. ROOM_TAKEN / DAYCARE_FULL belong to stays / daycare, which this card answers with MODULE_DISABLED until M5.
+  5. INVALID_TRANSITION cannot happen on ∅ → initial.
+  6. With a deposit and approval both due, it is not said whether approval_overdue is scheduled at creation.
+  7. Several pets at the same time with "any" groomer.
+- Implemented for now:
+  1. channel = `line_liff` always; created_by_type customer, created_by_id = the customer.
+  2. Notifications go through the outbox (push; booking_received / booking_confirmed are `essential`); no reply token.
+  3. A closed day, closure, or any time without a free slot → SLOT_TAKEN.
+     Past / beyond the horizon / inside booking_lead_minutes → OUTSIDE_BOOKING_WINDOW.
+  4. Stays / daycare items → MODULE_DISABLED, so ROOM_TAKEN / DAYCARE_FULL are not reachable yet.
+  5. Not tested.
+  6. Deadlines follow R-08: deposit > 0 → awaiting_deposit + hold_expires_at + expire_hold; approval needed → approval_due_at + approval_overdue (n = 1) whether or not a deposit is due, since leaveAwaitingDeposit keeps that job.
+     Approval is needed when auto_confirm_grooming is off, reliability is 1, or R-11 finds only pending-review vaccines; missing / expired → VACCINE_REQUIRED.
+  7. liff.groomSlots does not see earlier items of the same booking. A clash with them falls back to the next active groomer (when "any"; a chosen groomer stays fixed) and the next station with no saved or planned appointment. Otherwise → SLOT_TAKEN. The DB exclusion constraints still guard races (→ SLOT_TAKEN).
+  - staff.new_booking customerName = owner_profile.first_name.
+- Proposed decision: accept. If booking_link matters for reports, add an optional `channel` hint to the request (spec change).
 
 ## Q-0048 · Console menu entries: C-* screen cards cannot enable their own menu item
 - Status: answered for T-0070; task-generator follow-up open

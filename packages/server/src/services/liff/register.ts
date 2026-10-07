@@ -19,7 +19,7 @@ const LEGAL = {
 
 /**
  * 05#ep-liff.register (one transaction), for the placeholder owner_profile liff.session created (Q-1031):
- * - phone normalized by R-22 (INVALID_PHONE); privacyVersion must be the latest (VALIDATION_FAILED)
+ * - phone normalized by R-22 (INVALID_PHONE); privacyVersion and termsVersion must be the latest (VALIDATION_FAILED)
  * - a pending link request of this LINE identity → LINK_REQUEST_PENDING; an existing customer → session as is (Q-1045)
  * - the profile is filled and consent_record ×3 written (privacy_notice, terms_of_service, photo_consent)
  * - phone of an existing customer of this shop → customer_link_request (no auto-link) + staff.link_request to active
@@ -31,6 +31,8 @@ export async function liffRegister(ctx: RequestContext, input: LiffRegisterReque
   const phoneE164 = phone.e164;
   if (input.privacyVersion !== LEGAL.privacy)
     throw new AppError("VALIDATION_FAILED", { fields: { privacyVersion: "not the latest privacy notice" } });
+  // Q-1045: an older terms version is not a valid acceptance either
+  if (input.termsVersion !== LEGAL.terms) throw new AppError("VALIDATION_FAILED", { fields: { termsVersion: "not the latest terms" } });
   const ownerProfileId = http.session?.subjectId;
   if (!ownerProfileId || !ctx.branchId) throw new AppError("NOT_FOUND");
   const branchId = ctx.branchId;

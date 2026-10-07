@@ -101,6 +101,14 @@ it("บันทึก sends liff.updateMe with the contact fields and photoCons
   expect(mock.toast.success).toHaveBeenCalledWith(messages.saved);
 });
 
+it("อีเมล is editable: a changed address is sent, an emptied one clears it, a bad one is not sent (Q-1040)", async () => {
+  expect(updateBody(profile, { ...draftOf(profile), email: "new@example.test" })).toMatchObject({ email: "new@example.test" });
+  expect(updateBody(profile, { ...draftOf(profile), email: "" })).toMatchObject({ email: "" });
+  mock.states = [{ ...draftOf(profile), email: "not-an-email" }, {}];
+  await ProfileForm({ profile, branchSlug: "shop-a" }).props.onSubmit({ preventDefault: vi.fn() });
+  expect(mock.mutate).not.toHaveBeenCalled();
+});
+
 it("an empty first name or a bad phone is not sent", async () => {
   mock.states = [{ ...draftOf(profile), firstName: "" }, {}];
   await ProfileForm({ profile, branchSlug: "shop-a" }).props.onSubmit({ preventDefault: vi.fn() });
