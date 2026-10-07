@@ -902,6 +902,27 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 03 gives daycare check-out the side effect "เพิ่มเข้าบิล" and 05 lists `STATUS_NOT_ALLOWED` without a condition (a wrong source status is already INVALID_TRANSITION).
 - Answer (2026-10-05): the booking's open bill without a line for the visit gets a `daycare` bill_line (as bills.open builds it) and recomputed totals (R-15); no bill yet → nothing (bills.open adds daycare visits later); a paid/void bill without the line → `STATUS_NOT_ALLOWED {billStatus}`.
 
+## Q-1054 · T-0179 liff.cancel: wrong status code, audit, refund creator, customer message
+- Status: open (T-0179 ships the interim choices below)
+- Task: T-0179 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 05#ep-liff.cancel lists only STATUS_NOT_ALLOWED and notify staff.booking_cancelled. Several points are open:
+  1. The card's test list also asks for INVALID_TRANSITION on a wrong source status.
+  2. 05 names no audit, but a refund or credit moves money (R-27). `booking.cancel` needs a reason of ≥ 3 characters, and `reason` is optional here.
+  3. `refund.created_by` must be a staff_user, and here the actor is the customer.
+  4. It is not said whether the customer also gets customer.booking_cancelled.
+- Implemented for now:
+  1. Every status R-21 does not allow (anything but awaiting_deposit / deposit_review / awaiting_approval / confirmed), a first service time already reached, or a child already in service → STATUS_NOT_ALLOWED. INVALID_TRANSITION is not reachable.
+  2. No booking.cancel audit. A refund row writes audit `refund.create` (no reason needed), as job:approval_overdue does.
+  3. The refund is recorded with the organization's first active owner as created_by (Q-0068). credit_ledger.created_by = null.
+  4. Only staff.booking_cancelled is queued, to active front_desk + owner. Payload: customerName = owner_profile.first_name (as staff.new_booking), isLate = "(ยกเลิกกระชั้น)" / "" (Q-0088), dedupe `staff_booking_cancelled:{bookingId}`.
+  - Everything else matches bookings.cancel with kind customer_cancel:
+    - booking + children → cancelled, cancelled_by_type customer, cancel_is_late = R-07 isLate
+    - R-07 on a verified deposit (credit / refund / forfeited)
+    - R-09 late count
+    - pending expire_hold / approval_overdue / reminder_24h jobs cancelled
+  - `reason` is optional (≤ 500); an empty one is stored as null. The response is liff.booking's MyBookingDetail.
+- Proposed decision: accept. If the customer should also get a confirmation, add customer.booking_cancelled to 05 (spec change).
+
 ## Q-0102 · T-0166 slips.reject: telling the customer on the second rejection
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0166 · Asked by: agent (claude) · Date: 2026-10-04
