@@ -18,11 +18,11 @@ import { createSession } from "../../../src/auth/session.ts";
 import { resetRateLimits } from "../../../src/http/rate-limit.ts";
 import { withCustomer } from "../../../src/http/wrap.ts";
 import { liffCancel } from "../../../src/services/liff/cancel.ts";
-import { type SeedOrg, seedOrg, setupTestDb, type TestEnv } from "../../helpers/setup.ts";
+import { seedOrg, setupTestDb, type TestEnv } from "../../helpers/setup.ts";
 
 let env: TestEnv;
 const POST = withCustomer("liff.cancel", { params: LiffCancelParams, body: LiffCancelRequest }, liffCancel);
-const call = async (s: SeedOrg, bookingId: string, body: unknown = {}, profileId = s.ownerProfileId) => {
+const call = async (s: Shop, bookingId: string, body: unknown = {}, profileId = s.ownerProfileId) => {
   const { token } = await createSession(
     env.db,
     { subjectType: "customer", subjectId: profileId, organizationId: s.orgId, branchId: s.branchId },
