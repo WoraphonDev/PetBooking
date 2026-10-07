@@ -1,6 +1,7 @@
 import type { LineSender } from "../../notify/senders.ts";
+import type { FlexMessage } from "../../notify/templates/index.ts";
 
-export type FakeLineMessage = { messagingChannelId: string; lineUserId: string; text: string; replyToken?: string };
+export type FakeLineMessage = { messagingChannelId: string; lineUserId: string; text: string; flex?: FlexMessage; replyToken?: string };
 
 /** LINE_FAKE=1 is for dev/E2E only (01 §6): refuse to start in production. */
 export function lineFakeEnabled(env: Record<string, string | undefined> = process.env): boolean {
@@ -19,6 +20,7 @@ export function createFakeLineSender() {
         messagingChannelId: input.lineChannel.messagingChannelId,
         lineUserId: input.lineUserId,
         text: input.text,
+        ...(input.flex ? { flex: input.flex } : {}),
         ...(input.replyToken ? { replyToken: input.replyToken } : {}),
       });
     },
