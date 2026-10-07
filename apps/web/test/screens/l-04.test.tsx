@@ -207,7 +207,8 @@ it("1. น้อง: pet cards, several can be picked; ถัดไป needs one
   expect(canContinue(flow())).toBe(false);
   expect(canContinue(flow({ drafts: [{ petId: P1, serviceIds: [], addonIds: [], slot: null }] }))).toBe(true);
   const card = tree(flow()).find((e) => e.props["aria-pressed"] === false);
-  (card?.props.onClick as () => void)();
+  if (!card) throw new Error("pet card not rendered");
+  (card.props.onClick as () => void)();
   const update = mock.setState.mock.calls[0]?.[0] as (f: Flow) => Flow;
   expect(update(flow()).drafts).toEqual([{ petId: P1, serviceIds: [], addonIds: [], slot: null }]);
 });
