@@ -956,6 +956,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - The T-0010 catalog test expected the stub's empty {depositLine}; it is relaxed for 07 §1.2 lines in a separate PR (#321).
 - Proposed decision: accept 2 and 3. For 1, add a card that owns templates/index.ts + senders + the LINE adapter, so a template can return a Flex bubble (text + button to `url`, altText = first line).
 
+## Q-1053 · T-0331 LINE Flex: button label and which messages get a bubble
+- Status: open (T-0331 ships the interim choices below)
+- Task: T-0331 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 07 (header) and Q-1048 ask for "ข้อความ + ปุ่มลิงก์ LIFF" with altText = first line, but name no button label and no style.
+- Implemented for now:
+  - Every customer message whose template returns a `url` is sent as one bubble: the full text (wrap) + a primary uri button labelled "ดูรายละเอียด" → the url. Messages without a url stay plain text.
+  - altText = the first non-empty line, cut to LINE's 400 characters.
+  - The text keeps its own link line (e.g. "ดูรายละเอียด: {bookingUrl}"), exactly as 07.
+  - Staff Web Push and email are unchanged.
+  - The bubble is added at dispatch (`withFlex`), so `renderTemplate` still returns the 07 text / url the template tests check.
+- Proposed decision: accept, or name a per-template button label in 07 (e.g. "จ่ายมัดจำ" for slip_rejected / balance_link).
+
 ## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
 - Status: answered for T-0147; spec follow-up open
 - Task: T-0147 · Asked by: agent (claude) · Date: 2026-10-02

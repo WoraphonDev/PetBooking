@@ -1,4 +1,5 @@
-// Template registry: key → render(payload) → { text, subject?, url? } (Q-0060: subject for email, url for Web Push).
+// Template registry: key → render(payload) → { text, subject?, url?, flex? } (Q-0060: subject for email, url for Web Push;
+// Q-1048: withFlex adds the LINE Flex Message to a customer message with a url).
 import type { NotificationPayloads, TemplateKey } from "../keys.ts";
 import { render as t37 } from "./admin.data_request.ts";
 import { render as t36 } from "./admin.feedback.ts";
@@ -40,8 +41,45 @@ import { render as t25 } from "./staff.report_card_review.ts";
 import { render as t20 } from "./staff.slip_submitted.ts";
 import { render as t27 } from "./staff.vaccine_review.ts";
 
-/** text = message body on every channel; subject = email subject; url = link a Web Push opens */
-export type Rendered = { text: string; subject?: string; url?: string };
+/** 07 header "Flex Message แบบเรียบ": one bubble with the text and a button that opens the url (LIFF) */
+export type FlexMessage = {
+  type: "flex";
+  altText: string;
+  contents: {
+    type: "bubble";
+    body: { type: "box"; layout: "vertical"; contents: [{ type: "text"; text: string; wrap: true }] };
+    footer: {
+      type: "box";
+      layout: "vertical";
+      contents: [{ type: "button"; style: "primary"; action: { type: "uri"; label: string; uri: string } }];
+    };
+  };
+};
+
+/** text = message body on every channel; subject = email subject; url = link a Web Push opens; flex = LINE message (Q-1048) */
+export type Rendered = { text: string; subject?: string; url?: string; flex?: FlexMessage };
+
+/** LINE limits: altText ≤ 400 characters, action label ≤ 20 */
+const ALT_TEXT_MAX = 400;
+export const FLEX_BUTTON_LABEL = "ดูรายละเอียด";
+
+/** Flex for a text + url: altText = the first line of the text (Q-1048) */
+export function flexMessage(text: string, url: string): FlexMessage {
+  const firstLine = text.split("\n").find((line) => line.trim() !== "") ?? text;
+  return {
+    type: "flex",
+    altText: [...firstLine.trim()].slice(0, ALT_TEXT_MAX).join(""),
+    contents: {
+      type: "bubble",
+      body: { type: "box", layout: "vertical", contents: [{ type: "text", text, wrap: true }] },
+      footer: {
+        type: "box",
+        layout: "vertical",
+        contents: [{ type: "button", style: "primary", action: { type: "uri", label: FLEX_BUTTON_LABEL, uri: url } }],
+      },
+    },
+  };
+}
 
 const RENDERERS: { [K in TemplateKey]: (payload: NotificationPayloads[K]) => Rendered } = {
   "customer.booking_received": t0,
@@ -87,4 +125,9 @@ const RENDERERS: { [K in TemplateKey]: (payload: NotificationPayloads[K]) => Ren
 
 export function renderTemplate<K extends TemplateKey>(key: K, payload: NotificationPayloads[K]): Rendered {
   return RENDERERS[key](payload);
+}
+
+/** The LINE form of a customer message (R-19): with a url it also carries the Flex bubble; other recipients are unchanged. */
+export function withFlex(key: TemplateKey, rendered: Rendered): Rendered {
+  return key.startsWith("customer.") && rendered.url ? { ...rendered, flex: flexMessage(rendered.text, rendered.url) } : rendered;
 }

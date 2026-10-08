@@ -21,7 +21,7 @@ import { tenantDb } from "../repo/tenant.ts";
 import { enqueueNotification, type NotificationRow } from "./enqueue.ts";
 import { type NotificationPayloads, TEMPLATES, type TemplateKey } from "./keys.ts";
 import type { NotifyDeps } from "./senders.ts";
-import { type Rendered, renderTemplate } from "./templates/index.ts";
+import { type Rendered, renderTemplate, withFlex } from "./templates/index.ts";
 
 type Channel = NotificationRow["channel"];
 type SkipReason = NonNullable<NotificationRow["skipReason"]>;
@@ -77,12 +77,11 @@ async function deliver(deps: NotifyDeps, tx: Tx, ctx: RequestContext, row: Notif
   const meta = TEMPLATES[key];
   if (!meta) return { status: "failed", channel: row.channel, error: `unknown template ${row.templateKey}` };
   const rendered = renderTemplate(key, row.payload as NotificationPayloads[TemplateKey]);
-  const { text } = rendered;
   const skip = (skipReason: SkipReason): Outcome => ({ status: "skipped", channel: row.channel, skipReason });
   // the channel being tried when an adapter throws
   const attempt: { channel: Channel } = { channel: row.channel };
   try {
-    if (row.recipientType === "customer") return await deliverToCustomer(deps, tx, ctx, row, key, text, skip, attempt);
+    if (row.recipientType === "customer") return await deliverToCustomer(deps, tx, ctx, row, key, withFlex(key, rendered), skip, attempt);
     if (row.recipientType === "platform_admin") return await deliverToPlatformAdmin(deps, tx, row, rendered, skip);
     return await deliverToStaff(deps, tx, ctx, row, key, rendered, skip, attempt);
   } catch (e) {
@@ -97,7 +96,7 @@ async function deliverToCustomer(
   ctx: RequestContext,
   row: NotificationRow,
   key: TemplateKey,
-  text: string,
+  { text, flex }: Rendered,
   skip: (r: SkipReason) => Outcome,
   attempt: { channel: Channel },
 ): Promise<Outcome> {
@@ -167,7 +166,13 @@ async function deliverToCustomer(
 
   attempt.channel = picked.channel;
   try {
-    await deps.line.send({ lineChannel: channel, lineUserId: identity.lineUserId, text, ...(replyToken ? { replyToken } : {}) });
+    await deps.line.send({
+      lineChannel: channel,
+      lineUserId: identity.lineUserId,
+      text,
+      ...(flex ? { flex } : {}),
+      ...(replyToken ? { replyToken } : {}),
+    });
   } catch (e) {
     if (e instanceof Error && LINE_UNAUTHORIZED.test(e.message)) await markLineChannelError(tx, ctx, channel);
     throw e;
