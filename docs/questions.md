@@ -651,6 +651,22 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - staff.link_request: lineName = the LINE display name (else the entered first name), phone = R-22 display format.
 - Proposed decision: accept; optionally also require termsVersion = latest.
 
+## Q-1050 · T-0208 L-01: liff.shop before registration, loading liff.session, a pending link on reopen
+- Status: open (T-0208 ships the interim choices below)
+- Task: T-0208 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 06#scr-L-01 loads `liff.session` and `liff.shop`, but:
+  1. liff.shop is a customer endpoint, and a LINE user with no customer gets NOT_REGISTERED.
+  2. liff.session needs a fresh ID token, and the shell does not hand its LiffSession to the page.
+  3. 06 shows 'ร้านกำลังตรวจสอบประวัติเดิมของคุณ' only after เริ่มใช้งาน. On reopen, a user with a pending link request gets the form again, and liff.register answers LINK_REQUEST_PENDING.
+  4. The privacy link target is not named in L-01.
+- Implemented for now:
+  1. The shop name and logo come from `public.branch` (the same ShopPublic DTO, no session needed).
+  2. L-01 calls liff.session again (liff.init → getIDToken, or the LINE_FAKE token) for the LINE name / picture and `legalVersions`. privacyVersion / termsVersion are sent from `legalVersions`.
+  3. When session.linkPending is already true, L-01 shows that message instead of the form. A LINK_REQUEST_PENDING error is shown as a toast.
+  4. The privacy link opens P-02 `/legal/privacy`.
+  - After a successful registration (registered = true), L-02 opens with a full page load, so the LIFF guard reads the new customer session.
+- Proposed decision: accept. Optionally let liff.shop allow unregistered LINE sessions (like liff.register), so L-01 loads exactly as 06 says.
+
 ## Q-0049 · bills.open: request combinations, idempotency, eligible bookings, unusable packages
 - Status: answered (implemented in T-0229)
 - Task: T-0229 · Asked by: agent (claude) · Date: 2026-10-03
@@ -890,6 +906,23 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - The pet must be the customer's own active pet known to the shop (else NOT_FOUND). The 30/min/user limit is the existing `liffSlotSearch` rule.
 - Proposed decision: accept 1–4. For 5, add a follow-up card that extracts the shared slot gathering from services/availability/groomSlots.ts so both endpoints use one function.
 
+## Q-1051 · T-0211 L-04: size choice without a tier list, per-pet price, groomer avatars, several pets
+- Status: open (T-0211 ships the interim choices below)
+- Task: T-0211 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 06#scr-L-04 loads liff.shop, liff.pets, liff.groomSlots and liff.quote, but:
+  1. "ขนาด (ถ้าไม่รู้น้ำหนัก) — การ์ดขนาด + ช่วง กก." needs the size tiers (label, kg range). No customer endpoint returns them: ShopPublic.services[].prices only carries tier ids.
+  2. "ราคาของน้องตัวนี้ (R-02)" needs the pet's size tier (R-01 from the weight and the tier ranges), which is also missing.
+  3. "avatar ช่าง + 'ใครก็ได้'" has no groomer list or photo for customers. Only liff.groomSlots names the groomer of each slot.
+  4. "การ์ดน้อง (หลายตัวได้)" does not say whether pets share services, a date, or a groomer.
+- Implemented for now:
+  1. No size step. A dog / cat without a weight gets WEIGHT_REQUIRED from liff.groomSlots, shown in place of the time grid.
+  2. A service card shows the pet's exact price and time only when every price row for its coat group has the same price and time (e.g. one price for all sizes). Otherwise it shows "เริ่มต้น {fromPriceSatang}". The summary uses liff.quote.
+  3. The groomer choices are the groomers named in the loaded slot lists; the avatar is the name's first letter. A specific groomer reloads the slots with groomerId. 'ใครก็ได้' leaves groomerId out of liff.createBooking, so the server can re-pick (Q-1049).
+  4. Each pet picks its own services and time. Date and groomer choice are shared, and every pet has its own liff.groomSlots call.
+  - Closed weekdays (shop.hours) show "ร้านปิด" in the 14-day strip and cannot be picked. 'ต้องโอนภายใน 15 นาที' is shown only when depositRequiredSatang > 0.
+  - After liff.createBooking: status awaiting_deposit → L-07; awaiting_approval → 'รอร้านยืนยัน'; otherwise 'จองสำเร็จ'.
+- Proposed decision: accept 2–4. For 1, add `sizeTiers` (id, species, labelTh, min/maxWeightGrams) to ShopPublic (spec change + follow-up card), so L-04 can show the size cards and the exact R-02 price.
+
 ## Q-1052 · T-0159 linkRequests.approve: deleting the LINE profile, its consents, profiles used elsewhere
 - Status: open (T-0159 ships the interim choices below)
 - Task: T-0159 · Asked by: agent (claude) · Date: 2026-10-07
@@ -921,6 +954,27 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 03 gives daycare check-out the side effect "เพิ่มเข้าบิล" and 05 lists `STATUS_NOT_ALLOWED` without a condition (a wrong source status is already INVALID_TRANSITION).
 - Answer (2026-10-05): the booking's open bill without a line for the visit gets a `daycare` bill_line (as bills.open builds it) and recomputed totals (R-15); no bill yet → nothing (bills.open adds daycare visits later); a paid/void bill without the line → `STATUS_NOT_ALLOWED {billStatus}`.
 
+## Q-1054 · T-0179 liff.cancel: wrong status code, audit, refund creator, customer message
+- Status: open (T-0179 ships the interim choices below)
+- Task: T-0179 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 05#ep-liff.cancel lists only STATUS_NOT_ALLOWED and notify staff.booking_cancelled. Several points are open:
+  1. The card's test list also asks for INVALID_TRANSITION on a wrong source status.
+  2. 05 names no audit, but a refund or credit moves money (R-27). `booking.cancel` needs a reason of ≥ 3 characters, and `reason` is optional here.
+  3. `refund.created_by` must be a staff_user, and here the actor is the customer.
+  4. It is not said whether the customer also gets customer.booking_cancelled.
+- Implemented for now:
+  1. Every status R-21 does not allow (anything but awaiting_deposit / deposit_review / awaiting_approval / confirmed), a first service time already reached, or a child already in service → STATUS_NOT_ALLOWED. INVALID_TRANSITION is not reachable.
+  2. No booking.cancel audit. A refund row writes audit `refund.create` (no reason needed), as job:approval_overdue does.
+  3. The refund is recorded with the organization's first active owner as created_by (Q-0068). credit_ledger.created_by = null.
+  4. Only staff.booking_cancelled is queued, to active front_desk + owner. Payload: customerName = owner_profile.first_name (as staff.new_booking), isLate = "(ยกเลิกกระชั้น)" / "" (Q-0088), dedupe `staff_booking_cancelled:{bookingId}`.
+  - Everything else matches bookings.cancel with kind customer_cancel:
+    - booking + children → cancelled, cancelled_by_type customer, cancel_is_late = R-07 isLate
+    - R-07 on a verified deposit (credit / refund / forfeited)
+    - R-09 late count
+    - pending expire_hold / approval_overdue / reminder_24h jobs cancelled
+  - `reason` is optional (≤ 500); an empty one is stored as null. The response is liff.booking's MyBookingDetail.
+- Proposed decision: accept. If the customer should also get a confirmation, add customer.booking_cancelled to 05 (spec change).
+
 ## Q-0102 · T-0166 slips.reject: telling the customer on the second rejection
 - Status: answered (user chose in chat, 2026-10-04)
 - Task: T-0166 · Asked by: agent (claude) · Date: 2026-10-04
@@ -941,6 +995,18 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   3. An empty refundLine (declined), or an empty reason / moneyLine (cancelled), drops that line instead of leaving it blank.
   - The T-0010 catalog test expected the stub's empty {depositLine}; it is relaxed for 07 §1.2 lines in a separate PR (#321).
 - Proposed decision: accept 2 and 3. For 1, add a card that owns templates/index.ts + senders + the LINE adapter, so a template can return a Flex bubble (text + button to `url`, altText = first line).
+
+## Q-1053 · T-0331 LINE Flex: button label and which messages get a bubble
+- Status: open (T-0331 ships the interim choices below)
+- Task: T-0331 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 07 (header) and Q-1048 ask for "ข้อความ + ปุ่มลิงก์ LIFF" with altText = first line, but name no button label and no style.
+- Implemented for now:
+  - Every customer message whose template returns a `url` is sent as one bubble: the full text (wrap) + a primary uri button labelled "ดูรายละเอียด" → the url. Messages without a url stay plain text.
+  - altText = the first non-empty line, cut to LINE's 400 characters.
+  - The text keeps its own link line (e.g. "ดูรายละเอียด: {bookingUrl}"), exactly as 07.
+  - Staff Web Push and email are unchanged.
+  - The bubble is added at dispatch (`withFlex`), so `renderTemplate` still returns the 07 text / url the template tests check.
+- Proposed decision: accept, or name a per-template button label in 07 (e.g. "จ่ายมัดจำ" for slip_rejected / balance_link).
 
 ## Q-0043 · AD-04: `feedback_status` has no Thai labels in enum-labels.th.json
 - Status: answered for T-0147; spec follow-up open

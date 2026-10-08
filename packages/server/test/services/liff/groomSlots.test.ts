@@ -184,6 +184,12 @@ it("another owner's pet, another shop's service or groomer → NOT_FOUND", async
 it("rate limit: 30 searches a minute per user, the 31st → RATE_LIMITED", async () => {
   const s = await shop("gs7");
   const body = { date: DATE, petId: s.ids.mochi, serviceIds: [s.ids.bath] };
-  for (let i = 0; i < 30; i++) expect((await call(s, body, "gs7")).status).toBe(200);
-  expect(await errorCode(await call(s, body, "gs7"))).toBe("RATE_LIMITED");
+  // the bucket refills one token every 2 s: freeze the clock so a slow run cannot earn the 31st call back
+  vi.useFakeTimers({ toFake: ["Date"], now: Date.now() });
+  try {
+    for (let i = 0; i < 30; i++) expect((await call(s, body, "gs7")).status).toBe(200);
+    expect(await errorCode(await call(s, body, "gs7"))).toBe("RATE_LIMITED");
+  } finally {
+    vi.useRealTimers();
+  }
 });

@@ -23,7 +23,10 @@ export function createLineSender(
   return {
     async send(input) {
       const client = createClient(decryptSecret(input.lineChannel.channelAccessTokenEnc, options.encryptionKey));
-      const messages = [{ type: "text" as const, text: input.text }];
+      // FlexMessage mirrors the SDK's flex shape (bubble → box → text / uri button)
+      const messages: messagingApi.Message[] = input.flex
+        ? [input.flex as messagingApi.FlexMessage]
+        : [{ type: "text" as const, text: input.text }];
       for (let attempt = 1; ; attempt++) {
         try {
           if (input.replyToken) await client.replyMessage({ replyToken: input.replyToken, messages });
