@@ -923,6 +923,25 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
   - After liff.createBooking: status awaiting_deposit → L-07; awaiting_approval → 'รอร้านยืนยัน'; otherwise 'จองสำเร็จ'.
 - Proposed decision: accept 2–4. For 1, add `sizeTiers` (id, species, labelTh, min/maxWeightGrams) to ShopPublic (spec change + follow-up card), so L-04 can show the size cards and the exact R-02 price.
 
+## Q-1052 · T-0159 linkRequests.approve: deleting the LINE profile, its consents, profiles used elsewhere
+- Status: open (T-0159 ships the interim choices below)
+- Task: T-0159 · Asked by: agent (claude) · Date: 2026-10-07
+- Question: 05#ep-linkRequests.approve says to move the line_identity, move pets / bookings "ที่สร้างจาก profile ใหม่", and delete the emptied new owner_profile. However:
+  1. `customer_link_request.new_owner_profile_id` is NOT NULL with no ON DELETE, so the approved request itself blocks the delete.
+  2. consent_record is append-only, so the new profile's PDPA answers (written by liff.register) cannot move.
+  3. owner_profile and pet are shared across shops. 05 does not say what to do when the new profile is a customer or pet owner in another shop.
+- Implemented for now:
+  - line_identity → the candidate customer's owner_profile.
+  - Pets of the new profile with `created_in_org_id` = this shop → the candidate's profile.
+  - Bookings of the new profile's customer in this shop (if one exists) → the candidate customer.
+  - The new profile is deleted only when nothing references it: no customer in any shop, no pet, no data_request, no other line_identity, no other link request. Before the delete:
+    - its consent records are copied (same document / version / answer / time) onto the candidate's profile; the originals stay
+    - this request's new_owner_profile_id is set to the candidate's profile
+  - Otherwise the profile, its other pets and its customers stay as they are.
+  - audit `customer.merge_link_approve` on the request: before {status, ownerProfileId}, after {status, ownerProfileId, customerId, lineIdentityId, petIds, bookingIds, deletedOwnerProfileId}.
+  - customer.link_approved goes to the candidate customer: shopName = the staff session's branch, dedupe `link_approved:{requestId}`.
+- Proposed decision: accept. Alternatively make new_owner_profile_id nullable / ON DELETE SET NULL (schema change) instead of pointing it at the candidate's profile.
+
 ## Q-0068 · T-0188 approval_overdue: refund by a system job, waitedMinutes
 - Status: answered (implemented in T-0188); spec follow-up open
 - Task: T-0188 · Asked by: agent (claude) · Date: 2026-10-03
