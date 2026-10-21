@@ -17,7 +17,18 @@ export type ObjectStorage = {
   head(key: string): Promise<StoredObject | null>;
   /** deleting a missing key is not an error */
   delete(key: string): Promise<void>;
+  /** the object's body as UTF-8 text with a leading BOM removed (Q-1007); null = no object; throws INVALID_UTF8 on bad bytes */
+  getText(key: string): Promise<string | null>;
 };
+
+/** Strict UTF-8 decode; a BOM (EF BB BF) is dropped by TextDecoder's default ignoreBOM: false. */
+export function decodeUtf8(bytes: Uint8Array): string {
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  } catch {
+    throw new Error("INVALID_UTF8");
+  }
+}
 
 type S3Options = { endpoint?: string; region?: string; bucket?: string; accessKeyId?: string; secretAccessKey?: string };
 
@@ -53,16 +64,30 @@ export function createS3Storage(options: S3Options = {}): ObjectStorage {
     async delete(key) {
       await client.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
     },
+    async getText(key) {
+      let body: Uint8Array | undefined;
+      try {
+        const r = await client.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
+        body = await r.Body?.transformToByteArray();
+      } catch (e) {
+        if ((e as { $metadata?: { httpStatusCode?: number } }).$metadata?.httpStatusCode === 404) return null;
+        throw new Error("Object storage request failed");
+      }
+      return decodeUtf8(body ?? new Uint8Array());
+    },
   };
 }
 
-/** In-memory storage: `put()` stands in for the client's PUT to the presigned URL. */
+/** In-memory storage: `put()` stands in for the client's PUT to the presigned URL (optional body for getText). */
 export function createFakeStorage() {
   const objects = new Map<string, StoredObject>();
+  const bodies = new Map<string, Uint8Array>();
   return {
     objects,
-    put(key: string, object: StoredObject) {
+    put(key: string, object: StoredObject, body?: string | Uint8Array) {
       objects.set(key, object);
+      if (body !== undefined) bodies.set(key, typeof body === "string" ? new TextEncoder().encode(body) : body);
+      else bodies.delete(key);
     },
     async presignPut({ key, sizeBytes }) {
       return `https://storage.test/${key}?op=put&size=${sizeBytes}&expires=${PUT_TTL_SECONDS}`;
@@ -75,8 +100,16 @@ export function createFakeStorage() {
     },
     async delete(key) {
       objects.delete(key);
+      bodies.delete(key);
     },
-  } satisfies ObjectStorage & { objects: Map<string, StoredObject>; put(key: string, object: StoredObject): void };
+    async getText(key) {
+      if (!objects.has(key)) return null;
+      return decodeUtf8(bodies.get(key) ?? new Uint8Array());
+    },
+  } satisfies ObjectStorage & {
+    objects: Map<string, StoredObject>;
+    put(key: string, object: StoredObject, body?: string | Uint8Array): void;
+  };
 }
 
 let current: ObjectStorage | null = null;

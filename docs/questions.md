@@ -954,6 +954,12 @@ Status: partially answered (endpoint implemented in T-0050; pg_trgm index still 
 - Question: 03 gives daycare check-out the side effect "เพิ่มเข้าบิล" and 05 lists `STATUS_NOT_ALLOWED` without a condition (a wrong source status is already INVALID_TRANSITION).
 - Answer (2026-10-05): the booking's open bill without a line for the visit gets a `daycare` bill_line (as bills.open builds it) and recomputed totals (R-15); no bill yet → nothing (bills.open adds daycare visits later); a paid/void bill without the line → `STATUS_NOT_ALLOWED {billStatus}`.
 
+## Q-1055 · groomSlots.test.ts fails after 2026-10-10 (real clock vs fixed DATE)
+- Status: open
+- Task: T-0062 (found while running `pnpm verify`) · Asked by: agent (claude) · Date: 2026-10-21
+- Question: `packages/server/test/services/availability/groomSlots.test.ts` fixes `DATE = "2026-10-10"` (line 27) but builds the HTTP request context with `new Date()` (line 178). Since the real date passed 2026-10-10, the date is in the past, the endpoint answers `no_capacity`, and the two "returns R-04 slots … for owner / front_desk" tests fail on every branch, so `pnpm verify` is red. The file is outside T-0062's allowed_paths.
+- Proposed decision: a small follow-up card passes `TEST_NOW` (or a clock fixed before DATE) instead of `new Date()` in that helper.
+
 ## Q-1054 · T-0179 liff.cancel: wrong status code, audit, refund creator, customer message
 - Status: open (T-0179 ships the interim choices below)
 - Task: T-0179 · Asked by: agent (claude) · Date: 2026-10-07
